@@ -3,14 +3,17 @@ language: php
 php:
   - 7.1
 
-node_js:
-  - "7"
+env:
+  - TRAVIS_NODE_VERSION="4"
 
 before_script:
   - cp .env.travis .env
   - mysql -e 'create database homestead_test;'
   - composer self-update
   - composer install --no-interaction
+  - curl -s -o $HOME/.nvm/nvm.sh https://raw.githubusercontent.com/creationix/nvm/v0.33.2/nvm.sh
+  - source $HOME/.nvm/nvm.sh
+  - nvm install stable
   - npm install
   - npm run production
   - php artisan key:generate
