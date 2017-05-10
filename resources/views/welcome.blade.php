@@ -81,7 +81,10 @@
                 <div class="title m-b-md">
                     SHA2017 {{ config('app.name', 'Laravel') }}
                 </div>
-
+                <div>
+                    Users: {{$users}}
+                    Projects: {{$projects}}
+                </div>
                 <div class="links">
                     <a href="https://wiki.sha2017.org/w/Projects:Badge">Wiki</a>
                     <a href="https://github.com/SHA2017-badge/">GitHub</a>

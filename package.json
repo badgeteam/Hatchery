@@ -1,4 +1,8 @@
 {
+  "name": "badgeware",
+  "version": "0.0.1",
+  "description": "SHA2017 BadgeWare",
+  "author": "annejan <annejan@noprotocol.nl>",
   "private": true,
   "scripts": {
     "dev": "npm run development",

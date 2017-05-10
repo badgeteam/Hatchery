@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class HomeController extends Controller
 {
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -19,10 +20,10 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
-        return view('home');
+        return view('home')->with(['users' => User::count(), 'projects' => Project::count()]);
     }
 }
