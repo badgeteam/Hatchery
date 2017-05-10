@@ -36,7 +36,7 @@ class PublicTest extends TestCase
     }
 
     /**
-     * Check redirect to login when going to /home
+     * Check JSON request Unauthenticated . .
      */
     public function testJSONRedirect()
     {
