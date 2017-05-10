@@ -24,4 +24,24 @@ class PublicTest extends TestCase
             ->assertViewHas('users', User::count())
             ->assertViewHas('projects', Project::count());
     }
+
+    /**
+     * Check redirect to login when going to /home
+     */
+    public function testHomeRedirect()
+    {
+        $response = $this->get('/home');
+        $response->assertStatus(302)
+            ->assertRedirect('/login');
+    }
+
+    /**
+     * Check redirect to login when going to /home
+     */
+    public function testJSONRedirect()
+    {
+        $response = $this->json('GET', '/home');
+        $response->assertStatus(401)
+            ->assertExactJson(['error' => 'Unauthenticated.']);
+    }
 }

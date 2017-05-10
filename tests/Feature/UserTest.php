@@ -57,17 +57,6 @@ class UserTest extends TestCase
     }
 
     /**
-     * Check redirect to login when going to /home
-     */
-    public function testHomeRedirect()
-    {
-        $response = $this->get('/home');
-        $response->assertStatus(302)
-            ->assertRedirect('/login');
-    }
-
-
-    /**
      * Check the homepage / dashboard
      */
     public function testHome()
