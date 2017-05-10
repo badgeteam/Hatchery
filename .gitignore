@@ -1,6 +1,10 @@
 /node_modules
 /public/hot
 /public/storage
+/public/fonts/
+/public/mix-manifest.json
+/public/css/app.css
+/public/js/app.js
 /storage/*.key
 /vendor
 /.idea
@@ -9,3 +13,4 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 .env
+/docs/coverage 
