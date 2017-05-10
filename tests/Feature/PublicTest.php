@@ -15,10 +15,8 @@ class PublicTest extends TestCase
 
     /**
      * A basic test example.
-     *
-     * @return void
      */
-    public function testBasicTest()
+    public function testWelcome()
     {
         $response = $this->get('/');
 
