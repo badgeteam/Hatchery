@@ -24,6 +24,6 @@ class HomeController extends Controller
      */
     public function index(): View
     {
-        return view('home')->with(['users' => User::count(), 'projects' => Project::count()]);
+        return view('home')->with(['projects' => Project::all()]);
     }
 }
