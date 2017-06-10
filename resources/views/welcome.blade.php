@@ -83,7 +83,7 @@
                 </div>
                 <div>
                     Users: {{$users}}
-                    Projects: {{$projects}}
+                    Eggs: {{$projects}}
                 </div>
                 <div class="links">
                     <a href="https://wiki.sha2017.org/w/Projects:Badge">Wiki</a>
