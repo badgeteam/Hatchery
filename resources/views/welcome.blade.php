@@ -82,7 +82,7 @@
                     SHA2017 {{ config('app.name', 'Laravel') }}
                 </div>
                 <div>
-                    Users: {{$users}}
+                    Contributors: {{$users}}
                     Eggs: {{$projects}}
                 </div>
                 <div class="links">
