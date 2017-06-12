@@ -22,7 +22,6 @@
 </head>
 <body>
     <div id="app">
-        @include('partials.messages')
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
@@ -80,6 +79,8 @@
                 </div>
             </div>
         </nav>
+        
+        @include('partials.messages')
 
         @yield('content')
     </div>
