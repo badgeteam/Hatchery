@@ -26,7 +26,7 @@ class PublicTest extends TestCase
     }
 
     /**
-     * Check redirect to login when going to /home
+     * Check redirect to /login when going to the /home page.
      */
     public function testHomeRedirect()
     {

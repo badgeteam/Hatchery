@@ -18,7 +18,7 @@ class UserTest extends TestCase
     use DatabaseTransactions, DatabaseMigrations;
 
     /**
-     * login failed get redirected
+     * login failed get redirected.
      */
     public function testLoginFail()
     {
@@ -57,7 +57,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Check the homepage / dashboard
+     * Check the homepage / dashboard.
      */
     public function testHome()
     {
@@ -71,7 +71,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Check the logout functionality
+     * Check the logout functionality.
      */
     public function testLogout()
     {
@@ -84,7 +84,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test a password change and login (full flow)
+     * Test a password change and login (full flow).
      */
     public function testUserResetPassword()
     {
@@ -142,7 +142,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Register, go to home
+     * Register, go to /home . .
      */
     public function testRegister()
     {

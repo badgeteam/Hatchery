@@ -79,7 +79,7 @@
                 </div>
             </div>
         </nav>
-        
+
         @include('partials.messages')
 
         @yield('content')
