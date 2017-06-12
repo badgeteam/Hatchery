@@ -4,15 +4,15 @@
 <a href="https://codeclimate.com/github/annejan/badgeware"><img src="https://img.shields.io/codeclimate/github/annejan/badgeware.svg" alt="Code Climate GPA"></a>
 </p>
 
-## SHA2017 badgeware
+## SHA2017 Hatchery
 
-TODO
+Simple micropython software repository for the SHA2017 Badge. 
  
 [Wiki](https://wiki.sha2017.org/w/Projects:Badge)
 [GitHub](https://github.com/SHA2017-badge/)
 
 ## License
 
-Badgeware is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+Hatchery is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
 
 The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).

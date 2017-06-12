@@ -32,3 +32,14 @@ $factory->define(App\Models\Project::class, function (Faker\Generator $faker) {
         },
     ];
 });
+
+
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(App\Models\Version::class, function (Faker\Generator $faker) {
+    return [
+        'revision' => 1,
+        'project_id' => function () {
+            return factory(App\Models\Project::class)->create()->id;
+        },
+    ];
+});

@@ -14,9 +14,19 @@ class ProjectTest extends TestCase
     /**
      * Assert the Project has a relation with a single User
      */
-    public function testProjectsUserRelationship()
+    public function testProjectUserRelationship()
     {
         $project = factory(Project::class)->create();
         $this->assertInstanceOf('App\Models\User', $project->user);
+    }
+
+    /**
+     * Assert the Project can have a collection of Versions
+     */
+    public function testProjectVersionRelationship()
+    {
+        $project = factory(Project::class)->create();
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $project->versions);
+        $this->assertEmpty($project->versions);
     }
 }
