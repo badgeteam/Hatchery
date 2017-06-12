@@ -12,7 +12,7 @@ class Project extends Model
     use SoftDeletes;
 
     /**
-     * Get the user that owns the order.
+     * Get the User that owns the Project.
      */
     public function user(): BelongsTo
     {
@@ -20,10 +20,10 @@ class Project extends Model
     }
 
     /**
-     * Get the versions this project has.
+     * Get the Versions this Project has.
      */
     public function versions(): HasMany
     {
-        return $this->hasMany('App\Models\Version');
+        return $this->hasMany(Version::class);
     }
 }

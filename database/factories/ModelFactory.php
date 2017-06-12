@@ -43,3 +43,12 @@ $factory->define(App\Models\Version::class, function (Faker\Generator $faker) {
         },
     ];
 });
+
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(App\Models\File::class, function (Faker\Generator $faker) {
+    return [
+        'version_id' => function () {
+            return factory(App\Models\Version::class)->create()->id;
+        },
+    ];
+});

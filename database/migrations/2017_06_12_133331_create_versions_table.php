@@ -16,8 +16,9 @@ class CreateVersionsTable extends Migration
         Schema::create('versions', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('project_id')->unsigned();
-            $table->integer('revision');
+            $table->integer('revision')->unsigned();
             $table->string('dependencies');
+            $table->string('zip');
             $table->softDeletes();
             $table->nullableTimestamps();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade')->onUpdate('cascade');

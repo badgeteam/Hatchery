@@ -30,10 +30,10 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the projects for the user.
+     * Get the Projects for the User.
      */
     public function projects(): HasMany
     {
-        return $this->hasMany('App\Models\Project');
+        return $this->hasMany(Project::class);
     }
 }
