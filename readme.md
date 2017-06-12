@@ -8,7 +8,8 @@
 
 Simple micropython software repository for the SHA2017 Badge. 
  
-[Wiki](https://wiki.sha2017.org/w/Projects:Badge)
+[Documentation](https://wiki.sha2017.org/w/Projects:Badge/Hatchery) |
+[Project Wiki](https://wiki.sha2017.org/w/Projects:Badge) |
 [GitHub](https://github.com/SHA2017-badge/)
 
 ## License
@@ -16,3 +17,20 @@ Simple micropython software repository for the SHA2017 Badge.
 Hatchery is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
 
 The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+
+## Installation
+
+Requires PHP 7.1 or later!
+
+```bash
+cp .env.example .env
+```
+Edit your database, mail and other settings..
+
+```bash
+composer install
+php artisan key:generate
+php artisan migrate
+npm install
+npm run production
+```

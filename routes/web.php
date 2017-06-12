@@ -16,3 +16,5 @@ Route::get('/', 'PublicController@index')->name('splash');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('projects', 'ProjectsController');

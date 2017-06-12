@@ -66,7 +66,8 @@ class UserTest extends TestCase
             ->actingAs($user)
             ->get('/home');
         $response->assertStatus(200)
-            ->assertViewHas('projects', Project::all());
+            ->assertViewHas('projects', Project::count())
+            ->assertViewHas('users', User::count());
     }
 
     /**

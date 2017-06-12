@@ -1,6 +1,6 @@
 {
-    "name": "SHA2017-badge/BadgeWare",
-    "description": "BadgeWare repository . .",
+    "name": "SHA2017-badge/Hatchery",
+    "description": "Hatchery micropython app repository . .",
     "keywords": ["framework", "laravel", "repository"],
     "author": "Anne Jan Brouwer <annejan@noprotocol.nl>",
     "license": "MIT",
@@ -8,7 +8,8 @@
     "require": {
         "php": ">=7.1",
         "laravel/framework": "5.4.*",
-        "laravel/tinker": "~1.0"
+        "laravel/tinker": "~1.0",
+        "laravelcollective/html": "^5.4"
     },
     "require-dev": {
         "codeclimate/php-test-reporter": "^0.4.4",
