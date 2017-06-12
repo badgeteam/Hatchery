@@ -71,7 +71,9 @@ class ProjectsController extends Controller
     public function edit($projectId): View
     {
         $project = Project::where('id', $projectId)->firstOrFail();
-        return view('projects.edit')->with('project', $project);
+        $project->assertEditableVersion();
+        return view('projects.edit')
+            ->with('project', $project);
     }
 
     /**

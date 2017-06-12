@@ -36,4 +36,6 @@ class Version extends Model
     {
         return !empty($this->zip);
     }
+
+    // @TODO scope published / unpublished
 }
