@@ -1,7 +1,7 @@
 <p align="center">
-<a href="https://travis-ci.org/SHA2017-badge/badgeware"><img src="https://travis-ci.org/SHA2017-badge/badgeware.svg" alt="Build Status"></a>
-<a href="https://codeclimate.com/github/SHA2017-badge/badgeware"><img src="https://img.shields.io/codeclimate/coverage/github/SHA2017-badge/badgeware.svg" alt="Code Coverage"></a>
-<a href="https://codeclimate.com/github/SHA2017-badge/badgeware"><img src="https://img.shields.io/codeclimate/github/SHA2017-badge/badgeware.svg" alt="Code Climate GPA"></a>
+<a href="https://travis-ci.org/SHA2017-badge/Hatchery"><img src="https://travis-ci.org/SHA2017-badge/Hatchery.svg" alt="Build Status"></a>
+<a href="https://codeclimate.com/github/SHA2017-badge/Hatchery"><img src="https://img.shields.io/codeclimate/coverage/github/SHA2017-badge/Hatchery.svg" alt="Code Coverage"></a>
+<a href="https://codeclimate.com/github/SHA2017-badge/Hatchery"><img src="https://img.shields.io/codeclimate/github/SHA2017-badge/Hatchery.svg" alt="Code Climate GPA"></a>
 </p>
 
 ## SHA2017 Hatchery
