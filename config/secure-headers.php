@@ -131,7 +131,7 @@ return [
         ],
 
         'default-src' => [
-            //
+            'allow' => ['https://badge.sha2017.org']
         ],
 
         'child-src' => [
@@ -197,7 +197,7 @@ return [
         ],
 
         'connect-src' => [
-            //
+            'allow' => ['https://badge.sha2017.org']
         ],
 
         'form-action' => [
