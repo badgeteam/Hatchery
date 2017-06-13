@@ -26,6 +26,10 @@
 {!! Form::open([ 'route' => [ 'files.store', 'version' => $project->versions->last()->id ], 'files' => true, 'enctype' => 'multipart/form-data', 'id' => 'uploader' ]) !!}
 <div>
     <h3>Upload files by dropping them here or clicking on the box</h3>
+    <div class="fallback">
+        <input name="file" type="file" />
+        <input type="submit" />
+    </div>
 </div>
 {!! Form::close() !!}
 
@@ -36,6 +40,8 @@
             maxFilesize: 1,
             acceptedFiles: ".{{ implode(',.', \App\Models\File::$extensions)  }}"
         });
+        var d = document.getElementById("uploader");
+        d.className += " dropzone";
     }
 </script>
 @endsection
