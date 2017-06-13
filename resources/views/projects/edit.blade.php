@@ -15,7 +15,7 @@
             <div class="panel panel-default">
 
                 <div class="panel-heading">
-                    <strong>Add an Egg</strong>
+                    <strong>{{ $project->name }}</strong>
                 </div>
 
                 <div class="panel-body">
@@ -36,6 +36,33 @@
                             {!! Form::close() !!}
                         </div>
 
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Revision</th>
+                                    <th>Published</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @forelse($project->versions as $version)
+                                    <tr>
+                                        <td>{{ $version->revision }}</td>
+                                        <td>{{ $version->published }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6">No revisions yet</td>
+                                    </tr>
+                                @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            TODO files ?
+                        </div>
                     </div>
                 </div>
             </div>
