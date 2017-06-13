@@ -24,13 +24,11 @@
 </table>
 <div>Upload Python, text or image files.</div>
 {!! Form::open([ 'route' => [ 'files.store', 'version' => $project->versions->last()->id ], 'files' => true, 'enctype' => 'multipart/form-data', 'id' => 'uploader' ]) !!}
-<div>
-    <h3>Upload files by dropping them here or clicking on the box</h3>
+    <strong>Upload files by dropping them here or clicking on the box . .</strong>
     <div class="fallback">
         <input name="file" type="file" />
         <input type="submit" />
     </div>
-</div>
 {!! Form::close() !!}
 
 @section('script')
