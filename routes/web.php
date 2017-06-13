@@ -17,6 +17,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('projects', 'ProjectsController');
+Route::resource('projects', 'ProjectsController', ['except' => ['show']]);
 
 Route::post('/upload/{version}', 'FilesController@upload')->name('files.store');
+
+Route::resource('files', 'FilesController', ['except' => ['show']]);

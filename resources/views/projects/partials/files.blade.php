@@ -9,9 +9,11 @@
     @forelse($project->versions->last()->files as $file)
         <tr>
             <td>
-                @if($file->editable)<a href="#">@endif
-                    {{ $file->name }}
-                @if($file->editable)</a>@endif
+                @if($file->editable)
+                <a href="{{ route('files.edit', ['file' => $file->id]) }}">{{ $file->name }}</a>
+                @else
+                {{ $file->name }}
+                @endif
             </td>
             <td>{{ $file->updated_at }}</td>
         </tr>
