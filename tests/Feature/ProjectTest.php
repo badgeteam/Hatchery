@@ -53,7 +53,7 @@ class ProjectTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('post', '/projects', ['name' => $faker->name, 'description' => $faker->paragraph]);
-        $response->assertRedirect('/projects')->assertSessionHas('successes');
+        $response->assertRedirect('/projects/'.Project::get()->last()->id.'/edit')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
     }
 

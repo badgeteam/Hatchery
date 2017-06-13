@@ -55,7 +55,7 @@ class ProjectsController extends Controller
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.index')->withSuccesses([$project->name.' saved']);
+        return redirect()->route('projects.edit', ['project' => $project->id])->withSuccesses([$project->name.' saved']);
     }
 
     /**

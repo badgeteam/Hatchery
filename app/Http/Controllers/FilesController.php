@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\FileStoreRequest;
 use App\Models\File;
 use App\Models\Version;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class FilesController extends Controller
@@ -22,16 +22,18 @@ class FilesController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return View
+     * @param Version $version
+     * @param FileStoreRequest $request
      */
-    public function upload(Version $version, Request $request): View
+    public function upload(Version $version, FileStoreRequest $request)
     {
-        $user = Auth::guard()->user();
+        $upload = $request->file('file');
 
         $file = new File;
         $file->version()->associate($version);
-
-
+        $file->name = $upload->getClientOriginalName();
+        $file->content = file_get_contents($upload->path());
+        $file->save();
     }
 
 }

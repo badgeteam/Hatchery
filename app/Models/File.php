@@ -52,7 +52,8 @@ class File extends Model
      */
     public function getExtensionAttribute(): string
     {
-        return end(explode('.', $this->name));
+        $parts = explode('.', $this->name);
+        return end($parts);
     }
 
     /**
