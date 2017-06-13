@@ -153,19 +153,19 @@ return [
 
             'self' => true,
 
-            'unsafe-inline' => false,
+            'unsafe-inline' => true,
 
             'unsafe-eval' => false,
         ],
 
         'style-src' => [
             'allow' => [
-                'fonts.googleapis.com'
+                'https://fonts.googleapis.com'
             ],
 
             'self' => true,
 
-            'unsafe-inline' => false,
+            'unsafe-inline' => true,
         ],
 
         'img-src' => [
@@ -189,7 +189,7 @@ return [
          */
 
         'font-src' => [
-            //
+            'https://fonts.googleapis.com'
         ],
 
         'connect-src' => [
