@@ -16,3 +16,4 @@ npm-debug.log
 /docs/coverage 
 /build/logs/clover.xml
 codeclimate.json
+/deploy_*
