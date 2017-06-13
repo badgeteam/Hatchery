@@ -7,7 +7,7 @@
 
 require('./bootstrap');
 
-var Dropzone = require('../../../node_modules/dropzone/dist/dropzone.js');
+window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone.js');
 
 window.Vue = require('vue');
 

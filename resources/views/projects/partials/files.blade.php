@@ -32,9 +32,9 @@
 @section('script')
 <script type="text/javascript">
     window.onload = function() {
-        Dropzone.autoDiscover = false;
+        window.Dropzone.autoDiscover = false;
 
-        Dropzone.options.fileUpload = {
+        window.Dropzone.options.fileUpload = {
             maxFilesize: 1,
             acceptedFiles: ".{{ implode(',.', \App\Models\File::$extensions)  }}"
         };
