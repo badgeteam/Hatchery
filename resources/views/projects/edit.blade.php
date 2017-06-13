@@ -41,7 +41,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            TODO files :)
+                            @include('projects.partials.files')
                         </div>
                         <div class="col-md-6">
                             @include('projects.partials.revisions')
