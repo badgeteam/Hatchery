@@ -25,4 +25,26 @@ class FileTest extends TestCase
         $this->assertInstanceOf(Version::class, $file->version);
         $this->assertInstanceOf(Project::class, $file->version->project);
     }
+
+    /**
+     * Assert File extension helper work in a basic case.
+     */
+    public function testFileExtensionAttribute()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create(['name' => 'test.txt']);
+        $this->assertEquals('txt', $file->extension);
+    }
+
+    /**
+     * Assert txt Files are flagged editable.
+     */
+    public function testFileEditableAttribute()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create(['name' => 'test.txt']);
+        $this->assertTrue($file->editable);
+    }
 }

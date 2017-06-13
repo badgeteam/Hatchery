@@ -37,6 +37,9 @@ class VersionTest extends TestCase
         $this->assertEmpty($version->files);
     }
 
+    /**
+     * Check if published (anything with a zip) functions as expected.
+     */
     public function testVersionPublishedHelper()
     {
         $user = factory(User::class)->create();
@@ -45,5 +48,22 @@ class VersionTest extends TestCase
         $this->assertFalse($version->published);
         $version->zip = 'iets';
         $this->assertTrue($version->published);
+    }
+
+    /**
+     * Check if Version published and unPublished scopes function.
+     */
+    public function testVersionScopes()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $this->assertCount(2, Version::unPublished()->get());
+        $this->assertEmpty(Version::published()->get());
+        $version->zip = 'iets anders';
+        $version->save();
+        $this->assertCount(1, Version::unPublished()->get());
+        $this->assertCount(1, Version::published()->get());
+
     }
 }
