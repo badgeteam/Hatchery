@@ -117,11 +117,11 @@ return [
     'custom-csp' => null,
 
     'csp' => [
-        'report-only' => false,
+        'report-only' => true,
 
         'report-uri' => null,
 
-        'upgrade-insecure-requests' => false,
+        'upgrade-insecure-requests' => true,
 
         // enable or disable the automatic conversion of sources to https
         'https-transform-on-https-connections' => true,
@@ -151,7 +151,7 @@ return [
                 //
             ],
 
-            'self' => false,
+            'self' => true,
 
             'unsafe-inline' => false,
 
@@ -160,10 +160,10 @@ return [
 
         'style-src' => [
             'allow' => [
-                //
+                'fonts.googleapis.com'
             ],
 
-            'self' => false,
+            'self' => true,
 
             'unsafe-inline' => false,
         ],
@@ -177,7 +177,7 @@ return [
                 //
             ],
 
-            'self' => false,
+            'self' => true,
 
             'data' => false,
         ],
