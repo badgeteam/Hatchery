@@ -117,7 +117,7 @@ return [
     'custom-csp' => null,
 
     'csp' => [
-        'report-only' => true,
+        'report-only' => false,
 
         'report-uri' => null,
 
@@ -127,7 +127,7 @@ return [
         'https-transform-on-https-connections' => true,
 
         'base-uri' => [
-            //
+            url()
         ],
 
         'default-src' => [
@@ -189,7 +189,8 @@ return [
          */
 
         'font-src' => [
-            'https://fonts.googleapis.com'
+            'https://fonts.googleapis.com',
+            'https://fonts.gstatic.com'
         ],
 
         'connect-src' => [
