@@ -23,7 +23,7 @@
     </tbody>
 </table>
 <div>Upload Python, text or image files.</div>
-{!! Form::open([ 'route' => [ 'files.store', 'version' => $project->versions->last()->id ], 'files' => true, 'enctype' => 'multipart/form-data', 'id' => 'file-upload' ]) !!}
+{!! Form::open([ 'route' => [ 'files.store', 'version' => $project->versions->last()->id ], 'files' => true, 'enctype' => 'multipart/form-data', 'id' => 'uploader' ]) !!}
 <div>
     <h3>Upload files by dropping them here or clicking on the box</h3>
 </div>
@@ -32,7 +32,7 @@
 @section('script')
 <script type="text/javascript">
     window.onload = function() {
-        var uploader = new window.Dropzone({
+        var uploader = new window.Dropzone("#uploader",{
             maxFilesize: 1,
             acceptedFiles: ".{{ implode(',.', \App\Models\File::$extensions)  }}"
         });
