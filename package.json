@@ -2,7 +2,7 @@
   "name": "hatchery",
   "version": "0.0.1",
   "description": "SHA2017 Hatchery",
-  "author": "annejan <annejan@noprotocol.nl>",
+  "author": "Anne Jan Brouwer <annejan@noprotocol.nl>",
   "private": true,
   "scripts": {
     "dev": "npm run development",
