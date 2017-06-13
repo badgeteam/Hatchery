@@ -23,4 +23,3 @@ const app = new Vue({
     el: '#app'
 });
 
-Dropzone.autoDiscover = false;
