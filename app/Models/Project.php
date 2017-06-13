@@ -11,6 +11,22 @@ class Project extends Model
 {
     use SoftDeletes;
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($project) {
+            $project->slug = str_slug($project->name);
+        });
+
+        static::created(function ($project) {
+            $version = new Version;
+            $version->revision = 1;
+            $version->project()->associate($project);
+            $version->save();
+        });
+    }
+
     /**
      * Get the User that owns the Project.
      */
