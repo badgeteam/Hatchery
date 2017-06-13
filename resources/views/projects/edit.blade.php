@@ -25,9 +25,11 @@
                             {!! Form::open(['method' => 'put', 'route' => ['projects.update', 'project' => $project->id]]) !!}
 
                                 <div class="form-group @if($errors->has('description')) has-error @endif">
-                                    {{ Form::label('description', 'Intro body', ['class' => 'control-label']) }}
+                                    {{ Form::label('description', 'Description', ['class' => 'control-label']) }}
                                     {{ Form::textarea('description', $project->description, ['class' => 'form-control', 'id' => 'description']) }}
                                 </div>
+
+                                TODO: Image / screenshot?
 
                                 <div class="pull-right">
                                     <button type="submit" class="btn btn-default">Save</button>
@@ -39,29 +41,10 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Revision</th>
-                                    <th>Published</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @forelse($project->versions as $version)
-                                    <tr>
-                                        <td>{{ $version->revision }}</td>
-                                        <td>{{ $version->published }}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6">No revisions yet</td>
-                                    </tr>
-                                @endforelse
-                                </tbody>
-                            </table>
+                            TODO files :)
                         </div>
                         <div class="col-md-6">
-                            TODO files ?
+                            @include('projects.partials.revisions')
                         </div>
                     </div>
                 </div>

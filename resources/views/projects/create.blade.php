@@ -30,7 +30,7 @@
                                 </div>
 
                                 <div class="form-group @if($errors->has('description')) has-error @endif">
-                                    {{ Form::label('description', 'Intro body', ['class' => 'control-label']) }}
+                                    {{ Form::label('description', 'Description', ['class' => 'control-label']) }}
                                     {{ Form::textarea('description', null, ['class' => 'form-control', 'id' => 'description']) }}
                                 </div>
 

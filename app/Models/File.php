@@ -10,6 +10,10 @@ class File extends Model
 {
     use SoftDeletes;
 
+    protected $extentions = ['py', 'txt', 'pyc', 'png'];
+
+    protected $editable = ['py', 'txt'];
+
     /**
      * Get the Project Version this File belongs to.
      */
