@@ -23,7 +23,7 @@
     </tbody>
 </table>
 <div>Upload Python, text or image files.</div>
-{!! Form::open([ 'route' => [ 'files.store', 'version' => $project->versions->last()->id ], 'files' => true, 'enctype' => 'multipart/form-data', 'id' => 'file-upload' ]) !!}
+{!! Form::open([ 'route' => [ 'files.store', 'version' => $project->versions->last()->id ], 'files' => true, 'enctype' => 'multipart/form-data', 'class' => 'dropzone', 'id' => 'file-upload' ]) !!}
 <div>
     <h3>Upload files by dropping them here or clicking on the box</h3>
 </div>
