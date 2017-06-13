@@ -31,9 +31,11 @@
 
 @section('script')
 <script type="text/javascript">
-    Dropzone.options.fileUpload = {
-        maxFilesize         :       1,
-        acceptedFiles: ".{{ implode(',.', \App\Models\File::$extensions)  }}"
-    };
+    window.onload = function() {
+        Dropzone.options.fileUpload = {
+            maxFilesize: 1,
+            acceptedFiles: ".{{ implode(',.', \App\Models\File::$extensions)  }}"
+        };
+    }
 </script>
 @endsection
