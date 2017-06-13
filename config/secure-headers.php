@@ -179,7 +179,7 @@ return [
 
             'self' => true,
 
-            'data' => false,
+            'data' => true,
         ],
 
         /*
