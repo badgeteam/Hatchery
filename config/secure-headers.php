@@ -127,7 +127,7 @@ return [
         'https-transform-on-https-connections' => true,
 
         'base-uri' => [
-            url()
+            'https://badge.sha2017.org'
         ],
 
         'default-src' => [
@@ -155,7 +155,7 @@ return [
 
             'unsafe-inline' => true,
 
-            'unsafe-eval' => false,
+            'unsafe-eval' => true,
         ],
 
         'style-src' => [
@@ -189,8 +189,11 @@ return [
          */
 
         'font-src' => [
-            'https://fonts.googleapis.com',
-            'https://fonts.gstatic.com'
+            'allow' => [
+                'https://fonts.googleapis.com',
+                'https://fonts.gstatic.com',
+                'https://badge.sha2017.org'
+            ]
         ],
 
         'connect-src' => [
@@ -198,7 +201,7 @@ return [
         ],
 
         'form-action' => [
-            //
+            'allow' => ['https://badge.sha2017.org']
         ],
 
         'frame-ancestors' => [
@@ -206,11 +209,11 @@ return [
         ],
 
         'media-src' => [
-            //
+            'allow' => ['https://badge.sha2017.org']
         ],
 
         'object-src' => [
-            //
+            'allow' => ['https://badge.sha2017.org']
         ],
 
         /*
