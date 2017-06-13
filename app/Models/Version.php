@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -37,5 +38,21 @@ class Version extends Model
         return !empty($this->zip);
     }
 
-    // @TODO scope published / unpublished
+    /**
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->whereNotNull('zip');
+    }
+
+    /**
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeUnPublished(Builder $query): Builder
+    {
+        return $query->whereNull('zip');
+    }
 }

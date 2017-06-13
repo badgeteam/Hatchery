@@ -50,7 +50,7 @@ class Project extends Model
      */
     public function assertEditableVersion(): Project
     {
-        if ($this->versions()->where('zip', null)->count() < 1) {
+        if ($this->versions()->UnPublished()->count() < 1) {
             $last = $this->versions->last();
             if (is_null($last)) {
                 $revision = 1;

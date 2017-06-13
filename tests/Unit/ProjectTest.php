@@ -29,6 +29,15 @@ class ProjectTest extends TestCase
     {
         $project = factory(Project::class)->create();
         $this->assertInstanceOf(Collection::class, $project->versions);
-        $this->assertEmpty($project->versions);
     }
+
+    /**
+     * Assert the Project always has at-least one Version.
+     */
+    public function testNewProjectHasAVersion()
+    {
+        $project = factory(Project::class)->create();
+        $this->assertCount(1, $project->versions);
+    }
+
 }
