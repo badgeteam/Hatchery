@@ -22,9 +22,8 @@
     @endforelse
     </tbody>
 </table>
-<div>Upload Python, text or image files.</div>
+<div>Upload Python, Text or PNG image files.</div>
 {!! Form::open([ 'route' => [ 'files.store', 'version' => $project->versions->last()->id ], 'files' => true, 'enctype' => 'multipart/form-data', 'id' => 'uploader' ]) !!}
-    <strong>Upload files by dropping them here or clicking on the box . .</strong>
     <div class="fallback">
         <input name="file" type="file" />
         <input type="submit" />

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Project extends Model
 {
@@ -15,8 +16,9 @@ class Project extends Model
     {
         parent::boot();
 
-        static::saving(function ($project) {
-            $project->slug = str_slug($project->name);
+        static::creating(function ($project) {
+            $user = Auth::guard()->user();
+            $project->user()->associate($user);
         });
 
         static::created(function ($project) {
@@ -25,10 +27,17 @@ class Project extends Model
             $version->project()->associate($project);
             $version->save();
         });
+
+        static::saving(function ($project) {
+            $project->slug = str_slug($project->name);
+        });
+
     }
 
     /**
      * Get the User that owns the Project.
+     *
+     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -37,6 +46,8 @@ class Project extends Model
 
     /**
      * Get the Versions this Project has.
+     *
+     * @return HasMany
      */
     public function versions(): HasMany
     {

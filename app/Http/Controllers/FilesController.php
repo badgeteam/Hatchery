@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Project;
+use App\Models\File;
+use App\Models\Version;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -22,11 +24,14 @@ class FilesController extends Controller
      *
      * @return View
      */
-    public function upload($version, $request): View
+    public function upload(Version $version, Request $request): View
     {
-        dd($version, $request);
+        $user = Auth::guard()->user();
 
-        return view('projects.index')->with(['projects' => Project::paginate()]);
+        $file = new File;
+        $file->version()->associate($version);
+
+
     }
 
 }

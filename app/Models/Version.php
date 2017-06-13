@@ -7,12 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Version extends Model
 {
     use SoftDeletes;
 
     protected $appends = ['published'];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($version) {
+            $user = Auth::guard()->user();
+            $version->user()->associate($user);
+        });
+    }
 
     /**
      * Get the Project this Version belongs to.
@@ -28,6 +39,16 @@ class Version extends Model
     public function files(): HasMany
     {
         return $this->hasMany(File::class);
+    }
+
+    /**
+     * Get the User that owns the Project.
+     *
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo('App\Models\User')->withTrashed();
     }
 
     /**

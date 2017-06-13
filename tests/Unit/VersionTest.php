@@ -8,6 +8,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Project;
+use App\Models\User;
 
 class VersionTest extends TestCase
 {
@@ -18,6 +19,8 @@ class VersionTest extends TestCase
      */
     public function testVersionProjectRelationship()
     {
+        $user = factory(User::class)->create();
+        $this->be($user);
         $version = factory(Version::class)->create();
         $this->assertInstanceOf(Project::class, $version->project);
     }
@@ -27,6 +30,8 @@ class VersionTest extends TestCase
      */
     public function testVersionFileRelationship()
     {
+        $user = factory(User::class)->create();
+        $this->be($user);
         $version = factory(Version::class)->create();
         $this->assertInstanceOf(Collection::class, $version->files);
         $this->assertEmpty($version->files);
@@ -34,6 +39,8 @@ class VersionTest extends TestCase
 
     public function testVersionPublishedHelper()
     {
+        $user = factory(User::class)->create();
+        $this->be($user);
         $version = factory(Version::class)->create();
         $this->assertFalse($version->published);
         $version->zip = 'iets';

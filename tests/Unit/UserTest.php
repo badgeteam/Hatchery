@@ -19,6 +19,7 @@ class UserTest extends TestCase
     public function testUserProjectsRelationship()
     {
         $user = factory(User::class)->create();
+        $this->be($user);
         $this->assertEmpty($user->projects);
         $project = factory(Project::class)->create(['user_id' => $user->id]);
         $user = User::find($user->id);

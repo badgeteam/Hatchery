@@ -18,6 +18,8 @@ class ProjectTest extends TestCase
      */
     public function testProjectUserRelationship()
     {
+        $user = factory(User::class)->create();
+        $this->be($user);
         $project = factory(Project::class)->create();
         $this->assertInstanceOf(User::class, $project->user);
     }
@@ -27,6 +29,8 @@ class ProjectTest extends TestCase
      */
     public function testProjectVersionRelationship()
     {
+        $user = factory(User::class)->create();
+        $this->be($user);
         $project = factory(Project::class)->create();
         $this->assertInstanceOf(Collection::class, $project->versions);
     }
@@ -36,6 +40,8 @@ class ProjectTest extends TestCase
      */
     public function testNewProjectHasAVersion()
     {
+        $user = factory(User::class)->create();
+        $this->be($user);
         $project = factory(Project::class)->create();
         $this->assertCount(1, $project->versions);
     }

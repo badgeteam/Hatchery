@@ -63,6 +63,7 @@ class ProjectTest extends TestCase
     public function testProjectsEdit()
     {
         $user = factory(User::class)->create();
+        $this->be($user);
         $project = factory(Project::class)->create();
         $response = $this
             ->actingAs($user)
@@ -76,6 +77,7 @@ class ProjectTest extends TestCase
     public function testProjectsUpdate()
     {
         $user = factory(User::class)->create();
+        $this->be($user);
         $project = factory(Project::class)->create();
         $faker = Factory::create();
         $response = $this

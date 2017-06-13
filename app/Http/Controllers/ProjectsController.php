@@ -6,7 +6,6 @@ use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
 use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class ProjectsController extends Controller
@@ -48,10 +47,7 @@ class ProjectsController extends Controller
     public function store(ProjectStoreRequest $request): RedirectResponse
     {
         $project = new Project;
-        $user = Auth::guard()->user();
-
         try {
-            $project->user()->associate($user);
             $project->name = $request->name;
             $project->description = $request->description;
             $project->save();
@@ -85,7 +81,6 @@ class ProjectsController extends Controller
     public function update(ProjectUpdateRequest $request, $projectId): RedirectResponse
     {
         $project = Project::where('id', $projectId)->firstOrFail();
-
         try {
             $project->description = $request->description;
             $project->save();
