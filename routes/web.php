@@ -24,3 +24,6 @@ Route::post('/upload/{version}', 'FilesController@upload')->name('files.upload')
 Route::post('/release/{project}', 'ProjectsController@publish')->name('project.publish');
 
 Route::resource('files', 'FilesController', ['except' => ['show']]);
+
+Route::get('/eggs/{slug}/json', 'PublicController@json')->name('project.json')
+    ->where(['slug' => '[A-Za-z_\-.0-9]+']);;

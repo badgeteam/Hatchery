@@ -6,7 +6,7 @@
     </tr>
     </thead>
     <tbody>
-    @forelse($project->versions as $version)
+    @forelse($project->versions()->orderBy('revision', 'desc')->get() as $version)
         <tr>
             <td>{{ $version->revision }}</td>
             <td>{{ $version->published ? 'Yes' : 'No' }}</td>
