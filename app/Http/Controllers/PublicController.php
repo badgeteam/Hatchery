@@ -42,7 +42,7 @@ class PublicController extends Controller
         }
 
         $package = new stdClass;
-        $package->info = ['version' => $version->revision];
+        $package->info = ['version' => (string)$version->revision];
         $package->description = $project->description;
         $package->releases = $releases;
 
