@@ -89,6 +89,23 @@
                     <a href="https://wiki.sha2017.org/w/Projects:Badge">Wiki</a>
                     <a href="https://github.com/SHA2017-badge/">GitHub</a>
                 </div>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Revision</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @forelse($published as $project)
+                        <tr>
+                            <td>{{ $project->name }}</td><td>{{ $project->revision }}</td>
+                        </tr>
+                    @empty
+                        <tr><td>No published eggs</td></tr>
+                    @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </body>

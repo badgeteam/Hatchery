@@ -17,7 +17,13 @@ class PublicController extends Controller
      */
     public function index(): View
     {
-        return view('welcome')->with(['users' => User::count(), 'projects' => Project::count()]);
+        return view('welcome')->with([
+            'users' => User::count(),
+            'projects' => Project::count(),
+            'published' => Project::whereHas('versions', function ($query) {
+                $query->whereNotNull('zip');
+            })->get()
+        ]);
     }
 
     /**
