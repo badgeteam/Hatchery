@@ -18,6 +18,6 @@
     @endforelse
     </tbody>
 </table>
-{!! Form::open(['method' => 'delete', 'route' => ['project.publish', 'project' => $project->id]]) !!}
+{!! Form::open(['method' => 'post', 'route' => ['project.publish', 'project' => $project->id]]) !!}
 <button class="btn btn-info" name="delete-resource" type="submit" value="publish">Publish</button>
 {!! Form::close() !!}

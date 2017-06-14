@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
 use App\Models\Project;
+use App\Models\Version;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Phar;
+use PharData;
 
 class ProjectsController extends Controller
 {
@@ -101,10 +104,24 @@ class ProjectsController extends Controller
         $project = Project::where('id', $projectId)->firstOrFail();
         $version = $project->versions()->unPublished()->first();
 
-        dd($version);
+        $filename = 'eggs/'.uniqid($project->slug).'.tar.gz';
 
-        // zip
+        $zip = new PharData(public_path($filename));
 
-        // new version (clone)
+        foreach ($version->files as $file) {
+            $zip[$file->name] = $file->content;
+        }
+
+        $zip->compress(Phar::GZ);
+
+        $version->zip = $filename;
+        $version->save();
+
+        $newVersion = new Version;
+        $newVersion->revision = $version->revision + 1;
+        $newVersion->project()->associate($project);
+        $newVersion->save();
+
+        return redirect()->route('projects.edit', ['project' => $project->id])->withSuccesses([$project->name.' published']);
     }
 }
