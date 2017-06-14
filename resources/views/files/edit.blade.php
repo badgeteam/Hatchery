@@ -9,7 +9,7 @@
 
             <ol class="breadcrumb">
                 <li><a href="{{ route('projects.index') }}">Eggs</a></li>
-                <li><a href="{{ route('projects.edit', ['project', $file->version->project->id]) }}">{{ $file->version->project->name }}</a></li>
+                <li><a href="{{ route('projects.edit', ['project' => $file->version->project->id]) }}">{{ $file->version->project->name }}</a></li>
                 <li class="active">{{ $file->name }}</li>
             </ol>
 
