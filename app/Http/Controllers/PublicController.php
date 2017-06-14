@@ -32,7 +32,7 @@ class PublicController extends Controller
 
         $releases = [];
         foreach($project->versions()->published()->get() as $version) {
-            $releases[$version->revision] = ['url' => url($version->zip)];
+            $releases[$version->revision] = [['url' => url($version->zip)]];
         }
 
         $version = $project->versions()->published()->get()->last();
