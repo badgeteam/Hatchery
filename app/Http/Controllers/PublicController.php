@@ -46,6 +46,6 @@ class PublicController extends Controller
         $package->description = $project->description;
         $package->releases = $releases;
 
-        return response()->json($package);
+        return response()->json($package, 200, [], JSON_UNESCAPED_SLASHES);
     }
 }
