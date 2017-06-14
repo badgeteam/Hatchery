@@ -89,4 +89,22 @@ class ProjectsController extends Controller
         }
         return redirect()->route('projects.index')->withSuccesses([$project->name.' saved']);
     }
+
+    /**
+     * Publish the latest version.
+     *
+     * @param  int  $projectId
+     * @return RedirectResponse
+     */
+    public function publish($projectId): RedirectResponse
+    {
+        $project = Project::where('id', $projectId)->firstOrFail();
+        $version = $project->versions()->unPublished()->first();
+
+        dd($version);
+
+        // zip
+
+        // new version (clone)
+    }
 }

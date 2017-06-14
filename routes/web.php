@@ -21,4 +21,6 @@ Route::resource('projects', 'ProjectsController', ['except' => ['show']]);
 
 Route::post('/upload/{version}', 'FilesController@upload')->name('files.upload');
 
+Route::post('/release/{project}', 'ProjectsController@publish')->name('project.publish');
+
 Route::resource('files', 'FilesController', ['except' => ['show']]);
