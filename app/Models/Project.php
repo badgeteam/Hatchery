@@ -12,6 +12,8 @@ class Project extends Model
 {
     use SoftDeletes;
 
+    protected $appends = ['revision'];
+
     public static function boot()
     {
         parent::boot();
@@ -52,5 +54,14 @@ class Project extends Model
     public function versions(): HasMany
     {
         return $this->hasMany(Version::class);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRevisionAttribute():? string
+    {
+        $version = $this->versions()->published()->get()->last();
+        return is_null($version) ? null : (string)$version->revision;
     }
 }
