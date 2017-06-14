@@ -43,14 +43,3 @@
     </div>
 </div>
 @endsection
-
-@section('script')
-    <script type="text/javascript">
-        window.onload = function() {
-            var editor = window.CodeMirror.fromTextArea(document.getElementById('content'), {
-                lineNumbers: true,
-                mode: "python"
-            });
-        }
-    </script>
-@endsection

@@ -7,7 +7,16 @@
 
 require('./bootstrap');
 
-window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone.js');
+window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone');
 
-window.CodeMirror = require(['../../../node_modules/codemirror/lib/codemirror.js',
-    '../../../node_modules/codemirror/mode/python/python.js']);
+window.onload = function() {
+    if (document.getElementById('content')) {
+        window.CodeMirror = require(['../../../node_modules/codemirror/lib/codemirror',
+            '../../../node_modules/codemirror/mode/python/python'], function (CodeMirror) {
+            CodeMirror.fromTextArea(document.getElementById('content'), {
+                lineNumbers: true,
+                mode: "python"
+            });
+        });
+    }
+}
