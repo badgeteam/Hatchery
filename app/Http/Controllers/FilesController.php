@@ -67,7 +67,7 @@ class FilesController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('file.edit', ['file' => $file->id])->withInput()->withErrors([$e->getMessage()]);
         }
-        return redirect()->route('projects.edit', ['project' => $file->project->id])->withSuccesses([$file->name.' saved']);
+        return redirect()->route('projects.edit', ['project' => $file->version->project->id])->withSuccesses([$file->name.' saved']);
     }
 
     /**
@@ -88,15 +88,15 @@ class FilesController extends Controller
      */
     public function store(FileStoreRequest $request): RedirectResponse
     {
-        $project = new File;
+        $file = new File;
         try {
-            $project->name = $request->name;
-            $project->content = $request->file_content;
-            $project->save();
+            $file->name = $request->name;
+            $file->content = $request->file_content;
+            $file->save();
         } catch (\Exception $e) {
             return redirect()->route('files.create')->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.edit', ['project' => $project->id])->withSuccesses([$project->name.' saved']);
+        return redirect()->route('projects.edit', ['project' => $file->version->project->id])->withSuccesses([$file->name.' saved']);
     }
 }
