@@ -29,7 +29,7 @@ class Project extends Model
         });
 
         static::saving(function ($project) {
-            $project->slug = str_slug($project->name);
+            $project->slug = str_slug($project->name, '_');
         });
 
     }
