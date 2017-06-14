@@ -22,7 +22,6 @@
                     <div class="row">
 
                         <div class="col-md-12 clearfix">
-                            <pre>{!! $file->content !!}</pre>
                             {!! Form::open(['method' => 'put', 'route' => ['files.update', 'file' => $file->id]]) !!}
 
                             <div class="form-group @if($errors->has('content')) has-error @endif">
@@ -43,12 +42,4 @@
         </div>
     </div>
 </div>
-@endsection
-
-@section('script')
-    <script type="text/javascript">
-        window.onload = function() {
-            var editor = window.CodeMirror.fromTextArea(document.getElementById('content'));
-        }
-    </script>
 @endsection
