@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "codemirror": "^5.26.0",
+    "css-loader": "^0.28.4",
     "dropzone": "^5.0.1"
   }
 }

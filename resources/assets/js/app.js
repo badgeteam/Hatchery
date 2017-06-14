@@ -9,6 +9,8 @@ require('./bootstrap');
 
 window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone.js');
 
+window.CodeMirror = require('../../../node_modules/codemirror/lib/codemirror.js');
+
 window.Vue = require('vue');
 
 /**
