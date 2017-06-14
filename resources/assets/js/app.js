@@ -7,21 +7,7 @@
 
 require('./bootstrap');
 
-window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone');
+window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone.js');
 
-window.CodeMirror = require(['../../../node_modules/codemirror/lib/codemirror',
-    '../../../node_modules/codemirror/mode/python/python']);
-
-window.Vue = require('vue');
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-Vue.component('example', require('./components/Example.vue'));
-
-const app = new Vue({
-    el: '#app'
-});
+window.CodeMirror = require(['../../../node_modules/codemirror/lib/codemirror.js',
+    '../../../node_modules/codemirror/mode/python/python.js']);
