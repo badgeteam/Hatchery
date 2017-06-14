@@ -20,13 +20,15 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Revision</th>
+                                <th>Last change</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($projects as $project)
                                 <tr>
                                     <td><a href="{{ route('projects.edit', ['project' => $project->id]) }}">{{ $project->name }}</a></td>
-                                    <td>{{ !$project->versions->isEmpty() ? $project->versions->last()->revision : 'unpublished' }}</td>
+                                    <td>{{ $project->versions()->published()->count() > 0 ? $project->versions->versions()->published()->get()->last()->revision : 'unpublished' }}</td>
+                                    <td>{{ $project->updated_at }}</td>
                                 </tr>
                             @empty
                                 <tr>
