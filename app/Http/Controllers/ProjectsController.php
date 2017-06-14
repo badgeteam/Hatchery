@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
+use App\Models\File;
 use App\Models\Project;
 use App\Models\Version;
 use Illuminate\Http\RedirectResponse;
@@ -117,9 +118,17 @@ class ProjectsController extends Controller
         $version->zip = $filename.'.gz';
         $version->save();
 
-        $newVersion = new Version($version->all());
+        $newVersion = new Version;
         $newVersion->revision = $version->revision + 1;
+        $newVersion->project()->associate($project);
         $newVersion->save();
+        foreach ($version->files as $file) {
+            $newFile = new File;
+            $newFile->name = $file->name;
+            $newFile->content = $file->content;
+            $newFile->version()->associate($newVersion);
+            $newFile->save();
+        }
 
         return redirect()->route('projects.edit', ['project' => $project->id])->withSuccesses([$project->name.' published']);
     }
