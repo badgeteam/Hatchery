@@ -17,3 +17,7 @@ npm-debug.log
 /build/logs/clover.xml
 codeclimate.json
 /deploy_*
+build/
+docs/
+public/css/
+public/js/

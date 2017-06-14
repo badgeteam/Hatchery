@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\File;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,7 +26,7 @@ class FileStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|file|mimetypes:image/png,application/x-python-bytecode,application/x-python,plain/text,text/x-python-script',
+            'file' => 'required|file|mimes:'.implode(',', File::$extensions),
         ];
     }
 }
