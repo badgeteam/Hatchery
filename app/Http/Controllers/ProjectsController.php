@@ -110,7 +110,7 @@ class ProjectsController extends Controller
         $zip = new PharData(public_path($filename));
 
         foreach ($version->files as $file) {
-            $zip[$file->name] = $file->content;
+            $zip[$project->slug.'/'.$file->name] = $file->content;
         }
 
         $zip->compress(Phar::GZ);
