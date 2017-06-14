@@ -7,7 +7,10 @@
 
 require('./bootstrap');
 
-window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone.js');
+window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone');
+
+window.CodeMirror = require(['../../../node_modules/codemirror/lib/codemirror',
+    '../../../node_modules/codemirror/mode/python/python']);
 
 window.Vue = require('vue');
 
@@ -22,15 +25,3 @@ Vue.component('example', require('./components/Example.vue'));
 const app = new Vue({
     el: '#app'
 });
-
-window.onload = function() {
-    if (document.getElementById('content')) {
-        require(['../../../node_modules/codemirror/lib/codemirror',
-            '../../../node_modules/codemirror/mode/python/python'], function (CodeMirror) {
-            CodeMirror.fromTextArea(document.getElementById('content'), {
-                lineNumbers: true,
-                mode: "python"
-            });
-        });
-    }
-}
