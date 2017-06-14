@@ -25,7 +25,7 @@
     </tbody>
 </table>
 <div>Upload Python, Text or PNG image files.</div>
-{!! Form::open([ 'route' => [ 'files.store', 'version' => $project->versions->last()->id ], 'files' => true, 'enctype' => 'multipart/form-data', 'id' => 'uploader' ]) !!}
+{!! Form::open([ 'route' => [ 'files.upload', 'version' => $project->versions->last()->id ], 'files' => true, 'enctype' => 'multipart/form-data', 'id' => 'uploader' ]) !!}
     <div class="fallback">
         <input name="file" type="file" />
         <input type="submit" />

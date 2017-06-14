@@ -36,4 +36,16 @@ class FilesController extends Controller
         $file->save();
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $fileId
+     * @return View
+     */
+    public function edit($fileId): View
+    {
+        $file = File::where('id', $fileId)->firstOrFail();
+        return view('files.edit')
+            ->with('file', $file);
+    }
 }
