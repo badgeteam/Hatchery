@@ -85,7 +85,7 @@ class ProjectsController extends Controller
             $project->description = $request->description;
             $project->save();
         } catch (\Exception $e) {
-            return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
+            return redirect()->route('projects.edit', ['project' => $project->id])->withInput()->withErrors([$e->getMessage()]);
         }
         return redirect()->route('projects.index')->withSuccesses([$project->name.' saved']);
     }

@@ -24,9 +24,9 @@
                         <div class="col-md-12 clearfix">
                             {!! Form::open(['method' => 'put', 'route' => ['files.update', 'file' => $file->id]]) !!}
 
-                            <div class="form-group @if($errors->has('content')) has-error @endif">
-                                {{ Form::label('content', 'Content', ['class' => 'control-label']) }}
-                                {{ Form::textarea('content', $file->content, ['class' => 'form-control', 'id' => 'content']) }}
+                            <div class="form-group @if($errors->has('file_content')) has-error @endif">
+                                {{ Form::label('file_content', 'Content', ['class' => 'control-label']) }}
+                                {{ Form::textarea('file_content', $file->content, ['class' => 'form-control', 'id' => 'content']) }}
                             </div>
 
                             <div class="pull-right">
