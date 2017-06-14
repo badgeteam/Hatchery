@@ -114,12 +114,11 @@ class ProjectsController extends Controller
 
         $zip->compress(Phar::GZ);
 
-        $version->zip = $filename;
+        $version->zip = $filename.'.gz';
         $version->save();
 
-        $newVersion = new Version;
+        $newVersion = new Version($version->all());
         $newVersion->revision = $version->revision + 1;
-        $newVersion->project()->associate($project);
         $newVersion->save();
 
         return redirect()->route('projects.edit', ['project' => $project->id])->withSuccesses([$project->name.' published']);
