@@ -6,6 +6,7 @@
 /public/css/app.css
 /public/js/app.js
 /storage/*.key
+/storage/framework/cache/*
 /vendor
 /.idea
 /.vagrant
