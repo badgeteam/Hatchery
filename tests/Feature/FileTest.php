@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
+use Faker\Factory;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -16,7 +17,7 @@ class FileTest extends TestCase
     use DatabaseTransactions, DatabaseMigrations;
 
 
-    public function testStoreFile()
+    public function testUploadFile()
     {
         $stub = __DIR__.'/heart.png';
         $name = str_random(8).'.png';
@@ -36,7 +37,7 @@ class FileTest extends TestCase
         $this->assertEquals($name, File::first()->name);
     }
 
-    public function testStoreIllegalFile()
+    public function testUploadIllegalFile()
     {
         $stub = __DIR__.'/empty.zip';
         $name = str_random(8).'.zip';
@@ -51,6 +52,37 @@ class FileTest extends TestCase
             ->actingAs($user)
             ->post('/upload/'.$project->versions->last()->id, ['file' => $file]);
         $response->assertStatus(302);
+    }
+
+    /**
+     * Check the files edit page functions.
+     */
+    public function testFilesEdit()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->get('/files/'.$file->id.'/edit');
+        $response->assertStatus(200);
+    }
+
+    /**
+     * Check the files can be stored.
+     */
+    public function testFilesUpdate()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create();
+        $faker = Factory::create();
+        $data = $faker->paragraph;
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/files/' . $file->id, ['file_content' => $data]);
+        $response->assertRedirect('/projects/'.$file->version->project->id.'/edit')->assertSessionHas('successes');
+        $this->assertEquals($data, File::find($file->id)->content);
     }
 
 }

@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\User;
+use App\Models\Version;
 use Illuminate\Database\Eloquent\Collection;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -46,4 +47,18 @@ class ProjectTest extends TestCase
         $this->assertCount(1, $project->versions);
     }
 
+    /**
+     * Check if Project revision helper.
+     */
+    public function testProjectRevisionAttribute()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $this->assertNull($version->project->revision);
+        $version->zip = 'iets';
+        $version->save();
+        $this->assertEquals("1", $version->project->revision);
+
+    }
 }

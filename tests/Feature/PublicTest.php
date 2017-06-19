@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Project;
 use App\Models\User;
+use App\Models\Version;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -43,5 +44,31 @@ class PublicTest extends TestCase
         $response = $this->json('GET', '/home');
         $response->assertStatus(401)
             ->assertExactJson(['error' => 'Unauthenticated.']);
+    }
+
+    /**
+     * Check JSON egg request . .
+     */
+    public function testProjectJSON()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $version->zip = 'some_path.tar.gz';
+        $version->save();
+
+        $response = $this->json('GET', '/eggs/'.$version->project->slug.'/json');
+        $response->assertStatus(200)
+            ->assertExactJson([
+                "description" => "",
+                "info" => ["version" => "1"],
+                "releases" => [
+                    "1" => [
+                        [
+                            "url" => url("some_path.tar.gz")
+                        ],
+                    ]
+                ]
+            ]);
     }
 }
