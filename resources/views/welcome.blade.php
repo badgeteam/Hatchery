@@ -62,6 +62,13 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+
+            .content {
+                color: #404040;
+                font-weight: 600;
+            }
+
+
         </style>
     </head>
     <body>
