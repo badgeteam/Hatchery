@@ -51,6 +51,10 @@ class PublicTest extends TestCase
      */
     public function testProjectGetJSON()
     {
+        $response = $this->json('GET', '/eggs/get/something/json');
+        $response->assertStatus(404)
+            ->assertExactJson(["message" => "No releases found"]);
+
         $user = factory(User::class)->create();
         $this->be($user);
         $version = factory(Version::class)->create();

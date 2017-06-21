@@ -50,5 +50,7 @@ $factory->define(App\Models\File::class, function (Faker\Generator $faker) {
         'version_id' => function () {
             return factory(App\Models\Version::class)->create()->id;
         },
+        'name' => $faker->word.'.py',
+        'content' => $faker->paragraph
     ];
 });
