@@ -49,7 +49,7 @@ class PublicTest extends TestCase
     /**
      * Check JSON egg request . .
      */
-    public function testProjectJSON()
+    public function testProjectGetJSON()
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -57,7 +57,7 @@ class PublicTest extends TestCase
         $version->zip = 'some_path.tar.gz';
         $version->save();
 
-        $response = $this->json('GET', '/eggs/'.$version->project->slug.'/json');
+        $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json');
         $response->assertStatus(200)
             ->assertExactJson([
                 "description" => "",
@@ -68,6 +68,60 @@ class PublicTest extends TestCase
                             "url" => url("some_path.tar.gz")
                         ],
                     ]
+                ]
+            ]);
+    }
+
+    /**
+     * Check JSON eggs request . .
+     */
+    public function testProjectListJSON()
+    {
+        $response = $this->json('GET', '/eggs/list/json');
+        $response->assertStatus(200)->assertExactJson([]);
+
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $version->zip = 'some_path.tar.gz';
+        $version->save();
+
+        $response = $this->json('GET', '/eggs/list/json');
+        $response->assertStatus(200)
+            ->assertExactJson([
+                [
+                    "description" =>"",
+                    "name" => $version->project->name,
+                    "revision" => "1",
+                    "slug" => $version->project->slug
+                ]
+            ]);
+    }
+
+    /**
+     * Check JSON eggs request . .
+     */
+    public function testProjectSearchJSON()
+    {
+        $response = $this->json('GET', '/eggs/search/something/json');
+        $response->assertStatus(200)->assertExactJson([]);
+
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $version->zip = 'some_path.tar.gz';
+        $version->save();
+
+        $len = strlen($version->project->name);
+
+        $response = $this->json('GET', '/eggs/search/'.substr($version->project->name, 2, $len-4).'/json');
+        $response->assertStatus(200)
+            ->assertExactJson([
+                [
+                    "description" =>"",
+                    "name" => $version->project->name,
+                    "revision" => "1",
+                    "slug" => $version->project->slug
                 ]
             ]);
     }

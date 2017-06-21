@@ -38,10 +38,8 @@ npm run production
 
 ## API
 
-TODO: document
- 
-/eggs/get/[app]/json
- 
-/eggs/list/json
-  
-/eggs/search/[words]/json
+```
+/eggs/get/[app]/json       - get json data for a the egg named [app]
+/eggs/list/json            - a list of all eggs with name, slug, description, revision
+/eggs/search/[words]/json  - json data for search query [words]
+```

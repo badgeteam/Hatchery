@@ -78,6 +78,8 @@ class PublicController extends Controller
         $what = '%'.$search.'%';
         return response()->json(Project::whereHas('versions', function ($query) {
             $query->published();
-        })->where('name', 'like', $what)->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        })->where('name', 'like', $what)
+            ->orWhere('description', 'like', $what)
+            ->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
 }
