@@ -21,7 +21,7 @@ class PublicController extends Controller
             'users' => User::count(),
             'projects' => Project::count(),
             'published' => Project::whereHas('versions', function ($query) {
-                $query->whereNotNull('zip');
+                $query->published();
             })->get()
         ]);
     }
@@ -32,7 +32,7 @@ class PublicController extends Controller
      * @param  string  $slug
      * @return JsonResponse
      */
-    public function json($slug): JsonResponse
+    public function projectJson($slug): JsonResponse
     {
         $project = Project::where('slug', $slug)->firstOrFail();
 
@@ -52,6 +52,18 @@ class PublicController extends Controller
         $package->description = $project->description;
         $package->releases = $releases;
 
-        return response()->json($package, 200, [], JSON_UNESCAPED_SLASHES);
+        return response()->json($package, 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+    }
+
+    /**
+     * Get the latest released versions.
+     *
+     * @return JsonResponse
+     */
+    public function listJson(): JsonResponse
+    {
+        return response()->json(Project::whereHas('versions', function ($query) {
+            $query->published();
+        })->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
 }

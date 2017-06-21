@@ -14,6 +14,8 @@ class Project extends Model
 
     protected $appends = ['revision'];
 
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'user_id', 'id'];
+
     public static function boot()
     {
         parent::boot();
