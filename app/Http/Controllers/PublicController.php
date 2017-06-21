@@ -66,4 +66,18 @@ class PublicController extends Controller
             $query->published();
         })->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
+
+    /**
+     * Get the latest released versions.
+     *
+     * @param string $search
+     * @return JsonResponse
+     */
+    public function searchJson($search): JsonResponse
+    {
+        $what = '%'.$search.'%';
+        return response()->json(Project::whereHas('versions', function ($query) {
+            $query->published();
+        })->where('name', 'like', $what)->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+    }
 }

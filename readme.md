@@ -35,3 +35,13 @@ php artisan migrate
 npm install
 npm run production
 ```
+
+## API
+
+TODO: document
+ 
+/eggs/get/[app]/json
+ 
+/eggs/list/json
+  
+/eggs/search/[words]/json
