@@ -9,12 +9,11 @@
     @endforeach
 </select>
 
-
+Dependants
+<ul>
 @forelse($project->dependants as $dependant)
-    Dependants
-    <ul>
-        <li><a href="{{ route('projects.edit', ['project' => $dependant->id]) }}">{{ $dependant->name }}</a></li>
-    </ul>
+    <li><a href="{{ route('projects.edit', ['project' => $dependant->id]) }}">{{ $dependant->name }}</a></li>
 @empty
-    <p>No dependants found</p>
+    <li>No dependants found</li>
 @endforelse
+</ul>
