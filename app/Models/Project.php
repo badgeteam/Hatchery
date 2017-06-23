@@ -13,7 +13,7 @@ class Project extends Model
 {
     use SoftDeletes;
 
-    protected $appends = ['revision'];
+    protected $appends = ['revision', 'size_of_zip', 'size_of_content'];
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'user_id', 'id'];
 
@@ -90,5 +90,30 @@ class Project extends Model
     {
         return $this->belongsToMany(Project::class, 'dependencies', 'depends_on_project_id', 'project_id')
             ->withTimestamps();
+    }
+
+    /**
+     * @return int
+     */
+    public function getSizeOfZipAttribute():? int
+    {
+        $version = $this->versions()->published()->get()->last();
+        return is_null($version) ? null : (int)$version->size_of_zip;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSizeOfContentAttribute():? int
+    {
+        $version = $this->versions()->published()->get()->last();
+        if (is_null($version))
+            $version = $this->versions->last();
+
+        $size = 0;
+        foreach ($version->files as $file) {
+            $size += strlen($file->content);
+        }
+        return $size;
     }
 }

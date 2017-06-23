@@ -27,6 +27,8 @@
                                 <th>Name</th>
                                 <th>Revision</th>
                                 <th>Last change</th>
+                                <th>Size of egg</th>
+                                <th>Size of content</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -35,6 +37,8 @@
                                     <td><a href="{{ route('projects.edit', ['project' => $project->id]) }}">{{ $project->name }}</a></td>
                                     <td>{{ $project->versions()->published()->count() > 0 ? $project->versions()->published()->get()->last()->revision : 'unpublished' }}</td>
                                     <td>{{ $project->updated_at }}</td>
+                                    <td>{{ $project->size_of_zip }}</td>
+                                    <td>{{ $project->size_of_content }}</td>
                                 </tr>
                             @empty
                                 <tr>

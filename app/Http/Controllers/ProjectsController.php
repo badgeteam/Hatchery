@@ -142,6 +142,7 @@ class ProjectsController extends Controller
         $zip->compress(Phar::GZ);
 
         $version->zip = $filename.'.gz';
+        $version->size_of_zip = filesize(public_path($version->zip));
         $version->save();
 
         $newVersion = new Version;
