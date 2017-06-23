@@ -15,11 +15,12 @@
                     <strong>Eggs</strong>
                 </div>
 
-                <div class="pull-right">
-                    <a href="{{ route('projects.create') }}" class="btn btn-default">Add</a>
-                </div>
-
                 <div class="panel-body">
+
+                    <div class="pull-right">
+                        <a href="{{ route('projects.create') }}" class="btn btn-default">Add</a>
+                    </div>
+
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -42,6 +43,10 @@
                             @endforelse
                         </tbody>
                     </table>
+
+                    <div class="pull-right">
+                        <a href="{{ route('projects.create') }}" class="btn btn-default">Add</a>
+                    </div>
 
                     {{ $projects->links() }}
                 </div>
