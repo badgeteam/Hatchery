@@ -87,6 +87,22 @@ class ProjectsController extends Controller
         $project = Project::where('id', $projectId)->firstOrFail();
         try {
             $project->description = $request->description;
+            if ($request->has('dependencies')) {
+                $dependencies = $request->get('dependencies');
+                foreach($project->dependencies as $dependency) {
+                    if (!in_array($dependency->id, $dependencies)) {
+                        $dependency->pivot->delete();
+                    }
+                }
+                foreach($dependencies as $dependency) {
+                    $project->dependencies()->save(Project::find($dependency));
+                }
+            } else {
+                foreach($project->dependencies as $dependency) {
+                    $dependency->pivot->delete();
+                }
+            }
+
             $project->save();
         } catch (\Exception $e) {
             return redirect()->route('projects.edit', ['project' => $project->id])->withInput()->withErrors([$e->getMessage()]);

@@ -20,14 +20,19 @@
 
                 <div class="panel-body">
                     <div class="row">
+                        {!! Form::open(['method' => 'put', 'route' => ['projects.update', 'project' => $project->id]]) !!}
 
-                        <div class="col-md-12 clearfix">
-                            {!! Form::open(['method' => 'put', 'route' => ['projects.update', 'project' => $project->id]]) !!}
+                        <div class="col-md-8 clearfix">
 
                                 <div class="form-group @if($errors->has('description')) has-error @endif">
                                     {{ Form::label('description', 'Description', ['class' => 'control-label']) }}
                                     {{ Form::textarea('description', $project->description, ['class' => 'form-control', 'id' => 'description']) }}
                                 </div>
+                        </div>
+                        <div class="col-md-4 clearfix">
+                            @include('projects.partials.dependencies')
+                        </div>
+                        <div class="col-md-12 clearfix">
 
                                 TODO: Image / screenshot?
 
@@ -35,8 +40,8 @@
                                     <button type="submit" class="btn btn-default">Save</button>
                                 </div>
 
-                            {!! Form::close() !!}
                         </div>
+                        {!! Form::close() !!}
 
                     </div>
                     <div class="row">
@@ -44,7 +49,6 @@
                             @include('projects.partials.files')
                         </div>
                         <div class="col-md-6">
-                            @include('projects.partials.dependencies')
                             @include('projects.partials.revisions')
                         </div>
                     </div>
