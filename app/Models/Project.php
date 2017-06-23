@@ -76,4 +76,13 @@ class Project extends Model
         return $this->belongsToMany(Project::class, 'dependencies', 'project_id', 'depends_on_project_id')
             ->withTimestamps();
     }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function dependants(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'dependencies', 'depends_on_project_id', 'project_id')
+            ->withTimestamps();
+    }
 }

@@ -44,6 +44,7 @@
                             @include('projects.partials.files')
                         </div>
                         <div class="col-md-6">
+                            @include('projects.partials.dependencies')
                             @include('projects.partials.revisions')
                         </div>
                     </div>

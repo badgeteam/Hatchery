@@ -113,6 +113,14 @@ class ProjectsController extends Controller
             $zip[$project->slug.'/'.$file->name] = $file->content;
         }
 
+        if (!$project->dependencies->isEmpty()) {
+            $dep = "";
+            foreach ($project->dependencies as $dependency) {
+                $dep .= $dependency->slug . "\n";
+            }
+            $zip[$project->slug.'/'.$project->slug.'.egg-info/requires.txt'] = $dep;
+        }
+
         $zip->compress(Phar::GZ);
 
         $version->zip = $filename.'.gz';
