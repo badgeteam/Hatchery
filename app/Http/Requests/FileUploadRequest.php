@@ -26,7 +26,7 @@ class FileUploadRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|file|mimes:'.implode(',', File::$extensions),
+            'file' => 'required|file' //|mimes:'.implode(',', File::$extensions),
         ];
     }
 }

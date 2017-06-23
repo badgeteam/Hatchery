@@ -156,4 +156,25 @@ class ProjectsController extends Controller
 
         return redirect()->route('projects.edit', ['project' => $project->id])->withSuccesses([$project->name.' published']);
     }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $projectId
+     * @return RedirectResponse
+     */
+    public function destroy($projectId): RedirectResponse
+    {
+        $project = Project::where('id', $projectId)->firstOrFail();
+        try {
+            $project->delete();
+        } catch (\Exception $e) {
+            return redirect()->route('projects.edit', ['project' => $project->id])
+                ->withInput()
+                ->withErrors([$e->getMessage()]);
+        }
+
+        return redirect()->route('projects.index')->withNotifications([$project->name.' deleted']);
+    }
 }

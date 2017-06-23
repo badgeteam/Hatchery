@@ -3,6 +3,7 @@
     <tr>
         <th>File</th>
         <th>Last edited</th>
+        <th>Controls</th>
     </tr>
     </thead>
     <tbody>
@@ -16,6 +17,11 @@
                 @endif
             </td>
             <td>{{ $file->updated_at }}</td>
+            <td>
+                {!! Form::open(['method' => 'delete', 'route' => ['files.destroy', 'file' => $file->id]]) !!}
+                <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">delete</button>
+                {!! Form::close() !!}
+            </td>
         </tr>
     @empty
         <tr>
@@ -32,6 +38,20 @@
     </div>
 {!! Form::close() !!}
 
+<div id="confirm-delete" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                Are you sure you want to delete this?
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger" id="delete">Delete</button>
+                <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section('script')
 <script type="text/javascript">
     window.onload = function() {
@@ -42,5 +62,14 @@
         var d = document.getElementById("uploader");
         d.className += " dropzone";
     }
+
+    // Delete resource
+    $('button[name="delete-resource"]').on('click', function (e) {
+        e.preventDefault()
+        var $form = $(this).closest('form')
+        $('#confirm-delete').modal({ backdrop: 'static', keyboard: false }).one('click', '#delete', function (e) {
+            $form.trigger('submit')
+        })
+    })
 </script>
 @endsection

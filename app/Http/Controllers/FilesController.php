@@ -99,4 +99,27 @@ class FilesController extends Controller
 
         return redirect()->route('projects.edit', ['project' => $file->version->project->id])->withSuccesses([$file->name.' saved']);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $fileId
+     * @return RedirectResponse
+     */
+    public function destroy($fileId): RedirectResponse
+    {
+        $file = File::where('id', $fileId)->firstOrFail();
+
+        $project = $file->version->project;
+
+        try {
+            $file->delete();
+        } catch (\Exception $e) {
+            return redirect()->route('projects.edit', ['project' => $project->id])
+                ->withInput()
+                ->withErrors([$e->getMessage()]);
+        }
+
+        return redirect()->route('projects.edit', ['project' => $project->id])->withNotifications([$file->name.' deleted']);
+    }
 }

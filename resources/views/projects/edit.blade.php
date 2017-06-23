@@ -16,6 +16,12 @@
 
                 <div class="panel-heading">
                     <strong>{{ $project->name }}</strong>
+
+                    <div class="pull-right">
+                        {!! Form::open(['method' => 'delete', 'route' => ['projects.destroy', 'project' => $project->id]]) !!}
+                        <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">delete</button>
+                        {!! Form::close() !!}
+                    </div>
                 </div>
 
                 <div class="panel-body">
