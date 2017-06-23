@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -65,5 +66,14 @@ class Project extends Model
     {
         $version = $this->versions()->published()->get()->last();
         return is_null($version) ? null : (string)$version->revision;
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function dependencies(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'dependencies', 'project_id', 'depends_on_project_id')
+            ->withTimestamps();
     }
 }

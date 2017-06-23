@@ -105,7 +105,7 @@ class ProjectsController extends Controller
         $project = Project::where('id', $projectId)->firstOrFail();
         $version = $project->versions()->unPublished()->first();
 
-        $filename = 'eggs/'.uniqid($project->slug).'.tar';
+        $filename = 'eggs/'.uniqid($project->slug.'_').'.tar';
 
         $zip = new PharData(public_path($filename));
 
