@@ -31,6 +31,12 @@ class Project extends Model
             $version->revision = 1;
             $version->project()->associate($project);
             $version->save();
+            // add first empty python file :)
+            $file = new File;
+            $file->name = '__init__.py';
+            $file->content = '';
+            $file->version()->associate($version);
+            $file->save();
         });
 
         static::saving(function ($project) {

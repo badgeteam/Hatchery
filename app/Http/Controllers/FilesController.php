@@ -34,8 +34,6 @@ class FilesController extends Controller
         $file = $version->files()->firstOrNew(['name' => $upload->getClientOriginalName()]);
         $file->content = file_get_contents($upload->path());
         $file->save();
-
-        dd($file);
     }
 
     /**
@@ -120,6 +118,6 @@ class FilesController extends Controller
                 ->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.edit', ['project' => $project->id])->withNotifications([$file->name.' deleted']);
+        return redirect()->route('projects.edit', ['project' => $project->id])->withSuccesses([$file->name.' deleted']);
     }
 }

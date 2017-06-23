@@ -65,12 +65,11 @@ class ProjectsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $projectId
+     * @param  Project  $project
      * @return View
      */
-    public function edit($projectId): View
+    public function edit(Project $project): View
     {
-        $project = Project::where('id', $projectId)->firstOrFail();
         return view('projects.edit')
             ->with('project', $project);
     }
@@ -79,12 +78,11 @@ class ProjectsController extends Controller
      * Update the specified resource in storage.
      *
      * @param ProjectUpdateRequest $request
-     * @param  int  $projectId
+     * @param Project $project
      * @return RedirectResponse
      */
-    public function update(ProjectUpdateRequest $request, $projectId): RedirectResponse
+    public function update(ProjectUpdateRequest $request, $project): RedirectResponse
     {
-        $project = Project::where('id', $projectId)->firstOrFail();
         try {
             $project->description = $request->description;
             if ($request->has('dependencies')) {
@@ -104,6 +102,11 @@ class ProjectsController extends Controller
             }
 
             $project->save();
+
+            if (isset($request->publish)) {
+                return($this->publish($project));
+            }
+
         } catch (\Exception $e) {
             return redirect()->route('projects.edit', ['project' => $project->id])->withInput()->withErrors([$e->getMessage()]);
         }
@@ -113,12 +116,11 @@ class ProjectsController extends Controller
     /**
      * Publish the latest version.
      *
-     * @param  int  $projectId
+     * @param  Project $project
      * @return RedirectResponse
      */
-    public function publish($projectId): RedirectResponse
+    public function publish(Project $project): RedirectResponse
     {
-        $project = Project::where('id', $projectId)->firstOrFail();
         $version = $project->versions()->unPublished()->first();
 
         $filename = 'eggs/'.uniqid($project->slug.'_').'.tar';
@@ -175,6 +177,6 @@ class ProjectsController extends Controller
                 ->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.index')->withNotifications([$project->name.' deleted']);
+        return redirect()->route('projects.index')->withSuccesses([$project->name.' deleted']);
     }
 }
