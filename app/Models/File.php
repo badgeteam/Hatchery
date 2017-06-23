@@ -17,6 +17,8 @@ class File extends Model
 
     protected $appends = ['editable', 'extension'];
 
+    protected $fillable = ['name'];
+
     public static function boot()
     {
         parent::boot();

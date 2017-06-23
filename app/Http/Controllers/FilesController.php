@@ -31,11 +31,11 @@ class FilesController extends Controller
     {
         $upload = $request->file('file');
 
-        $file = new File;
-        $file->version()->associate($version);
-        $file->name = $upload->getClientOriginalName();
+        $file = $version->files()->firstOrNew(['name' => $upload->getClientOriginalName()]);
         $file->content = file_get_contents($upload->path());
         $file->save();
+
+        dd($file);
     }
 
     /**
