@@ -81,7 +81,7 @@ class ProjectsController extends Controller
      * @param Project $project
      * @return RedirectResponse
      */
-    public function update(ProjectUpdateRequest $request, $project): RedirectResponse
+    public function update(ProjectUpdateRequest $request, Project $project): RedirectResponse
     {
         try {
             $project->description = $request->description;
