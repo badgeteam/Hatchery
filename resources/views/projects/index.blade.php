@@ -6,20 +6,13 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
 
-            <ol class="breadcrumb">
-                <li class="active">Eggs</li>
-            </ol>
-
             <div class="panel panel-default">
+
                 <div class="panel-heading">
                     <strong>Eggs</strong>
                 </div>
 
                 <div class="panel-body">
-
-                    <div class="pull-right">
-                        <a href="{{ route('projects.create') }}" class="btn btn-default">Add</a>
-                    </div>
 
                     <table class="table table-striped">
                         <thead>

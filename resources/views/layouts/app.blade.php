@@ -43,9 +43,18 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li>
-                            <a href="{{ route('projects.index') }}">Eggs</a>
-                        </li>
+                        @if(isset($file))
+                            <li><a href="{{ route('projects.index') }}">Eggs</a></li>
+                            <li><a href="{{ route('projects.edit', ['project' => $file->version->project->id]) }}">{{ $file->version->project->name }}</a></li>
+                            <li><a>{{ $file->name }}</a></li>
+                        @elseif(isset($project) && !isset($projects))
+                            <li><a href="{{ route('projects.index') }}">Eggs</a></li>
+                            <li><a>{{ $project->name }}</a></li>
+                        @else
+                            <li>
+                                <a href="{{ route('projects.index') }}">Eggs</a>
+                            </li>
+                        @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->

@@ -6,12 +6,6 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
 
-            <ol class="breadcrumb">
-                <li><a href="{{ route('projects.index') }}">Eggs</a></li>
-                <li><a href="{{ route('projects.edit', ['project' => $file->version->project->id]) }}">{{ $file->version->project->name }}</a></li>
-                <li class="active">{{ $file->name }}</li>
-            </ol>
-
             <div class="panel panel-default">
 
                 <div class="panel-heading">

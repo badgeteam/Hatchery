@@ -7,11 +7,6 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
 
-            <ol class="breadcrumb">
-                <li><a href="{{ route('projects.index') }}">Eggs</a></li>
-                <li class="active">Add an Egg</li>
-            </ol>
-
             <div class="panel panel-default">
 
                 <div class="panel-heading">
