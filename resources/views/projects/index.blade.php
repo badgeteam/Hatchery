@@ -10,6 +10,9 @@
 
                 <div class="panel-heading">
                     <strong>Eggs</strong>
+                    <div class="pull-right">
+                        <a href="{{ route('projects.create') }}" class="btn btn-success btn-xs">Add</a>
+                    </div>
                 </div>
 
                 <div class="panel-body">
