@@ -53,7 +53,7 @@ class UserTest extends TestCase
                 'password' => $password,
                 '_token' => 'test'
             ]);
-        $response->assertStatus(302)->assertRedirect('/home');
+        $response->assertStatus(302)->assertRedirect('/projects');
     }
 
     /**

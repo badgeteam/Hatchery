@@ -33,8 +33,9 @@ class FileTest extends TestCase
             ->post('/upload/'.$project->versions->last()->id, ['file' => $file]);
         $response->assertStatus(200);
 
-        $this->assertCount(1, File::all());
-        $this->assertEquals($name, File::first()->name);
+        $this->assertCount(2, File::all()); // you get a free __init__.py
+        $this->assertEquals('__init__.py', File::first()->name);
+        $this->assertEquals($name, File::where('name', '!=', '__init__.py')->first()->name);
     }
 //
 //    public function testUploadIllegalFile()

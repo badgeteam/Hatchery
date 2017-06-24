@@ -3,6 +3,7 @@
     <tr>
         <th>File</th>
         <th>Last edited</th>
+        <th>Size in bytes</th>
         <th>Controls</th>
     </tr>
     </thead>
@@ -17,6 +18,7 @@
                 @endif
             </td>
             <td>{{ $file->updated_at }}</td>
+            <td>{{ $file->size_of_content }}</td>
             <td>
                 {!! Form::open(['method' => 'delete', 'route' => ['files.destroy', 'file' => $file->id]]) !!}
                 <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">delete</button>

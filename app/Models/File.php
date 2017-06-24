@@ -15,7 +15,7 @@ class File extends Model
 
     protected $editable = ['py', 'txt', 'md'];
 
-    protected $appends = ['editable', 'extension'];
+    protected $appends = ['editable', 'extension', 'size_of_content'];
 
     protected $fillable = ['name'];
 
@@ -64,5 +64,13 @@ class File extends Model
     public function getEditableAttribute(): bool
     {
         return in_array($this->extension, $this->editable);
+    }
+
+    /**
+     * @return int
+     */
+    public function getSizeOfContentAttribute():? int
+    {
+        return strlen($this->content);
     }
 }
