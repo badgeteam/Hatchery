@@ -17,6 +17,8 @@ before_script:
   - npm install
   - npm run production
   - php artisan key:generate
+  - pip install --upgrade pip
+  - pip install --upgrade wheel
   - pip install pyflakes
 
 script:
