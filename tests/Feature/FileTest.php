@@ -77,8 +77,8 @@ class FileTest extends TestCase
         $user = factory(User::class)->create();
         $this->be($user);
         $file = factory(File::class)->create();
-        $faker = Factory::create();
-        $data = $faker->paragraph;
+        $data = 'import time
+time.localtime()';
         $response = $this
             ->actingAs($user)
             ->call('put', '/files/' . $file->id, ['file_content' => $data]);

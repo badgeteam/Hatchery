@@ -93,7 +93,9 @@ class ProjectsController extends Controller
                     }
                 }
                 foreach($dependencies as $dependency) {
-                    $project->dependencies()->save(Project::find($dependency));
+                    if (!$project->dependencies->containts($dependency->id)) {
+                        $project->dependencies()->save(Project::find($dependency));
+                    }
                 }
             } else {
                 foreach($project->dependencies as $dependency) {

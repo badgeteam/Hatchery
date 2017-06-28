@@ -34,6 +34,7 @@ php artisan key:generate
 php artisan migrate
 npm install
 npm run production
+pip install pyflakes
 ```
 
 ## API

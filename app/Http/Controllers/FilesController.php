@@ -63,9 +63,22 @@ class FilesController extends Controller
             $file->content = $request->file_content;
             $file->save();
         } catch (\Exception $e) {
-            return redirect()->route('file.edit', ['file' => $file->id])->withInput()->withErrors([$e->getMessage()]);
+            return redirect()->route('files.edit', ['file' => $file->id])->withInput()->withErrors([$e->getMessage()]);
         }
-        return redirect()->route('projects.edit', ['project' => $file->version->project->id])->withSuccesses([$file->name.' saved']);
+
+        $pyflakes = $this->lintContent($request->file_content);
+        if ($pyflakes['return_value'] == 0) {
+            return redirect()
+                ->route('projects.edit', ['project' => $file->version->project->id])
+                ->withSuccesses([$file->name . ' saved']);
+        } elseif (!empty($pyflakes[0])) {
+            return redirect()->route('files.edit', ['file' => $file->id])
+                ->withInput()
+                ->withInfo(explode("\n", $pyflakes[0]));
+        }
+        return redirect()->route('files.edit', ['file' => $file->id])
+            ->withInput()
+            ->withErrors(explode("\n", $pyflakes[1]));
     }
 
     /**
@@ -119,5 +132,39 @@ class FilesController extends Controller
         }
 
         return redirect()->route('projects.edit', ['project' => $project->id])->withSuccesses([$file->name.' deleted']);
+    }
+
+    /**
+     * @param string $content
+     * @param string $command
+     * @return array
+     */
+    public static function lintContent(string $content, string $command = "pyflakes"): array
+    {
+        $stdout = $stderr = '';
+        $return_value = 255;
+        $fds = array(
+            0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
+            1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
+            2 => array("pipe", "w")   // stderr is a pipe that the child will write to
+        );
+        $process = proc_open($command, $fds, $pipes, NULL, NULL);
+        if (is_resource($process)) {
+            fwrite($pipes[0], $content);
+            fclose($pipes[0]);
+            $stdout =  (string)stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+            $stderr = (string)stream_get_contents($pipes[2]);
+            fclose($pipes[2]);
+            $return_value = proc_close($process);
+            // ToDo whatever you want to do with $stderr and the commands exit-code.
+        } else {
+            // ToDo whatever you want to do if the command fails to start
+        }
+        return [
+            'return_value' => $return_value,
+            0 => preg_replace('/<stdin>\:/', '', $stdout),
+            1 => preg_replace('/<stdin>\:/', '', $stderr)
+        ];
     }
 }
