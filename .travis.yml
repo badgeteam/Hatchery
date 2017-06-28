@@ -6,6 +6,11 @@ php:
 env:
   - TRAVIS_NODE_VERSION="4"
 
+addons:
+  apt:
+    packages:
+      - pyflakes
+
 before_script:
   - cp .env.travis .env
   - mysql -e 'create database homestead_test;'
@@ -17,9 +22,6 @@ before_script:
   - npm install
   - npm run production
   - php artisan key:generate
-  - pip install --upgrade pip
-  - pip install --upgrade wheel
-  - pip install pyflakes
 
 script:
   - vendor/bin/phpunit
