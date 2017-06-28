@@ -74,7 +74,7 @@ class FilesController extends Controller
         } elseif (!empty($pyflakes[0])) {
             return redirect()->route('files.edit', ['file' => $file->id])
                 ->withInput()
-                ->withInfo(explode("\n", $pyflakes[0]));
+                ->withWarnings(explode("\n", $pyflakes[0]));
         }
         return redirect()->route('files.edit', ['file' => $file->id])
             ->withInput()
