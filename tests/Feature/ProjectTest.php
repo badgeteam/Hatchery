@@ -112,5 +112,18 @@ class ProjectTest extends TestCase
         unlink(public_path($version->zip));
     }
 
+    /**
+     * Check the projects can be deleted.
+     */
+    public function testProjectsDestroy()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('delete', '/projects/' . $project->id);
+        $response->assertRedirect('/projects/')->assertSessionHas('successes');
+    }
 
 }

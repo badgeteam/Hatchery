@@ -9,6 +9,7 @@ use App\Http\Requests\FileUpdateRequest;
 use App\Models\File;
 use App\Models\Version;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class FilesController extends Controller
@@ -84,11 +85,13 @@ class FilesController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param Request $request
      * @return View
      */
-    public function create(): View
+    public function create(Request $request): View
     {
-        return view('files.create');
+        $version = Version::where('id', $request->get('version'))->firstOrFail();
+        return view('files.create')->with('version', $version);
     }
 
     /**
@@ -101,6 +104,7 @@ class FilesController extends Controller
     {
         $file = new File;
         try {
+            $file->version_id = $request->version_id;
             $file->name = $request->name;
             $file->content = $request->file_content;
             $file->save();

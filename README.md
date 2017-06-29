@@ -45,3 +45,28 @@ npm run production
 /eggs/list/json            - a list of all eggs with name, slug, description, revision
 /eggs/search/[words]/json  - json data for search query [words]
 ```
+
+## Running tests
+ 
+ Run all the tests
+ 
+     phpunit
+ 
+ Run a test suite (for a list of availabe suites, see `/phpunit.xml`)
+ 
+     phpunit --testsuite <suite_name>
+ 
+ Run a specific test file
+ 
+     phpunit tests/<optional_folders>/TestFileName
+ 
+ Run a specific test case
+ 
+     phpunit --filter <test_case_name>
+ 
+ Generate code coverage
+ 
+     phpunit --coverage-html docs/coverage
+ 
+ This will create the code coverage docs in `docs/coverage/index.html`
+  

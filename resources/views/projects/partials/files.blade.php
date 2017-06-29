@@ -4,7 +4,11 @@
         <th>File</th>
         <th>Last edited</th>
         <th>Size in bytes</th>
-        <th>Controls</th>
+        <th>{!! Form::open(['method' => 'get', 'route' => 'files.create']) !!}
+            {{ Form::hidden('version', $project->versions->last()->id) }}
+            <button class="btn btn-success btn-xs" type="submit" value="add" style="width: 48px;">add</button>
+            {!! Form::close() !!}
+        </th>
     </tr>
     </thead>
     <tbody>
@@ -21,7 +25,7 @@
             <td>{{ $file->size_of_content }}</td>
             <td>
                 {!! Form::open(['method' => 'delete', 'route' => ['files.destroy', 'file' => $file->id]]) !!}
-                <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">delete</button>
+                <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete"  style="width: 48px;">delete</button>
                 {!! Form::close() !!}
             </td>
         </tr>
