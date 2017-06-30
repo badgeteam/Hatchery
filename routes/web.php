@@ -29,5 +29,7 @@ Route::get('/eggs/get/{slug}/json', 'PublicController@projectJson')->name('proje
     ->where(['slug' => '[A-Za-z_\-.0-9]+']);
 
 Route::get('/eggs/list/json', 'PublicController@listJson')->name('list.json');
-
 Route::get('/eggs/search/{words}/json', 'PublicController@searchJson')->name('search.json');
+
+Route::get('/schedule/days', 'ScheduleController@index')->name('schedule.days');
+Route::get('/schedule/day/{day}', 'ScheduleController@show')->name('schedule.day');
