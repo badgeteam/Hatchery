@@ -19,7 +19,8 @@ class ScheduleController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json([0,1,2,3,4]); // the for days of SHA
+        return response()->json([0,1,2,3,4], 200, // the four days of SHA
+            ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
 
     /**
@@ -51,7 +52,8 @@ class ScheduleController extends Controller
             $data['rooms'][$name] = $events;
         }
 
-        return response()->json($data);
+        return response()->json($data, 200,
+            ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
 
     /**
