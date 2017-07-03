@@ -67,7 +67,7 @@ class ScheduleController extends Controller
             $json = file_get_contents($this->url);
             if ($json === false)
             {
-                die("Couldn't fetch the file.");
+                die("Couldn't fetch the schedule from: ". $this->url);
             }
             $expiresAt = Carbon::now()->addMinutes($this->minutes);
             Cache::put('schedule', $json, $expiresAt);
