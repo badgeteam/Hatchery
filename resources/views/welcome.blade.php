@@ -115,9 +115,9 @@
                     <tr>
                         <th>Name</th>
                         <th>Revision</th>
-                        <th>Updated at</th>
                         <th>Size of zip</th>
                         <th>Size of content</th>
+                        <th>Last change</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -125,9 +125,9 @@
                         <tr>
                             <td><a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
                             <td>{{ $project->revision }}</td>
-                            <td>{{ $project->updated_at }}</td>
                             <td>{{ $project->size_of_zip }}</td>
                             <td>{{ $project->size_of_content }}</td>
+                            <td>{{ $project->updated_at->diffForHumans() }}</td>
                         </tr>
                     @empty
                         <tr><td>No published eggs</td></tr>
