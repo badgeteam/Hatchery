@@ -208,4 +208,32 @@ class PublicTest extends TestCase
                 ]
             ]);
     }
+
+    /**
+     * Check public project view.
+     */
+    public function testProjectShow()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+
+        $response = $this->get('/projects/'.$version->project->slug.'');
+        $response->assertStatus(200)
+            ->assertViewHas('project');
+    }
+
+    /**
+     * Check public file view.
+     */
+    public function testFileShow()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create();
+
+        $response = $this->get('/files/'.$file->id.'');
+        $response->assertStatus(200)
+            ->assertViewHas('file');
+    }
 }
