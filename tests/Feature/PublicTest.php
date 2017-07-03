@@ -191,4 +191,21 @@ class PublicTest extends TestCase
                 ]
             ]);
     }
+
+    /**
+     * Check JSON eggs request . .
+     */
+    public function testCategoriesJson()
+    {
+        $category = factory(Category::class)->create();
+
+        $response = $this->json('GET', '/eggs/categories/json');
+        $response->assertStatus(200)
+            ->assertExactJson([
+                [
+                    "name" => $category->name,
+                    "slug" => $category->slug
+                ]
+            ]);
+    }
 }

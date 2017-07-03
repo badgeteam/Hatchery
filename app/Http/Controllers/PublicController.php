@@ -67,7 +67,7 @@ class PublicController extends Controller
     }
 
     /**
-     * Get the latest released versions.
+     * Find the latest released versions.
      *
      * @param string $search
      * @return JsonResponse
@@ -85,16 +85,13 @@ class PublicController extends Controller
 
 
     /**
-     * Get the latest released versions.
+     * Get the categories.
      *
-     * @param Category $category
      * @return JsonResponse
      */
-    public function categoryJson(Category $category): JsonResponse
+    public function categoriesJson(): JsonResponse
     {
-        return response()->json($category->projects()->whereHas('versions', function ($query) {
-            $query->published();
-        })->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        return response()->json(Category::all(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
 
 }

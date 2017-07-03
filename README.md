@@ -44,6 +44,7 @@ npm run production
 /eggs/get/[app]/json       - get json data for a the egg named [app]
 /eggs/list/json            - a list of all eggs with name, slug, description, revision
 /eggs/search/[words]/json  - json data for search query [words]
+/eggs/categories/json      - json list of categories
 /eggs/category/[cat]/json  - json data for category [cat]
 ```
 
