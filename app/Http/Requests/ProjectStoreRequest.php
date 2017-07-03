@@ -27,6 +27,7 @@ class ProjectStoreRequest extends FormRequest
         return [
             'name' => 'required|unique:projects',
             'description' => 'required',
+            'category_id' => 'required|exists:categories,id',
         ];
     }
 }

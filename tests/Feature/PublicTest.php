@@ -163,4 +163,32 @@ class PublicTest extends TestCase
                 ]
             ]);
     }
+
+    /**
+     * Check JSON eggs request . .
+     */
+    public function testProjectCategoryJson()
+    {
+        $category = factory(Category::class)->create(['name' => 'Test']);
+
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $version->zip = 'some_path.tar.gz';
+        $version->save();
+
+        $response = $this->json('GET', '/eggs/category/test/json');
+        $response->assertStatus(200)
+            ->assertExactJson([
+                [
+                    "description" =>"",
+                    "name" => $version->project->name,
+                    "revision" => "1",
+                    "slug" => $version->project->slug,
+                    "size_of_content" => 0,
+                    "size_of_zip" => 0,
+                    "category" => $category->slug
+                ]
+            ]);
+    }
 }

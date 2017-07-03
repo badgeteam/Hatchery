@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -81,4 +82,19 @@ class PublicController extends Controller
             ->orderBy('id', 'DESC')
             ->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
+
+
+    /**
+     * Get the latest released versions.
+     *
+     * @param Category $category
+     * @return JsonResponse
+     */
+    public function categoryJson(Category $category): JsonResponse
+    {
+        return response()->json($category->projects()->whereHas('versions', function ($query) {
+            $query->published();
+        })->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+    }
+
 }

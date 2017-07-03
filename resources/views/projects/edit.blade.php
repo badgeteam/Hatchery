@@ -30,6 +30,11 @@
                                 </div>
                         </div>
                         <div class="col-md-4 clearfix">
+                            <div class="form-group @if($errors->has('category_id')) has-error @endif">
+                                {{ Form::label('category_id', 'Category', ['class' => 'control-label']) }}
+                                {{ Form::select('category_id', \App\Models\Category::pluck('name', 'id'), $project->category_id, ['class' => 'form-control', 'id' => 'category_id']) }}
+                            </div>
+
                             @include('projects.partials.dependencies')
                         </div>
                         <div class="col-md-12 clearfix">

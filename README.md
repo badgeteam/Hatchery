@@ -44,6 +44,12 @@ npm run production
 /eggs/get/[app]/json       - get json data for a the egg named [app]
 /eggs/list/json            - a list of all eggs with name, slug, description, revision
 /eggs/search/[words]/json  - json data for search query [words]
+/eggs/category/[cat]/json  - json data for category [cat]
+```
+
+```
+/schedule/days             - the 5 days of SHA
+/schedule/day/[0-4]        - simplified lectures data for the day
 ```
 
 ## Running tests

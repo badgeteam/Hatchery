@@ -30,6 +30,8 @@ Route::get('/eggs/get/{project}/json', 'PublicController@projectJson')->name('pr
 Route::get('/eggs/list/json', 'PublicController@listJson')->name('list.json');
 Route::get('/eggs/search/{words}/json', 'PublicController@searchJson')->name('search.json');
 
+Route::get('/eggs/category/{category}/json', 'PublicController@categoryJson')->name('category.json');
+
 Route::get('/schedule/days', 'ScheduleController@index')->name('schedule.days');
 Route::get('/schedule/day/{day}', 'ScheduleController@show')->name('schedule.day')
     ->where(['day' => '[0-4]']) ;

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
 use App\Models\File;
 use App\Models\User;
 use App\Models\Project;
@@ -52,9 +53,10 @@ class ProjectTest extends TestCase
         $user = factory(User::class)->create();
         $faker = Factory::create();
         $this->assertEmpty(Project::all());
+        $category = factory(Category::class)->create();
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $faker->name, 'description' => $faker->paragraph]);
+            ->call('post', '/projects', ['name' => $faker->name, 'description' => $faker->paragraph, 'category_id' => $category->id]);
         $response->assertRedirect('/projects/'.Project::get()->last()->slug.'/edit')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
     }
