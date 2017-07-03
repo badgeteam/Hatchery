@@ -29,7 +29,7 @@ class ProjectsController extends Controller
      */
     public function index(): View
     {
-        return view('projects.index')->with(['projects' => Project::paginate()]);
+        return view('projects.index')->with(['projects' => Project::orderBy('id', 'DESC')->paginate()]);
     }
 
     /**

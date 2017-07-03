@@ -22,7 +22,7 @@ class PublicController extends Controller
             'projects' => Project::count(),
             'published' => Project::whereHas('versions', function ($query) {
                 $query->published();
-            })->get()
+            })->orderBy('id', 'DESC')->get()
         ]);
     }
 
@@ -62,7 +62,7 @@ class PublicController extends Controller
     {
         return response()->json(Project::whereHas('versions', function ($query) {
             $query->published();
-        })->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        })->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
 
     /**
@@ -78,6 +78,7 @@ class PublicController extends Controller
             $query->published();
         })->where('name', 'like', $what)
             ->orWhere('description', 'like', $what)
+            ->orderBy('id', 'DESC')
             ->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
 }
