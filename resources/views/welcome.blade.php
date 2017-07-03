@@ -68,6 +68,15 @@
                 font-weight: 600;
             }
 
+            table a {
+                color: #404040;
+                text-decoration: none;
+            }
+
+            table a:hover {
+                color: #216a94;
+            }
+
 
         </style>
     </head>
@@ -106,7 +115,7 @@
                     <tbody>
                     @forelse($published as $project)
                         <tr>
-                            <td>{{ $project->name }}</td><td>{{ $project->revision }}</td>
+                            <td><a href="{{ route('projects.edit', ['project' => $project->id]) }}">{{ $project->name }}</a></td><td>{{ $project->revision }}</td>
                         </tr>
                     @empty
                         <tr><td>No published eggs</td></tr>
