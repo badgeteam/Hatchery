@@ -68,6 +68,10 @@
                 font-weight: 600;
             }
 
+            table {
+                width: 100%;
+            }
+
             table a {
                 color: #404040;
                 text-decoration: none;
@@ -104,18 +108,26 @@
                 <div class="links">
                     <a href="https://wiki.sha2017.org/w/Projects:Badge">Wiki</a>
                     <a href="https://github.com/SHA2017-badge/">GitHub</a>
+                    <a href="https://twitter.com/SHA2017Badge">Twitter</a>
                 </div>
                 <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>Name</th>
                         <th>Revision</th>
+                        <th>Updated at</th>
+                        <th>Size of zip</th>
+                        <th>Size of content</th>
                     </tr>
                     </thead>
                     <tbody>
                     @forelse($published as $project)
                         <tr>
-                            <td><a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a></td><td>{{ $project->revision }}</td>
+                            <td><a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
+                            <td>{{ $project->revision }}</td>
+                            <td>{{ $project->updated_at }}</td>
+                            <td>{{ $project->size_of_zip }}</td>
+                            <td>{{ $project->size_of_content }}</td>
                         </tr>
                     @empty
                         <tr><td>No published eggs</td></tr>

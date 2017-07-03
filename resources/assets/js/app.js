@@ -10,19 +10,19 @@ require('./bootstrap');
 window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone');
 
 window.onload = function() {
-    if (document.getElementById('content')) {
+    if (document.getElementById("content")) {
         window.CodeMirror = require(['../../../node_modules/codemirror/lib/codemirror',
             '../../../node_modules/codemirror/mode/python/python'], function (CodeMirror) {
-            CodeMirror.fromTextArea(document.getElementById('content'), {
+            CodeMirror.fromTextArea(document.getElementById("content"), {
                 lineNumbers: true,
                 mode: "python"
             });
         });
     }
-    if (document.getElementById('content-readonly')) {
+    if (document.getElementById("content-readonly")) {
         window.CodeMirror = require(['../../../node_modules/codemirror/lib/codemirror',
             '../../../node_modules/codemirror/mode/python/python'], function (CodeMirror) {
-            CodeMirror.fromTextArea(document.getElementById('content-readonly'), {
+            CodeMirror.fromTextArea(document.getElementById("content-readonly"), {
                 lineNumbers: true,
                 mode: "python",
                 readOnly: true
