@@ -82,12 +82,21 @@ class ProjectTest extends TestCase
     {
         $user = factory(User::class)->create();
         $this->be($user);
+        $projectDep = factory(Project::class)->create();
+        $projectDep->versions()->first()->zip = 'test';
+        $projectDep->versions()->first()->save();
         $project = factory(Project::class)->create();
         $faker = Factory::create();
         $response = $this
             ->actingAs($user)
+            ->call('put', '/projects/' . $project->slug, ['description' => $faker->paragraph, 'dependencies' => [$projectDep->id]]);
+        $response->assertRedirect('/projects')->assertSessionHas('successes');
+        // add deps
+        $response = $this
+            ->actingAs($user)
             ->call('put', '/projects/' . $project->slug, ['description' => $faker->paragraph]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
+        // remove deps
     }
 
     /**
@@ -97,9 +106,12 @@ class ProjectTest extends TestCase
     {
         $user = factory(User::class)->create();
         $this->be($user);
+        $projectDep = factory(Project::class)->create();
+        $projectDep->versions()->first()->zip = 'test';
+        $projectDep->versions()->first()->save();
         $project = factory(Project::class)->create();
+        $project->dependencies()->save($projectDep);
         $file = factory(File::class, ['version_id' => $project->versions()->unPublished()->first()->id])->create();
-
         $file->first()->version_id = $project->versions()->unPublished()->first()->id; // yah ugly
         $file->first()->save(); // wut?
 
