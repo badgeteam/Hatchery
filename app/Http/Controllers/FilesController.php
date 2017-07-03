@@ -19,7 +19,7 @@ class FilesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => 'show']);
     }
 
     /**
@@ -40,12 +40,11 @@ class FilesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $fileId
+     * @param  File $file
      * @return View
      */
-    public function edit($fileId): View
+    public function edit(File $file): View
     {
-        $file = File::where('id', $fileId)->firstOrFail();
         return view('files.edit')
             ->with('file', $file);
     }
@@ -53,13 +52,12 @@ class FilesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param FileUpdateRequest $request
-     * @param  int  $fileId
+     * @param  FileUpdateRequest $request
+     * @param  File $file
      * @return RedirectResponse
      */
-    public function update(FileUpdateRequest $request, $fileId): RedirectResponse
+    public function update(FileUpdateRequest $request, File $file): RedirectResponse
     {
-        $file = File::where('id', $fileId)->firstOrFail();
         try {
             $file->content = $request->file_content;
             $file->save();
@@ -118,15 +116,12 @@ class FilesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $fileId
+     * @param  File $file
      * @return RedirectResponse
      */
-    public function destroy($fileId): RedirectResponse
+    public function destroy(File $file): RedirectResponse
     {
-        $file = File::where('id', $fileId)->firstOrFail();
-
         $project = $file->version->project;
-
         try {
             $file->delete();
         } catch (\Exception $e) {
@@ -140,7 +135,7 @@ class FilesController extends Controller
 
     /**
      * @param string $content
-     * @param string $command
+     * @param string $command = "pyflakes"
      * @return array
      */
     public static function lintContent(string $content, string $command = "pyflakes"): array
@@ -170,5 +165,17 @@ class FilesController extends Controller
             0 => preg_replace('/<stdin>\:/', '', $stdout),
             1 => preg_replace('/<stdin>\:/', '', $stderr)
         ];
+    }
+
+    /**
+     * Show file content, public method ツ
+     *
+     * @param File $file
+     * @return View
+     */
+    public function show(File $file): View
+    {
+        return view('files.show')
+            ->with('file', $file);
     }
 }

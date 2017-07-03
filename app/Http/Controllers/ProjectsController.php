@@ -19,7 +19,7 @@ class ProjectsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => 'show']);
     }
 
     /**
@@ -180,5 +180,17 @@ class ProjectsController extends Controller
         }
 
         return redirect()->route('projects.index')->withSuccesses([$project->name.' deleted']);
+    }
+
+    /**
+     * Show project content, public method ツ
+     *
+     * @param Project $project
+     * @return View
+     */
+    public function show(Project $project): View
+    {
+        return view('projects.show')
+            ->with('project', $project);
     }
 }

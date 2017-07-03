@@ -24,7 +24,6 @@
                         {!! Form::open(['method' => 'put', 'route' => ['projects.update', 'project' => $project->slug]]) !!}
 
                         <div class="col-md-8 clearfix">
-
                                 <div class="form-group @if($errors->has('description')) has-error @endif">
                                     {{ Form::label('description', 'Description', ['class' => 'control-label']) }}
                                     {{ Form::textarea('description', $project->description, ['class' => 'form-control', 'id' => 'description']) }}

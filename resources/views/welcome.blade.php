@@ -115,7 +115,7 @@
                     <tbody>
                     @forelse($published as $project)
                         <tr>
-                            <td><a href="{{ route('projects.edit', ['project' => $project->id]) }}">{{ $project->name }}</a></td><td>{{ $project->revision }}</td>
+                            <td><a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a></td><td>{{ $project->revision }}</td>
                         </tr>
                     @empty
                         <tr><td>No published eggs</td></tr>

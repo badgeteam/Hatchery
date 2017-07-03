@@ -45,7 +45,11 @@
                     <ul class="nav navbar-nav">
                         @if(isset($file))
                             <li><a href="{{ route('projects.index') }}">Eggs</a></li>
+                            @if(Auth::check())
                             <li><a href="{{ route('projects.edit', ['project' => $file->version->project->slug]) }}">{{ $file->version->project->name }}</a></li>
+                            @else
+                            <li><a href="{{ route('projects.show', ['project' => $file->version->project->slug]) }}">{{ $file->version->project->name }}</a></li>
+                            @endif
                             <li><a>{{ $file->name }}</a></li>
                         @elseif(isset($project) && !isset($projects))
                             <li><a href="{{ route('projects.index') }}">Eggs</a></li>

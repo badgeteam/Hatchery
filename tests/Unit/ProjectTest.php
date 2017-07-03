@@ -59,6 +59,17 @@ class ProjectTest extends TestCase
         $version->zip = 'iets';
         $version->save();
         $this->assertEquals("1", $version->project->revision);
-
     }
+
+    /**
+     * Check if Project size_of_content helper works without release
+     */
+    public function testProjectSizeOfContentNoRelease()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $this->assertEquals(0, $version->project->size_of_content);
+    }
+
 }

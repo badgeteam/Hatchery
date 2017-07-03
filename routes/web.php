@@ -17,13 +17,13 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('projects', 'ProjectsController', ['except' => ['show']]);
+Route::resource('projects', 'ProjectsController');
 
 Route::post('/upload/{version}', 'FilesController@upload')->name('files.upload');
 
 Route::post('/release/{project}', 'ProjectsController@publish')->name('project.publish');
 
-Route::resource('files', 'FilesController', ['except' => ['show']]);
+Route::resource('files', 'FilesController');
 
 Route::get('/eggs/get/{project}/json', 'PublicController@projectJson')->name('project.json');
 

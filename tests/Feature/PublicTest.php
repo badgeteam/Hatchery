@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
@@ -41,7 +42,7 @@ class PublicTest extends TestCase
     /**
      * Check JSON request Unauthenticated . .
      */
-    public function testJSONRedirect()
+    public function testJsonRedirect()
     {
         $response = $this->json('GET', '/home');
         $response->assertStatus(401)
@@ -51,13 +52,20 @@ class PublicTest extends TestCase
     /**
      * Check JSON egg request . .
      */
-    public function testProjectGetJSON()
+    public function testProjectGetJsonModelNotFound()
     {
         $this->expectException(ModelNotFoundException::class);
+        // TODO catch this and return 404 ??
         $response = $this->json('GET', '/eggs/get/something/json');
         $response->assertStatus(404)
             ->assertExactJson(["message" => "No releases found"]);
+    }
 
+    /**
+     * Check JSON egg request . .
+     */
+    public function testProjectGetJson()
+    {
         $user = factory(User::class)->create();
         $this->be($user);
         $version = factory(Version::class)->create();
@@ -80,12 +88,27 @@ class PublicTest extends TestCase
     }
 
     /**
+     * Check JSON egg request . .
+     */
+    public function testProjectGetJson404()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+
+        $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json');
+        $response->assertStatus(404)
+            ->assertExactJson(["message" => "No releases found"]);
+    }
+
+    /**
      * Check JSON eggs request . .
      */
-    public function testProjectListJSON()
+    public function testProjectListJson()
     {
         $response = $this->json('GET', '/eggs/list/json');
         $response->assertStatus(200)->assertExactJson([]);
+        $category = factory(Category::class)->create();
 
         $user = factory(User::class)->create();
         $this->be($user);
@@ -104,6 +127,7 @@ class PublicTest extends TestCase
                     "slug" => $version->project->slug,
                     "size_of_content" => $version->project->size_of_content,
                     "size_of_zip" => 0,
+                    "category" => $category->slug
                 ]
             ]);
     }
@@ -111,10 +135,11 @@ class PublicTest extends TestCase
     /**
      * Check JSON eggs request . .
      */
-    public function testProjectSearchJSON()
+    public function testProjectSearchJson()
     {
         $response = $this->json('GET', '/eggs/search/something/json');
         $response->assertStatus(200)->assertExactJson([]);
+        $category = factory(Category::class)->create();
 
         $user = factory(User::class)->create();
         $this->be($user);
@@ -134,6 +159,7 @@ class PublicTest extends TestCase
                     "slug" => $version->project->slug,
                     "size_of_content" => 0,
                     "size_of_zip" => 0,
+                    "category" => $category->slug
                 ]
             ]);
     }

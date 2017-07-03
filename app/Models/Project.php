@@ -13,9 +13,9 @@ class Project extends Model
 {
     use SoftDeletes;
 
-    protected $appends = ['revision', 'size_of_zip', 'size_of_content'];
+    protected $appends = ['revision', 'size_of_zip', 'size_of_content', 'category'];
 
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'user_id', 'id'];
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'user_id', 'id', 'category_id'];
 
     public static function boot()
     {
@@ -53,6 +53,16 @@ class Project extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo('App\Models\User')->withTrashed();
+    }
+
+    /**
+     * Get the Category this Project belongs to.
+     *
+     * @return BelongsTo
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo('App\Models\Category')->withTrashed();
     }
 
     /**
@@ -122,8 +132,16 @@ class Project extends Model
      *
      * @return string
      */
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    /**
+     * @return string
+     */
+    public function getCategoryAttribute():? string
+    {
+        return $this->category()->first()->slug;
     }
 }

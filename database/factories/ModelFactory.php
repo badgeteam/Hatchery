@@ -54,3 +54,10 @@ $factory->define(App\Models\File::class, function (Faker\Generator $faker) {
         'content' => $faker->paragraph
     ];
 });
+
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(App\Models\Category::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+    ];
+});
