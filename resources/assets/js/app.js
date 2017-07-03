@@ -19,4 +19,14 @@ window.onload = function() {
             });
         });
     }
+    if (document.getElementById('content-readonly')) {
+        window.CodeMirror = require(['../../../node_modules/codemirror/lib/codemirror',
+            '../../../node_modules/codemirror/mode/python/python'], function (CodeMirror) {
+            CodeMirror.fromTextArea(document.getElementById('content-readonly'), {
+                lineNumbers: true,
+                mode: "python",
+                readOnly: true
+            });
+        });
+    }
 }

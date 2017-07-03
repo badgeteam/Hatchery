@@ -140,8 +140,8 @@ class FilesController extends Controller
      */
     public static function lintContent(string $content, string $command = "pyflakes"): array
     {
-        $stdout = $stderr = '';
-        $return_value = 255;
+        $stdOut = $stdErr = '';
+        $returnValue = 255;
         $fds = array(
             0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
             1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
@@ -151,19 +151,16 @@ class FilesController extends Controller
         if (is_resource($process)) {
             fwrite($pipes[0], $content);
             fclose($pipes[0]);
-            $stdout =  (string)stream_get_contents($pipes[1]);
+            $stdOut =  (string)stream_get_contents($pipes[1]);
             fclose($pipes[1]);
-            $stderr = (string)stream_get_contents($pipes[2]);
+            $stdErr = (string)stream_get_contents($pipes[2]);
             fclose($pipes[2]);
-            $return_value = proc_close($process);
-            // ToDo whatever you want to do with $stderr and the commands exit-code.
-        } else {
-            // ToDo whatever you want to do if the command fails to start
+            $returnValue = proc_close($process);
         }
         return [
-            'return_value' => $return_value,
-            0 => preg_replace('/<stdin>\:/', '', $stdout),
-            1 => preg_replace('/<stdin>\:/', '', $stderr)
+            'return_value' => $returnValue,
+            0 => preg_replace('/<stdin>\:/', '', $stdOut),
+            1 => preg_replace('/<stdin>\:/', '', $stdErr)
         ];
     }
 
