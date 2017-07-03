@@ -30,7 +30,7 @@
                         <tbody>
                             @forelse($projects as $project)
                                 <tr>
-                                    <td><a href="{{ route('projects.edit', ['project' => $project->id]) }}">{{ $project->name }}</a></td>
+                                    <td><a href="{{ route('projects.edit', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
                                     <td>{{ $project->versions()->published()->count() > 0 ? $project->versions()->published()->get()->last()->revision : 'unpublished' }}</td>
                                     <td>{{ $project->updated_at }}</td>
                                     <td>{{ $project->size_of_zip }}</td>

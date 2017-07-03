@@ -55,7 +55,7 @@ class ProjectTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('post', '/projects', ['name' => $faker->name, 'description' => $faker->paragraph]);
-        $response->assertRedirect('/projects/'.Project::get()->last()->id.'/edit')->assertSessionHas('successes');
+        $response->assertRedirect('/projects/'.Project::get()->last()->slug.'/edit')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
     }
 
@@ -69,7 +69,7 @@ class ProjectTest extends TestCase
         $project = factory(Project::class)->create();
         $response = $this
             ->actingAs($user)
-            ->get('/projects/'.$project->id.'/edit');
+            ->get('/projects/'.$project->slug.'/edit');
         $response->assertStatus(200);
     }
 
@@ -84,7 +84,7 @@ class ProjectTest extends TestCase
         $faker = Factory::create();
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/' . $project->id, ['description' => $faker->paragraph]);
+            ->call('put', '/projects/' . $project->slug, ['description' => $faker->paragraph]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
     }
 
@@ -103,8 +103,8 @@ class ProjectTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->call('post', '/release/' . $project->id);
-        $response->assertRedirect('/projects/'.$project->id.'/edit')->assertSessionHas('successes');
+            ->call('post', '/release/' . $project->slug);
+        $response->assertRedirect('/projects/'.$project->slug.'/edit')->assertSessionHas('successes');
 
         $version = Version::published()->where('project_id', $project->id)->get()->last();
 
@@ -122,7 +122,7 @@ class ProjectTest extends TestCase
         $project = factory(Project::class)->create();
         $response = $this
             ->actingAs($user)
-            ->call('delete', '/projects/' . $project->id);
+            ->call('delete', '/projects/' . $project->slug);
         $response->assertRedirect('/projects/')->assertSessionHas('successes');
     }
 

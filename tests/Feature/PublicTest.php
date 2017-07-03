@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -51,6 +53,7 @@ class PublicTest extends TestCase
      */
     public function testProjectGetJSON()
     {
+        $this->expectException(ModelNotFoundException::class);
         $response = $this->json('GET', '/eggs/get/something/json');
         $response->assertStatus(404)
             ->assertExactJson(["message" => "No releases found"]);
@@ -89,6 +92,7 @@ class PublicTest extends TestCase
         $version = factory(Version::class)->create();
         $version->zip = 'some_path.tar.gz';
         $version->save();
+        factory(File::class)->create(['version_id' => $version->id]);
 
         $response = $this->json('GET', '/eggs/list/json');
         $response->assertStatus(200)
@@ -98,7 +102,7 @@ class PublicTest extends TestCase
                     "name" => $version->project->name,
                     "revision" => "1",
                     "slug" => $version->project->slug,
-                    "size_of_content" => 0,
+                    "size_of_content" => $version->project->size_of_content,
                     "size_of_zip" => 0,
                 ]
             ]);

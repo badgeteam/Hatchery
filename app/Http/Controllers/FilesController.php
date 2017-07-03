@@ -70,7 +70,7 @@ class FilesController extends Controller
         $pyflakes = $this->lintContent($request->file_content);
         if ($pyflakes['return_value'] == 0) {
             return redirect()
-                ->route('projects.edit', ['project' => $file->version->project->id])
+                ->route('projects.edit', ['project' => $file->version->project->slug])
                 ->withSuccesses([$file->name . ' saved']);
         } elseif (!empty($pyflakes[0])) {
             return redirect()->route('files.edit', ['file' => $file->id])
@@ -112,7 +112,7 @@ class FilesController extends Controller
             return redirect()->route('files.create')->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.edit', ['project' => $file->version->project->id])->withSuccesses([$file->name.' saved']);
+        return redirect()->route('projects.edit', ['project' => $file->version->project->slug])->withSuccesses([$file->name.' saved']);
     }
 
     /**
@@ -130,12 +130,12 @@ class FilesController extends Controller
         try {
             $file->delete();
         } catch (\Exception $e) {
-            return redirect()->route('projects.edit', ['project' => $project->id])
+            return redirect()->route('projects.edit', ['project' => $project->slug])
                 ->withInput()
                 ->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.edit', ['project' => $project->id])->withSuccesses([$file->name.' deleted']);
+        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$file->name.' deleted']);
     }
 
     /**

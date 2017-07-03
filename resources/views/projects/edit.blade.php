@@ -13,7 +13,7 @@
                     <strong>{{ $project->name }}</strong>
 
                     <div class="pull-right">
-                        {!! Form::open(['method' => 'delete', 'route' => ['projects.destroy', 'project' => $project->id]]) !!}
+                        {!! Form::open(['method' => 'delete', 'route' => ['projects.destroy', 'project' => $project->slug]]) !!}
                         <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">delete</button>
                         {!! Form::close() !!}
                     </div>
@@ -21,7 +21,7 @@
 
                 <div class="panel-body">
                     <div class="row">
-                        {!! Form::open(['method' => 'put', 'route' => ['projects.update', 'project' => $project->id]]) !!}
+                        {!! Form::open(['method' => 'put', 'route' => ['projects.update', 'project' => $project->slug]]) !!}
 
                         <div class="col-md-8 clearfix">
 

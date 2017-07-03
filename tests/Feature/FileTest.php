@@ -83,7 +83,7 @@ time.localtime()';
         $response = $this
             ->actingAs($user)
             ->call('put', '/files/' . $file->id, ['file_content' => $data]);
-        $response->assertRedirect('/projects/' . $file->version->project->id . '/edit')->assertSessionHas('successes');
+        $response->assertRedirect('/projects/' . $file->version->project->slug . '/edit')->assertSessionHas('successes');
         $this->assertEquals($data, File::find($file->id)->content);
     }
 
@@ -98,7 +98,7 @@ time.localtime()';
         $response = $this
             ->actingAs($user)
             ->call('delete', '/files/' . $file->id);
-        $response->assertRedirect('/projects/' . $file->version->project->id . '/edit')->assertSessionHas('successes');
+        $response->assertRedirect('/projects/' . $file->version->project->slug . '/edit')->assertSessionHas('successes');
     }
 
     /**
@@ -127,7 +127,7 @@ time.localtime()';
         $response = $this
             ->actingAs($user)
             ->post('/files', ['name' => 'test.py', 'file_content' => '# test', 'version_id' => $version->id]);
-        $response->assertRedirect('/projects/' . $version->project->id . '/edit')
+        $response->assertRedirect('/projects/' . $version->project->slug . '/edit')
             ->assertSessionHas('successes');
 
         $file = File::all()->last();

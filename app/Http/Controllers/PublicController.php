@@ -29,17 +29,11 @@ class PublicController extends Controller
     /**
      * Get the latest released version.
      *
-     * @param  string  $slug
+     * @param  Project  $project
      * @return JsonResponse
      */
-    public function projectJson($slug): JsonResponse
+    public function projectJson(Project $project): JsonResponse
     {
-        try {
-            $project = Project::where('slug', $slug)->firstOrFail();
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'No releases found'], 404);
-        }
-
         $releases = [];
         foreach($project->versions()->published()->get() as $version) {
             $releases[$version->revision] = [['url' => url($version->zip)]];
@@ -47,6 +41,9 @@ class PublicController extends Controller
 
         $version = $project->versions()->published()->get()->last();
 
+        if (empty($version)) {
+            return response()->json(['message' => 'No releases found'], 404);
+        }
 
         $package = new stdClass;
         $package->info = ['version' => (string)$version->revision];

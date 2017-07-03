@@ -25,8 +25,7 @@ Route::post('/release/{project}', 'ProjectsController@publish')->name('project.p
 
 Route::resource('files', 'FilesController', ['except' => ['show']]);
 
-Route::get('/eggs/get/{slug}/json', 'PublicController@projectJson')->name('project.json')
-    ->where(['slug' => '[A-Za-z_\-.0-9]+']);
+Route::get('/eggs/get/{project}/json', 'PublicController@projectJson')->name('project.json');
 
 Route::get('/eggs/list/json', 'PublicController@listJson')->name('list.json');
 Route::get('/eggs/search/{words}/json', 'PublicController@searchJson')->name('search.json');

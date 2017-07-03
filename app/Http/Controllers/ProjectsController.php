@@ -59,7 +59,7 @@ class ProjectsController extends Controller
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.edit', ['project' => $project->id])->withSuccesses([$project->name.' saved']);
+        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' saved']);
     }
 
     /**
@@ -110,7 +110,7 @@ class ProjectsController extends Controller
             }
 
         } catch (\Exception $e) {
-            return redirect()->route('projects.edit', ['project' => $project->id])->withInput()->withErrors([$e->getMessage()]);
+            return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors([$e->getMessage()]);
         }
         return redirect()->route('projects.index')->withSuccesses([$project->name.' saved']);
     }
@@ -159,23 +159,22 @@ class ProjectsController extends Controller
             $newFile->save();
         }
 
-        return redirect()->route('projects.edit', ['project' => $project->id])->withSuccesses([$project->name.' published']);
+        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' published']);
     }
 
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $projectId
+     * @param  Project $project
      * @return RedirectResponse
      */
-    public function destroy($projectId): RedirectResponse
+    public function destroy(Project $project): RedirectResponse
     {
-        $project = Project::where('id', $projectId)->firstOrFail();
         try {
             $project->delete();
         } catch (\Exception $e) {
-            return redirect()->route('projects.edit', ['project' => $project->id])
+            return redirect()->route('projects.edit', ['project' => $project->slug])
                 ->withInput()
                 ->withErrors([$e->getMessage()]);
         }
