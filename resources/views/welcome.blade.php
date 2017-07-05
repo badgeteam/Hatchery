@@ -1,140 +1,64 @@
-<!doctype html>
-<html lang="{{ config('app.locale') }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app_splash')
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+@section('content')
+<div class="container">
+    <div class="row">
+            <div class="panel panel-compact">
+                <div class="panel-body">
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+		    @if (Route::has('login'))
+			<div class="pull-right links">
+			    @if (Auth::check())
+				<a href="{{ url('/projects') }}">Eggs</a>
+			    @else
+				<a href="{{ url('/login') }}">Login</a>
+				<a href="{{ url('/register') }}">Register</a>
+			    @endif
+			</div>
+		    @endif
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-
-            .content {
-                color: #404040;
-                font-weight: 600;
-            }
-
-            table {
-                width: 100%;
-            }
-
-            table a {
-                color: #404040;
-                text-decoration: none;
-            }
-
-            table a:hover {
-                color: #216a94;
-            }
-
-
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @if (Auth::check())
-                        <a href="{{ url('/projects') }}">Eggs</a>
-                    @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
-                    @endif
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    SHA2017 {{ config('app.name', 'Laravel') }}
-                </div>
-                <div>
-                    Contributors: {{$users}}
-                    Eggs: {{$projects}}
-                </div>
-                <div class="links">
-                    <a href="https://wiki.sha2017.org/w/Projects:Badge">Wiki</a>
-                    <a href="https://github.com/SHA2017-badge/">GitHub</a>
-                    <a href="https://twitter.com/SHA2017Badge">Twitter</a>
-                </div>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Revision</th>
-                        <th>Size of zip</th>
-                        <th>Size of content</th>
-                        <th>Last change</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @forelse($published as $project)
-                        <tr>
-                            <td><a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
-                            <td>{{ $project->revision }}</td>
-                            <td>{{ $project->size_of_zip }}</td>
-                            <td>{{ $project->size_of_content }}</td>
-                            <td>{{ $project->updated_at->diffForHumans() }}</td>
-                        </tr>
-                    @empty
-                        <tr><td>No published eggs</td></tr>
-                    @endforelse
+		    <div class="content text-center">
+			<div class="title m-b-md">
+			    <h1 class="hatcher"><span class="hidden-xs">SHA2017</span> {{ config('app.name', 'Laravel') }}</h1>
+			</div>
+			<div>
+			    Contributors: {{$users}}
+			    Eggs: {{$projects}}
+			</div>
+			<div class="spacer col-md-12 hidden-xs"></div>
+			<div class="links">
+			    <a href="https://wiki.sha2017.org/w/Projects:Badge">Wiki</a>
+			    <a href="https://github.com/SHA2017-badge/">GitHub</a>
+			    <a href="https://twitter.com/SHA2017Badge">Twitter</a>
+			</div>
+			<div class="spacer col-md-12 hidden-xs"></div>
+			<table class="table table-condensed">
+			    <thead>
+			    <tr>
+				<th>Name</th>
+				<th>Revision</th>
+				<th>Size of zip</th>
+				<th>Size of content</th>
+				<th>Last change</th>
+			    </tr>
+			    </thead>
+			    <tbody>
+			    @forelse($published as $project)
+				<tr>
+				    <td><a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
+				    <td>{{ $project->revision }}</td>
+				    <td>{{ $project->size_of_zip }}</td>
+				    <td>{{ $project->size_of_content }}</td>
+				    <td>{{ $project->updated_at->diffForHumans() }}</td>
+				</tr>
+			    @empty
+				<tr><td>No published eggs</td></tr>
+			    @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
-    </body>
-</html>
+        </div>
+    </div>
+</div>
+@endsection
