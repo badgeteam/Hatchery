@@ -71,6 +71,21 @@ class FileTest extends TestCase
     }
 
     /**
+     * Check the files edit page functions for other users.
+     */
+    public function testFilesEditOtherUser()
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create();
+        $response = $this
+            ->actingAs($otherUser)
+            ->get('/files/' . $file->id . '/edit');
+        $response->assertStatus(403);
+    }
+
+    /**
      * Check the files can be stored.
      */
     public function testFilesUpdate()
@@ -85,6 +100,23 @@ time.localtime()';
             ->call('put', '/files/' . $file->id, ['file_content' => $data]);
         $response->assertRedirect('/projects/' . $file->version->project->slug . '/edit')->assertSessionHas('successes');
         $this->assertEquals($data, File::find($file->id)->content);
+    }
+
+    /**
+     * Check the files can't be stored by other users.
+     */
+    public function testFilesUpdateOtherUser()
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create();
+        $data = 'import time
+time.localtime()';
+        $response = $this
+            ->actingAs($otherUser)
+            ->call('put', '/files/' . $file->id, ['file_content' => $data]);
+        $response->assertStatus(403);
     }
 
     /**
