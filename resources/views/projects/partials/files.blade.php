@@ -15,7 +15,7 @@
     @forelse($project->versions->last()->files as $file)
         <tr>
             <td>
-                @if($file->editable)
+                @if($file->editable && Auth::user()->can('update', $file))
                 <a href="{{ route('files.edit', ['file' => $file->id]) }}">{{ $file->name }}</a>
                 @else
                 {{ $file->name }}
@@ -24,9 +24,11 @@
             <td>{{ $file->updated_at }}</td>
             <td>{{ $file->size_of_content }}</td>
             <td>
+		@can('delete', $file)
                 {!! Form::open(['method' => 'delete', 'route' => ['files.destroy', 'file' => $file->id]]) !!}
                 <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete"  style="width: 48px;">delete</button>
-                {!! Form::close() !!}
+		{!! Form::close() !!}
+		@endcan
             </td>
         </tr>
     @empty
