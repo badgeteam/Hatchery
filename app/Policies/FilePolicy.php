@@ -13,11 +13,9 @@ class FilePolicy
     /**
      * Determine whether the user can view the file.
      *
-     * @param  \App\User  $user
-     * @param  \App\File  $file
      * @return mixed
      */
-    public function view(User $user, File $file)
+    public function view()
     {
         // Everybody can view files
 	return true;
@@ -26,7 +24,6 @@ class FilePolicy
     /**
      * Determine whether the user can create files.
      *
-     * @param  \App\User  $user
      * @return mixed
      */
     public function create(User $user)
