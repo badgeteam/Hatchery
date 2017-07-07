@@ -25,7 +25,7 @@
 	}	
 
 	h1.hatcher {
-		font-size: 86px;
+		font-size: 76px;
 		font-weight: 400;
 	}
 	.table-condensed th {
