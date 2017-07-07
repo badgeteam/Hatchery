@@ -46,7 +46,11 @@
                         @if(isset($file))
                             <li><a href="{{ route('projects.index') }}">Eggs</a></li>
                             @if(Auth::check())
-                            <li><a href="{{ route('projects.edit', ['project' => $file->version->project->slug]) }}">{{ $file->version->project->name }}</a></li>
+                                @can('update', $file->version->project)
+                                    <li><a href="{{ route('projects.edit', ['project' => $file->version->project->slug]) }}">{{ $file->version->project->name }}</a></li>
+                                @else
+                                    <li><a href="{{ route('projects.show', ['project' => $file->version->project->slug]) }}">{{ $file->version->project->name }}</a></li>
+                                @endcan
                             @else
                             <li><a href="{{ route('projects.show', ['project' => $file->version->project->slug]) }}">{{ $file->version->project->name }}</a></li>
                             @endif

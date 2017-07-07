@@ -30,7 +30,12 @@
                         <tbody>
                             @forelse($projects as $project)
                                 <tr>
-                                    <td><a href="{{ route('projects.edit', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
+				    <td>
+					@can('update', $project)
+						<a href="{{ route('projects.edit', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
+					@elsecan('view', $project)
+						<a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
+					@endcan
                                     <td>{{ $project->versions()->published()->count() > 0 ? $project->versions()->published()->get()->last()->revision : 'unpublished' }}</td>
                                     <td>{{ $project->size_of_zip }}</td>
                                     <td>{{ $project->size_of_content }}</td>

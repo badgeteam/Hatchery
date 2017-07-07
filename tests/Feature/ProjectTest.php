@@ -76,6 +76,21 @@ class ProjectTest extends TestCase
     }
 
     /**
+     * Check the projects edit page functions for other users.
+     */
+    public function testProjectsEditOtherUser()
+    {
+        $user = factory(User::class)->create();
+	$otherUser = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($otherUser)
+            ->get('/projects/'.$project->slug.'/edit');
+        $response->assertStatus(403);
+    }
+
+    /**
      * Check the projects can be stored.
      */
     public function testProjectsUpdate()
@@ -96,6 +111,31 @@ class ProjectTest extends TestCase
             ->actingAs($user)
             ->call('put', '/projects/' . $project->slug, ['description' => $faker->paragraph]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
+        // remove deps
+    }
+
+    /**
+     * Check the projects can't be stored by other users.
+     */
+    public function testProjectsUpdateOtherUser()
+    {
+        $user = factory(User::class)->create();
+	$otherUser = factory(User::class)->create();
+        $this->be($user);
+        $projectDep = factory(Project::class)->create();
+        $projectDep->versions()->first()->zip = 'test';
+        $projectDep->versions()->first()->save();
+        $project = factory(Project::class)->create();
+        $faker = Factory::create();
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/projects/' . $project->slug, ['description' => $faker->paragraph, 'dependencies' => [$projectDep->id]]);
+        $response->assertRedirect('/projects')->assertSessionHas('successes');
+        // add deps
+        $response = $this
+            ->actingAs($otherUser)
+            ->call('put', '/projects/' . $project->slug, ['description' => $faker->paragraph]);
+        $response->assertStatus(403);
         // remove deps
     }
 
@@ -140,4 +180,18 @@ class ProjectTest extends TestCase
         $response->assertRedirect('/projects/')->assertSessionHas('successes');
     }
 
+    /**
+     * Check the projects can't be deleted by other users.
+     */
+    public function testProjectsDestroyOtherUser()
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($otherUser)
+            ->call('delete', '/projects/' . $project->slug);
+        $response->assertStatus(403);
+    }
 }
