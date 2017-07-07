@@ -26,7 +26,7 @@ class FilePolicy
      *
      * @return mixed
      */
-    public function create(User $user)
+    public function create()
     {
         // Everybody can create files
         return true;
