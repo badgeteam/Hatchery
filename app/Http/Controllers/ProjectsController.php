@@ -20,7 +20,7 @@ class ProjectsController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => 'show']);
-	$this->authorizeResource(Project::class);
+	$this->authorizeResource(Project::class, null,['except' => 'show']);
 
     }
 

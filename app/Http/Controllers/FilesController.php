@@ -20,7 +20,7 @@ class FilesController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => 'show']);
-	$this->authorizeResource(File::class);
+	$this->authorizeResource(File::class, null, ['except' => 'show']);
     }
 
     /**
