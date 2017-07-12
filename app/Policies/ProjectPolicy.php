@@ -31,7 +31,7 @@ class ProjectPolicy
     public function update(User $user, Project $project)
     {
 	// Normal users can only change their own projects
-	return $user->id == $project->user->id;
+	return $user->admin || $user->id == $project->user->id;
     }
 
     /**
@@ -44,6 +44,6 @@ class ProjectPolicy
     public function delete(User $user, Project $project)
     {
 	// Normal users can only delete their own projects
-	return $user->id == $project->user->id;
+	return  $user->admin || $user->id == $project->user->id;
     }
 }
