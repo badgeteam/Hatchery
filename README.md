@@ -51,6 +51,7 @@ npm run production
 ```
 /schedule/days             - the 5 days of SHA
 /schedule/day/[0-4]        - simplified lectures data for the day
+/weather                   - weather proxied from darksky.net
 ```
 
 ## Running tests

@@ -11,22 +11,11 @@ class FilePolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view the file.
-     *
-     * @return mixed
-     */
-    public function view()
-    {
-        // Everybody can view files
-	return true;
-    }
-
-    /**
      * Determine whether the user can create files.
      *
-     * @return mixed
+     * @return bool
      */
-    public function create()
+    public function create(): bool
     {
         // Everybody can create files
         return true;
@@ -35,26 +24,26 @@ class FilePolicy
     /**
      * Determine whether the user can update the file.
      *
-     * @param  \App\User  $user
-     * @param  \App\File  $file
-     * @return mixed
+     * @param User $user
+     * @param File $file
+     * @return bool
      */
-    public function update(User $user, File $file)
+    public function update(User $user, File $file): bool
     {
-	// You can only change your own files
-	return $user->id == $file->user->id;
+        // Normal users can only change files in their own project
+        return $user->admin || $user->id == $file->version->project->user->id;
     }
 
     /**
      * Determine whether the user can delete the file.
      *
-     * @param  \App\User  $user
-     * @param  \App\File  $file
-     * @return mixed
+     * @param User $user
+     * @param File $file
+     * @return bool
      */
-    public function delete(User $user, File $file)
+    public function delete(User $user, File $file): bool
     {
-	// You can only delete your own files
-	return $user->id == $file->user->id;
+	    // Normal users can only delete  files in their own project
+	    return $user->admin || $user->id == $file->version->project->user->id;
     }
 }

@@ -11,17 +11,6 @@ class ProjectPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view the project.
-     *
-     * @return mixed
-     */
-    public function view()
-    {
-        // Everybody can view projects
-	return true;
-    }
-
-    /**
      * Determine whether the user can create projects.
      *
      * @return mixed
@@ -35,26 +24,26 @@ class ProjectPolicy
     /**
      * Determine whether the user can update the project.
      *
-     * @param  \App\User  $user
-     * @param  \App\Project  $project
+     * @param  User  $user
+     * @param  Project  $project
      * @return mixed
      */
     public function update(User $user, Project $project)
     {
-	// You can only change your own projects
+	// Normal users can only change their own projects
 	return $user->id == $project->user->id;
     }
 
     /**
      * Determine whether the user can delete the project.
      *
-     * @param  \App\User  $user
-     * @param  \App\Project  $project
+     * @param  User  $user
+     * @param  Project  $project
      * @return mixed
      */
     public function delete(User $user, Project $project)
     {
-	// You can only delete your own projects
+	// Normal users can only delete their own projects
 	return $user->id == $project->user->id;
     }
 }

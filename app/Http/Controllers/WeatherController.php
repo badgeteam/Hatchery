@@ -10,8 +10,13 @@ use stdClass;
 class WeatherController extends Controller
 {
     private $minutes = 10; // max 144 requests/day ;)
-    private $url = 'https://api.darksky.net/forecast/66b6f2f983cb00a1781c1d4f3ae71aa2/52.3451,5.4581?units=ca&exclude=currently,alerts,flags,daily,minutely';
+    private $url = '';
 
+    function __construct() {
+        $this->url = 'https://api.darksky.net/forecast/'
+            .config('services.darksky')
+            .'/52.3451,5.4581?units=ca&exclude=currently,alerts,flags,daily,minutely';
+    }
 
     /**
      * Show schedule of a day
@@ -35,7 +40,7 @@ class WeatherController extends Controller
             $json = file_get_contents($this->url);
             if ($json === false)
             {
-                die("Couldn't fetch the weather from: ". $this->url);
+                abort(404, "Couldn't fetch the weather from: ". $this->url);
             }
             $expiresAt = Carbon::now()->addMinutes($this->minutes);
             Cache::put('weather', $json, $expiresAt);

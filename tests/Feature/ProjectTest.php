@@ -194,4 +194,32 @@ class ProjectTest extends TestCase
             ->call('delete', '/projects/' . $project->slug);
         $response->assertStatus(403);
     }
+
+    /**
+     * Check the projects can be deleted by admin users.
+     */
+    public function testProjectsDestroyAdminUser()
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create(['admin' => true]);
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($otherUser)
+            ->call('delete', '/projects/' . $project->slug);
+        $response->assertStatus(403);
+    }
+
+    /**
+     * Check the projects can be viewed (publicly).
+     */
+    public function testProjectsView()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->call('get', '/projects/' . $project->slug);
+        $response->assertStatus(200)->assertViewHas(['project']);
+    }
 }

@@ -195,4 +195,17 @@ time.localtime()';
             ->call('put', '/files/' . $file->id, ['file_content' => $data]);
         $response->assertRedirect('/files/' . $file->id . '/edit')->assertSessionHas('errors');
     }
+
+    /**
+     * Check the files can be viewed (publicly).
+     */
+    public function testFilesView()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create();
+        $response = $this
+            ->call('get', '/files/' . $file->id);
+        $response->assertStatus(200)->assertViewHas(['file']);
+    }
 }

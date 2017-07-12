@@ -35,4 +35,6 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'darksky' => env('DARKSKY_API_KEY'),
+
 ];
