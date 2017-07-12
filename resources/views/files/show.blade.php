@@ -10,6 +10,11 @@
 
                 <div class="panel-heading">
                     <strong>{{ $file->name }}</strong>
+                    @can('update', $file)
+                        <div class="pull-right">
+                            <a class="btn btn-primary btn-xs" href="{{ route('files.edit', ['file' => $file->id])  }}">edit</a>
+                        </div>
+                    @endcan
                 </div>
 
                 <div class="panel-body">

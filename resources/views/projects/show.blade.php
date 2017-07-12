@@ -10,6 +10,11 @@
 
                 <div class="panel-heading">
                     <strong>{{ $project->name }}</strong> rev. {{ $project->revision }}
+                    @can('update', $project)
+                    <div class="pull-right">
+                        <a class="btn btn-primary btn-xs" href="{{ route('projects.edit', ['project' => $project->slug])  }}">edit</a>
+                    </div>
+                    @endcan
                 </div>
 
                 <div class="panel-body">

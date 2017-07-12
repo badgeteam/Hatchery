@@ -18,7 +18,7 @@
                 @if($file->editable && Auth::user()->can('update', $file))
                 <a href="{{ route('files.edit', ['file' => $file->id]) }}">{{ $file->name }}</a>
                 @else
-                {{ $file->name }}
+                <a href="{{ route('files.show', ['file' => $file->id]) }}">{{ $file->name }}</a>
                 @endif
             </td>
             <td>{{ $file->updated_at }}</td>
