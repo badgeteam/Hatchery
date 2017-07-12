@@ -207,7 +207,7 @@ class ProjectTest extends TestCase
         $response = $this
             ->actingAs($otherUser)
             ->call('delete', '/projects/' . $project->slug);
-        $response->assertStatus(403);
+        $response->assertRedirect('/projects/')->assertSessionHas('successes');
     }
 
     /**
