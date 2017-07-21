@@ -36,7 +36,7 @@ class PublicController extends Controller
     public function projectJson(Project $project): JsonResponse
     {
         $releases = [];
-        foreach($project->versions()->published()->limit(5)->get() as $version) {
+        foreach($project->versions()->published()->orderBy('revision', 'desc')->limit(5)->get() as $version) {
             $releases[$version->revision] = [['url' => url($version->zip)]];
         }
 
