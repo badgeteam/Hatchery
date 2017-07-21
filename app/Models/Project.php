@@ -142,6 +142,9 @@ class Project extends Model
      */
     public function getCategoryAttribute():? string
     {
+        if (is_null($this->category()->first())) {
+            return 'uncategorised';
+        }
         return $this->category()->first()->slug;
     }
 }

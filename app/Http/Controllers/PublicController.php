@@ -36,7 +36,7 @@ class PublicController extends Controller
     public function projectJson(Project $project): JsonResponse
     {
         $releases = [];
-        foreach($project->versions()->published()->get() as $version) {
+        foreach($project->versions()->published()->limit(5)->get() as $version) {
             $releases[$version->revision] = [['url' => url($version->zip)]];
         }
 
@@ -49,6 +49,8 @@ class PublicController extends Controller
         $package = new stdClass;
         $package->info = ['version' => (string)$version->revision];
         $package->description = $project->description;
+        $package->name = $project->name;
+        $package->category = $project->category;
         $package->releases = $releases;
 
         return response()->json($package, 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);

@@ -76,7 +76,9 @@ class PublicTest extends TestCase
         $response->assertStatus(200)
             ->assertExactJson([
                 "description" => "",
+                "name" => $version->project->name,
                 "info" => ["version" => "1"],
+                "category" => "uncategorised",
                 "releases" => [
                     "1" => [
                         [
