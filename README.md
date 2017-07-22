@@ -40,18 +40,26 @@ npm run production
 
 ## API
 
+Apps
 ```
-/eggs/get/[app]/json       - get json data for a the egg named [app]
-/eggs/list/json            - a list of all eggs with name, slug, description, revision
-/eggs/search/[words]/json  - json data for search query [words]
-/eggs/categories/json      - json list of categories
-/eggs/category/[cat]/json  - json data for category [cat]
+/eggs/get/[app]/json          - get json data for a the egg named [app]
+/eggs/list/json               - a list of all eggs with name, slug, description, revision
+/eggs/search/[words]/json     - json data for search query [words]
+/eggs/categories/json         - json list of categories
+/eggs/category/[cat]/json     - json data for category [cat]
 ```
 
+Events (via `schedule.py`)
 ```
-/schedule/days             - the 5 days of SHA
-/schedule/day/[0-4]        - simplified lectures data for the day
-/weather                   - weather proxied from darksky.net
+/schedule/schedule.json       - version and dates
+/schedule/day/[0-4].json      - names and guids
+/schedule/event/[guid].json   - info about events
+/schedule/fahrplan/[0-4].json - time, duration and tile
+```
+
+App specific
+```
+/weather                      - weather proxied from darksky.net
 ```
 
 ## Running tests

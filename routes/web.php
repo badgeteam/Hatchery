@@ -33,8 +33,4 @@ Route::get('/eggs/search/{words}/json', 'PublicController@searchJson')->name('se
 Route::get('/eggs/categories/json', 'PublicController@categoriesJson')->name('categories.json');
 Route::get('/eggs/category/{category}/json', 'PublicController@categoryJson')->name('category.json');
 
-Route::get('/schedule/days', 'ScheduleController@index')->name('schedule.days');
-Route::get('/schedule/day/{day}', 'ScheduleController@show')->name('schedule.day')
-    ->where(['day' => '[0-4]']);
-
 Route::get('/weather', 'WeatherController@show')->name('weather');

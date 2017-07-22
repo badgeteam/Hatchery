@@ -145,7 +145,9 @@ class ProjectsController extends Controller
             $zip[$project->slug.'/'.$project->slug.'.egg-info/requires.txt'] = $dep;
         }
 
-        $zip->compress(Phar::GZ);
+//        $zip->compress(Phar::GZ);
+
+        system('minigzip < '.public_path($filename).' > '. public_path($filename.'.gz'));
 
         $version->zip = $filename.'.gz';
         $version->size_of_zip = filesize(public_path($version->zip));
