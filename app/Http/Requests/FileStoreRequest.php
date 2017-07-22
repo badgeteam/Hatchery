@@ -26,7 +26,8 @@ class FileStoreRequest extends FormRequest
     {
         return [
             'version_id' => 'required|exists:versions,id',
-            'name' => 'required|unique:files',
+//            'name' => 'required|unique:files',
+            'name' => 'required',
             'file_content' => 'required',
         ];
     }

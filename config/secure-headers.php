@@ -117,7 +117,8 @@ return [
     'custom-csp' => null,
 
     'csp' => [
-        'report-only' => env('APP_ENV') == 'local',
+//        'report-only' => env('APP_ENV') == 'local',
+        'report-only' => true,
 
         'report-uri' => null,
 
@@ -201,7 +202,7 @@ return [
         ],
 
         'form-action' => [
-            'allow' => [env('APP_URL', 'https://badge.sha2017.org')]
+            'allow' => [env('APP_URL', 'https://badge.sha2017.org'), 'self']
         ],
 
         'frame-ancestors' => [
