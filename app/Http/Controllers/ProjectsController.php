@@ -52,6 +52,10 @@ class ProjectsController extends Controller
      */
     public function store(ProjectStoreRequest $request): RedirectResponse
     {
+        if (Project::where('slug', str_slug($request->name, '_'))->exists()) {
+            return redirect()->route('projects.create')->withInput()->withErrors(['slug already exists :(']);
+        }
+
         $project = new Project;
         try {
             $project->name = $request->name;

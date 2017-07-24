@@ -61,6 +61,36 @@ class ProjectTest extends TestCase
         $this->assertCount(1, Project::all());
     }
 
+
+    /**
+     * Check the projects can be stored.
+     */
+    public function testProjectsStoreUnique()
+    {
+        $user = factory(User::class)->create();
+        $faker = Factory::create();
+        $this->assertEmpty(Project::all());
+        $category = factory(Category::class)->create();
+        $name = $faker->name;
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/projects', ['name' => $name, 'description' => $faker->paragraph, 'category_id' => $category->id]);
+        $response->assertRedirect('/projects/'.Project::get()->last()->slug.'/edit')->assertSessionHas('successes');
+        $this->assertCount(1, Project::all());
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/projects', ['name' => $name, 'description' => $faker->paragraph, 'category_id' => $category->id]);
+        $response->assertRedirect('')->assertSessionHas('errors');
+
+        $name .= '+'; // issue found by fox name is unique, slug is identical
+        $this->assertCount(1, Project::all());
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/projects', ['name' => $name, 'description' => $faker->paragraph, 'category_id' => $category->id]);
+        $response->assertRedirect('/projects/create')->assertSessionHas('errors');
+    }
+
+
     /**
      * Check the projects edit page functions.
      */
