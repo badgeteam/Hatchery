@@ -9,7 +9,7 @@
             <div class="panel panel-default">
 
                 <div class="panel-heading">
-                    <strong>{{ $project->name }}</strong> rev. {{ $project->revision }}
+                    <strong>{{ $project->name }}</strong> rev. {{ $project->revision }} (by {{ $project->user->name }})
                     @can('update', $project)
                     <div class="pull-right">
                         <a class="btn btn-primary btn-xs" href="{{ route('projects.edit', ['project' => $project->slug])  }}">edit</a>
