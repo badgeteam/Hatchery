@@ -72,4 +72,30 @@ class ProjectTest extends TestCase
         $this->assertEquals(0, $version->project->size_of_content);
     }
 
+
+    /**
+     * Assert the Project isForbidden
+     */
+    public function testProjectForbiddenNames()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $this->assertTrue(Project::isForbidden('badge'));
+        $this->assertTrue(Project::isForbidden('request'));
+    }
+
+    /**
+     * Assert the Project has a relation with a single User.
+     */
+    public function testProjectSaveForbiddenNames()
+    {
+        $this->expectException(\Exception::class);
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = new Project;
+        $project->description = 'test bla';
+        $project->name = 'ESP32';
+        $project->save();
+    }
+
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class Project extends Model
 {
@@ -16,6 +17,13 @@ class Project extends Model
     protected $appends = ['revision', 'size_of_zip', 'size_of_content', 'category'];
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'user_id', 'id', 'category_id'];
+
+    public static $forbidden = [
+        'os', 'uos', 'badge', 'esp32', 'ussl', 'time', 'utime', 'splash', 'launcher', 'installer', 'ota_update',
+        'boot', 'appglue', 'database', 'dialogs', 'deepsleep', 'magic', 'ntp', 'rtcmem', 'machine', 'setup', 'version',
+        'wifi', 'woezel', 'network', 'socket', 'uhashlib', 'hashlib', 'ugfx', 'btree', 'request', 'urequest', 'uzlib',
+        'zlib', 'ssl',
+    ];
 
     public static function boot()
     {
@@ -41,6 +49,9 @@ class Project extends Model
 
         static::saving(function ($project) {
             $project->slug = str_slug($project->name, '_');
+            if (Project::isForbidden($project->slug)) {
+                throw new \Exception('reserved name');
+            }
         });
 
     }
@@ -146,5 +157,9 @@ class Project extends Model
             return 'uncategorised';
         }
         return $this->category()->first()->slug;
+    }
+
+    public static function isForbidden($slug) {
+        return in_array($slug, self::$forbidden);
     }
 }

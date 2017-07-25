@@ -56,6 +56,10 @@ class ProjectsController extends Controller
             return redirect()->route('projects.create')->withInput()->withErrors(['slug already exists :(']);
         }
 
+        if (Project::isForbidden(str_slug($request->name, '_'))) {
+            return redirect()->route('projects.create')->withInput()->withErrors(['reserved name']);
+        }
+
         $project = new Project;
         try {
             $project->name = $request->name;
