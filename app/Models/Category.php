@@ -12,6 +12,8 @@ class Category extends Model
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'id'];
 
+    protected $appends = ['eggs'];
+
     public static function boot()
     {
         parent::boot();
@@ -37,8 +39,18 @@ class Category extends Model
      *
      * @return string
      */
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    /**
+     * Get the project count for this category.
+     *
+     * @return int
+     */
+    public function getEggsAttribute(): int
+    {
+        return $this->projects()->count();
     }
 }

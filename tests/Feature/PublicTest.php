@@ -206,7 +206,8 @@ class PublicTest extends TestCase
             ->assertExactJson([
                 [
                     "name" => $category->name,
-                    "slug" => $category->slug
+                    "slug" => $category->slug,
+                    "eggs" => 0
                 ]
             ]);
     }
