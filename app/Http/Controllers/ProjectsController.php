@@ -148,6 +148,7 @@ class ProjectsController extends Controller
         $zip[$project->slug.'/metadata.json'] = json_encode([
             'name' => $project->name,
             'description' => $project->description,
+            'category' => $project->category,
             'author' => $project->user->name,
             'revision' => $version->revision
         ]);
