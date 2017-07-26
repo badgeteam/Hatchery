@@ -145,6 +145,13 @@ class ProjectsController extends Controller
             $zip[$project->slug.'/'.$file->name] = $file->content;
         }
 
+        $zip[$project->slug.'/metadata.json'] = json_encode([
+            'name' => $project->name,
+            'description' => $project->description,
+            'author' => $project->user->name,
+            'revision' => $version->revision
+        ]);
+
         if (!$project->dependencies->isEmpty()) {
             $dep = "";
             foreach ($project->dependencies as $dependency) {
