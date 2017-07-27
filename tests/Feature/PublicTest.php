@@ -201,6 +201,65 @@ class PublicTest extends TestCase
     {
         $category = factory(Category::class)->create();
 
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $version->zip = 'some_path.tar.gz';
+        $version->project->category_id = $category->id;
+        $version->project->save();
+        $version->save();
+
+        $response = $this->json('GET', '/eggs/categories/json');
+        $response->assertStatus(200)
+            ->assertExactJson([
+                [
+                    "name" => $category->name,
+                    "slug" => $category->slug,
+                    "eggs" => 1
+                ]
+            ]);
+    }
+
+    /**
+     * Check JSON eggs request . .
+     */
+    public function testCategoriesCountJson()
+    {
+        $category = factory(Category::class)->create();
+        $user = factory(User::class)->create();
+
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $version->zip = 'iets anders';
+        $version->project->category_id = $category->id;
+        $version->project->save();
+        $version->save();
+
+        $response = $this->json('GET', '/eggs/categories/json');
+        $response->assertStatus(200)
+            ->assertExactJson([
+                [
+                    "name" => $category->name,
+                    "slug" => $category->slug,
+                    "eggs" => 1
+                ]
+            ]);
+    }
+
+    /**
+     * Check JSON eggs request . .
+     */
+    public function testCategoriesUnpublishedJson()
+    {
+        $category = factory(Category::class)->create();
+        $user = factory(User::class)->create();
+
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $version->project->category_id = $category->id;
+        $version->project->save();
+        $version->save();
+
         $response = $this->json('GET', '/eggs/categories/json');
         $response->assertStatus(200)
             ->assertExactJson([

@@ -150,7 +150,7 @@ class ProjectTest extends TestCase
     public function testProjectsUpdateOtherUser()
     {
         $user = factory(User::class)->create();
-	$otherUser = factory(User::class)->create();
+	    $otherUser = factory(User::class)->create();
         $this->be($user);
         $projectDep = factory(Project::class)->create();
         $projectDep->versions()->first()->zip = 'test';
