@@ -22,8 +22,15 @@ before_script:
   - npm install
   - npm run production
   - php artisan key:generate
+  - apt-get source zlib
 
 script:
+  - cd zlib-1.2.8.dfsg
+  - ./configure
+  - echo -e "#define MAX_WBITS  13\n$(cat zconf.h)" > zconf.h
+  - make
+  - export PATH=$PATH:`pwd`
+  - cd ..
   - vendor/bin/phpunit
 
 after_script:
