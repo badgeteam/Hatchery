@@ -25,7 +25,7 @@ before_script:
   - apt-get source zlib
 
 script:
-  - cd zlib-1.2.8.dfsg
+  - cd zlib-1.2.3.4.dfsg
   - ./configure
   - echo -e "#define MAX_WBITS  13\n$(cat zconf.h)" > zconf.h
   - make
