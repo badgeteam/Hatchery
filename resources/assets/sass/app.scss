@@ -12,6 +12,8 @@
 
 @import "node_modules/codemirror/lib/codemirror";
 
+@import "node_modules/codemirror/addon/dialog/dialog";
+
 .CodeMirror {
     height: 100% !important;
 }

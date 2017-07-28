@@ -11,18 +11,24 @@ window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone');
 
 window.onload = function() {
     if (document.getElementById("content")) {
-        window.CodeMirror = require(['../../../node_modules/codemirror/lib/codemirror',
-            '../../../node_modules/codemirror/mode/python/python'], function (CodeMirror) {
+        window.CodeMirror = require([
+            '../../../node_modules/codemirror/lib/codemirror',
+            '../../../node_modules/codemirror/mode/python/python',
+            '../../../node_modules/codemirror/addon/dialog/dialog.js',
+            '../../../node_modules/codemirror/addon/search/searchcursor.js',
+            '../../../node_modules/codemirror/keymap/vim.js',
+        ], function (CodeMirror) {
             CodeMirror.fromTextArea(document.getElementById("content"), {
                 lineNumbers: true,
-                mode: "python"
+                mode: "python",
+                showCursorWhenSelecting: true,
+                keyMap: "vim",
             });
         });
         // Enable navigation prompt
         window.onbeforeunload = function() {
             return true;
         };
-
         document.getElementById("content_form").addEventListener("submit", function() {
             window.onbeforeunload = null;
         });
