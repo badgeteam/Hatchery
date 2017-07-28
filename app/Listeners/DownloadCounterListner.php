@@ -27,7 +27,6 @@ class DownloadCounterListner
      */
     public function handle(DownloadCounter $event)
     {
-	Log::error('Incrementing download counter for project: ' . $event->project->slug);
 	// Increment the counter by one
         $event->project->increment('download_counter');
 
