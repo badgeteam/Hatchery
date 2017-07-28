@@ -37,10 +37,9 @@
     </style>
 </head>
 <body>
+    @include('partials.messages')
 
-        @include('partials.messages')
-
-        @yield('content')
+    @yield('content')
 
     <!-- Scripts -->
     <script src="{{ App::environment('local') ? asset('js/app.js') : secure_asset('js/app.js') }}"></script>

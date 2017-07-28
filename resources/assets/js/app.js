@@ -9,6 +9,8 @@ require('./bootstrap');
 
 window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone');
 
+window.keymap = "default";
+
 window.onload = function() {
     if (document.getElementById("content")) {
         window.CodeMirror = require([
@@ -17,12 +19,14 @@ window.onload = function() {
             '../../../node_modules/codemirror/addon/dialog/dialog.js',
             '../../../node_modules/codemirror/addon/search/searchcursor.js',
             '../../../node_modules/codemirror/keymap/vim.js',
+            '../../../node_modules/codemirror/keymap/sublime.js',
+            '../../../node_modules/codemirror/keymap/emacs.js'
         ], function (CodeMirror) {
             CodeMirror.fromTextArea(document.getElementById("content"), {
                 lineNumbers: true,
                 mode: "python",
                 showCursorWhenSelecting: true,
-                keyMap: "vim",
+                keyMap: window.keymap,
             });
         });
         // Enable navigation prompt
@@ -43,4 +47,4 @@ window.onload = function() {
             });
         });
     }
-}
+};

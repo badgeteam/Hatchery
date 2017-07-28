@@ -37,3 +37,9 @@
     </div>
 </div>
 @endsection
+
+@section('script')
+<script>
+//    window.keymap = "vim";
+</script>
+@endsection
