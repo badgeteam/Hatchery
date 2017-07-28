@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class UsersController extends Controller
@@ -70,6 +72,18 @@ class UsersController extends Controller
                 ->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('home')->withSuccesses([$user->name.' deleted']);
+        $this->guard()->logout();
+
+        return redirect()->guest('/')->withSuccesses([$user->name.' deleted']);
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard();
     }
 }

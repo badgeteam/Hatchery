@@ -154,10 +154,112 @@ class UserTest extends TestCase
             ->post('/register', [
                 'name' => $faker->name,
                 'email' => $email,
+                'editor' => 'default',
                 'password' => $password,
                 'password_confirmation' => $password,
                 '_token' => 'test'
             ]);
         $response->assertStatus(302)->assertRedirect('/home');
     }
+
+    /**
+     * Check the user can be deleted.
+     */
+    public function testUserDestroy()
+    {
+        $user = factory(User::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('delete', '/users/' . $user->id);
+        $response->assertRedirect('/')->assertSessionHas('successes');
+        $user = User::withTrashed()->find($user->id);
+        $this->assertNotNull($user->deleted_at);
+    }
+
+    /**
+     * Check the users can't be deleted by other users.
+     */
+    public function testUserDestroyOtherUser()
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $response = $this
+            ->actingAs($otherUser)
+            ->call('delete', '/users/' . $user->id);
+        $response->assertStatus(403);
+    }
+
+    /**
+     * Check the users can be deleted by admin users.
+     */
+    public function testUserDestroyAdminUser()
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $otherUser->admin = true;
+        $otherUser->save();
+        $response = $this
+            ->actingAs($otherUser)
+            ->call('delete', '/users/' . $user->id);
+        $response->assertRedirect('/')->assertSessionHas('successes');
+    }
+
+    /**
+     * Check the user edit page functions.
+     */
+    public function testUserEdit()
+    {
+        $user = factory(User::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->get('/users/'.$user->id.'/edit');
+        $response->assertStatus(200);
+    }
+
+    /**
+     * Check the user edit page functions.
+     */
+    public function testUserEditOtherUser()
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $response = $this
+            ->actingAs($otherUser)
+            ->get('/users/'.$user->id.'/edit');
+        $response->assertStatus(403);
+    }
+
+    /**
+     * Check the user can be stored.
+     */
+    public function testUserUpdate()
+    {
+        $user = factory(User::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/users/' . $user->id, [
+                'name' => 'Henk',
+                'email' => 'henk@annejan.com',
+                'editor' => 'vim'
+            ]);
+        $response->assertRedirect('/projects')->assertSessionHas('successes');
+    }
+
+    /**
+     * Check the other user can't be stored.
+     */
+    public function testUserUpdateOtherUser()
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $response = $this
+            ->actingAs($otherUser)
+            ->call('put', '/users/' . $user->id, [
+                'name' => 'Henk',
+                'email' => 'henk@annejan.com',
+                'editor' => 'vim'
+            ]);
+        $response->assertStatus(403);
+    }
+
 }
