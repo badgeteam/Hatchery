@@ -36,4 +36,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Project::class);
     }
+
+    /**
+     * Change the email to an impossible email
+     */
+    public function delete()
+    {
+        $this->email = 'deleted' . mt_rand() . '#' . $this->email;
+        $this->save();
+        parent::delete();
+    }
 }

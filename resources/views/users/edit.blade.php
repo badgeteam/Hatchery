@@ -5,7 +5,16 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Register</div>
+                    <div class="panel-heading">
+                        Profile
+                        @can('delete', $user)
+                        <div class="pull-right">
+                            {!! Form::open(['method' => 'delete', 'route' => ['users.destroy', 'user' => $user->id]]) !!}
+                            <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">delete</button>
+                            {!! Form::close() !!}
+                        </div>
+                        @endcan
+                    </div>
                     <div class="panel-body">
                         {!! Form::open(['method' => 'put', 'route' => ['users.update', 'user' => $user->id], 'class' => "form-horizontal"]) !!}
 
@@ -71,4 +80,40 @@
             </div>
         </div>
     </div>
+
+    <div id="confirm-delete" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    Are you sure you want to delete yourself?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-danger" id="delete">Delete</button>
+                    <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('script')
+    <script type="text/javascript">
+        window.onload = function() {
+            var uploader = new window.Dropzone("#uploader",{
+                maxFilesize: 1,
+                acceptedFiles: ".{{ implode(',.', \App\Models\File::$extensions)  }}"
+            });
+            var d = document.getElementById("uploader");
+            d.className += " dropzone";
+        }
+
+        // Delete resource
+        $('button[name="delete-resource"]').on('click', function (e) {
+            e.preventDefault()
+            var $form = $(this).closest('form')
+            $('#confirm-delete').modal({ backdrop: 'static', keyboard: false }).one('click', '#delete', function (e) {
+                $form.trigger('submit')
+            })
+        })
+    </script>
 @endsection
