@@ -25,6 +25,8 @@ Route::post('/release/{project}', 'ProjectsController@publish')->name('project.p
 
 Route::resource('files', 'FilesController');
 
+Route::resource('users', 'UsersController', ['only' => ['edit', 'update', 'destroy']]);
+
 Route::get('/eggs/get/{project}/json', 'PublicController@projectJson')->name('project.json');
 
 Route::get('/eggs/list/json', 'PublicController@listJson')->name('list.json');

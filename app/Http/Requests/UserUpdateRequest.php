@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class FileStoreRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,8 @@ class FileStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'version_id' => 'required|exists:versions,id',
             'name' => 'required',
-            'file_content' => 'required',
+            'email' => 'required',
         ];
     }
 }

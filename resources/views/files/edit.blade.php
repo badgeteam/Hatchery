@@ -40,6 +40,6 @@
 
 @section('script')
 <script>
-//    window.keymap = "vim";
+    window.keymap = "{{ Auth::user()->editor }}";
 </script>
 @endsection

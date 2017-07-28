@@ -21,7 +21,9 @@
                     <div class="row">
 
                         <div class="col-md-8 clearfix">
-                            {{$project->description }}
+                            @foreach(explode("\n", $project->description) as $line)
+                                {{$line}}<br/>
+                            @endforeach
                         </div>
                         <div class="col-md-4 clearfix">
                             @include('projects.partials.show-dependencies')

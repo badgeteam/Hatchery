@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDownloadCounterToProjects extends Migration
+class AlterUsersAddEditorField extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddDownloadCounterToProjects extends Migration
      */
     public function up()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->integer('download_counter', false, true)->default(0);
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('editor', 80)->default('default')->after('remember_token');
         });
     }
 
@@ -25,8 +25,8 @@ class AddDownloadCounterToProjects extends Migration
      */
     public function down()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->dropColumn('download_counter');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('editor');
         });
     }
 }

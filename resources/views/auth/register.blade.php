@@ -60,6 +60,25 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('editor') ? ' has-error' : '' }}">
+                            <label for="password" class="col-md-4 control-label">Prefered editor</label>
+
+                            <div class="col-md-6">
+                                <select id="editor" class="form-control" name="editor">
+                                    <option value="default">notepad.exe</option>
+                                    <option value="vim">vim</option>
+                                    <option value="emacs">emacs</option>
+                                    <option value="sublime">Sublime</option>
+                                </select>
+
+                                @if ($errors->has('editor'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('editor') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
