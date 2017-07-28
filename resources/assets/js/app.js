@@ -18,6 +18,14 @@ window.onload = function() {
                 mode: "python"
             });
         });
+        // Enable navigation prompt
+        window.onbeforeunload = function() {
+            return true;
+        };
+
+        document.getElementById("content_form").addEventListener("submit", function() {
+            window.onbeforeunload = null;
+        });
     }
     if (document.getElementById("content-readonly")) {
         window.CodeMirror = require(['../../../node_modules/codemirror/lib/codemirror',

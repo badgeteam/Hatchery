@@ -16,7 +16,7 @@
                     <div class="row">
 
                         <div class="col-md-12 clearfix">
-                            {!! Form::open(['method' => 'put', 'route' => ['files.update', 'file' => $file->id]]) !!}
+                            {!! Form::open(['method' => 'put', 'route' => ['files.update', 'file' => $file->id], 'id' => 'content_form']) !!}
 
                             <div class="form-group @if($errors->has('file_content')) has-error @endif">
                                 {{ Form::label('file_content', 'Content', ['class' => 'control-label']) }}

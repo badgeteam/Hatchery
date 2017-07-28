@@ -16,7 +16,7 @@
                     <div class="row">
 
                         <div class="col-md-12 clearfix">
-                            {!! Form::open(['method' => 'post', 'route' => 'files.store']) !!}
+                            {!! Form::open(['method' => 'post', 'route' => 'files.store', 'id' => 'content_form']) !!}
 
                             {{ Form::hidden('version_id', $version->id) }}
 
