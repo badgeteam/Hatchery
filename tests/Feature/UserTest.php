@@ -129,7 +129,7 @@ class UserTest extends TestCase
             'password_confirmation' => $password,
             '_token' => 'test'
         ]);
-        $response->assertStatus(302)->assertRedirect('/home');
+        $response->assertStatus(302)->assertRedirect('/projects');
 
         $response = $this
             ->withSession(['_token'=>'test'])
@@ -159,7 +159,7 @@ class UserTest extends TestCase
                 'password_confirmation' => $password,
                 '_token' => 'test'
             ]);
-        $response->assertStatus(302)->assertRedirect('/home');
+        $response->assertStatus(302)->assertRedirect('/projects');
     }
 
     /**
@@ -261,5 +261,6 @@ class UserTest extends TestCase
             ]);
         $response->assertStatus(403);
     }
+
 
 }
