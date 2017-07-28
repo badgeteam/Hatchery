@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Project;
 use App\Models\User;
+use App\Events\DownloadCounter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 use stdClass;
@@ -52,6 +53,8 @@ class PublicController extends Controller
         $package->name = $project->name;
         $package->category = $project->category;
         $package->releases = $releases;
+
+	event(new DownloadCounter($project));
 
         return response()->json($package, 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
