@@ -24,7 +24,7 @@
                                 <th>Revision</th>
                                 <th>Size of egg</th>
                                 <th>Size of content</th>
-                                <th>Last change</th>
+                                <th>Last release</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,7 +39,7 @@
                                     <td>{{ $project->versions()->published()->count() > 0 ? $project->versions()->published()->get()->last()->revision : 'unpublished' }}</td>
                                     <td>{{ $project->size_of_zip }}</td>
                                     <td>{{ $project->size_of_content }}</td>
-                                    <td>{{ $project->updated_at }}</td>
+                                    <td>{{ $project->versions()->published()->count() > 0 ? $project->versions()->published()->get()->last()->updated_at : '-' }}</td>
                                 </tr>
                             @empty
                                 <tr>

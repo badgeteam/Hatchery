@@ -39,7 +39,7 @@
 				<th>Revision</th>
 				<th>Size of zip</th>
 				<th>Size of content</th>
-				<th>Last change</th>
+				<th>Last release</th>
 			    </tr>
 			    </thead>
 			    <tbody>
@@ -49,7 +49,7 @@
 				    <td>{{ $project->revision }}</td>
 				    <td>{{ $project->size_of_zip }}</td>
 				    <td>{{ $project->size_of_content }}</td>
-				    <td>{{ $project->updated_at->diffForHumans() }}</td>
+				    <td>{{ $project->versions()->published()->get()->last()->updated_at->diffForHumans() }}</td>
 				</tr>
 			    @empty
 				<tr><td>No published eggs</td></tr>
