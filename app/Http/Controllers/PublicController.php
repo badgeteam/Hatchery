@@ -108,7 +108,7 @@ class PublicController extends Controller
      */
     public function categoriesJson(): JsonResponse
     {
-        return response()->json(Category::all(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        return response()->json(Category::where('hidden', false)->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
 
 }

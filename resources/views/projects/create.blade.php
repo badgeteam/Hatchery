@@ -20,7 +20,7 @@
                             {!! Form::open(['method' => 'post', 'route' => ['projects.store']]) !!}
                                 <div class="form-group @if($errors->has('category_id')) has-error @endif">
                                     {{ Form::label('category_id', 'Category', ['class' => 'control-label']) }}
-                                    {{ Form::select('category_id', \App\Models\Category::pluck('name', 'id'), 0, ['class' => 'form-control', 'id' => 'category_id']) }}
+                                    {{ Form::select('category_id', \App\Models\Category::where('hidden', false)->pluck('name', 'id'), 0, ['class' => 'form-control', 'id' => 'category_id']) }}
                                 </div>
 
                                 <div class="form-group @if($errors->has('name')) has-error @endif">
