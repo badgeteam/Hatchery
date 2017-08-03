@@ -26,6 +26,8 @@
                             @endforeach
                         </div>
                         <div class="col-md-4 clearfix">
+                            Category: {{ $project->category }}
+                            <hr>
                             @include('projects.partials.show-dependencies')
                         </div>
                         <div class="col-md-12 clearfix">
