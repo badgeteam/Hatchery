@@ -10,7 +10,7 @@ class Category extends Model
 {
     use SoftDeletes;
 
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'id'];
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'id', 'hidden'];
 
     protected $appends = ['eggs'];
 
