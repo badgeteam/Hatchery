@@ -64,7 +64,7 @@ class ProjectsController extends Controller
             $project->name = $request->name;
             $project->description = $request->description;
             $project->category_id = $request->category_id;
-	    $project->status = $request->status;
+	    $project->status = 'unknown';
             $project->save();
         } catch (\Exception $e) {
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
