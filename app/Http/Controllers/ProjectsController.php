@@ -64,6 +64,7 @@ class ProjectsController extends Controller
             $project->name = $request->name;
             $project->description = $request->description;
             $project->category_id = $request->category_id;
+	    $project->status = $request->status;
             $project->save();
         } catch (\Exception $e) {
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
@@ -96,6 +97,7 @@ class ProjectsController extends Controller
         try {
             $project->description = $request->description;
             $project->category_id = $request->category_id;
+	    $project->status = $request->status;
             if ($request->has('dependencies')) {
                 $dependencies = $request->get('dependencies');
                 foreach($project->dependencies as $dependency) {
