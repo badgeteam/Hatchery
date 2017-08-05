@@ -33,6 +33,8 @@
                                     {{ Form::textarea('description', null, ['class' => 'form-control', 'id' => 'description']) }}
                                 </div>
 
+                                <input name="status" type="hidden" value="3" />
+
                                 <div class="pull-right">
                                     <button type="submit" class="btn btn-default">Save</button>
                                 </div>
