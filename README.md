@@ -37,6 +37,13 @@ php artisan migrate
 npm install
 npm run production
 ```
+Running the development server.
+
+
+```bash
+php artisan serve
+
+```
 
 ## API
 
@@ -85,4 +92,4 @@ App specific
      phpunit --coverage-html docs/coverage
  
  This will create the code coverage docs in `docs/coverage/index.html`
-  
+
