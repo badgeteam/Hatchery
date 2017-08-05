@@ -56,7 +56,7 @@ class ProjectTest extends TestCase
         $category = factory(Category::class)->create();
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $faker->name, 'description' => $faker->paragraph, 'category_id' => $category->id]);
+            ->call('post', '/projects', ['name' => $faker->name, 'description' => $faker->paragraph, 'category_id' => $category->id, 'status' => 'unknown']);
         $response->assertRedirect('/projects/'.Project::get()->last()->slug.'/edit')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
     }
@@ -74,7 +74,7 @@ class ProjectTest extends TestCase
         $name = $faker->name;
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $name, 'description' => $faker->paragraph, 'category_id' => $category->id]);
+            ->call('post', '/projects', ['name' => $name, 'description' => $faker->paragraph, 'category_id' => $category->id, 'status' => 'unknown']);
         $response->assertRedirect('/projects/'.Project::get()->last()->slug.'/edit')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
         $response = $this

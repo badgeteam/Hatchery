@@ -130,7 +130,8 @@ class PublicTest extends TestCase
                     "size_of_content" => $version->project->size_of_content,
                     "size_of_zip" => 0,
                     "category" => $category->slug,
-                    "download_counter" => 0
+		    "download_counter" => 0,
+		    "status" => "unknown"
                 ]
             ]);
     }
@@ -163,7 +164,8 @@ class PublicTest extends TestCase
                     "size_of_content" => 0,
                     "size_of_zip" => 0,
                     "category" => $category->slug,
-                    "download_counter" => 0
+		    "download_counter" => 0,
+		    "status" => "unknown"
                 ]
             ]);
     }
@@ -192,7 +194,8 @@ class PublicTest extends TestCase
                     "size_of_content" => 0,
                     "size_of_zip" => 0,
                     "category" => $category->slug,
-                    "download_counter" => 0
+                    "download_counter" => 0,
+		    "status" => 'unknown'
                 ]
             ]);
     }
