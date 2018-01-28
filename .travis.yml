@@ -22,10 +22,11 @@ before_script:
   - npm install
   - npm run production
   - php artisan key:generate
-  - apt-get source zlib
+  - curl -s -o zlib-1.2.11.tar.gz http://zlib.net/zlib-1.2.11.tar.gz
+  - tar xvf zlib-1.2.11.tar.gz
 
 script:
-  - cd zlib-1.2.3.4.dfsg
+  - cd zlib-1.2.11
   - ./configure
   - echo -e "#define MAX_WBITS  13\n$(cat zconf.h)" > zconf.h
   - make
