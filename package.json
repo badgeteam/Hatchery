@@ -13,7 +13,7 @@
     "prod": "npm run production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
-  "devDependencies": {
+  "dependencies": {
     "axios": "^0.16.2",
     "bootstrap-sass": "^3.3.7",
     "cross-env": "^5.1.1",
@@ -25,10 +25,9 @@
     "loader-utils": "^1.1.0",
     "css-loader": "^0.28.9",
     "babel-loader": "^7.1.2",
-    "webpack": "^3.10.0"
-  },
-  "dependencies": {
+    "webpack": "^3.10.0",
     "codemirror": "^5.33.0",
-    "dropzone": "^5.3.0"
+    "dropzone": "^5.3.0",
+    "style-loader": "^0.20.1"
   }
 }
