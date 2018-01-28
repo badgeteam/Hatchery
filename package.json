@@ -24,6 +24,7 @@
     "marked": "^0.3.12",
     "loader-utils": "^1.1.0",
     "css-loader": "^0.28.9",
+    "babel-loader": "^7.1.2",
     "webpack": "^3.10.0"
   },
   "dependencies": {
