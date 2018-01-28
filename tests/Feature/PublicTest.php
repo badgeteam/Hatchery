@@ -58,7 +58,7 @@ class PublicTest extends TestCase
         // TODO catch this and return 404 ??
         $response = $this->json('GET', '/eggs/get/something/json');
         $response->assertStatus(404)
-            ->assertExactJson(["message" => "No releases found"]);
+            ->assertExactJson(["message" => "No query results for model [App\\Models\\Project]."]);
     }
 
     /**
