@@ -34,7 +34,7 @@ class UserTest extends TestCase
             ->assertSessionHas('errors')
             ->assertSessionHas('_old_input', [
                 "email" => 'annejan@noprotocol.nl',
-                "remember" => null
+		'_token' => 'test'
             ]);
     }
 
