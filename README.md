@@ -1,5 +1,6 @@
 <p align="center">
 <a href="https://travis-ci.org/SHA2017-badge/Hatchery"><img src="https://travis-ci.org/SHA2017-badge/Hatchery.svg" alt="Build Status"></a>
+<a href="https://codeclimate.com/github/SHA2017-badge/Hatchery/maintainability"><img src="https://api.codeclimate.com/v1/badges/d11aea44f07d8945e76e/maintainability" /></a>
 <a href="https://codeclimate.com/github/SHA2017-badge/Hatchery/test_coverage"><img src="https://api.codeclimate.com/v1/badges/d11aea44f07d8945e76e/test_coverage" /></a>
 <a href="https://www.codacy.com/app/annejan/Hatchery"><img src="https://api.codacy.com/project/badge/Grade/fd1f9360910d4b6f966f528af1f3568b" alt="Codacy Badge"></a>
 </p>
@@ -36,12 +37,22 @@ php artisan migrate
 npm install
 npm run production
 ```
+Compiling and installing the patched minigzip 
+
+```bash
+wget http://zlib.net/zlib-1.2.11.tar.gz
+tar xvf zlib-1.2.11.tar.gz
+cd zlib-1.2.11
+./configure
+echo -e "#define MAX_WBITS  13\n$(cat zconf.h)" > zconf.h
+make
+sudo make install
+```
 Running the development server.
 
 
 ```bash
 php artisan serve
-
 ```
 
 ## API
