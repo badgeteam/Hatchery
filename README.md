@@ -1,7 +1,6 @@
 <p align="center">
 <a href="https://travis-ci.org/SHA2017-badge/Hatchery"><img src="https://travis-ci.org/SHA2017-badge/Hatchery.svg" alt="Build Status"></a>
-<a href="https://codeclimate.com/github/SHA2017-badge/Hatchery"><img src="https://img.shields.io/codeclimate/coverage/github/SHA2017-badge/Hatchery.svg" alt="Code Coverage"></a>
-<a href="https://codeclimate.com/github/SHA2017-badge/Hatchery"><img src="https://img.shields.io/codeclimate/github/SHA2017-badge/Hatchery.svg" alt="Code Climate GPA"></a>
+<a href="https://codeclimate.com/github/SHA2017-badge/Hatchery/test_coverage"><img src="https://api.codeclimate.com/v1/badges/d11aea44f07d8945e76e/test_coverage" /></a>
 <a href="https://www.codacy.com/app/annejan/Hatchery"><img src="https://api.codacy.com/project/badge/Grade/fd1f9360910d4b6f966f528af1f3568b" alt="Codacy Badge"></a>
 </p>
 
