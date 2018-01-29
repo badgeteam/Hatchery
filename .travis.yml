@@ -33,6 +33,7 @@ script:
   - export PATH=$PATH:`pwd`
   - cd ..
   - vendor/bin/phpunit
+  - npm run lint
 
 after_script:
   - ./codeclimate.sh

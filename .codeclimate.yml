@@ -1,0 +1,8 @@
+plugins:
+  sonar-php:
+    enabled: true
+    config:
+      tests_patterns:
+        - tests/**
+  scss-lint:
+    enabled: true
