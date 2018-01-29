@@ -31,11 +31,15 @@ class PublicController extends Controller
     /**
      * Get the latest released version.
      *
-     * @param  Project  $project
+     * @param  string $slug
      * @return JsonResponse
      */
-    public function projectJson(Project $project): JsonResponse
+    public function projectJson(string $slug): JsonResponse
     {
+        $project = Project::where('slug', $slug)->first();
+        if (is_null($project)) {
+            return response()->json(["message" => "No releases found"], 404, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        }
         $releases = [];
         foreach($project->versions()->published()->orderBy('revision', 'desc')->limit(5)->get() as $version) {
             $releases[$version->revision] = [['url' => url($version->zip)]];
@@ -54,7 +58,7 @@ class PublicController extends Controller
         $package->category = $project->category;
         $package->releases = $releases;
 
-	event(new DownloadCounter($project));
+	    event(new DownloadCounter($project));
 
         return response()->json($package, 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }

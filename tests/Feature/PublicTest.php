@@ -54,8 +54,6 @@ class PublicTest extends TestCase
      */
     public function testProjectGetJsonModelNotFound()
     {
-        $this->expectException(ModelNotFoundException::class);
-        // TODO catch this and return 404 ??
         $response = $this->json('GET', '/eggs/get/something/json');
         $response->assertStatus(404)
             ->assertExactJson(["message" => "No releases found"]);
