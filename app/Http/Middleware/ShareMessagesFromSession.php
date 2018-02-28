@@ -18,7 +18,7 @@ class ShareMessagesFromSession
     /**
      * Create a new error binder instance.
      *
-     * @param  \Illuminate\Contracts\View\Factory  $view
+     * @param \Illuminate\Contracts\View\Factory $view
      */
     public function __construct(ViewFactory $view)
     {
@@ -28,22 +28,23 @@ class ShareMessagesFromSession
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
         $this->view->share(
-            'successes', $request->session()->has('successes') ? new MessageBag($request->session()->get('successes')) : new MessageBag
+            'successes', $request->session()->has('successes') ? new MessageBag($request->session()->get('successes')) : new MessageBag()
         );
 
         $this->view->share(
-            'info', $request->session()->has('info') ? new MessageBag($request->session()->get('info')) : new MessageBag
+            'info', $request->session()->has('info') ? new MessageBag($request->session()->get('info')) : new MessageBag()
         );
 
         $this->view->share(
-            'warnings', $request->session()->has('warnings') ? new MessageBag($request->session()->get('warnings')) : new MessageBag
+            'warnings', $request->session()->has('warnings') ? new MessageBag($request->session()->get('warnings')) : new MessageBag()
         );
 
         return $next($request);

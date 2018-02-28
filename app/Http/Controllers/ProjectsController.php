@@ -20,7 +20,7 @@ class ProjectsController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => 'show']);
-	    $this->authorizeResource(Project::class, null,['except' => 'show']);
+        $this->authorizeResource(Project::class, null, ['except' => 'show']);
     }
 
     /**
@@ -47,6 +47,7 @@ class ProjectsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param ProjectStoreRequest $request
+     *
      * @return RedirectResponse
      */
     public function store(ProjectStoreRequest $request): RedirectResponse
@@ -59,12 +60,13 @@ class ProjectsController extends Controller
             return redirect()->route('projects.create')->withInput()->withErrors(['reserved name']);
         }
 
-        $project = new Project;
+        $project = new Project();
+
         try {
             $project->name = $request->name;
             $project->description = $request->description;
             $project->category_id = $request->category_id;
-	    $project->status = 'unknown';
+            $project->status = 'unknown';
             $project->save();
         } catch (\Exception $e) {
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
@@ -76,7 +78,8 @@ class ProjectsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Project  $project
+     * @param Project $project
+     *
      * @return View
      */
     public function edit(Project $project): View
@@ -89,7 +92,8 @@ class ProjectsController extends Controller
      * Update the specified resource in storage.
      *
      * @param ProjectUpdateRequest $request
-     * @param Project $project
+     * @param Project              $project
+     *
      * @return RedirectResponse
      */
     public function update(ProjectUpdateRequest $request, Project $project): RedirectResponse
@@ -97,21 +101,21 @@ class ProjectsController extends Controller
         try {
             $project->description = $request->description;
             $project->category_id = $request->category_id;
-	    $project->status = $request->status;
+            $project->status = $request->status;
             if ($request->has('dependencies')) {
                 $dependencies = $request->get('dependencies');
-                foreach($project->dependencies as $dependency) {
+                foreach ($project->dependencies as $dependency) {
                     if (!in_array($dependency->id, $dependencies)) {
                         $dependency->pivot->delete();
                     }
                 }
-                foreach($dependencies as $dependency) {
+                foreach ($dependencies as $dependency) {
                     if (!$project->dependencies->contains($dependency)) {
                         $project->dependencies()->save(Project::find($dependency));
                     }
                 }
             } else {
-                foreach($project->dependencies as $dependency) {
+                foreach ($project->dependencies as $dependency) {
                     $dependency->pivot->delete();
                 }
             }
@@ -119,19 +123,20 @@ class ProjectsController extends Controller
             $project->save();
 
             if (isset($request->publish)) {
-                return($this->publish($project));
+                return $this->publish($project);
             }
-
         } catch (\Exception $e) {
             return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors([$e->getMessage()]);
         }
+
         return redirect()->route('projects.index')->withSuccesses([$project->name.' saved']);
     }
 
     /**
      * Publish the latest version.
      *
-     * @param  Project $project
+     * @param Project $project
+     *
      * @return RedirectResponse
      */
     public function publish(Project $project): RedirectResponse
@@ -147,35 +152,35 @@ class ProjectsController extends Controller
         }
 
         $zip[$project->slug.'/metadata.json'] = json_encode([
-            'name' => $project->name,
+            'name'        => $project->name,
             'description' => $project->description,
-            'category' => $project->category,
-            'author' => $project->user->name,
-            'revision' => $version->revision
+            'category'    => $project->category,
+            'author'      => $project->user->name,
+            'revision'    => $version->revision,
         ]);
 
         if (!$project->dependencies->isEmpty()) {
-            $dep = "";
+            $dep = '';
             foreach ($project->dependencies as $dependency) {
-                $dep .= $dependency->slug . "\n";
+                $dep .= $dependency->slug."\n";
             }
             $zip[$project->slug.'/'.$project->slug.'.egg-info/requires.txt'] = $dep;
         }
 
 //        $zip->compress(Phar::GZ);
 
-        system('minigzip < '.public_path($filename).' > '. public_path($filename.'.gz'));
+        system('minigzip < '.public_path($filename).' > '.public_path($filename.'.gz'));
 
         $version->zip = $filename.'.gz';
         $version->size_of_zip = filesize(public_path($version->zip));
         $version->save();
 
-        $newVersion = new Version;
+        $newVersion = new Version();
         $newVersion->revision = $version->revision + 1;
         $newVersion->project()->associate($project);
         $newVersion->save();
         foreach ($version->files as $file) {
-            $newFile = new File;
+            $newFile = new File();
             $newFile->name = $file->name;
             $newFile->content = $file->content;
             $newFile->version()->associate($newVersion);
@@ -185,11 +190,11 @@ class ProjectsController extends Controller
         return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' published']);
     }
 
-
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Project $project
+     * @param Project $project
+     *
      * @return RedirectResponse
      */
     public function destroy(Project $project): RedirectResponse
@@ -206,9 +211,10 @@ class ProjectsController extends Controller
     }
 
     /**
-     * Show project content, public method ツ
+     * Show project content, public method ツ.
      *
      * @param Project $project
+     *
      * @return View
      */
     public function show(Project $project): View

@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\File;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class FilePolicy
@@ -26,6 +26,7 @@ class FilePolicy
      *
      * @param User $user
      * @param File $file
+     *
      * @return bool
      */
     public function update(User $user, File $file): bool
@@ -39,11 +40,12 @@ class FilePolicy
      *
      * @param User $user
      * @param File $file
+     *
      * @return bool
      */
     public function delete(User $user, File $file): bool
     {
-	    // Normal users can only delete  files in their own project
-	    return $user->admin || $user->id == $file->version->project->user->id;
+        // Normal users can only delete  files in their own project
+        return $user->admin || $user->id == $file->version->project->user->id;
     }
 }

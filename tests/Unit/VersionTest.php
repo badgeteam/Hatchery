@@ -2,13 +2,13 @@
 
 namespace Tests\Unit;
 
-use App\Models\Version;
-use Illuminate\Database\Eloquent\Collection;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Project;
 use App\Models\User;
+use App\Models\Version;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class VersionTest extends TestCase
 {
@@ -64,6 +64,5 @@ class VersionTest extends TestCase
         $version->save();
         $this->assertCount(1, Version::unPublished()->get());
         $this->assertCount(1, Version::published()->get());
-
     }
 }

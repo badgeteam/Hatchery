@@ -2,8 +2,8 @@
 
 namespace App\Events;
 
-use Illuminate\Queue\SerializesModels;
 use App\Models\Project;
+use Illuminate\Queue\SerializesModels;
 
 class DownloadCounter
 {
@@ -20,5 +20,4 @@ class DownloadCounter
     {
         $this->project = $project;
     }
-
 }

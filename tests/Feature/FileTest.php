@@ -7,22 +7,20 @@ use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
 use Faker\Factory;
-use Illuminate\Http\UploadedFile;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\UploadedFile;
+use Tests\TestCase;
 
 class FileTest extends TestCase
 {
     use DatabaseTransactions, DatabaseMigrations;
 
-
     public function testUploadFile()
     {
-        $stub = __DIR__ . '/heart.png';
-        $name = str_random(8) . '.png';
-        $path = sys_get_temp_dir() . '/' . $name;
+        $stub = __DIR__.'/heart.png';
+        $name = str_random(8).'.png';
+        $path = sys_get_temp_dir().'/'.$name;
         copy($stub, $path);
         $file = new UploadedFile($path, $name, filesize($path), 'image/png', null, true);
         $user = factory(User::class)->create();
@@ -31,13 +29,14 @@ class FileTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->post('/upload/' . $project->versions->last()->id, ['file' => $file]);
+            ->post('/upload/'.$project->versions->last()->id, ['file' => $file]);
         $response->assertStatus(200);
 
         $this->assertCount(2, File::all()); // you get a free __init__.py
         $this->assertEquals('__init__.py', File::first()->name);
         $this->assertEquals($name, File::where('name', '!=', '__init__.py')->first()->name);
     }
+
 //
 //    public function testUploadIllegalFile()
 //    {
@@ -66,7 +65,7 @@ class FileTest extends TestCase
         $file = factory(File::class)->create();
         $response = $this
             ->actingAs($user)
-            ->get('/files/' . $file->id . '/edit');
+            ->get('/files/'.$file->id.'/edit');
         $response->assertStatus(200);
     }
 
@@ -81,7 +80,7 @@ class FileTest extends TestCase
         $file = factory(File::class)->create();
         $response = $this
             ->actingAs($otherUser)
-            ->get('/files/' . $file->id . '/edit');
+            ->get('/files/'.$file->id.'/edit');
         $response->assertStatus(403);
     }
 
@@ -97,8 +96,8 @@ class FileTest extends TestCase
 time.localtime()';
         $response = $this
             ->actingAs($user)
-            ->call('put', '/files/' . $file->id, ['file_content' => $data]);
-        $response->assertRedirect('/projects/' . $file->version->project->slug . '/edit')->assertSessionHas('successes');
+            ->call('put', '/files/'.$file->id, ['file_content' => $data]);
+        $response->assertRedirect('/projects/'.$file->version->project->slug.'/edit')->assertSessionHas('successes');
         $this->assertEquals($data, File::find($file->id)->content);
     }
 
@@ -115,7 +114,7 @@ time.localtime()';
 time.localtime()';
         $response = $this
             ->actingAs($otherUser)
-            ->call('put', '/files/' . $file->id, ['file_content' => $data]);
+            ->call('put', '/files/'.$file->id, ['file_content' => $data]);
         $response->assertStatus(403);
     }
 
@@ -129,8 +128,8 @@ time.localtime()';
         $file = factory(File::class)->create();
         $response = $this
             ->actingAs($user)
-            ->call('delete', '/files/' . $file->id);
-        $response->assertRedirect('/projects/' . $file->version->project->slug . '/edit')->assertSessionHas('successes');
+            ->call('delete', '/files/'.$file->id);
+        $response->assertRedirect('/projects/'.$file->version->project->slug.'/edit')->assertSessionHas('successes');
     }
 
     /**
@@ -159,7 +158,7 @@ time.localtime()';
         $response = $this
             ->actingAs($user)
             ->post('/files', ['name' => 'test.py', 'file_content' => '# test', 'version_id' => $version->id]);
-        $response->assertRedirect('/projects/' . $version->project->slug . '/edit')
+        $response->assertRedirect('/projects/'.$version->project->slug.'/edit')
             ->assertSessionHas('successes');
 
         $file = File::all()->last();
@@ -177,8 +176,8 @@ time.localtime()';
         $data = 'import time';
         $response = $this
             ->actingAs($user)
-            ->call('put', '/files/' . $file->id, ['file_content' => $data]);
-        $response->assertRedirect('/files/' . $file->id . '/edit')->assertSessionHas('warnings');
+            ->call('put', '/files/'.$file->id, ['file_content' => $data]);
+        $response->assertRedirect('/files/'.$file->id.'/edit')->assertSessionHas('warnings');
     }
 
     /**
@@ -192,8 +191,8 @@ time.localtime()';
         $data = 'imprt time';
         $response = $this
             ->actingAs($user)
-            ->call('put', '/files/' . $file->id, ['file_content' => $data]);
-        $response->assertRedirect('/files/' . $file->id . '/edit')->assertSessionHas('errors');
+            ->call('put', '/files/'.$file->id, ['file_content' => $data]);
+        $response->assertRedirect('/files/'.$file->id.'/edit')->assertSessionHas('errors');
     }
 
     /**
@@ -205,7 +204,7 @@ time.localtime()';
         $this->be($user);
         $file = factory(File::class)->create();
         $response = $this
-            ->call('get', '/files/' . $file->id);
+            ->call('get', '/files/'.$file->id);
         $response->assertStatus(200)->assertViewHas(['file']);
     }
 }

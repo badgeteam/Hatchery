@@ -11,7 +11,7 @@ class CategoriesSeeder extends Seeder
      */
     public function run()
     {
-        foreach([
+        foreach ([
             'Uncategorised',
             'Event related',
             'Games',
@@ -25,7 +25,7 @@ class CategoriesSeeder extends Seeder
             'Troll',
             'Unusable',
             'Adult',
-            'Virus'
+            'Virus',
                 ] as $name) {
             \App\Models\Category::create(['name' => $name]);
         }

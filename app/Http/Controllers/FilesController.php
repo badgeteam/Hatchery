@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Http\Requests\FileStoreRequest;
-use App\Http\Requests\FileUploadRequest;
 use App\Http\Requests\FileUpdateRequest;
+use App\Http\Requests\FileUploadRequest;
 use App\Models\File;
 use App\Models\Version;
 use Illuminate\Http\RedirectResponse;
@@ -26,7 +25,7 @@ class FilesController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Version $version
+     * @param Version           $version
      * @param FileUploadRequest $request
      */
     public function upload(Version $version, FileUploadRequest $request)
@@ -41,7 +40,8 @@ class FilesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  File $file
+     * @param File $file
+     *
      * @return View
      */
     public function edit(File $file): View
@@ -53,8 +53,9 @@ class FilesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  FileUpdateRequest $request
-     * @param  File $file
+     * @param FileUpdateRequest $request
+     * @param File              $file
+     *
      * @return RedirectResponse
      */
     public function update(FileUpdateRequest $request, File $file): RedirectResponse
@@ -70,12 +71,13 @@ class FilesController extends Controller
         if ($pyflakes['return_value'] == 0) {
             return redirect()
                 ->route('projects.edit', ['project' => $file->version->project->slug])
-                ->withSuccesses([$file->name . ' saved']);
+                ->withSuccesses([$file->name.' saved']);
         } elseif (!empty($pyflakes[0])) {
             return redirect()->route('files.edit', ['file' => $file->id])
                 ->withInput()
                 ->withWarnings(explode("\n", $pyflakes[0]));
         }
+
         return redirect()->route('files.edit', ['file' => $file->id])
             ->withInput()
             ->withErrors(explode("\n", $pyflakes[1]));
@@ -85,11 +87,13 @@ class FilesController extends Controller
      * Show the form for creating a new resource.
      *
      * @param Request $request
+     *
      * @return View
      */
     public function create(Request $request): View
     {
         $version = Version::where('id', $request->get('version'))->firstOrFail();
+
         return view('files.create')->with('version', $version);
     }
 
@@ -97,11 +101,13 @@ class FilesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param FileStoreRequest $request
+     *
      * @return RedirectResponse
      */
     public function store(FileStoreRequest $request): RedirectResponse
     {
-        $file = new File;
+        $file = new File();
+
         try {
             $file->version_id = $request->version_id;
             $file->name = $request->name;
@@ -117,12 +123,14 @@ class FilesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  File $file
+     * @param File $file
+     *
      * @return RedirectResponse
      */
     public function destroy(File $file): RedirectResponse
     {
         $project = $file->version->project;
+
         try {
             $file->delete();
         } catch (\Exception $e) {
@@ -137,38 +145,41 @@ class FilesController extends Controller
     /**
      * @param string $content
      * @param string $command = "pyflakes"
+     *
      * @return array
      */
-    public static function lintContent(string $content, string $command = "pyflakes"): array
+    public static function lintContent(string $content, string $command = 'pyflakes'): array
     {
         $stdOut = $stdErr = '';
         $returnValue = 255;
-        $fds = array(
-            0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
-            1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
-            2 => array("pipe", "w")   // stderr is a pipe that the child will write to
-        );
-        $process = proc_open($command, $fds, $pipes, NULL, NULL);
+        $fds = [
+            0 => ['pipe', 'r'],  // stdin is a pipe that the child will read from
+            1 => ['pipe', 'w'],  // stdout is a pipe that the child will write to
+            2 => ['pipe', 'w'],   // stderr is a pipe that the child will write to
+        ];
+        $process = proc_open($command, $fds, $pipes, null, null);
         if (is_resource($process)) {
             fwrite($pipes[0], $content);
             fclose($pipes[0]);
-            $stdOut =  (string)stream_get_contents($pipes[1]);
+            $stdOut = (string) stream_get_contents($pipes[1]);
             fclose($pipes[1]);
-            $stdErr = (string)stream_get_contents($pipes[2]);
+            $stdErr = (string) stream_get_contents($pipes[2]);
             fclose($pipes[2]);
             $returnValue = proc_close($process);
         }
+
         return [
             'return_value' => $returnValue,
-            0 => preg_replace('/<stdin>\:/', '', $stdOut),
-            1 => preg_replace('/<stdin>\:/', '', $stdErr)
+            0              => preg_replace('/<stdin>\:/', '', $stdOut),
+            1              => preg_replace('/<stdin>\:/', '', $stdErr),
         ];
     }
 
     /**
-     * Show file content, public method ツ
+     * Show file content, public method ツ.
      *
      * @param File $file
+     *
      * @return View
      */
     public function show(File $file): View

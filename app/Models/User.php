@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -38,11 +38,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Change the email to an impossible email
+     * Change the email to an impossible email.
      */
     public function delete()
     {
-        $this->email = 'deleted' . mt_rand() . '#' . $this->email;
+        $this->email = 'deleted'.mt_rand().'#'.$this->email;
         $this->save();
         parent::delete();
     }

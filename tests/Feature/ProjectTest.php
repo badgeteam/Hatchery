@@ -4,17 +4,13 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use App\Models\File;
-use App\Models\User;
 use App\Models\Project;
+use App\Models\User;
 use App\Models\Version;
-use Illuminate\Auth\Notifications\ResetPassword;
-use Illuminate\Support\Facades\Notification;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Faker\Factory;
-use Session;
+use Tests\TestCase;
 
 class ProjectTest extends TestCase
 {
@@ -61,7 +57,6 @@ class ProjectTest extends TestCase
         $this->assertCount(1, Project::all());
     }
 
-
     /**
      * Check the projects can be stored.
      */
@@ -90,7 +85,6 @@ class ProjectTest extends TestCase
         $response->assertRedirect('/projects/create')->assertSessionHas('errors');
     }
 
-
     /**
      * Check the projects edit page functions.
      */
@@ -111,7 +105,7 @@ class ProjectTest extends TestCase
     public function testProjectsEditOtherUser()
     {
         $user = factory(User::class)->create();
-	$otherUser = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
         $this->be($user);
         $project = factory(Project::class)->create();
         $response = $this
@@ -134,12 +128,12 @@ class ProjectTest extends TestCase
         $faker = Factory::create();
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/' . $project->slug, ['description' => $faker->paragraph, 'dependencies' => [$projectDep->id]]);
+            ->call('put', '/projects/'.$project->slug, ['description' => $faker->paragraph, 'dependencies' => [$projectDep->id]]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
         // add deps
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/' . $project->slug, ['description' => $faker->paragraph]);
+            ->call('put', '/projects/'.$project->slug, ['description' => $faker->paragraph]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
         // remove deps
     }
@@ -150,7 +144,7 @@ class ProjectTest extends TestCase
     public function testProjectsUpdateOtherUser()
     {
         $user = factory(User::class)->create();
-	    $otherUser = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
         $this->be($user);
         $projectDep = factory(Project::class)->create();
         $projectDep->versions()->first()->zip = 'test';
@@ -159,12 +153,12 @@ class ProjectTest extends TestCase
         $faker = Factory::create();
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/' . $project->slug, ['description' => $faker->paragraph, 'dependencies' => [$projectDep->id]]);
+            ->call('put', '/projects/'.$project->slug, ['description' => $faker->paragraph, 'dependencies' => [$projectDep->id]]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
         // add deps
         $response = $this
             ->actingAs($otherUser)
-            ->call('put', '/projects/' . $project->slug, ['description' => $faker->paragraph]);
+            ->call('put', '/projects/'.$project->slug, ['description' => $faker->paragraph]);
         $response->assertStatus(403);
         // remove deps
     }
@@ -187,7 +181,7 @@ class ProjectTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->call('post', '/release/' . $project->slug);
+            ->call('post', '/release/'.$project->slug);
         $response->assertRedirect('/projects/'.$project->slug.'/edit')->assertSessionHas('successes');
 
         $version = Version::published()->where('project_id', $project->id)->get()->last();
@@ -206,7 +200,7 @@ class ProjectTest extends TestCase
         $project = factory(Project::class)->create();
         $response = $this
             ->actingAs($user)
-            ->call('delete', '/projects/' . $project->slug);
+            ->call('delete', '/projects/'.$project->slug);
         $response->assertRedirect('/projects/')->assertSessionHas('successes');
     }
 
@@ -221,7 +215,7 @@ class ProjectTest extends TestCase
         $project = factory(Project::class)->create();
         $response = $this
             ->actingAs($otherUser)
-            ->call('delete', '/projects/' . $project->slug);
+            ->call('delete', '/projects/'.$project->slug);
         $response->assertStatus(403);
     }
 
@@ -236,7 +230,7 @@ class ProjectTest extends TestCase
         $project = factory(Project::class)->create();
         $response = $this
             ->actingAs($otherUser)
-            ->call('delete', '/projects/' . $project->slug);
+            ->call('delete', '/projects/'.$project->slug);
         $response->assertRedirect('/projects/')->assertSessionHas('successes');
     }
 
@@ -249,7 +243,7 @@ class ProjectTest extends TestCase
         $this->be($user);
         $project = factory(Project::class)->create();
         $response = $this
-            ->call('get', '/projects/' . $project->slug);
+            ->call('get', '/projects/'.$project->slug);
         $response->assertStatus(200)->assertViewHas(['project']);
     }
 }
