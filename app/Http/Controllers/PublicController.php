@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DownloadCounter;
 use App\Models\Category;
 use App\Models\Project;
 use App\Models\User;
-use App\Events\DownloadCounter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 use stdClass;
@@ -20,28 +20,29 @@ class PublicController extends Controller
     public function index(): View
     {
         return view('welcome')->with([
-            'users' => User::count(),
-            'projects' => Project::count(),
+            'users'     => User::count(),
+            'projects'  => Project::count(),
             'published' => Project::whereHas('versions', function ($query) {
                 $query->published();
-            })->orderBy('id', 'DESC')->get()
+            })->orderBy('id', 'DESC')->get(),
         ]);
     }
 
     /**
      * Get the latest released version.
      *
-     * @param  string $slug
+     * @param string $slug
+     *
      * @return JsonResponse
      */
     public function projectJson(string $slug): JsonResponse
     {
         $project = Project::where('slug', $slug)->first();
         if (is_null($project)) {
-            return response()->json(["message" => "No releases found"], 404, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+            return response()->json(['message' => 'No releases found'], 404, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
         }
         $releases = [];
-        foreach($project->versions()->published()->orderBy('revision', 'desc')->limit(5)->get() as $version) {
+        foreach ($project->versions()->published()->orderBy('revision', 'desc')->limit(5)->get() as $version) {
             $releases[$version->revision] = [['url' => url($version->zip)]];
         }
 
@@ -51,14 +52,14 @@ class PublicController extends Controller
             return response()->json(['message' => 'No releases found'], 404);
         }
 
-        $package = new stdClass;
-        $package->info = ['version' => (string)$version->revision];
+        $package = new stdClass();
+        $package->info = ['version' => (string) $version->revision];
         $package->description = $project->description;
         $package->name = $project->name;
         $package->category = $project->category;
         $package->releases = $releases;
 
-	    event(new DownloadCounter($project));
+        event(new DownloadCounter($project));
 
         return response()->json($package, 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
@@ -79,11 +80,13 @@ class PublicController extends Controller
      * Find the latest released versions.
      *
      * @param string $search
+     *
      * @return JsonResponse
      */
     public function searchJson($search): JsonResponse
     {
         $what = '%'.$search.'%';
+
         return response()->json(Project::whereHas('versions', function ($query) {
             $query->published();
         })->where('name', 'like', $what)
@@ -96,6 +99,7 @@ class PublicController extends Controller
      * Get the latest released versions.
      *
      * @param Category $category
+     *
      * @return JsonResponse
      */
     public function categoryJson(Category $category): JsonResponse
@@ -114,5 +118,4 @@ class PublicController extends Controller
     {
         return response()->json(Category::where('hidden', false)->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
-
 }

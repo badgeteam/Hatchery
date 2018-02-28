@@ -3,12 +3,12 @@
 namespace Tests\Unit;
 
 use App\Models\File;
-use App\Models\Version;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Project;
 use App\Models\User;
+use App\Models\Version;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class FileTest extends TestCase
 {

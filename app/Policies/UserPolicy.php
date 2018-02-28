@@ -12,8 +12,9 @@ class UserPolicy
     /**
      * Determine whether the user can update the user.
      *
-     * @param  User  $user
-     * @param  User  $target
+     * @param User $user
+     * @param User $target
+     *
      * @return bool
      */
     public function update(User $user, User $target)
@@ -25,13 +26,14 @@ class UserPolicy
     /**
      * Determine whether the user can delete the user.
      *
-     * @param  User  $user
-     * @param  User  $target
+     * @param User $user
+     * @param User $target
+     *
      * @return bool
      */
     public function delete(User $user, User $target)
     {
         // Normal users can only delete their own info
-	return  $user->admin || $user->id == $target->id;
+        return  $user->admin || $user->id == $target->id;
     }
 }

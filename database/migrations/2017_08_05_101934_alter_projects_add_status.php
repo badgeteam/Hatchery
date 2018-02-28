@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AlterProjectsAddStatus extends Migration
 {
@@ -14,7 +14,7 @@ class AlterProjectsAddStatus extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-	    $table->enum('status', ['working', 'in_progress', 'broken','unknown'])->default('unknown');
+            $table->enum('status', ['working', 'in_progress', 'broken', 'unknown'])->default('unknown');
         });
     }
 
@@ -26,7 +26,7 @@ class AlterProjectsAddStatus extends Migration
     public function down()
     {
         Schema::table('projects', function (Blueprint $table) {
-	    $table->dropColumn('status');
+            $table->dropColumn('status');
         });
     }
 }

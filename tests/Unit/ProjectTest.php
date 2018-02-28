@@ -2,13 +2,13 @@
 
 namespace Tests\Unit;
 
+use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
 use Illuminate\Database\Eloquent\Collection;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Models\Project;
+use Tests\TestCase;
 
 class ProjectTest extends TestCase
 {
@@ -58,11 +58,11 @@ class ProjectTest extends TestCase
         $this->assertNull($version->project->revision);
         $version->zip = 'iets';
         $version->save();
-        $this->assertEquals("1", $version->project->revision);
+        $this->assertEquals('1', $version->project->revision);
     }
 
     /**
-     * Check if Project size_of_content helper works without release
+     * Check if Project size_of_content helper works without release.
      */
     public function testProjectSizeOfContentNoRelease()
     {
@@ -72,9 +72,8 @@ class ProjectTest extends TestCase
         $this->assertEquals(0, $version->project->size_of_content);
     }
 
-
     /**
-     * Assert the Project isForbidden
+     * Assert the Project isForbidden.
      */
     public function testProjectForbiddenNames()
     {
@@ -92,10 +91,9 @@ class ProjectTest extends TestCase
         $this->expectException(\Exception::class);
         $user = factory(User::class)->create();
         $this->be($user);
-        $project = new Project;
+        $project = new Project();
         $project->description = 'test bla';
         $project->name = 'ESP32';
         $project->save();
     }
-
 }

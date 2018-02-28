@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 
 class Project extends Model
 {
@@ -35,12 +34,12 @@ class Project extends Model
         });
 
         static::created(function ($project) {
-            $version = new Version;
+            $version = new Version();
             $version->revision = 1;
             $version->project()->associate($project);
             $version->save();
             // add first empty python file :)
-            $file = new File;
+            $file = new File();
             $file->name = '__init__.py';
             $file->content = '';
             $file->version()->associate($version);
@@ -53,7 +52,6 @@ class Project extends Model
                 throw new \Exception('reserved name');
             }
         });
-
     }
 
     /**
@@ -92,7 +90,8 @@ class Project extends Model
     public function getRevisionAttribute():? string
     {
         $version = $this->versions()->published()->get()->last();
-        return is_null($version) ? null : (string)$version->revision;
+
+        return is_null($version) ? null : (string) $version->revision;
     }
 
     /**
@@ -100,7 +99,7 @@ class Project extends Model
      */
     public function dependencies(): BelongsToMany
     {
-        return $this->belongsToMany(Project::class, 'dependencies', 'project_id', 'depends_on_project_id')
+        return $this->belongsToMany(self::class, 'dependencies', 'project_id', 'depends_on_project_id')
             ->withTimestamps();
     }
 
@@ -109,7 +108,7 @@ class Project extends Model
      */
     public function dependants(): BelongsToMany
     {
-        return $this->belongsToMany(Project::class, 'dependencies', 'depends_on_project_id', 'project_id')
+        return $this->belongsToMany(self::class, 'dependencies', 'depends_on_project_id', 'project_id')
             ->withTimestamps();
     }
 
@@ -119,7 +118,8 @@ class Project extends Model
     public function getSizeOfZipAttribute():? int
     {
         $version = $this->versions()->published()->get()->last();
-        return is_null($version) ? null : (int)$version->size_of_zip;
+
+        return is_null($version) ? null : (int) $version->size_of_zip;
     }
 
     /**
@@ -128,13 +128,15 @@ class Project extends Model
     public function getSizeOfContentAttribute():? int
     {
         $version = $this->versions()->published()->get()->last();
-        if (is_null($version))
+        if (is_null($version)) {
             $version = $this->versions->last();
+        }
 
         $size = 0;
         foreach ($version->files as $file) {
             $size += strlen($file->content);
         }
+
         return $size;
     }
 
@@ -156,10 +158,12 @@ class Project extends Model
         if (is_null($this->category()->first())) {
             return 'uncategorised';
         }
+
         return $this->category()->first()->slug;
     }
 
-    public static function isForbidden($slug) {
+    public static function isForbidden($slug)
+    {
         return in_array($slug, self::$forbidden);
     }
 }

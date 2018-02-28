@@ -2,16 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Project;
+use App\Models\User;
+use Faker\Factory;
 use Illuminate\Auth\Notifications\ResetPassword;
-use Illuminate\Support\Facades\Notification;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Faker\Factory;
-use Session;
+use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
 
 class UserTest extends TestCase
 {
@@ -25,21 +23,21 @@ class UserTest extends TestCase
         $response = $this
             ->withSession(['_token'=>'test'])
             ->post('/login', [
-                'email' => 'annejan@noprotocol.nl',
+                'email'    => 'annejan@noprotocol.nl',
                 'password' => 'badPass',
-                '_token' => 'test'
+                '_token'   => 'test',
             ]);
         $response->assertStatus(302)
             ->assertRedirect('')
             ->assertSessionHas('errors')
             ->assertSessionHas('_old_input', [
-                "email" => 'annejan@noprotocol.nl',
-		'_token' => 'test'
+                'email' => 'annejan@noprotocol.nl',
+        '_token'        => 'test',
             ]);
     }
 
     /**
-     * Login, go to home
+     * Login, go to home.
      */
     public function testLogin()
     {
@@ -49,9 +47,9 @@ class UserTest extends TestCase
         $response = $this
             ->withSession(['_token'=>'test'])
             ->post('/login', [
-                'email' => $user->email,
+                'email'    => $user->email,
                 'password' => $password,
-                '_token' => 'test'
+                '_token'   => 'test',
             ]);
         $response->assertStatus(302)->assertRedirect('/projects');
     }
@@ -95,8 +93,8 @@ class UserTest extends TestCase
         $response = $this
             ->withSession(['_token'=>'test'])
             ->post('password/email', [
-                'email' => $user->email,
-                '_token' => 'test'
+                'email'  => $user->email,
+                '_token' => 'test',
             ]);
         $response->assertStatus(302)
             ->assertRedirect('/');
@@ -108,6 +106,7 @@ class UserTest extends TestCase
             ResetPassword::class,
             function ($notification, $channels) use (&$token) {
                 $token = $notification->token;
+
                 return true;
             }
         );
@@ -123,20 +122,20 @@ class UserTest extends TestCase
         $response = $this
             ->withSession(['_token'=>'test'])
             ->post('/password/reset', [
-            'email' => $user->email,
-            'token' => $token,
-            'password' => $password,
+            'email'                 => $user->email,
+            'token'                 => $token,
+            'password'              => $password,
             'password_confirmation' => $password,
-            '_token' => 'test'
+            '_token'                => 'test',
         ]);
         $response->assertStatus(302)->assertRedirect('/projects');
 
         $response = $this
             ->withSession(['_token'=>'test'])
             ->post('/login', [
-                'email' => $user->email,
+                'email'    => $user->email,
                 'password' => $password,
-                '_token' => 'test'
+                '_token'   => 'test',
             ]);
         $response->assertStatus(302)->assertRedirect('/home');
     }
@@ -152,12 +151,12 @@ class UserTest extends TestCase
         $response = $this
             ->withSession(['_token'=>'test'])
             ->post('/register', [
-                'name' => $faker->name,
-                'email' => $email,
-                'editor' => 'default',
-                'password' => $password,
+                'name'                  => $faker->name,
+                'email'                 => $email,
+                'editor'                => 'default',
+                'password'              => $password,
                 'password_confirmation' => $password,
-                '_token' => 'test'
+                '_token'                => 'test',
             ]);
         $response->assertStatus(302)->assertRedirect('/projects');
     }
@@ -170,7 +169,7 @@ class UserTest extends TestCase
         $user = factory(User::class)->create();
         $response = $this
             ->actingAs($user)
-            ->call('delete', '/users/' . $user->id);
+            ->call('delete', '/users/'.$user->id);
         $response->assertRedirect('/')->assertSessionHas('successes');
         $user = User::withTrashed()->find($user->id);
         $this->assertNotNull($user->deleted_at);
@@ -185,7 +184,7 @@ class UserTest extends TestCase
         $otherUser = factory(User::class)->create();
         $response = $this
             ->actingAs($otherUser)
-            ->call('delete', '/users/' . $user->id);
+            ->call('delete', '/users/'.$user->id);
         $response->assertStatus(403);
     }
 
@@ -200,7 +199,7 @@ class UserTest extends TestCase
         $otherUser->save();
         $response = $this
             ->actingAs($otherUser)
-            ->call('delete', '/users/' . $user->id);
+            ->call('delete', '/users/'.$user->id);
         $response->assertRedirect('/')->assertSessionHas('successes');
     }
 
@@ -237,10 +236,10 @@ class UserTest extends TestCase
         $user = factory(User::class)->create();
         $response = $this
             ->actingAs($user)
-            ->call('put', '/users/' . $user->id, [
-                'name' => 'Henk',
-                'email' => 'henk@annejan.com',
-                'editor' => 'vim'
+            ->call('put', '/users/'.$user->id, [
+                'name'   => 'Henk',
+                'email'  => 'henk@annejan.com',
+                'editor' => 'vim',
             ]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
     }
@@ -254,13 +253,11 @@ class UserTest extends TestCase
         $otherUser = factory(User::class)->create();
         $response = $this
             ->actingAs($otherUser)
-            ->call('put', '/users/' . $user->id, [
-                'name' => 'Henk',
-                'email' => 'henk@annejan.com',
-                'editor' => 'vim'
+            ->call('put', '/users/'.$user->id, [
+                'name'   => 'Henk',
+                'email'  => 'henk@annejan.com',
+                'editor' => 'vim',
             ]);
         $response->assertStatus(403);
     }
-
-
 }

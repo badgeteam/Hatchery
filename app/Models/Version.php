@@ -61,6 +61,7 @@ class Version extends Model
 
     /**
      * @param Builder $query
+     *
      * @return Builder
      */
     public function scopePublished(Builder $query): Builder
@@ -70,6 +71,7 @@ class Version extends Model
 
     /**
      * @param Builder $query
+     *
      * @return Builder
      */
     public function scopeUnPublished(Builder $query): Builder

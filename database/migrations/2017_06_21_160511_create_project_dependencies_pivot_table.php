@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateProjectDependenciesPivotTable extends Migration
 {
@@ -13,8 +13,7 @@ class CreateProjectDependenciesPivotTable extends Migration
      */
     public function up()
     {
-        Schema::create('dependencies', function(Blueprint $table)
-        {
+        Schema::create('dependencies', function (Blueprint $table) {
             $table->integer('project_id')->unsigned()->nullable();
             $table->foreign('project_id')->references('id')
                 ->on('projects')->onDelete('cascade');

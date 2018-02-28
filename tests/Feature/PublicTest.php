@@ -7,11 +7,9 @@ use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class PublicTest extends TestCase
 {
@@ -56,7 +54,7 @@ class PublicTest extends TestCase
     {
         $response = $this->json('GET', '/eggs/get/something/json');
         $response->assertStatus(404)
-            ->assertExactJson(["message" => "No releases found"]);
+            ->assertExactJson(['message' => 'No releases found']);
     }
 
     /**
@@ -73,17 +71,17 @@ class PublicTest extends TestCase
         $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json');
         $response->assertStatus(200)
             ->assertExactJson([
-                "description" => "",
-                "name" => $version->project->name,
-                "info" => ["version" => "1"],
-                "category" => "uncategorised",
-                "releases" => [
-                    "1" => [
+                'description' => '',
+                'name'        => $version->project->name,
+                'info'        => ['version' => '1'],
+                'category'    => 'uncategorised',
+                'releases'    => [
+                    '1' => [
                         [
-                            "url" => url("some_path.tar.gz")
+                            'url' => url('some_path.tar.gz'),
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ]);
     }
 
@@ -98,7 +96,7 @@ class PublicTest extends TestCase
 
         $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json');
         $response->assertStatus(404)
-            ->assertExactJson(["message" => "No releases found"]);
+            ->assertExactJson(['message' => 'No releases found']);
     }
 
     /**
@@ -121,16 +119,16 @@ class PublicTest extends TestCase
         $response->assertStatus(200)
             ->assertExactJson([
                 [
-                    "description" =>"",
-                    "name" => $version->project->name,
-                    "revision" => "1",
-                    "slug" => $version->project->slug,
-                    "size_of_content" => $version->project->size_of_content,
-                    "size_of_zip" => 0,
-                    "category" => $category->slug,
-		    "download_counter" => 0,
-		    "status" => "unknown"
-                ]
+                    'description'     => '',
+                    'name'            => $version->project->name,
+                    'revision'        => '1',
+                    'slug'            => $version->project->slug,
+                    'size_of_content' => $version->project->size_of_content,
+                    'size_of_zip'     => 0,
+                    'category'        => $category->slug,
+            'download_counter'        => 0,
+            'status'                  => 'unknown',
+                ],
             ]);
     }
 
@@ -151,20 +149,20 @@ class PublicTest extends TestCase
 
         $len = strlen($version->project->name);
 
-        $response = $this->json('GET', '/eggs/search/'.substr($version->project->name, 2, $len-4).'/json');
+        $response = $this->json('GET', '/eggs/search/'.substr($version->project->name, 2, $len - 4).'/json');
         $response->assertStatus(200)
             ->assertExactJson([
                 [
-                    "description" =>"",
-                    "name" => $version->project->name,
-                    "revision" => "1",
-                    "slug" => $version->project->slug,
-                    "size_of_content" => 0,
-                    "size_of_zip" => 0,
-                    "category" => $category->slug,
-		    "download_counter" => 0,
-		    "status" => "unknown"
-                ]
+                    'description'     => '',
+                    'name'            => $version->project->name,
+                    'revision'        => '1',
+                    'slug'            => $version->project->slug,
+                    'size_of_content' => 0,
+                    'size_of_zip'     => 0,
+                    'category'        => $category->slug,
+            'download_counter'        => 0,
+            'status'                  => 'unknown',
+                ],
             ]);
     }
 
@@ -185,16 +183,16 @@ class PublicTest extends TestCase
         $response->assertStatus(200)
             ->assertExactJson([
                 [
-                    "description" =>"",
-                    "name" => $version->project->name,
-                    "revision" => "1",
-                    "slug" => $version->project->slug,
-                    "size_of_content" => 0,
-                    "size_of_zip" => 0,
-                    "category" => $category->slug,
-                    "download_counter" => 0,
-		    "status" => 'unknown'
-                ]
+                    'description'      => '',
+                    'name'             => $version->project->name,
+                    'revision'         => '1',
+                    'slug'             => $version->project->slug,
+                    'size_of_content'  => 0,
+                    'size_of_zip'      => 0,
+                    'category'         => $category->slug,
+                    'download_counter' => 0,
+            'status'                   => 'unknown',
+                ],
             ]);
     }
 
@@ -217,10 +215,10 @@ class PublicTest extends TestCase
         $response->assertStatus(200)
             ->assertExactJson([
                 [
-                    "name" => $category->name,
-                    "slug" => $category->slug,
-                    "eggs" => 1
-                ]
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                    'eggs' => 1,
+                ],
             ]);
     }
 
@@ -243,10 +241,10 @@ class PublicTest extends TestCase
         $response->assertStatus(200)
             ->assertExactJson([
                 [
-                    "name" => $category->name,
-                    "slug" => $category->slug,
-                    "eggs" => 1
-                ]
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                    'eggs' => 1,
+                ],
             ]);
     }
 
@@ -268,10 +266,10 @@ class PublicTest extends TestCase
         $response->assertStatus(200)
             ->assertExactJson([
                 [
-                    "name" => $category->name,
-                    "slug" => $category->slug,
-                    "eggs" => 0
-                ]
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                    'eggs' => 0,
+                ],
             ]);
     }
 

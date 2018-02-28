@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
+use App\Models\Project;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Models\User;
-use App\Models\Project;
+use Tests\TestCase;
 
 class UserTest extends TestCase
 {

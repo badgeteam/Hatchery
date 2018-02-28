@@ -12,14 +12,15 @@ class WeatherController extends Controller
     private $minutes = 10; // max 144 requests/day ;)
     private $url = '';
 
-    function __construct() {
+    public function __construct()
+    {
         $this->url = 'https://api.darksky.net/forecast/'
             .config('services.darksky')
             .'/52.3451,5.4581?units=ca&exclude=currently,alerts,flags,daily,minutely';
     }
 
     /**
-     * Show schedule of a day
+     * Show schedule of a day.
      *
      * @return JsonResponse
      */
@@ -38,9 +39,8 @@ class WeatherController extends Controller
             $json = Cache::get('weather');
         } else {
             $json = file_get_contents($this->url);
-            if ($json === false)
-            {
-                abort(404, "Couldn't fetch the weather from: ". $this->url);
+            if ($json === false) {
+                abort(404, "Couldn't fetch the weather from: ".$this->url);
             }
             $expiresAt = Carbon::now()->addMinutes($this->minutes);
             Cache::put('weather', $json, $expiresAt);

@@ -128,11 +128,11 @@ return [
         'https-transform-on-https-connections' => true,
 
         'base-uri' => [
-            env('APP_URL', 'https://badge.sha2017.org')
+            env('APP_URL', 'https://badge.sha2017.org'),
         ],
 
         'default-src' => [
-            'allow' => [env('APP_URL', 'https://badge.sha2017.org')]
+            'allow' => [env('APP_URL', 'https://badge.sha2017.org')],
         ],
 
         'child-src' => [
@@ -161,7 +161,7 @@ return [
 
         'style-src' => [
             'allow' => [
-                'https://fonts.googleapis.com'
+                'https://fonts.googleapis.com',
             ],
 
             'self' => true,
@@ -193,16 +193,16 @@ return [
             'allow' => [
                 'https://fonts.googleapis.com',
                 'https://fonts.gstatic.com',
-                env('APP_URL', 'https://badge.sha2017.org')
-            ]
+                env('APP_URL', 'https://badge.sha2017.org'),
+            ],
         ],
 
         'connect-src' => [
-            'allow' => [env('APP_URL', 'https://badge.sha2017.org')]
+            'allow' => [env('APP_URL', 'https://badge.sha2017.org')],
         ],
 
         'form-action' => [
-            'allow' => [env('APP_URL', 'https://badge.sha2017.org'), 'self']
+            'allow' => [env('APP_URL', 'https://badge.sha2017.org'), 'self'],
         ],
 
         'frame-ancestors' => [
@@ -210,11 +210,11 @@ return [
         ],
 
         'media-src' => [
-            'allow' => [env('APP_URL', 'https://badge.sha2017.org')]
+            'allow' => [env('APP_URL', 'https://badge.sha2017.org')],
         ],
 
         'object-src' => [
-            'allow' => [env('APP_URL', 'https://badge.sha2017.org')]
+            'allow' => [env('APP_URL', 'https://badge.sha2017.org')],
         ],
 
         /*

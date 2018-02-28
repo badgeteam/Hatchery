@@ -25,8 +25,8 @@ class FileStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'version_id' => 'required|exists:versions,id',
-            'name' => 'required',
+            'version_id'   => 'required|exists:versions,id',
+            'name'         => 'required',
             'file_content' => 'required',
         ];
     }

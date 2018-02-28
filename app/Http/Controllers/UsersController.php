@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -20,11 +19,11 @@ class UsersController extends Controller
         $this->authorizeResource(User::class);
     }
 
-
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  User $user
+     * @param User $user
+     *
      * @return View
      */
     public function edit(User $user): View
@@ -36,8 +35,9 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UserUpdateRequest $request
-     * @param  User $user
+     * @param UserUpdateRequest $request
+     * @param User              $user
+     *
      * @return RedirectResponse
      */
     public function update(UserUpdateRequest $request, User $user): RedirectResponse
@@ -53,13 +53,14 @@ class UsersController extends Controller
 
         return redirect()
             ->route('projects.index')
-            ->withSuccesses([$user->name . ' saved']);
+            ->withSuccesses([$user->name.' saved']);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  User $user
+     * @param User $user
+     *
      * @return RedirectResponse
      */
     public function destroy(User $user): RedirectResponse
