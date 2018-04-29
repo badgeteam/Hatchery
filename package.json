@@ -24,6 +24,7 @@
     "dropzone": "^5.4.0",
     "eslint": "^4.19.1",
     "file-loader": "^1.1.11",
+    "hoek": "^5.0.3",
     "jquery": "^3.3.1",
     "laravel-mix": "^2.1.11",
     "loader-utils": "^1.1.0",
