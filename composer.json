@@ -9,17 +9,17 @@
         "php": ">=7.1",
         "bepsvpt/secure-headers": "^3.0",
         "doctrine/dbal": "^2.5",
-        "laravel/framework": "5.5.*",
+        "filp/whoops": "~2.0",
+        "laravel/framework": "5.7.*",
         "laravel/tinker": "~1.0",
-        "laravelcollective/html": "^5.5"
+        "laravelcollective/html": "^5.7",
+        "sentry/sentry-laravel": "^0.10.0"
     },
     "require-dev": {
-        "codeclimate/php-test-reporter": "^0.4.4",
-        "fzaninotto/faker": "~1.4",
-        "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~6.0",
-	"codacy/coverage": "dev-master",
-	"filp/whoops": "~2.0"
+        "fzaninotto/faker": "~1.8",
+        "mockery/mockery": "dev-master",
+        "phpunit/phpunit": "~7.0",
+	    "codacy/coverage": "dev-master"
     },
     "autoload": {
         "classmap": [

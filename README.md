@@ -34,8 +34,8 @@ pip install pyflakes
 composer install
 php artisan key:generate
 php artisan migrate
-npm install
-npm run production
+yarn
+yarn production
 ```
 Compiling and installing the patched minigzip 
 
