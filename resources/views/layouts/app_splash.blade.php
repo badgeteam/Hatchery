@@ -35,6 +35,11 @@
 		height: 2em;
 	}
     </style>
+    <script>
+        window.Laravel = {!! json_encode([
+                'csrfToken' => csrf_token(),
+            ]) !!};
+    </script>
 </head>
 <body>
     @include('partials.messages')

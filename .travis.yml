@@ -2,6 +2,7 @@ language: php
 
 php:
   - 7.1
+  - 7.2
 
 env:
   - TRAVIS_NODE_VERSION="4"
@@ -19,8 +20,8 @@ before_script:
   - curl -s -o $HOME/.nvm/nvm.sh https://raw.githubusercontent.com/creationix/nvm/v0.33.2/nvm.sh
   - source $HOME/.nvm/nvm.sh
   - nvm install stable
-  - npm install
-  - npm run production
+  - yarn
+  - yarn production
   - php artisan key:generate
   - curl -s -o zlib-1.2.11.tar.gz http://zlib.net/zlib-1.2.11.tar.gz
   - tar xvf zlib-1.2.11.tar.gz
@@ -33,7 +34,7 @@ script:
   - export PATH=$PATH:`pwd`
   - cd ..
   - vendor/bin/phpunit
-  - npm run lint
+  - yarn lint
 
 after_script:
   - ./codeclimate.sh
