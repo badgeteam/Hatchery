@@ -71,7 +71,7 @@ class PublicTest extends TestCase
         $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json');
         $response->assertStatus(200)
             ->assertExactJson([
-                'description' => '',
+                'description' => null,
                 'name'        => $version->project->name,
                 'info'        => ['version' => '1'],
                 'category'    => 'uncategorised',
@@ -119,7 +119,7 @@ class PublicTest extends TestCase
         $response->assertStatus(200)
             ->assertExactJson([
                 [
-                    'description'     => '',
+                    'description'     => null,
                     'name'            => $version->project->name,
                     'revision'        => '1',
                     'slug'            => $version->project->slug,
@@ -153,7 +153,7 @@ class PublicTest extends TestCase
         $response->assertStatus(200)
             ->assertExactJson([
                 [
-                    'description'     => '',
+                    'description'     => null,
                     'name'            => $version->project->name,
                     'revision'        => '1',
                     'slug'            => $version->project->slug,
@@ -183,7 +183,7 @@ class PublicTest extends TestCase
         $response->assertStatus(200)
             ->assertExactJson([
                 [
-                    'description'      => '',
+                    'description'      => null,
                     'name'             => $version->project->name,
                     'revision'         => '1',
                     'slug'             => $version->project->slug,
