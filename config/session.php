@@ -148,7 +148,7 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN', 'badge.sha2017.org'),
+    'domain' => env('SESSION_DOMAIN', 'badge.team'),
 
     /*
     |--------------------------------------------------------------------------

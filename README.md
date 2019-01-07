@@ -9,7 +9,7 @@
 
 Simple micropython software repository for the SHA2017 Badge. 
 
-[Live Site](http://badge.sha2017.org) |
+[Live Site](http://badge.team) |
 [Documentation](https://wiki.sha2017.org/w/Projects:Badge/Hatchery) |
 [Project Wiki](https://wiki.sha2017.org/w/Projects:Badge) |
 [GitHub](https://github.com/SHA2017-badge/)
