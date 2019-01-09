@@ -72,6 +72,9 @@ class File extends Model
      */
     public function getSizeOfContentAttribute():? int
     {
-        return strlen($this->content);
+        if (is_string($this->content)) {
+            return strlen($this->content);
+        }
+        return null;
     }
 }
