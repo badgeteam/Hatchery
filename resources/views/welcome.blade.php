@@ -19,7 +19,7 @@
 
 		    <div class="content text-center">
 			<div class="title m-b-md">
-			    <h1 class="hatcher"><span class="hidden-xs">SHA2017</span> {{ config('app.name', 'Laravel') }}</h1>
+			    <h1 class="hatcher"><span class="hidden-xs">Badge.team</span> {{ config('app.name', 'Laravel') }}</h1>
 			</div>
 			<div>
 			    Contributors: {{$users}}
@@ -27,7 +27,7 @@
 			</div>
 			<div class="spacer col-md-12 hidden-xs"></div>
 			<div class="links">
-			    <a href="https://wiki.sha2017.org/w/Projects:Badge/MicroPython">Wiki Coding Help</a>
+			    <a href="https://wiki.badge.team/SHA2017Badge/MicroPython">Wiki Coding Help</a>
 			    <a href="https://github.com/SHA2017-badge/">GitHub</a>
 			    <a href="https://twitter.com/SHA2017Badge">Twitter</a>
 			</div>
