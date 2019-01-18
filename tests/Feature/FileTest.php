@@ -6,15 +6,15 @@ use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
-use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class FileTest extends TestCase
 {
-    use DatabaseTransactions, DatabaseMigrations;
+    use DatabaseTransactions, DatabaseMigrations, WithFaker;
 
     public function testUploadFile()
     {
@@ -22,7 +22,7 @@ class FileTest extends TestCase
         $name = str_random(8).'.png';
         $path = sys_get_temp_dir().'/'.$name;
         copy($stub, $path);
-        $file = new UploadedFile($path, $name, filesize($path), 'image/png', null, true);
+        $file = new UploadedFile($path, $name, 'image/png', null, true);
         $user = factory(User::class)->create();
         $this->be($user);
         $project = factory(Project::class)->create();
@@ -37,14 +37,13 @@ class FileTest extends TestCase
         $this->assertEquals($name, File::where('name', '!=', '__init__.py')->first()->name);
     }
 
-//
 //    public function testUploadIllegalFile()
 //    {
 //        $stub = __DIR__.'/empty.zip';
 //        $name = str_random(8).'.zip';
 //        $path = sys_get_temp_dir().'/'.$name;
 //        copy($stub, $path);
-//        $file = new UploadedFile($path, $name, filesize($path), 'applications/zip', null, true);
+//        $file = new UploadedFile($path, $name, 'applications/zip', null, true);
 //        $user = factory(User::class)->create();
 //        $this->be($user);
 //        $project = factory(Project::class)->create();

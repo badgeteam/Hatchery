@@ -10,11 +10,12 @@ use App\Models\Version;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ProjectTest extends TestCase
 {
-    use DatabaseTransactions, DatabaseMigrations;
+    use DatabaseTransactions, DatabaseMigrations, WithFaker;
 
     /**
      * Check the projects list.
@@ -53,6 +54,7 @@ class ProjectTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('post', '/projects', ['name' => $faker->name, 'description' => $faker->paragraph, 'category_id' => $category->id, 'status' => 'unknown']);
+        $this->assertNotNull(Project::get()->last());
         $response->assertRedirect('/projects/'.Project::get()->last()->slug.'/edit')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
     }
@@ -70,6 +72,7 @@ class ProjectTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('post', '/projects', ['name' => $name, 'description' => $faker->paragraph, 'category_id' => $category->id, 'status' => 'unknown']);
+        $this->assertNotNull(Project::get()->last());
         $response->assertRedirect('/projects/'.Project::get()->last()->slug.'/edit')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
         $response = $this
@@ -128,12 +131,21 @@ class ProjectTest extends TestCase
         $faker = Factory::create();
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/'.$project->slug, ['description' => $faker->paragraph, 'dependencies' => [$projectDep->id]]);
+            ->call('put', '/projects/'.$project->slug, [
+                'description' => $faker->paragraph,
+                'dependencies' => [$projectDep->id],
+                'category_id' => $project->category_id,
+                'status' => 'unknown'
+            ]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
         // add deps
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/'.$project->slug, ['description' => $faker->paragraph]);
+            ->call('put', '/projects/'.$project->slug, [
+                'description' => $faker->paragraph,
+                'category_id' => $project->category_id,
+                'status' => 'unknown'
+            ]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
         // remove deps
     }
@@ -153,12 +165,21 @@ class ProjectTest extends TestCase
         $faker = Factory::create();
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/'.$project->slug, ['description' => $faker->paragraph, 'dependencies' => [$projectDep->id]]);
+            ->call('put', '/projects/'.$project->slug, [
+                'description' => $faker->paragraph,
+                'dependencies' => [$projectDep->id],
+                'category_id' => $project->category_id,
+                'status' => 'unknown'
+            ]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
         // add deps
         $response = $this
             ->actingAs($otherUser)
-            ->call('put', '/projects/'.$project->slug, ['description' => $faker->paragraph]);
+            ->call('put', '/projects/'.$project->slug, [
+                'description' => $faker->paragraph,
+                'category_id' => $project->category_id,
+                'status' => 'unknown'
+            ]);
         $response->assertStatus(403);
         // remove deps
     }

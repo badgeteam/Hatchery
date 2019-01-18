@@ -7,6 +7,7 @@
     "type": "project",
     "require": {
         "php": ">=7.1",
+        "ext-json": "*",
         "bepsvpt/secure-headers": "^3.0",
         "doctrine/dbal": "^2.5",
         "filp/whoops": "~2.0",
@@ -16,10 +17,11 @@
         "sentry/sentry-laravel": "^0.10.0"
     },
     "require-dev": {
+        "codacy/coverage": "dev-master",
+        "codedungeon/phpunit-result-printer": "^0.24.1",
         "fzaninotto/faker": "~1.8",
         "mockery/mockery": "dev-master",
-        "phpunit/phpunit": "~7.0",
-	    "codacy/coverage": "dev-master"
+        "phpunit/phpunit": "~7.0"
     },
     "autoload": {
         "classmap": [

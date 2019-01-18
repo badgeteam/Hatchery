@@ -67,6 +67,7 @@ class PublicTest extends TestCase
         $version = factory(Version::class)->create();
         $version->zip = 'some_path.tar.gz';
         $version->save();
+        $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json');
         $response->assertStatus(200)
@@ -74,7 +75,7 @@ class PublicTest extends TestCase
                 'description' => null,
                 'name'        => $version->project->name,
                 'info'        => ['version' => '1'],
-                'category'    => 'uncategorised',
+                'category'    => $category->slug,
                 'releases'    => [
                     '1' => [
                         [
@@ -106,7 +107,6 @@ class PublicTest extends TestCase
     {
         $response = $this->json('GET', '/eggs/list/json');
         $response->assertStatus(200)->assertExactJson([]);
-        $category = factory(Category::class)->create();
 
         $user = factory(User::class)->create();
         $this->be($user);
@@ -114,6 +114,8 @@ class PublicTest extends TestCase
         $version->zip = 'some_path.tar.gz';
         $version->save();
         factory(File::class)->create(['version_id' => $version->id]);
+
+        $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/eggs/list/json');
         $response->assertStatus(200)
@@ -126,8 +128,8 @@ class PublicTest extends TestCase
                     'size_of_content' => $version->project->size_of_content,
                     'size_of_zip'     => 0,
                     'category'        => $category->slug,
-            'download_counter'        => 0,
-            'status'                  => 'unknown',
+                    'download_counter'        => 0,
+                    'status'                  => 'unknown',
                 ],
             ]);
     }
@@ -139,7 +141,6 @@ class PublicTest extends TestCase
     {
         $response = $this->json('GET', '/eggs/search/something/json');
         $response->assertStatus(200)->assertExactJson([]);
-        $category = factory(Category::class)->create();
 
         $user = factory(User::class)->create();
         $this->be($user);
@@ -148,6 +149,7 @@ class PublicTest extends TestCase
         $version->save();
 
         $len = strlen($version->project->name);
+        $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/eggs/search/'.substr($version->project->name, 2, $len - 4).'/json');
         $response->assertStatus(200)
@@ -171,15 +173,15 @@ class PublicTest extends TestCase
      */
     public function testProjectCategoryJson()
     {
-        $category = factory(Category::class)->create(['name' => 'Test']);
-
         $user = factory(User::class)->create();
         $this->be($user);
         $version = factory(Version::class)->create();
         $version->zip = 'some_path.tar.gz';
         $version->save();
 
-        $response = $this->json('GET', '/eggs/category/test/json');
+        $category = $version->project->category()->first();
+
+        $response = $this->json('GET', '/eggs/category/'.$category->slug.'/json');
         $response->assertStatus(200)
             ->assertExactJson([
                 [
@@ -201,15 +203,14 @@ class PublicTest extends TestCase
      */
     public function testCategoriesJson()
     {
-        $category = factory(Category::class)->create();
-
         $user = factory(User::class)->create();
         $this->be($user);
         $version = factory(Version::class)->create();
         $version->zip = 'some_path.tar.gz';
-        $version->project->category_id = $category->id;
         $version->project->save();
         $version->save();
+
+        $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/eggs/categories/json');
         $response->assertStatus(200)
@@ -227,15 +228,15 @@ class PublicTest extends TestCase
      */
     public function testCategoriesCountJson()
     {
-        $category = factory(Category::class)->create();
         $user = factory(User::class)->create();
 
         $this->be($user);
         $version = factory(Version::class)->create();
         $version->zip = 'iets anders';
-        $version->project->category_id = $category->id;
         $version->project->save();
         $version->save();
+
+        $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/eggs/categories/json');
         $response->assertStatus(200)
@@ -253,14 +254,14 @@ class PublicTest extends TestCase
      */
     public function testCategoriesUnpublishedJson()
     {
-        $category = factory(Category::class)->create();
         $user = factory(User::class)->create();
 
         $this->be($user);
         $version = factory(Version::class)->create();
-        $version->project->category_id = $category->id;
         $version->project->save();
         $version->save();
+
+        $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/eggs/categories/json');
         $response->assertStatus(200)
