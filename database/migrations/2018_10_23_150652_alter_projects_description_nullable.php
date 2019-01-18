@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AlterProjectsDescriptionNullable extends Migration
 {
@@ -12,6 +12,7 @@ class AlterProjectsDescriptionNullable extends Migration
         // workaround for Doctrine DBAL issue in table with enum
         // https://stackoverflow.com/a/42107554
     }
+
     /**
      * Run the migrations.
      *

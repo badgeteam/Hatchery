@@ -18,15 +18,17 @@ class VerifyCsrfToken extends BaseVerifier
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
-     * @return mixed
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @throws \Illuminate\Session\TokenMismatchException
+     *
+     * @return mixed
      */
     public function handle($request, \Closure $next)
     {
         // Don't validate CSRF when testing.
-        if(env('APP_ENV') === 'testing') {
+        if (env('APP_ENV') === 'testing') {
             return $this->addCookieToResponse($request, $next($request));
         }
 

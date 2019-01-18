@@ -75,6 +75,7 @@ class File extends Model
         if (is_string($this->content)) {
             return strlen($this->content);
         }
+
         return null;
     }
 }

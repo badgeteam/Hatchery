@@ -121,13 +121,13 @@ class PublicTest extends TestCase
         $response->assertStatus(200)
             ->assertExactJson([
                 [
-                    'description'     => null,
-                    'name'            => $version->project->name,
-                    'revision'        => '1',
-                    'slug'            => $version->project->slug,
-                    'size_of_content' => $version->project->size_of_content,
-                    'size_of_zip'     => 0,
-                    'category'        => $category->slug,
+                    'description'             => null,
+                    'name'                    => $version->project->name,
+                    'revision'                => '1',
+                    'slug'                    => $version->project->slug,
+                    'size_of_content'         => $version->project->size_of_content,
+                    'size_of_zip'             => 0,
+                    'category'                => $category->slug,
                     'download_counter'        => 0,
                     'status'                  => 'unknown',
                 ],

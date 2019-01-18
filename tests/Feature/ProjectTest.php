@@ -132,10 +132,10 @@ class ProjectTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
-                'description' => $faker->paragraph,
+                'description'  => $faker->paragraph,
                 'dependencies' => [$projectDep->id],
-                'category_id' => $project->category_id,
-                'status' => 'unknown'
+                'category_id'  => $project->category_id,
+                'status'       => 'unknown',
             ]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
         // add deps
@@ -144,7 +144,7 @@ class ProjectTest extends TestCase
             ->call('put', '/projects/'.$project->slug, [
                 'description' => $faker->paragraph,
                 'category_id' => $project->category_id,
-                'status' => 'unknown'
+                'status'      => 'unknown',
             ]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
         // remove deps
@@ -166,10 +166,10 @@ class ProjectTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
-                'description' => $faker->paragraph,
+                'description'  => $faker->paragraph,
                 'dependencies' => [$projectDep->id],
-                'category_id' => $project->category_id,
-                'status' => 'unknown'
+                'category_id'  => $project->category_id,
+                'status'       => 'unknown',
             ]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
         // add deps
@@ -178,7 +178,7 @@ class ProjectTest extends TestCase
             ->call('put', '/projects/'.$project->slug, [
                 'description' => $faker->paragraph,
                 'category_id' => $project->category_id,
-                'status' => 'unknown'
+                'status'      => 'unknown',
             ]);
         $response->assertStatus(403);
         // remove deps
