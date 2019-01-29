@@ -5,7 +5,11 @@
 <a href="https://www.codacy.com/app/annejan/Hatchery"><img src="https://api.codacy.com/project/badge/Grade/fd1f9360910d4b6f966f528af1f3568b" alt="Codacy Badge"></a>
 </p>
 
-## SHA2017 Hatchery
+## SHA2017 Hatchery DEPRECATED
+
+Please visit [Badge.team Hatchery](https://github.com/badgeteam/Hatchery) for updated version!
+
+---
 
 Simple micropython software repository for the SHA2017 Badge. 
 
