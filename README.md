@@ -1,18 +1,18 @@
 <p align="center">
-<a href="https://travis-ci.org/SHA2017-badge/Hatchery"><img src="https://travis-ci.org/SHA2017-badge/Hatchery.svg" alt="Build Status"></a>
-<a href="https://codeclimate.com/github/SHA2017-badge/Hatchery/maintainability"><img src="https://api.codeclimate.com/v1/badges/d11aea44f07d8945e76e/maintainability" /></a>
-<a href="https://codeclimate.com/github/SHA2017-badge/Hatchery/test_coverage"><img src="https://api.codeclimate.com/v1/badges/d11aea44f07d8945e76e/test_coverage" /></a>
-<a href="https://www.codacy.com/app/annejan/Hatchery"><img src="https://api.codacy.com/project/badge/Grade/fd1f9360910d4b6f966f528af1f3568b" alt="Codacy Badge"></a>
+<a href="https://travis-ci.org/badgeteam/Hatchery"><img src="https://travis-ci.org/badgeteam/Hatchery.svg" alt="Build Status"></a>
+<a href="https://codeclimate.com/github/badgeteam/Hatchery/maintainability"><img src="https://api.codeclimate.com/v1/badges/05fc2bac5b3669fa1b0c/maintainability" /></a>
+<a href="https://codeclimate.com/github/badgeteam/Hatchery/test_coverage"><img src="https://api.codeclimate.com/v1/badges/05fc2bac5b3669fa1b0c/test_coverage" /></a>
+<a href="https://www.codacy.com/app/Badgeteam/Hatchery?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=badgeteam/Hatchery&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/78402ccc553245f2be2d1def6fdc3c68" alt="Codacy Badge"></a>
 </p>
 
-## SHA2017 Hatchery
+## Badge.Team Hatchery
 
-Simple micropython software repository for the SHA2017 Badge. 
+Simple micropython software repository for Badges. 
 
 [Live Site](http://badge.team) |
 [Documentation](https://wiki.badge.team/Hatchery) |
 [Project Wiki](https://wiki.badge.team) |
-[GitHub](https://github.com/SHA2017-badge/)
+[GitHub](https://github.com/badgeteam/)
 
 ## License
 
