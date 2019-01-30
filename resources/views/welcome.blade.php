@@ -28,7 +28,7 @@
 			<div class="spacer col-md-12 hidden-xs"></div>
 			<div class="links">
 			    <a href="https://wiki.badge.team/MicroPython">Wiki Coding Help</a>
-			    <a href="https://github.com/SHA2017-badge/">GitHub</a>
+			    <a href="https://github.com/badgeteam/">GitHub</a>
 			    <a href="https://twitter.com/SHA2017Badge">Twitter</a>
 			</div>
 			<div class="spacer col-md-12 hidden-xs"></div>
