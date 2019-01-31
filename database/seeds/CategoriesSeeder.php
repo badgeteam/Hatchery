@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
 class CategoriesSeeder extends Seeder
@@ -27,7 +28,7 @@ class CategoriesSeeder extends Seeder
             'Adult',
             'Virus',
                 ] as $name) {
-            \App\Models\Category::create(['name' => $name]);
+            Category::create(['name' => $name]);
         }
     }
 }

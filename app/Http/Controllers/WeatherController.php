@@ -15,8 +15,8 @@ class WeatherController extends Controller
     public function __construct()
     {
         $this->url = 'https://api.darksky.net/forecast/'
-            .config('services.darksky')
-            .'/52.3451,5.4581?units=ca&exclude=currently,alerts,flags,daily,minutely';
+            .config('services.darksky.key')
+            .'/'.config('services.darksky.location').'?units=ca&exclude=currently,alerts,flags,daily,minutely';
     }
 
     /**

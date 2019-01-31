@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
+use App\Models\Badge;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\Version;
@@ -68,6 +69,12 @@ class ProjectsController extends Controller
             $project->category_id = $request->category_id;
             $project->status = 'unknown';
             $project->save();
+
+            if ($request->badge_ids) {
+                $badges = Badge::find($request->badge_ids);
+                $project->badges()->attach($badges);
+            }
+
         } catch (\Exception $e) {
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
         }
@@ -118,6 +125,12 @@ class ProjectsController extends Controller
                 foreach ($project->dependencies as $dependency) {
                     $dependency->pivot->delete();
                 }
+            }
+
+            if ($request->badge_ids) {
+                $project->badges()->detach();
+                $badges = Badge::find($request->badge_ids);
+                $project->badges()->attach($badges);
             }
 
             $project->save();

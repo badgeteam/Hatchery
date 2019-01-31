@@ -35,4 +35,8 @@ Route::get('/eggs/search/{words}/json', 'PublicController@searchJson')->name('se
 Route::get('/eggs/categories/json', 'PublicController@categoriesJson')->name('categories.json');
 Route::get('/eggs/category/{category}/json', 'PublicController@categoryJson')->name('category.json');
 
+Route::get('/basket/{badge}/list/json', 'PublicController@badgeListJson')->name('basket.list.json');
+Route::get('/basket/{badge}/search/{words}/json', 'PublicController@badgeSearchJson')->name('basket.search.json');
+Route::get('/basket/{badge}/category/{category}/json', 'PublicController@badgeCategoryJson')->name('basket.category.json');
+
 Route::get('/weather', 'WeatherController@show')->name('weather');

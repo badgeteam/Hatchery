@@ -8,8 +8,8 @@ class AlterProjectsDescriptionNullable extends Migration
 {
     public function __construct()
     {
-        DB::getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
         // workaround for Doctrine DBAL issue in table with enum
+        DB::getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
         // https://stackoverflow.com/a/42107554
     }
 
