@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\DownloadCounter;
+use App\Models\Badge;
 use App\Models\Category;
 use App\Models\Project;
 use App\Models\User;
@@ -83,7 +84,7 @@ class PublicController extends Controller
      *
      * @return JsonResponse
      */
-    public function searchJson($search): JsonResponse
+    public function searchJson(string $search): JsonResponse
     {
         $what = '%'.$search.'%';
 
@@ -117,5 +118,56 @@ class PublicController extends Controller
     public function categoriesJson(): JsonResponse
     {
         return response()->json(Category::where('hidden', false)->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+    }
+
+    /**
+     * Get the latest released versions for a badge.
+     *
+     * @param Badge $badge
+     *
+     * @return JsonResponse
+     */
+    public function badgeListJson(Badge $badge): JsonResponse
+    {
+        return response()->json($badge->projects()->whereHas('versions', function ($query) {
+            $query->published();
+        })->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+    }
+
+    /**
+     * Find the latest released versions.
+     *
+     * @param Badge $badge
+     * @param string $search
+     *
+     * @return JsonResponse
+     */
+    public function badgeSearchJson(Badge $badge, string $search): JsonResponse
+    {
+        $what = '%'.$search.'%';
+
+        return response()->json($badge->projects()->whereHas('versions', function ($query) {
+            $query->published();
+        })->where('name', 'like', $what)
+            ->orWhere('description', 'like', $what)
+            ->orderBy('id', 'DESC')
+            ->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+    }
+
+    /**
+     * Get the latest released versions.
+     *
+     * @param Badge $badge
+     * @param Category $category
+     *
+     * @return JsonResponse
+     */
+    public function badgeCategoryJson(Badge $badge, Category $category): JsonResponse
+    {
+        return response()->json($badge->projects()->whereHas('category', function ($query) use ($category) {
+            $query->where('slug', $category->slug);
+        })->whereHas('versions', function ($query) {
+            $query->published();
+        })->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
 }

@@ -15,7 +15,7 @@ class Project extends Model
 
     protected $appends = ['revision', 'size_of_zip', 'size_of_content', 'category'];
 
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'user_id', 'id', 'category_id'];
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'user_id', 'id', 'category_id', 'pivot'];
 
     public static $forbidden = [
         'os', 'uos', 'badge', 'esp32', 'ussl', 'time', 'utime', 'splash', 'launcher', 'installer', 'ota_update',
@@ -61,7 +61,7 @@ class Project extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo('App\Models\User')->withTrashed();
+        return $this->belongsTo(User::class)->withTrashed();
     }
 
     /**
@@ -71,7 +71,7 @@ class Project extends Model
      */
     public function category(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Category')->withTrashed();
+        return $this->belongsTo(Category::class)->withTrashed();
     }
 
     /**
@@ -110,6 +110,14 @@ class Project extends Model
     {
         return $this->belongsToMany(self::class, 'dependencies', 'depends_on_project_id', 'project_id')
             ->withTimestamps();
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function badges(): BelongsToMany
+    {
+        return $this->belongsToMany(Badge::class);
     }
 
     /**
@@ -162,6 +170,10 @@ class Project extends Model
         return $this->category()->first()->slug;
     }
 
+    /**
+     * @param $slug
+     * @return bool
+     */
     public static function isForbidden($slug)
     {
         return in_array($slug, self::$forbidden);

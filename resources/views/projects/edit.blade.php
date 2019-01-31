@@ -38,7 +38,12 @@
                             <div class="form-group">
                                 {{ Form::label('status', 'Status', ['class' => 'control-label']) }}
                                 {{ Form::select('status', ['working' => 'Working', 'in_progress' => 'In Progress', 'broken' => 'Broken'], $project->status, ['class' => 'form-control', 'id' => 'status']) }}
-                            </div>  
+                            </div>
+
+                            <div class="form-group @if($errors->has('badge_ids')) has-error @endif">
+                                {{ Form::label('badge_ids', 'Compatibility', ['class' => 'control-label']) }}
+                                {{ Form::select('badge_ids[]', \App\Models\Badge::pluck('name', 'id'), $project->badges()->pluck('badges.id'), ['multiple' => 'multiple', 'class' => 'form-control', 'id' => 'badge_ids']) }}
+                            </div>
 
                             @include('projects.partials.dependencies')
                         </div>

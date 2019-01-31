@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Badge;
 use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
@@ -181,6 +182,9 @@ class PublicTest extends TestCase
 
         $category = $version->project->category()->first();
 
+        $response = $this->json('GET', '/eggs/category/nonexisting/json');
+        $response->assertStatus(404);
+
         $response = $this->json('GET', '/eggs/category/'.$category->slug.'/json');
         $response->assertStatus(200)
             ->assertExactJson([
@@ -300,5 +304,115 @@ class PublicTest extends TestCase
         $response = $this->get('/files/'.$file->id.'');
         $response->assertStatus(200)
             ->assertViewHas('file');
+    }
+
+
+    /**
+     * Check JSON eggs request . .
+     */
+    public function testBasketListJson()
+    {
+        $badge =  factory(Badge::class)->create();
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $version->zip = 'some_path.tar.gz';
+        $version->save();
+        $version->project->badges()->attach($badge);
+        factory(File::class)->create(['version_id' => $version->id]);
+        $category = $version->project->category()->first();
+
+        $response = $this->json('GET', '/basket/nonexisting/list/json');
+        $response->assertStatus(404);
+
+        $response = $this->json('GET', '/basket/'.$badge->slug.'/list/json');
+        $response->assertStatus(200)
+            ->assertExactJson([
+                [
+                    'description'             => null,
+                    'name'                    => $version->project->name,
+                    'revision'                => '1',
+                    'slug'                    => $version->project->slug,
+                    'size_of_content'         => $version->project->size_of_content,
+                    'size_of_zip'             => 0,
+                    'category'                => $category->slug,
+                    'download_counter'        => 0,
+                    'status'                  => 'unknown',
+                ],
+            ]);
+    }
+
+    /**
+     * Check JSON eggs request . .
+     */
+    public function testBasketSearchJson()
+    {
+        $badge =  factory(Badge::class)->create();
+        $response = $this->json('GET', '/eggs/search/something/json');
+        $response->assertStatus(200)->assertExactJson([]);
+
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $version->zip = 'some_path.tar.gz';
+        $version->save();
+        $version->project->badges()->attach($badge);
+
+        $len = strlen($version->project->name);
+        $category = $version->project->category()->first();
+
+        $response = $this->json('GET', '/basket/nonexisting/search/'.substr($version->project->name, 2, $len - 4).'/json');
+        $response->assertStatus(404);
+
+        $response = $this->json('GET', '/basket/'.$badge->slug.'/search/'.substr($version->project->name, 2, $len - 4).'/json');
+        $response->assertStatus(200)
+            ->assertExactJson([
+                [
+                    'description'             => null,
+                    'name'                    => $version->project->name,
+                    'revision'                => '1',
+                    'slug'                    => $version->project->slug,
+                    'size_of_content'         => 0,
+                    'size_of_zip'             => 0,
+                    'category'                => $category->slug,
+                    'download_counter'        => 0,
+                    'status'                  => 'unknown',
+                ],
+            ]);
+    }
+
+    /**
+     * Check JSON eggs request . .
+     */
+    public function testBasketCategoryJson()
+    {
+        $badge =  factory(Badge::class)->create();
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $version->zip = 'some_path.tar.gz';
+        $version->save();
+        $version->project->badges()->attach($badge);
+
+        $category = $version->project->category()->first();
+
+        $response = $this->json('GET', '/basket/nonexisting/category/'.$category->slug.'/json');
+        $response->assertStatus(404);
+
+        $response = $this->json('GET', '/basket/'.$badge->slug.'/category/'.$category->slug.'/json');
+        $response->assertStatus(200)
+            ->assertExactJson([
+                [
+                    'description'      => null,
+                    'name'             => $version->project->name,
+                    'revision'         => '1',
+                    'slug'             => $version->project->slug,
+                    'size_of_content'  => 0,
+                    'size_of_zip'      => 0,
+                    'category'         => $category->slug,
+                    'download_counter' => 0,
+                    'status'           => 'unknown',
+                ],
+            ]);
     }
 }

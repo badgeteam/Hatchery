@@ -20,7 +20,7 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## Installation
 
-Requires PHP 7.1 or later!
+Requires PHP 7.1.3 or later!
 
 ```bash
 cp .env.example .env
@@ -65,15 +65,10 @@ Apps
 /eggs/search/[words]/json     - json data for search query [words]
 /eggs/categories/json         - json list of categories
 /eggs/category/[cat]/json     - json data for category [cat]
-```
 
-Events (via `schedule.py`)
-
-```uri
-/schedule/schedule.json       - version and dates
-/schedule/day/[0-4].json      - names and guids
-/schedule/event/[guid].json   - info about events
-/schedule/fahrplan/[0-4].json - time, duration and tile
+/basket/[badge]/list/json           - a list of all eggs for specific [badge]
+/basket/[badge]/search/json         - [badge] specific search for [words]
+/basket/[badge]/category/[cat]/json - json data for category [cat] on [badge]
 ```
 
 App specific

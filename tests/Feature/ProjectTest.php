@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Badge;
 use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
@@ -266,5 +267,49 @@ class ProjectTest extends TestCase
         $response = $this
             ->call('get', '/projects/'.$project->slug);
         $response->assertStatus(200)->assertViewHas(['project']);
+    }
+
+    /**
+     * Check the projects can be stored.
+     */
+    public function testProjectsStoreBadge()
+    {
+        $user = factory(User::class)->create();
+        $faker = Factory::create();
+        $this->assertEmpty(Project::all());
+        $category = factory(Category::class)->create();
+        $badge = factory(Badge::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/projects', [
+                'name' => $faker->name,
+                'description' => $faker->paragraph,
+                'category_id' => $category->id,
+                'badge_ids' => [$badge->id],
+                'status' => 'unknown']);
+        $this->assertNotNull(Project::get()->last());
+        $response->assertRedirect('/projects/'.Project::get()->last()->slug.'/edit')->assertSessionHas('successes');
+        $this->assertCount(1, Project::all());
+    }
+
+    /**
+     * Check the projects can be stored.
+     */
+    public function testProjectsUpdateBadge()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $faker = Factory::create();
+        $badge = factory(Badge::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/projects/'.$project->slug, [
+                'description'  => $faker->paragraph,
+                'category_id'  => $project->category_id,
+                'badge_ids' => [$badge->id],
+                'status'       => 'unknown',
+            ]);
+        $response->assertRedirect('/projects')->assertSessionHas('successes');
     }
 }
