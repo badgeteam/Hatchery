@@ -1,5 +1,5 @@
 {
-    "name": "badgeteam/Hatchery",
+    "name": "badgeteam/hatchery",
     "description": "Hatchery micropython app repository . .",
     "keywords": ["framework", "laravel", "repository"],
     "author": "Anne Jan Brouwer <annejan@noprotocol.nl>",
