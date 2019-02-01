@@ -30,6 +30,7 @@
                             <hr>
                             Status: {{ $project->status }}
                             <hr>
+                            @include('projects.partials.show-compatibility')
                             @include('projects.partials.show-dependencies')
                         </div>
                         <div class="col-md-12 clearfix">
