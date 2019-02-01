@@ -47,4 +47,17 @@ class FileTest extends TestCase
         $file = factory(File::class)->create(['name' => 'test.txt']);
         $this->assertTrue($file->editable);
     }
+
+    /**
+     * Check the size of content helper.
+     */
+    public function testFileSizeOfContentAttribute()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create(['content' => 0]);
+        $this->assertNull($file->size_of_content);
+        $file = factory(File::class)->create(['content' => '123']);
+        $this->assertEquals(3, $file->size_of_content);
+    }
 }

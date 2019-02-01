@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Category;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
@@ -84,7 +85,7 @@ class ProjectTest extends TestCase
     }
 
     /**
-     * Assert the Project has a relation with a single User.
+     * Assert the Project can't use illegal name.
      */
     public function testProjectSaveForbiddenNames()
     {
@@ -95,5 +96,25 @@ class ProjectTest extends TestCase
         $project->description = 'test bla';
         $project->name = 'ESP32';
         $project->save();
+    }
+
+    /**
+     * Test the Category helper.
+     */
+    public function testProjectCategoryAttribute()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = new Project();
+        $project->description = 'test bla';
+        $project->name = 'test';
+        $project->save();
+
+        $this->assertEquals('uncategorised', $project->category);
+
+        $category = factory(Category::class)->create();
+        $project->category()->associate($category);
+
+        $this->assertEquals($category->slug, $project->category);
     }
 }
