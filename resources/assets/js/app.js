@@ -26,6 +26,7 @@ window.onload = function() {
 				lineNumbers: true,
 				mode: 'python',
 				showCursorWhenSelecting: true,
+				indentWithTabs: true,
 				keyMap: window.keymap,
 			});
 		});
