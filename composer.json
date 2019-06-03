@@ -11,17 +11,17 @@
         "bepsvpt/secure-headers": "^3.0",
         "doctrine/dbal": "^2.5",
         "filp/whoops": "~2.0",
-        "laravel/framework": "5.7.*",
+        "laravel/framework": "5.8.*",
         "laravel/tinker": "~1.0",
-        "laravelcollective/html": "^5.7",
-        "sentry/sentry-laravel": "^0.10.0"
+        "laravelcollective/html": "^5.8",
+        "sentry/sentry-laravel": "^1.0.2"
     },
     "require-dev": {
         "codacy/coverage": "dev-master",
-        "codedungeon/phpunit-result-printer": "^0.24.1",
+        "sempro/phpunit-pretty-print": "^1.0",
         "fzaninotto/faker": "~1.8",
         "mockery/mockery": "dev-master",
-        "phpunit/phpunit": "~7.0"
+        "phpunit/phpunit": "~8.0"
     },
     "autoload": {
         "classmap": [
