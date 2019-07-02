@@ -67,7 +67,7 @@ Apps
 /eggs/category/[cat]/json     - json data for category [cat]
 
 /basket/[badge]/list/json           - a list of all eggs for specific [badge]
-/basket/[badge]/search/[words]/json         - [badge] specific search for [words]
+/basket/[badge]/search/[words]/json - [badge] specific search for [words]
 /basket/[badge]/category/[cat]/json - json data for category [cat] on [badge]
 ```
 
