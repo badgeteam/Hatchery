@@ -25,7 +25,7 @@
 
                                 <div class="form-group @if($errors->has('badge_ids')) has-error @endif">
                                     {{ Form::label('badge_ids', 'Compatibility', ['class' => 'control-label']) }}
-                                    {{ Form::select('badge_ids[]', \App\Models\Badge::pluck('name', 'id'), 0, ['multiple' => 'multiple', 'class' => 'form-control', 'id' => 'badge_ids']) }}
+                                    {{ Form::select('badge_ids[]', \App\Models\Badge::pluck('name', 'id')->reverse(), 0, ['multiple' => 'multiple', 'class' => 'form-control', 'id' => 'badge_ids']) }}
                                 </div>
 
                                 <div class="form-group @if($errors->has('name')) has-error @endif">
