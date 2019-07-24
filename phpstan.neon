@@ -6,3 +6,4 @@ parameters:
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\BelongsTo::withTrashed().#'
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::unPublished().#'
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::published().#'
+        - '#Method App\\Models\\Version::scopePublished()#'
