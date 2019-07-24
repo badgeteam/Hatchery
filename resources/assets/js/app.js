@@ -48,4 +48,7 @@ window.onload = function() {
 			});
 		});
 	}
+	if (document.getElementById('pixels')) {
+		console.log(document.getElementById('content').val());
+	}
 };
