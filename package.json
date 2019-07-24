@@ -37,6 +37,6 @@
     "url-loader": "^2.1.0",
     "vue": "^2.5.7",
     "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.0.0"
+    "webpack": "^4.37.0"
   }
 }

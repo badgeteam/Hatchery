@@ -37,6 +37,7 @@ script:
   - make
   - export PATH=$PATH:`pwd`
   - cd ..
+  - php artisan code:analyse
   - vendor/bin/phpunit
   - yarn lint
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

@@ -2,13 +2,32 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * App\Models\Version
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\File[] $files
+ * @property-read bool $published
+ * @property-read \App\Models\Project $project
+ * @property-read \App\Models\User $user
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Version onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version published()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version unPublished()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Version withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Version withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Version extends Model
 {
     use SoftDeletes;

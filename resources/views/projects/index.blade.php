@@ -10,6 +10,9 @@
 
                 <div class="panel-heading">
                     <strong>Eggs</strong>
+
+                    {{ Form::select('badge_id', \App\Models\Badge::pluck('name', 'id')->reverse()->prepend('Choose a badge model', 0), $badge, ['id' => 'badge']) }}
+
                     <div class="pull-right">
                         <a href="{{ route('projects.create') }}" class="btn btn-success btn-xs">Add</a>
                     </div>
@@ -61,4 +64,14 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function () {
+          $('#badge').change(function () {
+            window.location.href = '{{ route('projects.index') }}?badge=' + $(this).val()
+          })
+        })
+    </script>
 @endsection

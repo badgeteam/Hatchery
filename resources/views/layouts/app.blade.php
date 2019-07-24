@@ -12,7 +12,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ App::environment('local') ? asset('css/app.css') : secure_asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css', !App::environment(['local', 'testing'])) }}" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -105,7 +105,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ App::environment('local') ? asset('js/app.js') : secure_asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/app.js', !App::environment(['local', 'testing'])) }}"></script>
 
     @yield('script')
 </body>

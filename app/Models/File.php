@@ -7,6 +7,24 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * App\Models\File
+ *
+ * @property-read bool $editable
+ * @property-read string $extension
+ * @property-read int $size_of_content
+ * @property-read \App\Models\User $user
+ * @property-read \App\Models\Version $version
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\File onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\File withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\File withoutTrashed()
+ * @mixin \Eloquent
+ */
 class File extends Model
 {
     use SoftDeletes;

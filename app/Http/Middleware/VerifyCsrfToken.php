@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
+use Illuminate\Support\Facades\App;
 
 class VerifyCsrfToken extends BaseVerifier
 {
@@ -28,7 +29,7 @@ class VerifyCsrfToken extends BaseVerifier
     public function handle($request, \Closure $next)
     {
         // Don't validate CSRF when testing.
-        if (env('APP_ENV') === 'testing') {
+        if (App::environment(['local', 'testing'])) {
             return $this->addCookieToResponse($request, $next($request));
         }
 

@@ -9,6 +9,28 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * App\Models\Project
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Badge[] $badges
+ * @property-read string $category
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $dependants
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $dependencies
+ * @property-read string $revision
+ * @property-read int $size_of_content
+ * @property-read int $size_of_zip
+ * @property-read \App\Models\User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Version[] $versions
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Project onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Project extends Model
 {
     use SoftDeletes;
@@ -171,10 +193,10 @@ class Project extends Model
     }
 
     /**
-     * @param $slug
+     * @param string $slug
      * @return bool
      */
-    public static function isForbidden($slug)
+    public static function isForbidden(string $slug)
     {
         return in_array($slug, self::$forbidden);
     }

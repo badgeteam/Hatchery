@@ -9,8 +9,8 @@ use App\Models\File;
 use App\Models\Project;
 use App\Models\Version;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Phar;
 use PharData;
 
 class ProjectsController extends Controller
@@ -29,9 +29,19 @@ class ProjectsController extends Controller
      *
      * @return View
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        return view('projects.index')->with(['projects' => Project::orderBy('id', 'DESC')->paginate()]);
+        $badge = 0;
+        if ($request->has('badge')) {
+            $badge = Badge::find($request->get('badge'));
+        }
+        if ($badge === 0) {
+            $projects = Project::orderBy('id', 'DESC');
+        } else {
+            $projects = $badge->projects()->orderBy('id', 'DESC');
+            $badge = $badge->id;
+        }
+        return view('projects.index')->with(['projects' => $projects->paginate()])->with('badge', $badge);
     }
 
     /**

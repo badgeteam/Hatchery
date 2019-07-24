@@ -18,10 +18,13 @@
     },
     "require-dev": {
         "codacy/coverage": "dev-master",
+        "barryvdh/laravel-ide-helper": "^2.6",
         "sempro/phpunit-pretty-print": "^1.0",
         "fzaninotto/faker": "~1.8",
         "mockery/mockery": "dev-master",
-        "phpunit/phpunit": "~8.0"
+        "phpstan/phpstan": "^0.11.4",
+        "phpunit/phpunit": "~8.0",
+        "nunomaduro/larastan": "^0.3.16"
     },
     "autoload": {
         "classmap": [
