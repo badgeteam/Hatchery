@@ -31,6 +31,9 @@
                         </div>
 
                     </div>
+                    @if($file->name === 'icon.py')
+                    <div id="pixels"></div>
+                    @endif
                 </div>
             </div>
         </div>

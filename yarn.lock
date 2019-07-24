@@ -5125,6 +5125,11 @@ pinkie@^2.0.0:
   resolved "https://registry.yarnpkg.com/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
   integrity sha1-clVrgM+g1IqXToDnckjoDtT3+HA=
 
+pixel-icon@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/pixel-icon/-/pixel-icon-1.0.0.tgz#eac1f6c874c90968e42d364d2bef3aba3582490f"
+  integrity sha512-wht7GCEM3MqcxWom5T+Mu+M0FmzwwsZOOORwTEN7RQEiAn9dz5okSpuY3CypFUXnA0vJ5wl0ofVc00vdSlpNEw==
+
 pkg-dir@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-3.0.0.tgz#2749020f239ed990881b1f71210d51eb6523bea3"
