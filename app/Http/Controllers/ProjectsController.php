@@ -35,7 +35,7 @@ class ProjectsController extends Controller
         if ($request->has('badge')) {
             $badge = Badge::find($request->get('badge'));
         }
-        if ($badge === 0) {
+        if ($badge === 0 || !$badge) {
             $projects = Project::orderBy('id', 'DESC');
         } else {
             $projects = $badge->projects()->orderBy('id', 'DESC');
