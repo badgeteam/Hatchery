@@ -31,11 +31,11 @@ class ProjectsController extends Controller
      */
     public function index(Request $request): View
     {
-        $badge = 0;
+        $badge = '';
         if ($request->has('badge')) {
-            $badge = Badge::find($request->get('badge'));
+            $badge = Badge::where('slug', $request->get('badge'))->first();
         }
-        if ($badge === 0 || !$badge) {
+        if ($badge === '' || !$badge) {
             $projects = Project::orderBy('id', 'DESC');
         } else {
             $projects = $badge->projects()->orderBy('id', 'DESC');

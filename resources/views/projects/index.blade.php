@@ -11,7 +11,7 @@
                 <div class="panel-heading">
                     <strong>Eggs</strong>
 
-                    {{ Form::select('badge_id', \App\Models\Badge::pluck('name', 'id')->reverse()->prepend('Choose a badge model', 0), $badge, ['id' => 'badge']) }}
+                    {{ Form::select('badge_id', \App\Models\Badge::pluck('name', 'slug')->reverse()->prepend('Choose a badge model', ''), $badge, ['id' => 'badge']) }}
 
                     <div class="pull-right">
                         <a href="{{ route('projects.create') }}" class="btn btn-success btn-xs">Add</a>
