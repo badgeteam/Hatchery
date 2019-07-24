@@ -27,6 +27,7 @@ class ProjectsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return View
      */
     public function index(Request $request): View
@@ -39,7 +40,7 @@ class ProjectsController extends Controller
             $projects = Project::orderBy('id', 'DESC');
         } else {
             $projects = $badge->projects()->orderBy('id', 'DESC');
-            $badge = $badge->id;
+            $badge = $badge->slug;
         }
         return view('projects.index')->with(['projects' => $projects->paginate()])->with('badge', $badge);
     }
