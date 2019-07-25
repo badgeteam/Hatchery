@@ -16,6 +16,7 @@ window.keymap = 'default';
 
 let frames;
 let currentFrame = 0;
+let editor;
 
 window.drawIcon = function(framebuffer) {
 	let r = 0, p = 0;
@@ -54,7 +55,7 @@ window.framesToContent = function() {
 		content += ']';
 	});
 	content += ', ' + frames.length + ')';
-	console.log(content);
+	editor.setValue(content);
 };
 
 window.pixelToHexA = function(rgba) {
@@ -115,7 +116,7 @@ window.onload = function() {
 			'../../../node_modules/codemirror/keymap/sublime.js',
 			'../../../node_modules/codemirror/keymap/emacs.js'
 		], function (CodeMirror) {
-			CodeMirror.fromTextArea(document.getElementById('content'), {
+			editor = CodeMirror.fromTextArea(document.getElementById('content'), {
 				lineNumbers: true,
 				mode: 'python',
 				showCursorWhenSelecting: true,
@@ -183,7 +184,6 @@ window.onload = function() {
 									let pos = this.id.match(/[0-9]+?/g);
 									let r = parseInt(pos[0]);
 									let p = parseInt(pos[1]);
-									console.log(frames, frames[currentFrame][(r*8)+p]);
 									frames[currentFrame][(r*8)+p] = window.pixelToHexA(this.style.backgroundColor);
 									console.log(frames, frames[currentFrame][(r*8)+p], r, p, (r*8)+p);
 									window.framesToContent();
