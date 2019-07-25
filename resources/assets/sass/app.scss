@@ -36,10 +36,7 @@
       cursor: pointer;
     }
   }
-  .colour-container {
-    background: black;
-  }
-  #colour {
+  #colour, .colour-container {
     display: inline-block;
     box-sizing: border-box;
     width: 40px;
@@ -47,5 +44,8 @@
     border: 1px solid $text-color;
     outline: none;
     overflow: visible;
+  }
+  .colour-container {
+    background: black;
   }
 }

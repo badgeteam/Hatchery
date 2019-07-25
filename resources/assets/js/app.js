@@ -12,6 +12,72 @@ require('./bootstrap');
 window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone');
 window.keymap = 'default';
 
+
+
+let frames;
+let currentFrame = 0;
+
+window.draw = function(framebuffer) {
+	let r = 0, p = 0;
+	frames[currentFrame].forEach(function(pixel) {
+		if (p > 7) {
+			r++;
+			p = 0;
+		}
+		if (r > 7) {
+			console.warn('Image too big!');
+		}
+		framebuffer[r][p].style.backgroundColor = pixel.replace('0x', '#');
+		p++;
+	});
+};
+
+window.framesToContent = function() {
+	let content = 'icon = (';
+	frames.forEach(function(frame){
+		content += '[';
+		frame.forEach(function(pixel) {
+			content += window.PixelToHexA(pixel);
+		});
+		content += ']';
+	});
+	content += ', ' + frames.length + ')';
+	return content;
+};
+
+window.PixelToHexA = function(rgba) {
+	let sep = rgba.indexOf(',') > -1 ? ',' : ' ';
+	rgba = rgba.substr(5).split(')')[0].split(sep);
+	if (rgba.indexOf('/') > -1)
+		rgba.splice(3,1);
+	for (let R in rgba) {
+		let r = rgba[R];
+		if (r.indexOf('%') > -1) {
+			let p = r.substr(0,r.length - 1) / 100;
+
+			if (R < 3) {
+				rgba[R] = Math.round(p * 255);
+			} else {
+				rgba[R] = p;
+			}
+		}
+	}
+	let r = (+rgba[0]).toString(16),
+		g = (+rgba[1]).toString(16),
+		b = (+rgba[2]).toString(16),
+		a = Math.round(+rgba[3] * 255).toString(16);
+
+	if (r.length === 1)
+		r = '0' + r;
+	if (g.length === 1)
+		g = '0' + g;
+	if (b.length === 1)
+		b = '0' + b;
+	if (a.length === 1)
+		a = '0' + a;
+	return '0x' + r + g + b + a;
+};
+
 window.onload = function() {
 	if (document.getElementById('content')) {
 		window.CodeMirror = require([
@@ -65,7 +131,7 @@ window.onload = function() {
 			let numFrames = parseInt(data.match(/[0-9]+?$/)[0]);
 			data = data.replace(', '+numFrames, '');
 			if (numFrames > 0) {
-				let frames = data.split('],');
+				frames = data.split('],');
 				frames.forEach(function (frame, index) {
 					frame = frame.trim();
 					frame = frame.replace('[', '');
@@ -87,25 +153,15 @@ window.onload = function() {
 						for (let p = 0; p < 8; p++) {
 							framebuffer[r][p] = document.getElementById('row'+r+'pixel'+p);
 							if (!readOnly) {
-								framebuffer[r][p].onclick = function() {
+								framebuffer[r][p].onclick = function(r, p) {
 									this.style.backgroundColor = document.getElementById('colour').style.backgroundColor;
-									console.log(this.style.backgroundColor);
-								}
+									console.log(this.style.backgroundColor, r, p);
+									frames[currentFrame][r][p] = this.style.backgroundColor;
+								};
 							}
 						}
 					}
-					let r = 0, p = 0;
-					frames[0].forEach(function(pixel) {
-						if (p > 7) {
-							r++;
-							p = 0;
-						}
-						if (r > 7) {
-							console.warn('Image too big!');
-						}
-						framebuffer[r][p].style.backgroundColor = pixel.replace('0x', '#');
-						p++;
-					});
+					window.draw(framebuffer);
 				}
 				if (!readOnly) {
 					const parentBasic = document.getElementById('colour'),
