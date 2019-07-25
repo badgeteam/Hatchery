@@ -32,7 +32,7 @@ window.drawIcon = function(framebuffer) {
 	});
 };
 
-window.framesToContent = function(frames) {
+window.framesToContent = function() {
 	let content = 'icon = (';
 	let first = true;
 	frames.forEach(function(frame){
@@ -183,9 +183,8 @@ window.onload = function() {
 									let pos = this.id.match(/[0-9]+?/g);
 									let r = pos[0];
 									let p = pos[1];
-									frames[currentFrame][r][p] = window.pixelToHexA(this.style.backgroundColor);
-									console.log(this.style.backgroundColor, window.pixelToHexA(this.style.backgroundColor), frames[currentFrame][r][p]);
-									window.framesToContent(frames);
+									frames[currentFrame][(r*8)+p] = window.pixelToHexA(this.style.backgroundColor);
+									window.framesToContent();
 								};
 							}
 						}
