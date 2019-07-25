@@ -42,8 +42,14 @@ window.framesToContent = function() {
 			first = false;
 		}
 		content += '[';
+		let firstPixel = true;
 		frame.forEach(function(pixel) {
-			content += window.pixelToHexA(pixel) + ', ';
+			if (!first) {
+				content += ', ';
+			} else {
+				first = false;
+			}
+			content += pixel;
 		});
 		content += ']';
 	});
@@ -61,7 +67,6 @@ window.pixelToHexA = function(rgba) {
 		let r = rgba[R];
 		if (r.indexOf('%') > -1) {
 			let p = r.substr(0,r.length - 1) / 100;
-
 			if (R < 3) {
 				rgba[R] = Math.round(p * 255);
 			} else {
@@ -73,7 +78,6 @@ window.pixelToHexA = function(rgba) {
 		g = (+rgba[1]).toString(16),
 		b = (+rgba[2]).toString(16),
 		a = Math.round(+rgba[3] * 255).toString(16);
-
 	if (r.length === 1)
 		r = '0' + r;
 	if (g.length === 1)
@@ -150,7 +154,6 @@ window.onload = function() {
 					});
 					frames[index] = frame;
 				});
-				console.log(frames);
 				if (frames.length !== numFrames) {
 					console.warn('Data corrupted!');
 				} else {
@@ -166,6 +169,7 @@ window.onload = function() {
 									let r = pos[0];
 									let p = pos[1];
 									frames[currentFrame][r][p] = this.style.backgroundColor;
+									console.log(frames[currentFrame][r][p], currentFrame, r, p);
 									window.framesToContent();
 								};
 							}
