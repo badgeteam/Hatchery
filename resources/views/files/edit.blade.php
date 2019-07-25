@@ -31,6 +31,26 @@
                         </div>
 
                     </div>
+                    @if($file->name === 'icon.py')
+                    <div class="row" id="pixels">
+                        <div class="col-md-4">
+                            <table>
+                                @for($r=0; $r < 8; $r++)
+                                <tr id="row{{ $r }}">
+                                    @for($p=0; $p < 8; $p++)
+                                    <td id="row{{$r}}pixel{{$p}}" class="clickable"></td>
+                                    @endfor
+                                </tr>
+                                @endfor
+                            </table>
+                        </div>
+                        <div class="col-md-8">
+                            <span class="colour-container">
+                                <a href="#" id="colour"></a>
+                            </span>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
