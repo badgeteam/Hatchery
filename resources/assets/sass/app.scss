@@ -26,10 +26,20 @@
 
 #pixels {
   table {
+    background: black;
     td {
       width: 20px;
       height: 20px;
       border: 1px solid $text-color;
     }
+  }
+  #colour {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: .5em 1em;
+    min-height: 2em;
+    border: none;
+    outline: none;
+    overflow: visible;
   }
 }

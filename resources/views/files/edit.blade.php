@@ -33,15 +33,20 @@
                     </div>
                     @if($file->name === 'icon.py')
                     <div class="row" id="pixels">
-                        <table>
-                            @for($r=0; $r < 8; $r++)
-                            <tr id="row{{ $r }}">
-                                @for($p=0; $p < 8; $p++)
-                                <td id="row{{$r}}pixel{{$p}}"></td>
+                        <div class="col-md-6">
+                            <table>
+                                @for($r=0; $r < 8; $r++)
+                                <tr id="row{{ $r }}">
+                                    @for($p=0; $p < 8; $p++)
+                                    <td id="row{{$r}}pixel{{$p}}"></td>
+                                    @endfor
+                                </tr>
                                 @endfor
-                            </tr>
-                            @endfor
-                        </table>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="#" id="colour"> &nbsp; </a>
+                        </div>
                     </div>
                     @endif
                 </div>

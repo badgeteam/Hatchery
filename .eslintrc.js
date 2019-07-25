@@ -24,5 +24,8 @@ module.exports = {
             "error",
             "always"
         ]
+    },
+    "globals": {
+        "Picker": false
     }
 };

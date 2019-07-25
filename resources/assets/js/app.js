@@ -5,10 +5,10 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+require('../../../node_modules/vanilla-picker');
 require('./bootstrap');
 
 window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone');
-
 window.keymap = 'default';
 
 window.onload = function() {
@@ -50,8 +50,10 @@ window.onload = function() {
 	}
 	if (document.getElementById('pixels')) {
 		let icon;
+		let readOnly = true;
 		if (document.getElementById('content')) {
 			icon = document.getElementById('content');
+			readOnly = false;
 		} else {
 			icon = document.getElementById('content-readonly');
 		}
@@ -85,7 +87,6 @@ window.onload = function() {
 							framebuffer[r][p] = document.getElementById('row'+r+'pixel'+p);
 						}
 					}
-
 					let r = 0, p = 0;
 					frames[0].forEach(function(pixel) {
 						if (p > 7) {
@@ -93,11 +94,20 @@ window.onload = function() {
 							p = 0;
 						}
 						if (r > 7) {
-							console.warn('Image too big!')
+							console.warn('Image too big!');
 						}
 						framebuffer[r][p].style.backgroundColor = pixel.replace('0x', '#');
 						p++;
 					});
+				}
+				if (!readOnly) {
+					const parentBasic = document.getElementById('colour'),
+						popupBasic = new Picker(parentBasic);
+					popupBasic.onChange = function(color) {
+						parentBasic.style.backgroundColor = color.rgbaString;
+					};
+					//Open the popup manually:
+					popupBasic.openHandler();
 				}
 			}
 		}
