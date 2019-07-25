@@ -34,10 +34,16 @@ window.drawIcon = function(framebuffer) {
 
 window.framesToContent = function() {
 	let content = 'icon = (';
+	let first = true;
 	frames.forEach(function(frame){
+		if (!first) {
+			content += ', ';
+		} else {
+			first = false;
+		}
 		content += '[';
 		frame.forEach(function(pixel) {
-			content += window.pixelToHexA(pixel);
+			content += window.pixelToHexA(pixel) + ', ';
 		});
 		content += ']';
 	});
@@ -46,6 +52,7 @@ window.framesToContent = function() {
 };
 
 window.pixelToHexA = function(rgba) {
+	console.log(rgba);
 	let sep = rgba.indexOf(',') > -1 ? ',' : ' ';
 	rgba = rgba.substr(5).split(')')[0].split(sep);
 	if (rgba.indexOf('/') > -1)
