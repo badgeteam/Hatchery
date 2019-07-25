@@ -58,9 +58,14 @@ window.framesToContent = function() {
 };
 
 window.pixelToHexA = function(rgba) {
+	let remove = 5;
+	if (rgba.indexOf('rgba') === -1) {
+		remove = 4;
+	}
 	console.log(rgba);
 	let sep = rgba.indexOf(',') > -1 ? ',' : ' ';
-	rgba = rgba.substr(5).split(')')[0].split(sep);
+	rgba = rgba.substr(remove).split(')')[0].split(sep);
+	console.log(rgba);
 	if (rgba.indexOf('/') > -1)
 		rgba.splice(3,1);
 	for (let R in rgba) {
@@ -78,6 +83,7 @@ window.pixelToHexA = function(rgba) {
 		g = (+rgba[1]).toString(16),
 		b = (+rgba[2]).toString(16),
 		a = Math.round(+rgba[3] * 255).toString(16);
+
 	if (r.length === 1)
 		r = '0' + r;
 	if (g.length === 1)
@@ -86,7 +92,7 @@ window.pixelToHexA = function(rgba) {
 		b = '0' + b;
 	if (a.length === 1)
 		a = '0' + a;
-	return '0x' + r + g + b + a;
+	return ('0x' + r + g + b + a).replace('NaN', 'ff');
 };
 
 window.onload = function() {
@@ -169,7 +175,7 @@ window.onload = function() {
 									let r = pos[0];
 									let p = pos[1];
 									frames[currentFrame][r][p] = window.pixelToHexA(this.style.backgroundColor);
-									console.log(this.style.backgroundColor, currentFrame, r, p);
+									console.log(this.style.backgroundColor, window.pixelToHexA(this.style.backgroundColor));
 									window.framesToContent();
 								};
 							}
