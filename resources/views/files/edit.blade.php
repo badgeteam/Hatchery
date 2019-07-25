@@ -38,7 +38,7 @@
                                 @for($r=0; $r < 8; $r++)
                                 <tr id="row{{ $r }}">
                                     @for($p=0; $p < 8; $p++)
-                                    <td id="row{{$r}}pixel{{$p}}"></td>
+                                    <td id="row{{$r}}pixel{{$p}}" class="clickable"></td>
                                     @endfor
                                 </tr>
                                 @endfor

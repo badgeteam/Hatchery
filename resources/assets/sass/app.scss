@@ -32,13 +32,16 @@
       height: 20px;
       border: 1px solid $text-color;
     }
+    .clickable {
+      cursor: pointer;
+    }
   }
   #colour {
     display: inline-block;
     box-sizing: border-box;
-    padding: .5em 1em;
-    min-height: 2em;
-    border: none;
+    width: 40px;
+    height: 40px;
+    border: 1px solid $text-color;
     outline: none;
     overflow: visible;
   }

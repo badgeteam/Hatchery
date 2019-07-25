@@ -86,6 +86,12 @@ window.onload = function() {
 						framebuffer[r] = [];
 						for (let p = 0; p < 8; p++) {
 							framebuffer[r][p] = document.getElementById('row'+r+'pixel'+p);
+							if (!readOnly) {
+								framebuffer[r][p].onclick(function() {
+									this.style.backgroundColor = document.getElementById('colour').style.backgroundColor;
+									// TODO update shit
+								});
+							}
 						}
 					}
 					let r = 0, p = 0;
