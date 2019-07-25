@@ -33,7 +33,7 @@
                     </div>
                     @if($file->name === 'icon.py')
                     <div class="row" id="pixels">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <table>
                                 @for($r=0; $r < 8; $r++)
                                 <tr id="row{{ $r }}">
@@ -44,8 +44,8 @@
                                 @endfor
                             </table>
                         </div>
-                        <div class="col-md-6">
-                            <a href="#" id="colour"> &nbsp; </a>
+                        <div class="col-md-8">
+                            <a href="#" id="colour"></a>
                         </div>
                     </div>
                     @endif

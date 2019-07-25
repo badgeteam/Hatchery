@@ -103,12 +103,10 @@ window.onload = function() {
 				}
 				if (!readOnly) {
 					const parentBasic = document.getElementById('colour'),
-						popupBasic = new window.Picker(parentBasic);
+						popupBasic = new window.Picker.default(parentBasic);
 					popupBasic.onChange = function(color) {
 						parentBasic.style.backgroundColor = color.rgbaString;
 					};
-					//Open the popup manually:
-					popupBasic.openHandler();
 				}
 			}
 		}
