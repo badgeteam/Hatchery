@@ -49,7 +49,12 @@ window.onload = function() {
 		});
 	}
 	if (document.getElementById('pixels')) {
-		const icon = document.getElementById('content');
+		let icon;
+		if (document.getElementById('content')) {
+			icon = document.getElementById('content');
+		} else {
+			icon = document.getElementById('content-readonly');
+		}
 		let data = icon.innerHTML.trim();
 		if (data.startsWith('icon = ')) {
 			data = data.replace('icon = (', '');
