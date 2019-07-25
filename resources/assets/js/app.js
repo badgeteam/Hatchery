@@ -62,10 +62,8 @@ window.pixelToHexA = function(rgba) {
 	if (rgba.indexOf('rgba') === -1) {
 		remove = 4;
 	}
-	console.log(rgba);
 	let sep = rgba.indexOf(',') > -1 ? ',' : ' ';
 	rgba = rgba.substr(remove).split(')')[0].split(sep);
-	console.log(rgba);
 	if (rgba.indexOf('/') > -1)
 		rgba.splice(3,1);
 	for (let R in rgba) {
@@ -79,11 +77,22 @@ window.pixelToHexA = function(rgba) {
 			}
 		}
 	}
+	if (isNaN(rgba[0])) {
+		rgba[0] = 0;
+	}
+	if (isNaN(rgba[1])) {
+		rgba[1] = 0;
+	}
+	if (isNaN(rgba[2])) {
+		rgba[2] = 0;
+	}
+	if (isNaN(rgba[3])) {
+		rgba[3] = 255;
+	}
 	let r = (+rgba[0]).toString(16),
 		g = (+rgba[1]).toString(16),
 		b = (+rgba[2]).toString(16),
 		a = Math.round(+rgba[3] * 255).toString(16);
-
 	if (r.length === 1)
 		r = '0' + r;
 	if (g.length === 1)
@@ -92,7 +101,7 @@ window.pixelToHexA = function(rgba) {
 		b = '0' + b;
 	if (a.length === 1)
 		a = '0' + a;
-	return ('0x' + r + g + b + a).replace('NaN', 'ff');
+	return ('0x' + r + g + b + a);
 };
 
 window.onload = function() {
