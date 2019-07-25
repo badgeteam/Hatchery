@@ -49,6 +49,33 @@ window.onload = function() {
 		});
 	}
 	if (document.getElementById('pixels')) {
-		console.log(document.getElementById('content').val());
+		const icon = document.getElementById('content');
+		let data = icon.innerHTML.trim();
+		if (data.startsWith('icon = ')) {
+			data = data.replace('icon = (', '');
+			data = data.replace(')','');
+			let numFrames = parseInt(data.match(/[0-9]+?$/)[0]);
+			data = data.replace(', '+numFrames, '');
+			if (numFrames > 0) {
+				let frames = data.split('],');
+				frames.forEach(function (frame, index) {
+					frame = frame.trim();
+					frame = frame.replace('[', '');
+					frame = frame.replace(']', '');
+					frame = frame.trim();
+					frame = frame.split(',');
+					frame.forEach(function (pixel, index) {
+						frame[index] = pixel.trim();
+					});
+					frames[index] = frame;
+				});
+				console.log(frames);
+				if (frames.length !== numFrames) {
+					alert('Data corrupted!');
+				} else {
+					// TODO awesome :D
+				}
+			}
+		}
 	}
 };

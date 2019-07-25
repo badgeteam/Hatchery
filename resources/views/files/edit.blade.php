@@ -32,7 +32,7 @@
 
                     </div>
                     @if($file->name === 'icon.py')
-                    <div id="pixels"></div>
+                    <div class="row" id="pixels"></div>
                     @endif
                 </div>
             </div>

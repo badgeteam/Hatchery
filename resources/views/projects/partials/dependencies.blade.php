@@ -2,7 +2,7 @@
 <select multiple="multiple" name="dependencies[]" id="dependencies" class="form-control">
     @foreach(App\Models\Project::whereHas('versions', function ($query) {
                 $query->published();
-            })->get() as $dep)
+            })->get()->reverse() as $dep)
         @if($dep->id !== $project->id && !$project->dependants->contains($dep->id))
         <option value="{{$dep->id}}" @if($project->dependencies->contains($dep->id))selected="selected"@endif>{{$dep->name}}</option>
         @endif
