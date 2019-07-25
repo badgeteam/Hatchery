@@ -45,7 +45,9 @@
                             </table>
                         </div>
                         <div class="col-md-8">
-                            <a href="#" id="colour"></a>
+                            <span class="colour-container">
+                                <a href="#" id="colour"></a>
+                            </span>
                         </div>
                     </div>
                     @endif

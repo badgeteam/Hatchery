@@ -87,10 +87,10 @@ window.onload = function() {
 						for (let p = 0; p < 8; p++) {
 							framebuffer[r][p] = document.getElementById('row'+r+'pixel'+p);
 							if (!readOnly) {
-								framebuffer[r][p].onclick(function() {
+								framebuffer[r][p].onclick = function() {
 									this.style.backgroundColor = document.getElementById('colour').style.backgroundColor;
-									// TODO update shit
-								});
+									console.log(this.style.backgroundColor);
+								}
 							}
 						}
 					}
