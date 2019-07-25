@@ -44,10 +44,10 @@ window.framesToContent = function() {
 		content += '[';
 		let firstPixel = true;
 		frame.forEach(function(pixel) {
-			if (!first) {
+			if (!firstPixel) {
 				content += ', ';
 			} else {
-				first = false;
+				firstPixel = false;
 			}
 			content += pixel;
 		});
@@ -168,8 +168,8 @@ window.onload = function() {
 									let pos = this.id.match(/[0-9]+?/g);
 									let r = pos[0];
 									let p = pos[1];
-									frames[currentFrame][r][p] = this.style.backgroundColor;
-									console.log(frames[currentFrame][r][p], currentFrame, r, p);
+									frames[currentFrame][r][p] = window.pixelToHexA(this.style.backgroundColor);
+									console.log(this.style.backgroundColor, currentFrame, r, p);
 									window.framesToContent();
 								};
 							}
