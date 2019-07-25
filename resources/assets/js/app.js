@@ -71,9 +71,28 @@ window.onload = function() {
 				});
 				console.log(frames);
 				if (frames.length !== numFrames) {
-					alert('Data corrupted!');
+					console.warn('Data corrupted!');
 				} else {
-					// TODO awesome :D
+					const framebuffer = [];
+					for (let r = 0; r < 8; r++) {
+						framebuffer[r] = [];
+						for (let p = 0; p < 8; p++) {
+							framebuffer[r][p] = document.getElementById('row'+r+'pixel'+p);
+						}
+					}
+
+					let r = 0, p = 0;
+					frames[0].forEach(function(pixel) {
+						if (p > 7) {
+							r++;
+							p = 0;
+						}
+						if (r > 7) {
+							console.warn('Image too big!')
+						}
+						framebuffer[r][p].style.color = pixel;
+						p++;
+					});
 				}
 			}
 		}

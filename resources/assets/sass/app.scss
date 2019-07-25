@@ -23,3 +23,13 @@
   unicode-bidi: embed;
   white-space: pre;
 }
+
+#pixels {
+  table {
+    td {
+      width: 20px;
+      height: 20px;
+      border: 1px solid $text-color;
+    }
+  }
+}
