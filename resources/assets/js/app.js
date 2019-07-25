@@ -185,7 +185,6 @@ window.onload = function() {
 									let r = parseInt(pos[0]);
 									let p = parseInt(pos[1]);
 									frames[currentFrame][(r*8)+p] = window.pixelToHexA(this.style.backgroundColor);
-									console.log(frames, frames[currentFrame][(r*8)+p], r, p, (r*8)+p);
 									window.framesToContent();
 								};
 							}
