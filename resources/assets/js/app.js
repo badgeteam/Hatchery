@@ -17,7 +17,7 @@ window.keymap = 'default';
 let frames;
 let currentFrame = 0;
 
-window.draw = function(framebuffer) {
+window.drawIcon = function(framebuffer) {
 	let r = 0, p = 0;
 	frames[currentFrame].forEach(function(pixel) {
 		if (p > 7) {
@@ -37,15 +37,15 @@ window.framesToContent = function() {
 	frames.forEach(function(frame){
 		content += '[';
 		frame.forEach(function(pixel) {
-			content += window.PixelToHexA(pixel);
+			content += window.pixelToHexA(pixel);
 		});
 		content += ']';
 	});
 	content += ', ' + frames.length + ')';
-	return content;
+	console.log(content);
 };
 
-window.PixelToHexA = function(rgba) {
+window.pixelToHexA = function(rgba) {
 	let sep = rgba.indexOf(',') > -1 ? ',' : ' ';
 	rgba = rgba.substr(5).split(')')[0].split(sep);
 	if (rgba.indexOf('/') > -1)
@@ -153,15 +153,18 @@ window.onload = function() {
 						for (let p = 0; p < 8; p++) {
 							framebuffer[r][p] = document.getElementById('row'+r+'pixel'+p);
 							if (!readOnly) {
-								framebuffer[r][p].onclick = function(r, p) {
+								framebuffer[r][p].onclick = function() {
 									this.style.backgroundColor = document.getElementById('colour').style.backgroundColor;
-									console.log(this.style.backgroundColor, r, p);
+									let pos = this.id.match(/[0-9]+?/g);
+									let r = pos[0];
+									let p = pos[1];
 									frames[currentFrame][r][p] = this.style.backgroundColor;
+									window.framesToContent();
 								};
 							}
 						}
 					}
-					window.draw(framebuffer);
+					window.drawIcon(framebuffer);
 				}
 				if (!readOnly) {
 					const parentBasic = document.getElementById('colour'),
