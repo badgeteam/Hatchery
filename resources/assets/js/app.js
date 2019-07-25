@@ -90,7 +90,7 @@ window.onload = function() {
 						if (r > 7) {
 							console.warn('Image too big!')
 						}
-						framebuffer[r][p].style.color = pixel;
+						framebuffer[r][p].style.backgroundColor = pixel.replace('0x', '#');
 						p++;
 					});
 				}
