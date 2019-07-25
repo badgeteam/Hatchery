@@ -5,7 +5,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('../../../node_modules/vanilla-picker');
+window.Picker = require('../../../node_modules/vanilla-picker');
+
 require('./bootstrap');
 
 window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone');
@@ -102,7 +103,7 @@ window.onload = function() {
 				}
 				if (!readOnly) {
 					const parentBasic = document.getElementById('colour'),
-						popupBasic = new Picker(parentBasic);
+						popupBasic = new window.Picker(parentBasic);
 					popupBasic.onChange = function(color) {
 						parentBasic.style.backgroundColor = color.rgbaString;
 					};
