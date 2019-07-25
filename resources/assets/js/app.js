@@ -181,8 +181,8 @@ window.onload = function() {
 								framebuffer[r][p].onclick = function() {
 									this.style.backgroundColor = document.getElementById('colour').style.backgroundColor;
 									let pos = this.id.match(/[0-9]+?/g);
-									let r = pos[0];
-									let p = pos[1];
+									let r = parseInt(pos[0]);
+									let p = parseInt(pos[1]);
 									console.log(frames, frames[currentFrame][(r*8)+p]);
 									frames[currentFrame][(r*8)+p] = window.pixelToHexA(this.style.backgroundColor);
 									console.log(frames, frames[currentFrame][(r*8)+p], r, p, (r*8)+p);
