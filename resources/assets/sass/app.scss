@@ -50,10 +50,12 @@
   }
 }
 
+.modal {
+  background: radial-gradient(transparent, grey);
+}
 .show {
   opacity: 1;
 }
-
-.modal {
-  margin-top: 3em;
+.modal-dialog {
+  margin-top: 13em;
 }
