@@ -118,7 +118,7 @@ class FilesController extends Controller
             return redirect()->route('projects.edit', ['project' => $version->project->slug])->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('files.edit', ['version' => $version->id])->withSuccesses([$file->name.' created']);
+        return redirect()->route('files.edit', ['file' => $file->id])->withSuccesses([$file->name.' created']);
     }
 
     /**
