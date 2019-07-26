@@ -180,11 +180,13 @@ window.onload = function() {
 						currentFrame = index;
 						if (index === 1) {
 							let firstFrame = document.createElement('a');
-							firstFrame.onclick = function () { window.gotoFrame(0); };
+							firstFrame.onclick = function () { window.gotoFrame(0); };\
+							firstFrame.innerText = '1';
 							framesDiv.appendChild(firstFrame);
 						}
 						let frameButton = document.createElement('a');
 						frameButton.onclick = function () { window.gotoFrame(index); };
+						frameButton.innerText = (index+1).toString();
 						framesDiv.appendChild(frameButton);
 					}
 				});
