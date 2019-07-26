@@ -36,7 +36,7 @@ window.drawIcon = function() {
 window.gotoFrame = function(num) {
 	console.log(num);
 	currentFrame = num;
-	window.drawIcon()
+	window.drawIcon();
 };
 
 window.framesToContent = function() {
@@ -180,11 +180,11 @@ window.onload = function() {
 						currentFrame = index;
 						if (index === 1) {
 							let firstFrame = document.createElement('a');
-							firstFrame.onclick(function () { window.gotoFrame(0);});
+							firstFrame.onclick = function () { window.gotoFrame(0); };
 							framesDiv.appendChild(firstFrame);
 						}
 						let frameButton = document.createElement('a');
-						frameButton.onclick(function () { window.gotoFrame(index);});
+						frameButton.onclick = function () { window.gotoFrame(index); };
 						framesDiv.appendChild(frameButton);
 					}
 				});
