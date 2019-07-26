@@ -12,7 +12,6 @@ require('./bootstrap');
 window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone');
 window.keymap = 'default';
 
-
 const framebuffer = [];
 let frames;
 let currentFrame = 0;
@@ -34,9 +33,12 @@ window.drawIcon = function() {
 };
 
 window.gotoFrame = function(num) {
-	console.log(num);
 	currentFrame = num;
 	window.drawIcon();
+	for(let child=document.getElementById('frames').firstChild; child!==null; child=child.nextSibling) {
+		child.className = 'frames btn btn-default';
+	}
+	document.getElementById('frame'+num).className = 'frames btn btn-info';
 };
 
 window.framesToContent = function() {
@@ -182,11 +184,15 @@ window.onload = function() {
 							let firstFrame = document.createElement('a');
 							firstFrame.onclick = function () { window.gotoFrame(0); };
 							firstFrame.innerText = '1';
+							firstFrame.className = 'frames btn btn-info';
+							firstFrame.id = 'frame0';
 							framesDiv.appendChild(firstFrame);
 						}
 						let frameButton = document.createElement('a');
 						frameButton.onclick = function () { window.gotoFrame(index); };
 						frameButton.innerText = (index+1).toString();
+						frameButton.className = 'frames btn btn-default';
+						frameButton.id = 'frame' + index;
 						framesDiv.appendChild(frameButton);
 					}
 				});
