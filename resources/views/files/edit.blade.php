@@ -48,6 +48,8 @@
                             <span class="colour-container">
                                 <a href="#" id="colour"></a>
                             </span>
+                            <div id="frames">
+                            </div>
                         </div>
                     </div>
                     @endif
