@@ -110,7 +110,7 @@ class FilesController extends Controller
             $pixels[] = '0x00000000';
         }
         try {
-            $file->version_id = $request->version_id;
+            $file->version_id = $version->id;
             $file->name = 'icon.py';
             $file->content = 'icon = ([' . implode(', ', $pixels) . '], 1)';
             $file->save();

@@ -49,7 +49,7 @@
 @if (!$hasIcon)
     {!! Form::open(['method' => 'get', 'route' => 'files.create-icon']) !!}
     {{ Form::hidden('version', $project->versions->last()->id) }}
-    <button class="btn btn-success btn-xs" type="submit" value="add" style="width: 48px;">Add icon</button>
+    <button class="btn btn-success btn-xs" type="submit" value="add">Add icon</button>
     {!! Form::close() !!}
 @endif
 <div>Upload Python, Text or PNG image files.</div>
