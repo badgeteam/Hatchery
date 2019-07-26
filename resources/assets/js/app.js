@@ -202,6 +202,7 @@ window.onload = function() {
 					frames[currentFrame][p] = '0x00000000';
 				}
 			}
+			currentFrame = 0;
 			if (frames.length !== numFrames) {
 				console.warn('Data corrupted!');
 			} else {
