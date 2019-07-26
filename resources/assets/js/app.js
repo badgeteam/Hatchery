@@ -12,13 +12,12 @@ require('./bootstrap');
 window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone');
 window.keymap = 'default';
 
-
-
+const framebuffer = [];
 let frames;
 let currentFrame = 0;
 let editor;
 
-window.drawIcon = function(framebuffer) {
+window.drawIcon = function() {
 	let r = 0, p = 0;
 	frames[currentFrame].forEach(function(pixel) {
 		if (p > 7) {
@@ -31,6 +30,15 @@ window.drawIcon = function(framebuffer) {
 		framebuffer[r][p].style.backgroundColor = pixel.replace('0x', '#');
 		p++;
 	});
+};
+
+window.gotoFrame = function(num) {
+	currentFrame = num;
+	window.drawIcon();
+	for(let child=document.getElementById('frames').firstChild; child!==null; child=child.nextSibling) {
+		child.className = 'frames btn btn-default';
+	}
+	document.getElementById('frame'+num).className = 'frames btn btn-info';
 };
 
 window.framesToContent = function() {
@@ -145,6 +153,7 @@ window.onload = function() {
 	if (document.getElementById('pixels')) {
 		let icon;
 		let readOnly = true;
+		const framesDiv = document.getElementById('frames');
 		if (document.getElementById('content')) {
 			icon = document.getElementById('content');
 			readOnly = false;
@@ -169,37 +178,58 @@ window.onload = function() {
 						frame[index] = pixel.trim();
 					});
 					frames[index] = frame;
+					if (index > 0) {
+						currentFrame = index;
+						if (index === 1) {
+							let firstFrame = document.createElement('a');
+							firstFrame.onclick = function () { window.gotoFrame(0); };
+							firstFrame.innerText = '1';
+							firstFrame.className = 'frames btn btn-info';
+							firstFrame.id = 'frame0';
+							framesDiv.appendChild(firstFrame);
+						}
+						let frameButton = document.createElement('a');
+						frameButton.onclick = function () { window.gotoFrame(index); };
+						frameButton.innerText = (index+1).toString();
+						frameButton.className = 'frames btn btn-default';
+						frameButton.id = 'frame' + index;
+						framesDiv.appendChild(frameButton);
+					}
 				});
-				if (frames.length !== numFrames) {
-					console.warn('Data corrupted!');
-				} else {
-					const framebuffer = [];
-					for (let r = 0; r < 8; r++) {
-						framebuffer[r] = [];
-						for (let p = 0; p < 8; p++) {
-							framebuffer[r][p] = document.getElementById('row'+r+'pixel'+p);
-							if (!readOnly) {
-								framebuffer[r][p].onclick = function() {
-									this.style.backgroundColor = document.getElementById('colour').style.backgroundColor;
-									let pos = this.id.match(/[0-9]+?/g);
-									let r = parseInt(pos[0]);
-									let p = parseInt(pos[1]);
-									frames[currentFrame][(r*8)+p] = window.pixelToHexA(this.style.backgroundColor);
-									console.log(frames, frames[currentFrame][(r*8)+p], r, p, (r*8)+p);
-									window.framesToContent();
-								};
-							}
+			} else if (data.length === 0) {
+				frames = [];
+				for (let p = 0; p < 64; p++) {
+					frames[currentFrame][p] = '0x00000000';
+				}
+			}
+			currentFrame = 0;
+			if (frames.length !== numFrames) {
+				console.warn('Data corrupted!');
+			} else {
+				for (let r = 0; r < 8; r++) {
+					framebuffer[r] = [];
+					for (let p = 0; p < 8; p++) {
+						framebuffer[r][p] = document.getElementById('row'+r+'pixel'+p);
+						if (!readOnly) {
+							framebuffer[r][p].onclick = function() {
+								this.style.backgroundColor = document.getElementById('colour').style.backgroundColor;
+								let pos = this.id.match(/[0-9]+?/g);
+								let r = parseInt(pos[0]);
+								let p = parseInt(pos[1]);
+								frames[currentFrame][(r*8)+p] = window.pixelToHexA(this.style.backgroundColor);
+								window.framesToContent();
+							};
 						}
 					}
-					window.drawIcon(framebuffer);
 				}
-				if (!readOnly) {
-					const parentBasic = document.getElementById('colour'),
-						popupBasic = new window.Picker.default(parentBasic);
-					popupBasic.onChange = function(color) {
-						parentBasic.style.backgroundColor = color.rgbaString;
-					};
-				}
+				window.drawIcon();
+			}
+			if (!readOnly) {
+				const parentBasic = document.getElementById('colour'),
+					popupBasic = new window.Picker.default(parentBasic);
+				popupBasic.onChange = function(color) {
+					parentBasic.style.backgroundColor = color.rgbaString;
+				};
 			}
 		}
 	}

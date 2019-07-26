@@ -24,6 +24,7 @@ Route::post('/upload/{version}', 'FilesController@upload')->name('files.upload')
 Route::post('/release/{project}', 'ProjectsController@publish')->name('project.publish');
 
 Route::resource('files', 'FilesController');
+Route::get('create-icon', 'FilesController@createIcon')->name('files.create-icon');
 
 Route::resource('users', 'UsersController', ['only' => ['edit', 'update', 'destroy']]);
 
