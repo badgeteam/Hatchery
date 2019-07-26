@@ -98,6 +98,30 @@ class FilesController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function createIcon(Request $request): RedirectResponse
+    {
+        $version = Version::where('id', $request->get('version'))->firstOrFail();
+        $file = new File;
+        $pixels = [];
+        for ($p = 0; $p < 64; $p++) {
+            $pixels[] = '0x00000000';
+        }
+        try {
+            $file->version_id = $request->version_id;
+            $file->name = 'icon.py';
+            $file->content = 'icon = ([' . implode(', ', $pixels) . '], 1)';
+            $file->save();
+        } catch (\Exception $e) {
+            return redirect()->route('projects.edit', ['project' => $version->project->slug])->withInput()->withErrors([$e->getMessage()]);
+        }
+
+        return redirect()->route('files.edit', ['version' => $version->id])->withSuccesses([$file->name.' created']);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param FileStoreRequest $request
@@ -106,7 +130,7 @@ class FilesController extends Controller
      */
     public function store(FileStoreRequest $request): RedirectResponse
     {
-        $file = new File();
+        $file = new File;
 
         try {
             $file->version_id = $request->version_id;

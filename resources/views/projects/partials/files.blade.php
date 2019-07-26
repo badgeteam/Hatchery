@@ -12,6 +12,9 @@
     </tr>
     </thead>
     <tbody>
+    @php
+        $hasIcon = false;
+    @endphp
     @forelse($project->versions->last()->files as $file)
         <tr>
             <td>
@@ -19,6 +22,11 @@
                 <a href="{{ route('files.edit', ['file' => $file->id]) }}">{{ $file->name }}</a>
                 @else
                 <a href="{{ route('files.show', ['file' => $file->id]) }}">{{ $file->name }}</a>
+                @endif
+                @if ($file->name === 'icon.py')
+                    @php
+                        $hasIcon = true;
+                    @endphp
                 @endif
             </td>
             <td>{{ $file->updated_at }}</td>
@@ -38,6 +46,12 @@
     @endforelse
     </tbody>
 </table>
+@if (!$hasIcon)
+    {!! Form::open(['method' => 'get', 'route' => 'files.create-icon']) !!}
+    {{ Form::hidden('version', $project->versions->last()->id) }}
+    <button class="btn btn-success btn-xs" type="submit" value="add" style="width: 48px;">Add icon</button>
+    {!! Form::close() !!}
+@endif
 <div>Upload Python, Text or PNG image files.</div>
 {!! Form::open([ 'route' => [ 'files.upload', 'version' => $project->versions->last()->id ], 'files' => true, 'enctype' => 'multipart/form-data', 'id' => 'uploader' ]) !!}
     <div class="fallback">
