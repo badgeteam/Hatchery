@@ -48,6 +48,7 @@ window.addFrame = function() {
 		frames[newFrame][p] = '0x00000000';
 	}
 	window.addFrameButton(newFrame);
+	window.framesToContent();
 };
 
 window.addFrameButton = function(index) {
