@@ -47,6 +47,27 @@ window.addFrame = function() {
 	for (let p = 0; p < 64; p++) {
 		frames[newFrame][p] = '0x00000000';
 	}
+	window.addFrameButtons(newFrame);
+};
+
+window.addFrameButtons = function(index) {
+	const framesDiv = document.getElementById('frames');
+	if (index > 0) {
+		if (index === 1) {
+			let firstFrame = document.createElement('a');
+			firstFrame.onclick = function () { window.gotoFrame(0); };
+			firstFrame.innerText = '1';
+			firstFrame.className = 'frames btn btn-info';
+			firstFrame.id = 'frame0';
+			framesDiv.appendChild(firstFrame);
+		}
+		let frameButton = document.createElement('a');
+		frameButton.onclick = function () { window.gotoFrame(index); };
+		frameButton.innerText = (index+1).toString();
+		frameButton.className = 'frames btn btn-default';
+		frameButton.id = 'frame' + index;
+		framesDiv.appendChild(frameButton);
+	}
 };
 
 window.framesToContent = function() {
@@ -161,7 +182,6 @@ window.onload = function() {
 	if (document.getElementById('pixels')) {
 		let icon;
 		let readOnly = true;
-		const framesDiv = document.getElementById('frames');
 		if (document.getElementById('content')) {
 			icon = document.getElementById('content');
 			readOnly = false;
@@ -186,23 +206,8 @@ window.onload = function() {
 						frame[index] = pixel.trim();
 					});
 					frames[index] = frame;
-					if (index > 0) {
-						currentFrame = index;
-						if (index === 1) {
-							let firstFrame = document.createElement('a');
-							firstFrame.onclick = function () { window.gotoFrame(0); };
-							firstFrame.innerText = '1';
-							firstFrame.className = 'frames btn btn-info';
-							firstFrame.id = 'frame0';
-							framesDiv.appendChild(firstFrame);
-						}
-						let frameButton = document.createElement('a');
-						frameButton.onclick = function () { window.gotoFrame(index); };
-						frameButton.innerText = (index+1).toString();
-						frameButton.className = 'frames btn btn-default';
-						frameButton.id = 'frame' + index;
-						framesDiv.appendChild(frameButton);
-					}
+					currentFrame = index;
+					window.addFrameButton(index);
 				});
 			} else if (data.length === 0) {
 				frames = [];
