@@ -49,6 +49,7 @@
                                 <a href="#" id="colour"></a>
                             </span>
                             <div id="frames">
+                                <a onclick="window.addFrame()" class="frames btn btn-success">+</a>
                             </div>
                         </div>
                     </div>

@@ -41,6 +41,14 @@ window.gotoFrame = function(num) {
 	document.getElementById('frame'+num).className = 'frames btn btn-info';
 };
 
+window.addFrame = function() {
+	const newFrame = frames.length;
+	frames[newFrame] = [];
+	for (let p = 0; p < 64; p++) {
+		frames[newFrame][p] = '0x00000000';
+	}
+};
+
 window.framesToContent = function() {
 	let content = 'icon = (';
 	let first = true;
