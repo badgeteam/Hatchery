@@ -47,10 +47,10 @@ window.addFrame = function() {
 	for (let p = 0; p < 64; p++) {
 		frames[newFrame][p] = '0x00000000';
 	}
-	window.addFrameButtons(newFrame);
+	window.addFrameButton(newFrame);
 };
 
-window.addFrameButtons = function(index) {
+window.addFrameButton = function(index) {
 	const framesDiv = document.getElementById('frames');
 	if (index > 0) {
 		if (index === 1) {
