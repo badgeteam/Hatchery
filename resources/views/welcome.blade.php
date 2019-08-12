@@ -72,3 +72,13 @@
     </div>
 </div>
 @endsection
+
+@section('script')
+	<script>
+		$(document).ready(function () {
+			$('#badge').change(function () {
+				window.location.href = '{{ route('projects.index') }}?badge=' + $(this).val()
+			})
+		})
+	</script>
+@endsection
