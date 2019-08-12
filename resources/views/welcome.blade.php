@@ -77,7 +77,7 @@
 	<script>
 		$(document).ready(function () {
 			$('#badge').change(function () {
-				window.location.href = '{{ route('projects.index') }}?badge=' + $(this).val()
+				window.location.href = '{{ route('splash') }}?badge=' + $(this).val()
 			})
 		})
 	</script>
