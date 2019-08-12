@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 use stdClass;
 
@@ -16,16 +17,30 @@ class PublicController extends Controller
     /**
      * Show the application dashboard.
      *
+     * @param Request $request
      * @return View
      */
-    public function index(): View
+    public function index(Request $request): View
     {
+        $badge = '';
+        if ($request->has('badge')) {
+            $badge = Badge::where('slug', $request->get('badge'))->first();
+        }
+        if ($badge === '' || !$badge) {
+            $projects = Project::whereHas('versions', function ($query) {
+                $query->published();
+            })->orderBy('id', 'DESC');
+        } else {
+            $projects = $badge->projects()->whereHas('versions', function ($query) {
+                $query->published();
+            })->orderBy('id', 'DESC');
+            $badge = $badge->slug;
+        }
         return view('welcome')->with([
             'users'     => User::count(),
             'projects'  => Project::count(),
-            'published' => Project::whereHas('versions', function ($query) {
-                $query->published();
-            })->orderBy('id', 'DESC')->get(),
+            'published' => $projects->paginate(50),
+            'badge'     => $badge
         ]);
     }
 

@@ -32,6 +32,8 @@
 			    <a href="https://twitter.com/SHA2017Badge">Twitter</a>
 			</div>
 			<div class="spacer col-md-12 hidden-xs"></div>
+			{{ Form::select('badge_id', \App\Models\Badge::pluck('name', 'slug')->reverse()->prepend('Choose a badge model', ''), $badge, ['id' => 'badge']) }}
+
 			<table class="table table-condensed">
 			    <thead>
 			    <tr>
@@ -59,6 +61,11 @@
 			    @endforelse
                     </tbody>
                 </table>
+				@if ($badge)
+					{{ $published->appends(['badge' => $badge])->links() }}
+				@else
+					{{ $published->links() }}
+				@endif
             </div>
         </div>
         </div>
