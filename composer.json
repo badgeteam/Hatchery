@@ -23,7 +23,7 @@
         "fzaninotto/faker": "~1.8",
         "mockery/mockery": "dev-master",
         "phpstan/phpstan": "^0.11.4",
-        "phpunit/phpunit": "~8.0",
+        "phpunit/phpunit": "^7",
         "nunomaduro/larastan": "^0.3.16"
     },
     "autoload": {
