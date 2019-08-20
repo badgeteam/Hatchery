@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 /**
  * App\Models\Category
@@ -34,7 +35,7 @@ class Category extends Model
         parent::boot();
 
         static::saving(function ($project) {
-            $project->slug = str_slug($project->name, '_');
+            $project->slug = Str::slug($project->name, '_');
         });
     }
 

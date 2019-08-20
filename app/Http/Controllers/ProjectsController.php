@@ -10,6 +10,7 @@ use App\Models\Project;
 use App\Models\Version;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use PharData;
 
@@ -64,11 +65,11 @@ class ProjectsController extends Controller
      */
     public function store(ProjectStoreRequest $request): RedirectResponse
     {
-        if (Project::where('slug', str_slug($request->name, '_'))->exists()) {
+        if (Project::where('slug', Str::slug($request->name, '_'))->exists()) {
             return redirect()->route('projects.create')->withInput()->withErrors(['slug already exists :(']);
         }
 
-        if (Project::isForbidden(str_slug($request->name, '_'))) {
+        if (Project::isForbidden(Str::slug($request->name, '_'))) {
             return redirect()->route('projects.create')->withInput()->withErrors(['reserved name']);
         }
 

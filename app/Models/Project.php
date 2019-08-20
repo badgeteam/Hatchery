@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 /**
  * App\Models\Project
@@ -69,7 +70,7 @@ class Project extends Model
         });
 
         static::saving(function ($project) {
-            $project->slug = str_slug($project->name, '_');
+            $project->slug = Str::slug($project->name, '_');
             if (Project::isForbidden($project->slug)) {
                 throw new \Exception('reserved name');
             }
