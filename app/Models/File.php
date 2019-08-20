@@ -29,7 +29,7 @@ class File extends Model
 {
     use SoftDeletes;
 
-    public static $extensions = ['py', 'txt', 'pyc', 'png', 'json', 'md', 'mp3'];
+    public static $extensions = ['py', 'txt', 'pyc', 'png', 'json', 'md', 'mp3', 'elf'];
 
     protected $editable = ['py', 'txt', 'md'];
 
