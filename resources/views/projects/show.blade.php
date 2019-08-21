@@ -35,7 +35,7 @@
                         </div>
                         @if($project->versions()->published()->count() > 0)
                         <div class="col-md-12 clearfix">
-                            <a href="{{ $project->versions()->published()->latest()->url }}" class="btn btn-default">Download latest egg (tar.gz)</a>
+                            <a href="{{ url($project->versions()->published()->get()->last()->zip) }}" class="btn btn-default">Download latest egg (tar.gz)</a>
 
                         </div>
                         @endif
