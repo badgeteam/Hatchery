@@ -33,6 +33,12 @@
                             @include('projects.partials.show-compatibility')
                             @include('projects.partials.show-dependencies')
                         </div>
+                        @if($project->versions()->published()->count() > 0)
+                        <div class="col-md-12 clearfix">
+                            <a href="{{ $project->versions()->published()->latest()->url }}" class="btn btn-default">Download latest egg (tar.gz)</a>
+
+                        </div>
+                        @endif
                         <div class="col-md-12 clearfix">
                             @include('projects.partials.show-files')
                         </div>
