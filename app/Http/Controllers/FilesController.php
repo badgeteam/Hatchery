@@ -211,4 +211,16 @@ class FilesController extends Controller
         return view('files.show')
             ->with('file', $file);
     }
+
+    /**
+     * Download file content, public method ツ what could go wrong..
+     *
+     * @param File $file
+     *
+     * @return View
+     */
+    public function download(File $file): View
+    {
+        return $file->content;
+    }
 }
