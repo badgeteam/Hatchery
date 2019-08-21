@@ -13,7 +13,7 @@
                 @if($file->editable)
                 <a href="{{ route('files.show', ['file' => $file->id]) }}">{{ $file->name }}</a>
                 @else
-                {{ $file->name }}
+                <a href="{{ route('files.download', ['file' => $file->id]) }}">{{ $file->name }}</a>
                 @endif
             </td>
             <td>{{ $file->updated_at }}</td>
