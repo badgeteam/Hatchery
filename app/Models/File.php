@@ -30,6 +30,16 @@ class File extends Model
     use SoftDeletes;
 
     public static $extensions = ['py', 'txt', 'pyc', 'png', 'json', 'md', 'mp3', 'elf'];
+    public static $mimes = [
+        'py' => 'application/x-python-code',
+        'txt' => 'text/plain',
+        'pyc' => 'application/x-python-bytecode',
+        'png' => 'image/png',
+        'json' => 'application/json',
+        'md' => 'text/markdown',
+        'mp3' => 'audio/mpeg',
+        'elf' => 'application/x-elf'
+    ];
 
     protected $editable = ['py', 'txt', 'md'];
 
@@ -95,5 +105,20 @@ class File extends Model
         }
 
         return null;
+    }
+
+    /**
+     * @param File $file
+     * @return string
+     */
+    public static function getMime(File $file): string
+    {
+        $name = collect(explode('.', $file->name));
+
+        if (in_array($name->last(), self::$extensions)) {
+            return self::$mimes[$name->last()];
+        }
+
+        return 'application/octet-stream';
     }
 }

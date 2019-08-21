@@ -9,6 +9,7 @@ use App\Models\File;
 use App\Models\Version;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class FilesController extends Controller
@@ -217,10 +218,16 @@ class FilesController extends Controller
      *
      * @param File $file
      *
-     * @return View
+     * @return Response
      */
-    public function download(File $file): View
+    public function download(File $file): Response
     {
-        return $file->content;
+        return response($file->content)
+            ->header('Cache-Control', 'no-cache private')
+            ->header('Content-Description', 'File Transfer')
+            ->header('Content-Type', File::getMime($file))
+            ->header('Content-length', strlen($file->content))
+            ->header('Content-Disposition', 'attachment; filename=' . $file->name)
+            ->header('Content-Transfer-Encoding', 'binary');
     }
 }
