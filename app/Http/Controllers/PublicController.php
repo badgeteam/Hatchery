@@ -22,25 +22,36 @@ class PublicController extends Controller
      */
     public function index(Request $request): View
     {
-        $badge = '';
+        $badge = null;
         if ($request->has('badge')) {
-            $badge = Badge::where('slug', $request->get('badge'))->first();
+            /** @var Badge $badge */
+            $badge = Badge::where('slug', $request->get('badge'))->firstOrFail();
+            return $this->badge($badge);
         }
-        if ($badge === '' || !$badge) {
-            $projects = Project::whereHas('versions', function ($query) {
-                $query->published();
-            })->orderBy('id', 'DESC');
-        } else {
-            $projects = $badge->projects()->whereHas('versions', function ($query) {
-                $query->published();
-            })->orderBy('id', 'DESC');
-            $badge = $badge->slug;
-        }
+        $projects = Project::whereHas('versions', function ($query) {
+            $query->published();
+        })->orderBy('id', 'DESC');
         return view('welcome')->with([
             'users'     => User::count(),
             'projects'  => Project::count(),
             'published' => $projects->paginate(50),
-            'badge'     => $badge
+            'badge'     => ''
+        ]);
+    }
+
+    /**
+     * @param Badge $badge
+     * @return View
+     */
+    public function badge(Badge $badge) {
+        $projects = $badge->projects()->whereHas('versions', function ($query) {
+            $query->published();
+        })->orderBy('id', 'DESC');
+        return view('welcome')->with([
+            'users'     => User::count(),
+            'projects'  => Project::count(),
+            'published' => $projects->paginate(50),
+            'badge'     => $badge->slug
         ]);
     }
 

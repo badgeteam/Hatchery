@@ -24,6 +24,20 @@ class PublicTest extends TestCase
         $response = $this->get('/');
 
         $response->assertStatus(200)
+            ->assertViewHas('badge', '')
+            ->assertViewHas('users', User::count())
+            ->assertViewHas('projects', Project::count());
+    }
+
+    /**
+     * A badge test example.
+     */
+    public function testBadge()
+    {
+        $badge = factory(Badge::class)->create();
+        $response = $this->get('/badge/'.$badge->slug);
+        $response->assertStatus(200)
+            ->assertViewHas('badge', $badge->slug)
             ->assertViewHas('users', User::count())
             ->assertViewHas('projects', Project::count());
     }

@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'PublicController@index')->name('splash');
+Route::get('/badge/{badge}', 'PublicController@badge')->name('badge');
 
 Auth::routes();
 
