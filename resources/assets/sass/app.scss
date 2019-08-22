@@ -59,3 +59,19 @@
 .modal-dialog {
   margin-top: 13em;
 }
+
+.combined-alerts {
+  margin-bottom: 22px;
+
+  .alert {
+    margin-bottom: 0;
+  }
+
+  .alert:nth-child(1) {
+    border-bottom: none;
+  }
+
+  .alert:nth-child(2) {
+    border-top: none;
+  }
+}
