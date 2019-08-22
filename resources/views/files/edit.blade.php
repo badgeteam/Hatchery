@@ -1,12 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-@if (!$errors->isEmpty() || !$warnings->isEmpty())
-<div class="alert alert-info alert-dismissible">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    <p>Don't worry, the changes have been saved anyway ¯\_(ツ)_/¯</p>
-</div>
-@endif
 <div class="container-fluid">
 
     <div class="row">
