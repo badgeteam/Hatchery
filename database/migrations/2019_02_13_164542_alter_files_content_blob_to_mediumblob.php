@@ -11,7 +11,9 @@ class AlterFilesContentBlobToMediumblob extends Migration
      */
     public function up()
     {
-        DB::statement("ALTER TABLE `files` MODIFY `content` MEDIUMBLOB");
+        if (config('database.default') !== 'sqlite') {
+            DB::statement("ALTER TABLE `files` MODIFY `content` MEDIUMBLOB");
+        }
     }
 
     /**
@@ -21,6 +23,8 @@ class AlterFilesContentBlobToMediumblob extends Migration
      */
     public function down()
     {
-        DB::statement("ALTER TABLE `files` MODIFY `content` BLOB");
+        if (config('database.default') !== 'sqlite') {
+            DB::statement("ALTER TABLE `files` MODIFY `content` BLOB");
+        }
     }
 }

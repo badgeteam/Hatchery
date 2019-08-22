@@ -2,13 +2,20 @@
     "name": "badgeteam/hatchery",
     "description": "Hatchery micropython app repository . .",
     "keywords": ["framework", "laravel", "repository"],
-    "author": "Anne Jan Brouwer <annejan@noprotocol.nl>",
+    "authors": [
+        {
+            "name": "Anne Jan Brouwer",
+            "email": "annejan@noprotocol.nl",
+            "homepage": "https://annejan.com",
+            "role": "Developer"
+        }
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
         "php": ">=7.1.3",
         "ext-json": "*",
-        "bepsvpt/secure-headers": "^3.0",
+        "bepsvpt/secure-headers": "^5",
         "filp/whoops": "~2.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "~1.0",

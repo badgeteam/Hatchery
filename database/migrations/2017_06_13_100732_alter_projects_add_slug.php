@@ -14,7 +14,7 @@ class AlterProjectsAddSlug extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->string('slug')->after('name');
+            $table->string('slug')->nullable()->after('name');
         });
     }
 

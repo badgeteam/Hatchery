@@ -14,11 +14,11 @@ class AlterFilesAndVersionsAddUserId extends Migration
     public function up()
     {
         Schema::table('versions', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned()->after('id');
+            $table->integer('user_id')->unsigned()->nullable()->after('id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
         Schema::table('files', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned()->after('id');
+            $table->integer('user_id')->unsigned()->nullable()->after('id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }

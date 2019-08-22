@@ -22,11 +22,21 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 Requires PHP 7.1.3 or later!
 
+For deployment on a server.
+
 ```bash
 cp .env.example .env
 ```
 
 Edit your database, mail and other settings..
+
+Or copy the local dev environment config.
+
+```bash
+cp .env.dev .env
+```
+
+Install and configure required items.
 
 ```bash
 pip install pyflakes
@@ -37,7 +47,7 @@ yarn
 yarn production
 ```
 
-Compiling and installing the patched minigzip
+Compiling and installing the patched minigzip.
 
 ```bash
 wget http://zlib.net/zlib-1.2.11.tar.gz

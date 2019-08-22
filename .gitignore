@@ -13,7 +13,7 @@
 Homestead.json
 Homestead.yaml
 npm-debug.log
-.env
+.env.dev
 .env.testing
 /docs/coverage
 /build/logs/clover.xml
@@ -28,3 +28,4 @@ public/*.js
 .phpunit.result.cache
 _ide_helper.php
 .phpstorm.meta.php
+/.env
