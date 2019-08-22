@@ -33,7 +33,7 @@ class WeatherController extends Controller
      */
     public function location(string $location): JsonResponse
     {
-        if (preg_match('/^([-+]?)([\d]{1,2})(((\.)(\d+)(,)))(\s*)(([-+]?)([\d]{1,3})((\.)(\d+))?)$/', $location) === false) {
+        if (preg_match('/^([-+]?)([\d]{1,2})(((\.)(\d+)(,)))(\s*)(([-+]?)([\d]{1,3})((\.)(\d+))?)$/', $location) !== 1) {
             abort(412, "Location invalid");
         }
 
