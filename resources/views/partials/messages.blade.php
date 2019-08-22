@@ -1,20 +1,18 @@
 @if(!$errors->isEmpty())
     @if(isset($file))
-    <div class="combine-alerts">
+    <div class="combined-alerts">
     @endif
-    <div class="alert alert-danger alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        @foreach($errors->all() as $error)
-            @if(!empty($error))
-            <p>{{ $error }}</p>
-            @endif
-        @endforeach
-    </div>
+        <div class="alert alert-danger">
+            @foreach($errors->all() as $error)
+                @if(!empty($error))
+                <p>{{ $error }}</p>
+                @endif
+            @endforeach
+        </div>
     @if(isset($file))
-    <div class="alert alert-info alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <p>Don't worry, the changes have been saved anyway ¯\_(ツ)_/¯</p>
-    </div>
+        <div class="alert alert-info">
+            <p>Don't worry, the changes have been saved anyway ¯\_(ツ)_/¯</p>
+        </div>
     </div>
     @endif
 @endif
