@@ -43,3 +43,4 @@ Route::get('/basket/{badge}/search/{words}/json', 'PublicController@badgeSearchJ
 Route::get('/basket/{badge}/category/{category}/json', 'PublicController@badgeCategoryJson')->name('basket.category.json');
 
 Route::get('/weather', 'WeatherController@show')->name('weather');
+Route::get('/weather/{location}', 'WeatherController@location')->name('weather.location');

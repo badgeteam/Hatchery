@@ -12,13 +12,6 @@ class WeatherController extends Controller
     private $minutes = 10; // max 144 requests/day ;)
     private $url = '';
 
-    public function __construct()
-    {
-        $this->url = 'https://api.darksky.net/forecast/'
-            .config('services.darksky.key')
-            .'/'.config('services.darksky.location').'?units=ca&exclude=currently,alerts,flags,daily,minutely';
-    }
-
     /**
      * Show schedule of a day.
      *
@@ -26,6 +19,28 @@ class WeatherController extends Controller
      */
     public function show(): JsonResponse
     {
+        $this->url = 'https://api.darksky.net/forecast/'
+            .config('services.darksky.key')
+            .'/'.config('services.darksky.location').'?units=ca&exclude=currently,alerts,flags,daily,minutely';
+
+        return response()->json($this->getJson(), 200,
+            ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+    }
+
+    /**
+     * @param string $location
+     * @return JsonResponse
+     */
+    public function location(string $location): JsonResponse
+    {
+        if (preg_match('/^([-+]?)([\d]{1,2})(((\.)(\d+)(,)))(\s*)(([-+]?)([\d]{1,3})((\.)(\d+))?)$/', $location) === false) {
+            abort(412, "Location invalid");
+        }
+
+        $this->url = 'https://api.darksky.net/forecast/'
+            .config('services.darksky.key')
+            .'/'.$location.'?units=ca&exclude=currently,alerts,flags,daily,minutely';
+
         return response()->json($this->getJson(), 200,
             ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
@@ -35,15 +50,16 @@ class WeatherController extends Controller
      */
     private function getJson(): stdClass
     {
-        if (Cache::has('weather')) {
-            $json = Cache::get('weather');
+        $key = hash('sha256', $this->url);
+        if (Cache::has($key)) {
+            $json = Cache::get($key);
         } else {
             $json = file_get_contents($this->url);
             if ($json === false) {
                 abort(404, "Couldn't fetch the weather from: ".$this->url);
             }
             $expiresAt = Carbon::now()->addMinutes($this->minutes);
-            Cache::put('weather', $json, $expiresAt);
+            Cache::put($key, $json, $expiresAt);
         }
 
         return json_decode($json);
