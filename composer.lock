@@ -213,28 +213,30 @@
         },
         {
             "name": "doctrine/lexer",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/lexer.git",
-                "reference": "1febd6c3ef84253d7c815bed85fc622ad207a9f8"
+                "reference": "e17f069ede36f7534b95adec71910ed1b49c74ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/lexer/zipball/1febd6c3ef84253d7c815bed85fc622ad207a9f8",
-                "reference": "1febd6c3ef84253d7c815bed85fc622ad207a9f8",
+                "url": "https://api.github.com/repos/doctrine/lexer/zipball/e17f069ede36f7534b95adec71910ed1b49c74ea",
+                "reference": "e17f069ede36f7534b95adec71910ed1b49c74ea",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2"
+                "php": "^7.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.5"
+                "doctrine/coding-standard": "^6.0",
+                "phpstan/phpstan": "^0.11.8",
+                "phpunit/phpunit": "^8.2"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -248,12 +250,12 @@
             ],
             "authors": [
                 {
-                    "name": "Roman Borschel",
-                    "email": "roman@code-factory.org"
-                },
-                {
                     "name": "Guilherme Blanco",
                     "email": "guilhermeblanco@gmail.com"
+                },
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
                 },
                 {
                     "name": "Johannes Schmitt",
@@ -269,7 +271,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2019-06-08T11:03:04+00:00"
+            "time": "2019-07-30T19:33:28+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
@@ -1310,34 +1312,35 @@
         },
         {
             "name": "ocramius/package-versions",
-            "version": "1.4.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Ocramius/PackageVersions.git",
-                "reference": "a4d4b60d0e60da2487bd21a2c6ac089f85570dbb"
+                "reference": "1d32342b8c1eb27353c8887c366147b4c2da673c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/a4d4b60d0e60da2487bd21a2c6ac089f85570dbb",
-                "reference": "a4d4b60d0e60da2487bd21a2c6ac089f85570dbb",
+                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/1d32342b8c1eb27353c8887c366147b4c2da673c",
+                "reference": "1d32342b8c1eb27353c8887c366147b4c2da673c",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.0.0",
-                "php": "^7.1.0"
+                "php": "^7.3.0"
             },
             "require-dev": {
-                "composer/composer": "^1.6.3",
-                "doctrine/coding-standard": "^5.0.1",
+                "composer/composer": "^1.8.6",
+                "doctrine/coding-standard": "^6.0.0",
                 "ext-zip": "*",
-                "infection/infection": "^0.7.1",
-                "phpunit/phpunit": "^7.0.0"
+                "infection/infection": "^0.13.4",
+                "phpunit/phpunit": "^8.2.5",
+                "vimeo/psalm": "^3.4.9"
             },
             "type": "composer-plugin",
             "extra": {
                 "class": "PackageVersions\\Installer",
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "1.6.x-dev"
                 }
             },
             "autoload": {
@@ -1356,7 +1359,7 @@
                 }
             ],
             "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
-            "time": "2019-02-21T12:16:21+00:00"
+            "time": "2019-07-17T15:49:50+00:00"
         },
         {
             "name": "opis/closure",
@@ -2636,16 +2639,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "2.1.1",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "8e27e6c5fcf6f01fc2e5235dd14cc0b2b347d793"
+                "reference": "646f6ada8b89a08063e31f54ed6d260bd6879239"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/8e27e6c5fcf6f01fc2e5235dd14cc0b2b347d793",
-                "reference": "8e27e6c5fcf6f01fc2e5235dd14cc0b2b347d793",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/646f6ada8b89a08063e31f54ed6d260bd6879239",
+                "reference": "646f6ada8b89a08063e31f54ed6d260bd6879239",
                 "shasum": ""
             },
             "require": {
@@ -2674,12 +2677,12 @@
                 "phpstan/phpstan": "^0.10.3",
                 "phpstan/phpstan-phpunit": "^0.10",
                 "phpunit/phpunit": "^7.0",
-                "symfony/phpunit-bridge": "^4.1.6"
+                "symfony/phpunit-bridge": "^4.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "2.1.x-dev"
                 }
             },
             "autoload": {
@@ -2711,7 +2714,7 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2019-06-13T11:27:23+00:00"
+            "time": "2019-08-22T07:37:30+00:00"
         },
         {
             "name": "sentry/sentry-laravel",

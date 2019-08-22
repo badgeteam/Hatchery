@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@if (!$errors->isEmpty() || !$warnings->isEmpty())
+    Don't worry, the changes have been saved anyway ¯\_(ツ)_/¯
+@endif
 <div class="container-fluid">
 
     <div class="row">
