@@ -74,7 +74,8 @@ Apps
 App specific
 
 ```uri
-/weather                      - weather proxied from darksky.net
+/weather                      - weather of sha location proxied from darksky.net
+/weather/52.3451,5.4581       - weather of specified geolocation proxied
 ```
 
 ## Running tests
