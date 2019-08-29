@@ -15,13 +15,13 @@ ENV PATH ./vendor/bin:/composer/vendor/bin:$PATH
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash -s --
 ENV PATH /root/.yarn/bin:/root/.config/yarn/global/node_modules/.bin:$PATH
 
-#RUN wget http://zlib.net/zlib-1.2.11.tar.gz && \
-#    tar xvf zlib-1.2.11.tar.gz && \
-#    cd zlib-1.2.11 && \
-#    ./configure && \
-#    echo -e "#define MAX_WBITS  13\n$(cat zconf.h)" > zconf.h && \
-#    make && \
-#    make install
+RUN wget http://zlib.net/zlib-1.2.11.tar.gz && \
+    tar xvf zlib-1.2.11.tar.gz && \
+    cd zlib-1.2.11 && \
+    ./configure && \
+    echo "#define MAX_WBITS  13\n$(cat zconf.h)" > zconf.h && \
+    make && \
+    make install
 
 RUN pip install pyflakes
 
