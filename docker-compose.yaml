@@ -1,4 +1,39 @@
-app:
-  build: .
-  volumes:
-    - .:/usr/app
+version: '3'
+
+services:
+  laravel:
+    depends_on:
+      - mariadb
+    tty: true
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      DB_DATABASE: badgeware
+      DB_USERNAME: badgeware
+      DB_PASSWORD: badgeware
+    networks:
+      - frontend
+      - backend
+    restart: on-failure
+
+  mariadb:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: badgeware
+      MYSQL_USER: badgeware
+      MYSQL_PASSWORD: badgeware
+    networks:
+      - backend
+    restart: on-failure
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge

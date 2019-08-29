@@ -59,11 +59,22 @@ make
 sudo make install
 ```
 
-Running the development server.
+### Running the development server locally.
+
+After going through the steps
 
 ```bash
 php artisan serve
 ```
+
+If you don't want to install things and do the above steps, Docker makes all the above as easy as:
+
+```bash
+docker-compose up
+docker exec -it hatchery_laravel_1 php artisan migrate --seed
+```
+
+Enjoy your Hatchery at http://localhost:8000
 
 ## API
 
