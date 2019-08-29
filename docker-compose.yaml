@@ -2,6 +2,9 @@ version: '3'
 
 services:
   web:
+    depends_on:
+      - db
+    tty: true
     build: .
     volumes:
       - .:/app
@@ -16,8 +19,6 @@ services:
 
   db:
     image: mariadb
-    ports:
-      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: badgeware

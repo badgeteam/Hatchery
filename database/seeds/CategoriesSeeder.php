@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Badge;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 
@@ -12,23 +13,25 @@ class CategoriesSeeder extends Seeder
      */
     public function run()
     {
-        foreach ([
-            'Uncategorised',
-            'Event related',
-            'Games',
-            'Graphics',
-            'Hardware',
-            'Utility',
-            'Wearable',
-            'Data',
-            'Silly',
-            'Hacking',
-            'Troll',
-            'Unusable',
-            'Adult',
-            'Virus',
-                ] as $name) {
-            Category::create(['name' => $name]);
+        if (Category::count() === 0) {
+            foreach ([
+                         'Uncategorised',
+                         'Event related',
+                         'Games',
+                         'Graphics',
+                         'Hardware',
+                         'Utility',
+                         'Wearable',
+                         'Data',
+                         'Silly',
+                         'Hacking',
+                         'Troll',
+                         'Unusable',
+                         'Adult',
+                         'Virus',
+                     ] as $name) {
+                Category::create(['name' => $name]);
+            }
         }
     }
 }

@@ -8,6 +8,8 @@ ADD .env.dev /app/.env
 
 RUN apt update && apt upgrade -y && apt install -y python-pip git zip sudo wget nodejs gnupg
 
+RUN docker-php-ext-install pdo pdo_mysql mysqli
+
 ENV COMPOSER_HOME /composer
 ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
@@ -29,6 +31,6 @@ RUN composer install
 
 RUN yarn && yarn production
 
-EXPOSE 8080
+EXPOSE 8000
 
 CMD ["php", "artisan", "serve"]
