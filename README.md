@@ -69,6 +69,7 @@ Using Docker makes all the above as easy as.
 
 ```bash
 docker-compose up
+docker exec -it hatchery_laravel_1 php artisan migrate --seed
 ```
 
 Enjoy your Hatchery at http://localhost:8000

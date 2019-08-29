@@ -4,7 +4,7 @@ FROM php:latest
 WORKDIR /app
 
 COPY . /app
-ADD .env.dev /app/.env
+COPY .env.dev /app/.env
 
 RUN apt update && apt upgrade -y && apt install -y python-pip git zip sudo wget nodejs gnupg
 
