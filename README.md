@@ -59,13 +59,15 @@ make
 sudo make install
 ```
 
-Running the development server locally.
+### Running the development server locally.
+
+After going through the steps
 
 ```bash
 php artisan serve
 ```
 
-Using Docker makes all the above as easy as.
+If you don't want to install things and do the above steps, Docker makes all the above as easy as:
 
 ```bash
 docker-compose up
