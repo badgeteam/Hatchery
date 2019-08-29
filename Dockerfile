@@ -1,15 +1,19 @@
 # Dockerfile
 FROM php:latest
 
-RUN mkdir -p /usr/app
-WORKDIR /usr/app
+WORKDIR /app
 
-ADD composer.json /usr/app/composer.json
-ADD .env.dev /usr/app/.env
+COPY . /app
+ADD .env.dev /app/.env
 
-RUN apt update && apt upgrade -y && apt install -y python-pip git zip sudo wget
+RUN apt update && apt upgrade -y && apt install -y python-pip git zip sudo wget nodejs gnupg
 
-RUN curl --silent --show-error https://getcomposer.org/installer | php
+ENV COMPOSER_HOME /composer
+ENV COMPOSER_ALLOW_SUPERUSER 1
+RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
+ENV PATH ./vendor/bin:/composer/vendor/bin:$PATH
+RUN curl -o- -L https://yarnpkg.com/install.sh | bash -s --
+ENV PATH /root/.yarn/bin:/root/.config/yarn/global/node_modules/.bin:$PATH
 
 #RUN wget http://zlib.net/zlib-1.2.11.tar.gz && \
 #    tar xvf zlib-1.2.11.tar.gz && \
@@ -21,15 +25,10 @@ RUN curl --silent --show-error https://getcomposer.org/installer | php
 
 RUN pip install pyflakes
 
-RUN mkdir -p /usr/app/vendor && chmod -R 777 vendor
-RUN chown -R www-data:www-data /usr/app
+RUN composer install
 
-USER 1000
-
-RUN /usr/app/composer.phar install
-
-RUN php artisan key:generate
-RUN php artisan migrate
 RUN yarn && yarn production
+
+EXPOSE 8080
 
 CMD ["php", "artisan", "serve"]

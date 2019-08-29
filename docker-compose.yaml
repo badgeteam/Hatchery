@@ -1,4 +1,25 @@
-app:
-  build: .
-  volumes:
-    - .:/usr/app
+version: '3'
+
+services:
+  web:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: badgeware
+      DB_USERNAME: badgeware
+      DB_PASSWORD: badgeware
+
+  db:
+    image: mariadb
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: badgeware
+      MYSQL_USER: badgeware
+      MYSQL_PASSWORD: badgeware

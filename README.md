@@ -65,6 +65,14 @@ Running the development server.
 php artisan serve
 ```
 
+Using Docker.
+
+```bash
+docker-compose up
+```
+
+Enjoy your Hatchery at http://localhost:8000
+
 ## API
 
 Apps
