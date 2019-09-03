@@ -20,7 +20,11 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## Installation
 
-Requires PHP 7.1.3 or later!
+TODO:
+
+* re-add "bepsvpt/secure-headers": "^5", and re-enable in `app/Http/Kernel.php` config/app.php etc
+
+Requires PHP 7.2 or later!
 
 For deployment on a server.
 

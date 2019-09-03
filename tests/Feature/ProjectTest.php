@@ -21,6 +21,14 @@ class ProjectTest extends TestCase
     /**
      * Check the projects list.
      */
+    public function testProjectsIndexRedirect()
+    {
+        $response = $this
+            ->get('/projects');
+        $response->assertStatus(302)
+            ->assertViewHas('projects', Project::paginate());
+    }
+
     public function testProjectsIndex()
     {
         $user = factory(User::class)->create();
