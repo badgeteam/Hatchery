@@ -7,7 +7,14 @@ services:
     tty: true
     build: .
     volumes:
-      - .:/app
+      - ./app:/app/app
+      - ./config:/app/config
+      - ./database:/app/database
+      - ./public:/app/public
+      - ./resources:/app/resources
+      - ./routes:/app/routes
+      - ./storage:/app/storage
+      - ./tests:/app/tests
     ports:
       - "8000:8000"
     environment:
@@ -23,6 +30,8 @@ services:
 
   mariadb:
     image: mariadb
+    volumes:
+      - ./database/mariadb:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: badgeware
@@ -37,3 +46,5 @@ networks:
     driver: bridge
   backend:
     driver: bridge
+
+

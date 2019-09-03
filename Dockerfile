@@ -6,9 +6,10 @@ WORKDIR /app
 COPY . /app
 COPY .env.dev /app/.env
 
-RUN apt update && apt upgrade -y && apt install -y python-pip git zip sudo wget nodejs gnupg
+RUN apt update && apt upgrade -y && apt install -y python-pip git zip sudo wget nodejs gnupg \
+    zlib1g-dev libzip-dev libicu-dev libpng-dev
 
-RUN docker-php-ext-install pdo pdo_mysql mysqli
+RUN docker-php-ext-install pdo pdo_mysql mysqli pcntl zip intl gd mbstring
 
 ENV COMPOSER_HOME /composer
 ENV COMPOSER_ALLOW_SUPERUSER 1
@@ -28,6 +29,7 @@ RUN wget http://zlib.net/zlib-1.2.11.tar.gz && \
 RUN pip install pyflakes
 
 RUN composer install
+RUN chmod -R 777 bootstrap/cache storage
 
 RUN yarn && yarn production
 
