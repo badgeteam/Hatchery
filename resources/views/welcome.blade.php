@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+	<img class="logo" href="/img/bs.png" alt="Badge.r & smol snek" />
     <div class="row">
 		<div class="panel panel-compact">
 			<div class="panel-body">
@@ -31,6 +32,7 @@
 				</div>
 				<div class="spacer col-md-12 hidden-xs"></div>
 				<div class="links">
+					<a href="https://doc.badge.team/">Documentation</a>
 					<a href="https://wiki.badge.team/MicroPython">Wiki Coding Help</a>
 					<a href="https://github.com/badgeteam/">GitHub</a>
 					<a href="https://twitter.com/SHA2017Badge">Twitter</a>
