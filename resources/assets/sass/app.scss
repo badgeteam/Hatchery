@@ -75,7 +75,14 @@
     border-top: none;
   }
 }
-
+.panel, body {
+  background: none;
+}
 .logo {
   position: absolute;
+  z-index: -1;
+  opacity: 0.75;
+  max-width: 20%;
+  left: 10px;
+  top: 10px;
 }

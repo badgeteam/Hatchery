@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container">
-	<img class="logo" src="/img/bs.png" alt="Badge.r & smol snek" />
     <div class="row">
 		<div class="panel panel-compact">
 			<div class="panel-body">

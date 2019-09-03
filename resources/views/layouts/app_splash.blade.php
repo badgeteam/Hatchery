@@ -15,7 +15,7 @@
     <link href="{{ asset('css/app.css', !App::environment(['local', 'testing'])) }}" rel="stylesheet">
 	
     <style>
-	html, body {
+	html {
 		background-color: white;
 	}
 	.links > a {
@@ -44,7 +44,7 @@
 </head>
 <body>
     @include('partials.messages')
-
+    <img class="logo" src="/img/bs.png" alt="Badge.r & smol snek" />
     @yield('content')
 
     <!-- Scripts -->
