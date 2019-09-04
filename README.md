@@ -4,11 +4,13 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/05fc2bac5b3669fa1b0c/maintainability)](https://codeclimate.com/github/badgeteam/Hatchery/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/05fc2bac5b3669fa1b0c/test_coverage)](https://codeclimate.com/github/badgeteam/Hatchery/test_coverage)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/78402ccc553245f2be2d1def6fdc3c68)](https://www.codacy.com/app/Badgeteam/Hatchery?utm_source=github.com&utm_medium=referral&utm_content=badgeteam/Hatchery&utm_campaign=Badge_Grade)
+[![CircleCI](https://circleci.com/gh/badgeteam/Hatchery.svg?style=svg)](https://circleci.com/gh/badgeteam/Hatchery)
 
 Simple micropython software repository for Badges.
 
 [Live Site](http://badge.team) |
-[Documentation](https://wiki.badge.team/Hatchery) |
+[Documentation](https://docs.badge.team/hatchery/) |
+[Documentation (wiki)](https://wiki.badge.team/Hatchery) |
 [Project Wiki](https://wiki.badge.team) |
 [GitHub](https://github.com/badgeteam/)
 
@@ -132,3 +134,10 @@ phpunit --coverage-html docs/coverage
 ```
 
 This will create the code coverage docs in `docs/coverage/index.html`
+
+Testing with Codeception
+
+```bash
+./vendor/bin/codecept build
+./vendor/bin/codecept run
+```
