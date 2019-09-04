@@ -47,6 +47,7 @@ jobs:
 
       # prepare the database
       - run: mysqladmin create badgeware_test --user="root" --host="127.0.0.1"
+      - run: php artisan migrate --env=testing --database=testing --force --seed
       - run: php artisan config:cache
 
       # run tests with codecept

@@ -5,6 +5,11 @@
 actor: UnitTester
 modules:
     enabled:
+        - Laravel5:
+            environment_file: .env.testing
         - Asserts
         - \Helper\Unit
-    step_decorators: ~        
+    step_decorators: ~
+    config:
+        - Laravel5:
+            environment_file: .env.testing
