@@ -4,8 +4,79 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8d4be6da94353d89c32a6c74fb15647",
+    "content-hash": "95582c649fd9f6b2f92c729cfef55f18",
     "packages": [
+        {
+            "name": "bepsvpt/secure-headers",
+            "version": "dev-laravel6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ildyria/secure-headers.git",
+                "reference": "50925c88ae993cdb4516d2ac958279535d7f31e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ildyria/secure-headers/zipball/50925c88ae993cdb4516d2ac958279535d7f31e5",
+                "reference": "50925c88ae993cdb4516d2ac958279535d7f31e5",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.1|~6.0",
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "ext-xdebug": "*",
+                "orchestra/testbench": "~3.1|~4.0",
+                "phpstan/phpstan": "~0.7",
+                "phpunit/phpunit": "~5.7|~6.5|~7.5|~8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Bepsvpt\\SecureHeaders\\SecureHeadersServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Bepsvpt\\SecureHeaders\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Bepsvpt\\Tests\\SecureHeaders\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "BePsvPT",
+                    "email": "bepsvpt@protonmail.com"
+                }
+            ],
+            "description": "Add security related headers to HTTP response. The package includes Service Providers for easy Laravel integration.",
+            "homepage": "https://github.com/BePsvPT/secure-headers",
+            "keywords": [
+                "clear-site-data",
+                "content-security-policy",
+                "csp",
+                "except-ct",
+                "feature-policy",
+                "header",
+                "hpkp",
+                "hsts",
+                "https",
+                "laravel",
+                "referrer-policy"
+            ],
+            "support": {
+                "source": "https://github.com/ildyria/secure-headers/tree/laravel6"
+            },
+            "time": "2019-09-03T11:25:59+00:00"
+        },
         {
             "name": "clue/stream-filter",
             "version": "v1.4.1",
@@ -7500,6 +7571,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "bepsvpt/secure-headers": 20,
         "barryvdh/laravel-ide-helper": 20,
         "codacy/coverage": 20,
         "mockery/mockery": 20

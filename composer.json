@@ -19,7 +19,8 @@
         "laravel/framework": "^6.0",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^6.0",
-        "sentry/sentry-laravel": "^1.0.2"
+        "sentry/sentry-laravel": "^1.0.2",
+        "bepsvpt/secure-headers": "dev-laravel6"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "dev-master",
@@ -64,5 +65,11 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
-    }
+    },
+    "repositories":[
+        {
+            "type": "vcs",
+            "url": "git@github.com:ildyria/secure-headers.git"
+        }
+    ]
 }
