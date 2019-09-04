@@ -25,6 +25,7 @@
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",
         "codacy/coverage": "dev-master",
+        "codeception/codeception": "^3.1",
         "doctrine/dbal": "^2.9",
         "fzaninotto/faker": "~1.8",
         "mockery/mockery": "dev-master",
