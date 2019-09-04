@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Badge;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 

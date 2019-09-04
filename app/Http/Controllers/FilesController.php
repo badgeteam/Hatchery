@@ -100,16 +100,18 @@ class FilesController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return RedirectResponse
      */
     public function createIcon(Request $request): RedirectResponse
     {
         $version = Version::where('id', $request->get('version'))->firstOrFail();
-        $file = new File;
+        $file = new File();
         $pixels = [];
         for ($p = 0; $p < 64; $p++) {
             $pixels[] = '0x00000000';
         }
+
         try {
             $file->version_id = $version->id;
             $file->name = 'icon.py';
@@ -131,7 +133,7 @@ class FilesController extends Controller
      */
     public function store(FileStoreRequest $request): RedirectResponse
     {
-        $file = new File;
+        $file = new File();
 
         try {
             $file->version_id = $request->version_id;

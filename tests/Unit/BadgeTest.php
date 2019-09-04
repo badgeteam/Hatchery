@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Models\Project;
 use App\Models\Badge;
+use App\Models\Project;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -15,7 +15,7 @@ class BadgeTest extends TestCase
     use DatabaseTransactions, DatabaseMigrations;
 
     /**
-     * Assert the Badge has a collection of Projects
+     * Assert the Badge has a collection of Projects.
      */
     public function testBadgeProjectRelationship()
     {

@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Badge;
-use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
@@ -320,13 +319,12 @@ class PublicTest extends TestCase
             ->assertViewHas('file');
     }
 
-
     /**
      * Check JSON eggs request . .
      */
     public function testBasketListJson()
     {
-        $badge =  factory(Badge::class)->create();
+        $badge = factory(Badge::class)->create();
         $user = factory(User::class)->create();
         $this->be($user);
         $version = factory(Version::class)->create();
@@ -361,7 +359,7 @@ class PublicTest extends TestCase
      */
     public function testBasketSearchJson()
     {
-        $badge =  factory(Badge::class)->create();
+        $badge = factory(Badge::class)->create();
         $response = $this->json('GET', '/eggs/search/something/json');
         $response->assertStatus(200)->assertExactJson([]);
 
@@ -400,7 +398,7 @@ class PublicTest extends TestCase
      */
     public function testBasketCategoryJson()
     {
-        $badge =  factory(Badge::class)->create();
+        $badge = factory(Badge::class)->create();
         $user = factory(User::class)->create();
         $this->be($user);
         $version = factory(Version::class)->create();

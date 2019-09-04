@@ -10,12 +10,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * App\Models\Version
+ * App\Models\Version.
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\File[] $files
  * @property-read bool $published
  * @property-read \App\Models\Project $project
  * @property-read \App\Models\User $user
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version newQuery()
@@ -38,7 +39,7 @@ class Version extends Model
     {
         parent::boot();
 
-        static::creating(function($version) {
+        static::creating(function ($version) {
             $user = Auth::guard()->user();
             $version->user()->associate($user);
         });

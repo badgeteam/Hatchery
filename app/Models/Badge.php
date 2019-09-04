@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * App\Models\Badge
+ * App\Models\Badge.
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge query()
