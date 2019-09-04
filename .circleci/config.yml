@@ -46,7 +46,7 @@ jobs:
       - run: yarn build
 
       # prepare the database
-      - run: mysqladmin create badgeware_test --user="root" --password="root"
+      - run: mysqladmin create badgeware_test --user="root" --host="127.0.0.1"
       - run: php artisan config:cache
 
       # run tests with codecept
