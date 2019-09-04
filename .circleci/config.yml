@@ -18,7 +18,7 @@ jobs:
       - run: sudo apt update
       - run: sudo docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd
       - run: sudo docker-php-ext-install zip pdo_mysql
-      - run: sudo apt-get install mysql-client
+      - run: sudo apt-get install mariadb-client
 
       # Download and cache dependencies
       - restore_cache:
