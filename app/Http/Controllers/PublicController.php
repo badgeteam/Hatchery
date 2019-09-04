@@ -28,7 +28,7 @@ class PublicController extends Controller
             $badge = Badge::where('slug', $request->get('badge'))->firstOrFail();
             return $this->badge($badge);
         }
-        $projects = Project::whereHas('versions', function ($query) {
+        $projects = Project::whereHas('versions', function($query) {
             $query->published();
         })->orderBy('id', 'DESC');
         return view('welcome')->with([
@@ -44,7 +44,7 @@ class PublicController extends Controller
      * @return View
      */
     public function badge(Badge $badge) {
-        $projects = $badge->projects()->whereHas('versions', function ($query) {
+        $projects = $badge->projects()->whereHas('versions', function($query) {
             $query->published();
         })->orderBy('id', 'DESC');
         return view('welcome')->with([
@@ -98,7 +98,7 @@ class PublicController extends Controller
      */
     public function listJson(): JsonResponse
     {
-        return response()->json(Project::whereHas('versions', function ($query) {
+        return response()->json(Project::whereHas('versions', function($query) {
             $query->published();
         })->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
@@ -114,7 +114,7 @@ class PublicController extends Controller
     {
         $what = '%'.$search.'%';
 
-        return response()->json(Project::whereHas('versions', function ($query) {
+        return response()->json(Project::whereHas('versions', function($query) {
             $query->published();
         })->where('name', 'like', $what)
             ->orWhere('description', 'like', $what)
@@ -131,7 +131,7 @@ class PublicController extends Controller
      */
     public function categoryJson(Category $category): JsonResponse
     {
-        return response()->json($category->projects()->whereHas('versions', function ($query) {
+        return response()->json($category->projects()->whereHas('versions', function($query) {
             $query->published();
         })->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
@@ -155,7 +155,7 @@ class PublicController extends Controller
      */
     public function badgeListJson(Badge $badge): JsonResponse
     {
-        return response()->json($badge->projects()->whereHas('versions', function ($query) {
+        return response()->json($badge->projects()->whereHas('versions', function($query) {
             $query->published();
         })->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
@@ -172,7 +172,7 @@ class PublicController extends Controller
     {
         $what = '%'.$search.'%';
 
-        return response()->json($badge->projects()->whereHas('versions', function ($query) {
+        return response()->json($badge->projects()->whereHas('versions', function($query) {
             $query->published();
         })->where('name', 'like', $what)
             ->orWhere('description', 'like', $what)
@@ -190,9 +190,9 @@ class PublicController extends Controller
      */
     public function badgeCategoryJson(Badge $badge, Category $category): JsonResponse
     {
-        return response()->json($badge->projects()->whereHas('category', function ($query) use ($category) {
+        return response()->json($badge->projects()->whereHas('category', function($query) use ($category) {
             $query->where('slug', $category->slug);
-        })->whereHas('versions', function ($query) {
+        })->whereHas('versions', function($query) {
             $query->published();
         })->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }

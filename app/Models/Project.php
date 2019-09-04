@@ -51,12 +51,12 @@ class Project extends Model
     {
         parent::boot();
 
-        static::creating(function ($project) {
+        static::creating(function($project) {
             $user = Auth::guard()->user();
             $project->user()->associate($user);
         });
 
-        static::created(function ($project) {
+        static::created(function($project) {
             $version = new Version();
             $version->revision = 1;
             $version->project()->associate($project);
@@ -69,7 +69,7 @@ class Project extends Model
             $file->save();
         });
 
-        static::saving(function ($project) {
+        static::saving(function($project) {
             $project->slug = Str::slug($project->name, '_');
             if (Project::isForbidden($project->slug)) {
                 throw new \Exception('reserved name');
@@ -110,7 +110,7 @@ class Project extends Model
     /**
      * @return string
      */
-    public function getRevisionAttribute():? string
+    public function getRevisionAttribute(): ? string
     {
         $version = $this->versions()->published()->get()->last();
 
@@ -146,7 +146,7 @@ class Project extends Model
     /**
      * @return int
      */
-    public function getSizeOfZipAttribute():? int
+    public function getSizeOfZipAttribute(): ? int
     {
         $version = $this->versions()->published()->get()->last();
 
@@ -156,7 +156,7 @@ class Project extends Model
     /**
      * @return int
      */
-    public function getSizeOfContentAttribute():? int
+    public function getSizeOfContentAttribute(): ? int
     {
         $version = $this->versions()->published()->get()->last();
         if (is_null($version)) {
@@ -184,7 +184,7 @@ class Project extends Model
     /**
      * @return string
      */
-    public function getCategoryAttribute():? string
+    public function getCategoryAttribute(): ? string
     {
         if (is_null($this->category()->first())) {
             return 'uncategorised';
