@@ -171,7 +171,7 @@ return [
 
         'img-src' => [
             'allow' => [
-                'https://travis-ci.org'
+                'https://travis-ci.org',
             ],
 
             'types' => [
