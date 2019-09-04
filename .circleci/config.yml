@@ -14,6 +14,7 @@ jobs:
 
     steps:
       - checkout
+      - run: cp .env.testing .env
 
       - run: sudo apt update
       - run: sudo docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd
@@ -47,8 +48,9 @@ jobs:
 
       # prepare the database
       - run: mysqladmin create badgeware_test --user="root" --host="127.0.0.1"
+      - run: php artisan key:generate --env=testing
       - run: php artisan migrate --env=testing --database=testing --force --seed
-      - run: php artisan config:cache
+      - run: php artisan config:cache --env=testing
 
       # run tests with codecept
       - run: ./vendor/bin/codecept build
