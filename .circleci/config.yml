@@ -8,21 +8,17 @@ jobs:
     docker:
       # Specify the version you desire here
       - image: circleci/php:7.2-node-browsers
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # Using the RAM variation mitigates I/O contention
-      # for database intensive operations.
-      # - image: circleci/mysql:5.7-ram
-      #
-      # - image: redis:2.8.19
+      - image: circleci/mysql:5.7-ram
+        environment:
+          - MYSQL_ROOT_PASSWORD=
 
     steps:
       - checkout
 
-      - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
-      - run: sudo docker-php-ext-install zip
+      - run: sudo apt update
+      - run: sudo docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd
+      - run: sudo docker-php-ext-install zip pdo_mysql
+      - run: sudo apt-get install mysql-client
 
       # Download and cache dependencies
       - restore_cache:
@@ -31,9 +27,7 @@ jobs:
             - v1-dependencies-{{ checksum "composer.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-
       - run: composer install -n --prefer-dist
-
       - save_cache:
           key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
@@ -48,11 +42,13 @@ jobs:
           paths:
             - node_modules
 
-      # prepare the database
-      - run: touch database/testing.sqlite
-      - run: php artisan migrate --env=testing --database=sqlite_testing --force
+      # Build frontend
+      - run: yarn build
 
-      # run tests with phpunit or codecept
-      # - run: ./vendor/bin/phpunit
+      # prepare the database
+      - run: mysqladmin create badgeware_test --user="root" --password="root"
+      - run: php artisan config:cache
+
+      # run tests with codecept
       - run: ./vendor/bin/codecept build
       - run: ./vendor/bin/codecept run
