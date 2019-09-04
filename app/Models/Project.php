@@ -31,6 +31,10 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withoutTrashed()
  * @mixin \Eloquent
+ * @property-read int|null $badges_count
+ * @property-read int|null $dependants_count
+ * @property-read int|null $dependencies_count
+ * @property-read int|null $versions_count
  */
 class Project extends Model
 {
