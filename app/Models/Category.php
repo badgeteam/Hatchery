@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 /**
- * App\Models\Category
+ * App\Models\Category.
  *
  * @property-read int $eggs
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newQuery()
@@ -34,7 +35,7 @@ class Category extends Model
     {
         parent::boot();
 
-        static::saving(function($project) {
+        static::saving(function ($project) {
             $project->slug = Str::slug($project->name, '_');
         });
     }
@@ -66,7 +67,7 @@ class Category extends Model
      */
     public function getEggsAttribute(): int
     {
-        return $this->projects()->whereHas('versions', function($query) {
+        return $this->projects()->whereHas('versions', function ($query) {
             $query->whereNotNull('zip');
         })->count();
     }

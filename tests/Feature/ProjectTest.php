@@ -282,11 +282,11 @@ class ProjectTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('post', '/projects', [
-                'name' => $faker->name,
+                'name'        => $faker->name,
                 'description' => $faker->paragraph,
                 'category_id' => $category->id,
-                'badge_ids' => [$badge->id],
-                'status' => 'unknown']);
+                'badge_ids'   => [$badge->id],
+                'status'      => 'unknown', ]);
         $this->assertNotNull(Project::get()->last());
         $response->assertRedirect('/projects/'.Project::get()->last()->slug.'/edit')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
@@ -307,7 +307,7 @@ class ProjectTest extends TestCase
             ->call('put', '/projects/'.$project->slug, [
                 'description'  => $faker->paragraph,
                 'category_id'  => $project->category_id,
-                'badge_ids' => [$badge->id],
+                'badge_ids'    => [$badge->id],
                 'status'       => 'unknown',
             ]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
