@@ -22,6 +22,7 @@ build:
                 before:
                     - mysql -e 'create database badgeware;'
                     - mysql -e 'create database badgeware_test;'
+                    - sudo apt-get install -y pyflakes
             tests:
                 override:
                     -
