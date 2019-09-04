@@ -51,7 +51,7 @@ class File extends Model
     {
         parent::boot();
 
-        static::creating(function ($file) {
+        static::creating(function($file) {
             $user = Auth::guard()->user();
             $file->user()->associate($user);
         });
@@ -98,7 +98,7 @@ class File extends Model
     /**
      * @return int
      */
-    public function getSizeOfContentAttribute():? int
+    public function getSizeOfContentAttribute(): ? int
     {
         if (is_string($this->content)) {
             return strlen($this->content);

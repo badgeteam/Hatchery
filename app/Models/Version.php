@@ -38,7 +38,7 @@ class Version extends Model
     {
         parent::boot();
 
-        static::creating(function ($version) {
+        static::creating(function($version) {
             $user = Auth::guard()->user();
             $version->user()->associate($user);
         });
