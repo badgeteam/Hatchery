@@ -102,9 +102,9 @@
 		$(document).ready(function () {
 			$('#badge').change(function () {
 				if ($(this).val()) {
-					window.location.href = '{{ route('splash') }}/badge/' + $(this).val();
+					window.location.href = '{{ route('splash') }}/badge/' + $(this).val() {!! $category ? " + '?category=$category'" : "" !!};
 				} else {
-					window.location.href = '{{ route('splash') }}';
+					window.location.href = '{{ route('splash') . ($category ? "?category=$category" : "") }}';
 				}
 			})
 			$('#category').change(function () {

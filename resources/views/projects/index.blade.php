@@ -60,13 +60,13 @@
                         <a href="{{ route('projects.create') }}" class="btn btn-default">Add</a>
                     </div>
                     @if ($badge && $category)
-                        {{ $published->appends(['badge' => $badge, 'category' => $category])->links() }}
+                        {{ $projects->appends(['badge' => $badge, 'category' => $category])->links() }}
                     @elseif ($badge)
-                        {{ $published->appends(['badge' => $badge])->links() }}
+                        {{ $projects->appends(['badge' => $badge])->links() }}
                     @elseif ($category)
-                        {{ $published->appends(['category' => $category])->links() }}
+                        {{ $projects->appends(['category' => $category])->links() }}
                     @else
-                        {{ $published->links() }}
+                        {{ $projects->links() }}
                     @endif
                 </div>
             </div>
