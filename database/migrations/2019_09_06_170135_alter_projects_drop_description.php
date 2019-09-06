@@ -14,6 +14,7 @@ class AlterProjectsDropDescription extends Migration
      */
     public function up()
     {
+        auth()->loginUsingId(1);
         foreach(Project::all() as $project) {
             $version = $project->versions->last();
             if (!empty($project->description)) {
