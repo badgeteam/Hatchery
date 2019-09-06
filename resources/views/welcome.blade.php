@@ -107,7 +107,7 @@
 				if ($(this).val()) {
 					window.location.href = '{{ url()->current() }}?category=' + $(this).val();
 				} else {
-					window.location.href = '{{url()->current()}}';
+					window.location.href = '{{ url()->current() }}';
 				}
 			})
 		})
