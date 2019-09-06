@@ -12,9 +12,10 @@
                     <strong>Eggs</strong>
 
                     {{ Form::select('badge_id', \App\Models\Badge::pluck('name', 'slug')->reverse()->prepend('Choose a badge model', ''), $badge, ['id' => 'badge']) }}
-
                     {{ Form::select('category_id', \App\Models\Category::where('hidden', false)->pluck('name', 'slug')->reverse()->prepend('Choose a category', ''), $category, ['id' => 'category']) }}
-
+                    {{ Form::open(['method' => 'post', 'route' => ['projects.search', 'badge' => $badge, 'category' => $category]])  }}
+                        {{ Form::text('search', $search, ['placeholder' => 'Search']) }}
+                    {{ Form::close() }}
                     <div class="pull-right">
                         <a href="{{ route('projects.create') }}" class="btn btn-success btn-xs">Add</a>
                     </div>
@@ -59,8 +60,14 @@
                     <div class="pull-right">
                         <a href="{{ route('projects.create') }}" class="btn btn-default">Add</a>
                     </div>
-                    @if ($badge && $category)
+                    @if ($badge && $category && $search)
+                        {{ $projects->appends(['badge' => $badge, 'category' => $category, 'search' => $search])->links() }}
+                    @elseif ($badge && $category)
                         {{ $projects->appends(['badge' => $badge, 'category' => $category])->links() }}
+                    @elseif ($search && $category)
+                        {{ $projects->appends(['search' => $search, 'category' => $category])->links() }}
+                    @elseif ($badge && $search)
+                        {{ $projects->appends(['badge' => $badge, 'search' => $search])->links() }}
                     @elseif ($badge)
                         {{ $projects->appends(['badge' => $badge])->links() }}
                     @elseif ($category)
@@ -80,16 +87,16 @@
         $(document).ready(function () {
           $('#badge').change(function () {
             if ($(this).val()) {
-              window.location.href = '{{ route('projects.index') }}?{!! $category ? "category=$category&" : "" !!}badge=' + $(this).val();
+              window.location.href = '{{ route('projects.index') }}?{!! ($category ? "category=$category&" : "") !!}{!! ($search ? "search=$search&" : "") !!}badge=' + $(this).val();
             } else {
-              window.location.href = '{{ route('projects.index')  . $category ? "?category=$category" : "" }}';
+              window.location.href = '{{ route('projects.index')  . ($category ? "?category=$category" : "") . ($search ? ($category ? '&' : '?') . "search=$search" : "") }}';
             }
           })
           $('#category').change(function () {
             if ($(this).val()) {
-              window.location.href = '{{ route('projects.index')  }}?{!! $badge ? "badge=$badge&" : "" !!}category=' + $(this).val();
+              window.location.href = '{{ route('projects.index')  }}?{!! ($badge ? "badge=$badge&" : "") !!}{!! ($search ? "search=$search&" : "") !!}category=' + $(this).val();
             } else {
-              window.location.href = '{{ route('projects.index') . $badge ? "?badge=$badge" : "" }}';
+              window.location.href = '{{ route('projects.index') . ($badge ? "?badge=$badge" : "") . ($search ? ($badge ? '&' : '?') . "search=$search" : "")  }}';
             }
           })
         })

@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\Version;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -25,8 +26,8 @@ class ProjectsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => 'show']);
-        $this->authorizeResource(Project::class, null, ['except' => 'show']);
+        $this->middleware('auth', ['except' => ['show', 'index']]);
+        $this->authorizeResource(Project::class, null, ['except' => ['show', 'index']]);
     }
 
     /**
@@ -38,7 +39,7 @@ class ProjectsController extends Controller
      */
     public function index(Request $request): View
     {
-        $badge = '';
+        $badge = $category = $search = '';
         if ($request->has('badge')) {
             $badge = Badge::where('slug', $request->get('badge'))->first();
         }
@@ -48,15 +49,23 @@ class ProjectsController extends Controller
             $projects = $badge->projects()->orderBy('id', 'DESC');
             $badge = $badge->slug;
         }
-        if ($request->has('category')) {
+        if ($request->has('category') && $request->get('category')) {
             $category = Category::where('slug', $request->get('category'))->first();
             $projects = $projects->where('category_id', $category->id);
             $category = $category->slug;
-        } else {
-            $category = '';
         }
-
-        return view('projects.index')->with(['projects' => $projects->paginate()])->with('badge', $badge)->with('category', $category);
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $projects = $projects->where(function(Builder $query) use ($search) {
+                $query->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('description', 'like', '%'.$search.'%');
+            });
+        }
+        return view('projects.index')
+            ->with(['projects' => $projects->paginate()])
+            ->with('badge', $badge)
+            ->with('category', $category)
+            ->with('search', $search);
     }
 
     /**

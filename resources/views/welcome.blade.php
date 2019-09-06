@@ -20,20 +20,6 @@
 				<div class="title m-b-md">
 					<h1 class="hatcher"><span class="hidden-xs">Badge.team</span> {{ config('app.name', 'Laravel') }}</h1>
 				</div>
-				<div>
-					<a href="https://github.com/badgeteam/ESP32-platform-firmware">ESP32-platform-firmware</a>
-					<a href="https://travis-ci.org/badgeteam/ESP32-platform-firmware" rel="nofollow">
-						<img src="https://travis-ci.org/badgeteam/ESP32-platform-firmware.svg?branch=master" alt="ESP32-platform-firmware build status"  data-canonical-src="https://travis-ci.org/badgeteam/ESP32-platform-firmware.svg" style="max-width:100%;" />
-					</a>
-					<a href="https://github.com/badgeteam/Hatchery">Hatchery</a>
-					<a href="https://travis-ci.org/badgeteam/Hatchery" rel="nofollow">
-						<img src="https://travis-ci.org/badgeteam/Hatchery.svg?branch=master" alt="Hatchery build status" data-canonical-src="https://travis-ci.org/badgeteam/Hatchery.svg" style="max-width:100%;" />
-					</a>
-					<a href="https://github.com/badgeteam/ESP32-platform-firmware/tree/master/documentation">Docs website:</a>
-					<a href="https://travis-ci.org/badgeteam/website-docs" rel="nofollow">
-						<img src="https://travis-ci.org/badgeteam/website-docs.svg?branch=master" alt="website-docs build status" data-canonical-src="https://travis-ci.org/badgeteam/website-docs.svg" style="max-width:100%;" />
-					</a>
-				</div>
 				<div class="spacer col-md-12 hidden-xs"></div>
 				<div class="links">
 					<a href="https://docs.badge.team/">Documentation</a>
