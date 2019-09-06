@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 /**
- * App\Models\Category
+ * App\Models\Category.
  *
  * @property-read int $eggs
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newQuery()

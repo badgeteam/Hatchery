@@ -17,7 +17,7 @@ addons:
 
 before_script:
   - cp .env.travis .env
-  - mysql -e 'create database homestead_test;'
+  - mysql -e 'create database badgeware_test;'
   - composer self-update
   - composer install --dev --no-interaction
   - curl -s -o $HOME/.nvm/nvm.sh https://raw.githubusercontent.com/creationix/nvm/v0.33.2/nvm.sh
@@ -43,7 +43,9 @@ script:
   - php artisan code:analyse
   - vendor/bin/phpunit
   - yarn lint
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
   - php vendor/bin/codacycoverage clover build/logs/clover.xml
+  - cp build/logs/clover.xml coverage.xml
+  - bash <(curl -s https://codecov.io/bash)

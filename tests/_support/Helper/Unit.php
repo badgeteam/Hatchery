@@ -1,4 +1,8 @@
 <?php
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 namespace Helper;
 
 // here you can define custom actions
@@ -6,5 +10,8 @@ namespace Helper;
 
 class Unit extends \Codeception\Module
 {
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 }

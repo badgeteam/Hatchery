@@ -21,13 +21,18 @@
 					<h1 class="hatcher"><span class="hidden-xs">Badge.team</span> {{ config('app.name', 'Laravel') }}</h1>
 				</div>
 				<div>
-					Contributors: {{$users}}
-					Eggs: {{$projects}}
-				</div>
-				<div>
-					@foreach(App\Models\Badge::all() as $badge)
-						{{ $badge->name }}: {{ $badge->projects->count() }}
-					@endforeach
+					<a href="https://github.com/badgeteam/ESP32-platform-firmware">ESP32-platform-firmware</a>
+					<a href="https://travis-ci.org/badgeteam/ESP32-platform-firmware" rel="nofollow">
+						<img src="https://travis-ci.org/badgeteam/ESP32-platform-firmware.svg?branch=master" alt="ESP32-platform-firmware build status"  data-canonical-src="https://travis-ci.org/badgeteam/ESP32-platform-firmware.svg" style="max-width:100%;" />
+					</a>
+					<a href="https://github.com/badgeteam/Hatchery">Hatchery</a>
+					<a href="https://travis-ci.org/badgeteam/Hatchery" rel="nofollow">
+						<img src="https://travis-ci.org/badgeteam/Hatchery.svg?branch=master" alt="Hatchery build status" data-canonical-src="https://travis-ci.org/badgeteam/Hatchery.svg" style="max-width:100%;" />
+					</a>
+					<a href="https://github.com/badgeteam/ESP32-platform-firmware/tree/master/documentation">Docs website:</a>
+					<a href="https://travis-ci.org/badgeteam/website-docs" rel="nofollow">
+						<img src="https://travis-ci.org/badgeteam/website-docs.svg?branch=master" alt="website-docs build status" data-canonical-src="https://travis-ci.org/badgeteam/website-docs.svg" style="max-width:100%;" />
+					</a>
 				</div>
 				<div class="spacer col-md-12 hidden-xs"></div>
 				<div class="links">
@@ -36,6 +41,16 @@
 					<a href="https://github.com/badgeteam/">GitHub</a>
 					<a href="https://twitter.com/SHA2017Badge">Twitter</a>
 				</div>
+				<div>
+					Contributors: {{$users}}
+					Eggs: {{$projects}}
+				</div>
+				<div>
+					@foreach(App\Models\Badge::all() as $selectBadge)
+						{{ $selectBadge->name }}: {{ $selectBadge->projects->count() }}
+					@endforeach
+				</div>
+
 				<div class="spacer col-md-12 hidden-xs"></div>
 				{{ Form::select('badge_id', \App\Models\Badge::pluck('name', 'slug')->reverse()->prepend('Choose a badge model', ''), $badge, ['id' => 'badge']) }}
 
@@ -82,7 +97,11 @@
 	<script>
 		$(document).ready(function () {
 			$('#badge').change(function () {
-				window.location.href = '{{ route('splash') }}/badge/' + $(this).val()
+				if ($(this).val()) {
+					window.location.href = '{{ route('splash') }}/badge/' + $(this).val();
+				} else {
+					window.location.href = '{{ route('splash') }}';
+				}
 			})
 		})
 	</script>

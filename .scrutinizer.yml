@@ -1,0 +1,37 @@
+build:
+    environment:
+        php: 7.2
+    nodes:
+        analysis:
+            project_setup:
+                override: true
+            tests:
+                override:
+                    - php-scrutinizer-run --enable-security-analysis
+        tests:
+            environment:
+                php:
+                    version: 7.2
+                mysql: 5.7
+                variables:
+                    DB_TEST_USERNAME: root
+                    DB_USERNAME: root
+                    APP_KEY: base64:ApakOSikUFhPmEJK9wnsJideoBf0HMdP08JxrtB7JkE=
+                    APP_DEBUG: true
+            dependencies:
+                before:
+                    - mysql -e 'create database badgeware;'
+                    - mysql -e 'create database badgeware_test;'
+                    - sudo apt-get install -y pyflakes
+            tests:
+                override:
+                    -
+                        command: 'vendor/bin/phpunit --coverage-clover=clover'
+                        coverage:
+                            file: 'clover'
+                            format: 'clover'
+checks:
+    php:
+        code_rating: true
+        duplication: true
+

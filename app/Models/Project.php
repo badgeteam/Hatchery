@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 /**
- * App\Models\Project
+ * App\Models\Project.
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Badge[] $badges
  * @property-read string $category
@@ -22,6 +22,7 @@ use Illuminate\Support\Str;
  * @property-read int $size_of_zip
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Version[] $versions
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()
@@ -75,7 +76,7 @@ class Project extends Model
 
         static::saving(function ($project) {
             $project->slug = Str::slug($project->name, '_');
-            if (Project::isForbidden($project->slug)) {
+            if (self::isForbidden($project->slug)) {
                 throw new \Exception('reserved name');
             }
         });
@@ -114,7 +115,7 @@ class Project extends Model
     /**
      * @return string
      */
-    public function getRevisionAttribute():? string
+    public function getRevisionAttribute(): ? string
     {
         $version = $this->versions()->published()->get()->last();
 
@@ -150,7 +151,7 @@ class Project extends Model
     /**
      * @return int
      */
-    public function getSizeOfZipAttribute():? int
+    public function getSizeOfZipAttribute(): ? int
     {
         $version = $this->versions()->published()->get()->last();
 
@@ -160,7 +161,7 @@ class Project extends Model
     /**
      * @return int
      */
-    public function getSizeOfContentAttribute():? int
+    public function getSizeOfContentAttribute(): ? int
     {
         $version = $this->versions()->published()->get()->last();
         if (is_null($version)) {
@@ -188,7 +189,7 @@ class Project extends Model
     /**
      * @return string
      */
-    public function getCategoryAttribute():? string
+    public function getCategoryAttribute(): ? string
     {
         if (is_null($this->category()->first())) {
             return 'uncategorised';
@@ -199,6 +200,7 @@ class Project extends Model
 
     /**
      * @param string $slug
+     *
      * @return bool
      */
     public static function isForbidden(string $slug)

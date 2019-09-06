@@ -100,20 +100,22 @@ class FilesController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return RedirectResponse
      */
     public function createIcon(Request $request): RedirectResponse
     {
         $version = Version::where('id', $request->get('version'))->firstOrFail();
-        $file = new File;
+        $file = new File();
         $pixels = [];
         for ($p = 0; $p < 64; $p++) {
             $pixels[] = '0x00000000';
         }
+
         try {
             $file->version_id = $version->id;
             $file->name = 'icon.py';
-            $file->content = 'icon = ([' . implode(', ', $pixels) . '], 1)';
+            $file->content = 'icon = (['.implode(', ', $pixels).'], 1)';
             $file->save();
         } catch (\Exception $e) {
             return redirect()->route('projects.edit', ['project' => $version->project->slug])->withInput()->withErrors([$e->getMessage()]);
@@ -131,7 +133,7 @@ class FilesController extends Controller
      */
     public function store(FileStoreRequest $request): RedirectResponse
     {
-        $file = new File;
+        $file = new File();
 
         try {
             $file->version_id = $request->version_id;
@@ -178,9 +180,9 @@ class FilesController extends Controller
         $stdOut = $stdErr = '';
         $returnValue = 255;
         $fds = [
-            0 => ['pipe', 'r'],  // stdin is a pipe that the child will read from
-            1 => ['pipe', 'w'],  // stdout is a pipe that the child will write to
-            2 => ['pipe', 'w'],  // stderr is a pipe that the child will write to
+            0 => ['pipe', 'r'], // stdin is a pipe that the child will read from
+            1 => ['pipe', 'w'], // stdout is a pipe that the child will write to
+            2 => ['pipe', 'w'], // stderr is a pipe that the child will write to
         ];
         $process = proc_open($command, $fds, $pipes, null, null);
         if (is_resource($process)) {
@@ -226,8 +228,8 @@ class FilesController extends Controller
             ->header('Cache-Control', 'no-cache private')
             ->header('Content-Description', 'File Transfer')
             ->header('Content-Type', File::getMime($file))
-            ->header('Content-length', (string)strlen($file->content))
-            ->header('Content-Disposition', 'attachment; filename=' . $file->name)
+            ->header('Content-length', (string) strlen($file->content))
+            ->header('Content-Disposition', 'attachment; filename='.$file->name)
             ->header('Content-Transfer-Encoding', 'binary');
     }
 }

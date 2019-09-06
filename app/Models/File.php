@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * App\Models\File
+ * App\Models\File.
  *
  * @property-read bool $editable
  * @property-read string $extension
  * @property-read int $size_of_content
  * @property-read \App\Models\User $user
  * @property-read \App\Models\Version $version
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newQuery()
@@ -31,14 +32,14 @@ class File extends Model
 
     public static $extensions = ['py', 'txt', 'pyc', 'png', 'json', 'md', 'mp3', 'elf'];
     public static $mimes = [
-        'py' => 'application/x-python-code',
-        'txt' => 'text/plain',
-        'pyc' => 'application/x-python-bytecode',
-        'png' => 'image/png',
+        'py'   => 'application/x-python-code',
+        'txt'  => 'text/plain',
+        'pyc'  => 'application/x-python-bytecode',
+        'png'  => 'image/png',
         'json' => 'application/json',
-        'md' => 'text/markdown',
-        'mp3' => 'audio/mpeg',
-        'elf' => 'application/x-elf'
+        'md'   => 'text/markdown',
+        'mp3'  => 'audio/mpeg',
+        'elf'  => 'application/x-elf',
     ];
 
     protected $editable = ['py', 'txt', 'md'];
@@ -98,7 +99,7 @@ class File extends Model
     /**
      * @return int
      */
-    public function getSizeOfContentAttribute():? int
+    public function getSizeOfContentAttribute(): ? int
     {
         if (is_string($this->content)) {
             return strlen($this->content);
@@ -109,9 +110,10 @@ class File extends Model
 
     /**
      * @param File $file
+     *
      * @return string
      */
-    public static function getMime(File $file): string
+    public static function getMime(self $file): string
     {
         $name = collect(explode('.', $file->name));
 

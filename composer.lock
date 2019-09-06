@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2444ab0c811ba6bd6cb0c16bdbcaa418",
+    "content-hash": "f38fe3f5afcc21a65886746f158aa2b5",
     "packages": [
         {
             "name": "bepsvpt/secure-headers",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ildyria/secure-headers.git",
-                "reference": "50925c88ae993cdb4516d2ac958279535d7f31e5"
+                "reference": "12e75590aaa88b458463d5de82546e1f267a0d04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ildyria/secure-headers/zipball/50925c88ae993cdb4516d2ac958279535d7f31e5",
-                "reference": "50925c88ae993cdb4516d2ac958279535d7f31e5",
+                "url": "https://api.github.com/repos/ildyria/secure-headers/zipball/12e75590aaa88b458463d5de82546e1f267a0d04",
+                "reference": "12e75590aaa88b458463d5de82546e1f267a0d04",
                 "shasum": ""
             },
             "require": {
@@ -75,7 +75,7 @@
             "support": {
                 "source": "https://github.com/ildyria/secure-headers/tree/laravel6"
             },
-            "time": "2019-09-03T11:25:59+00:00"
+            "time": "2019-09-04T17:14:17+00:00"
         },
         {
             "name": "clue/stream-filter",
@@ -772,16 +772,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v6.0.0",
+            "version": "v6.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "89c81d4dc37714d82521d05dc003b26b2a86defc"
+                "reference": "f38711564c642ee88a58bf180010a0c7a7ab062e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/89c81d4dc37714d82521d05dc003b26b2a86defc",
-                "reference": "89c81d4dc37714d82521d05dc003b26b2a86defc",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/f38711564c642ee88a58bf180010a0c7a7ab062e",
+                "reference": "f38711564c642ee88a58bf180010a0c7a7ab062e",
                 "shasum": ""
             },
             "require": {
@@ -878,8 +878,8 @@
                 "moontoast/math": "Required to use ordered UUIDs (^1.1).",
                 "pda/pheanstalk": "Required to use the beanstalk queue driver (^4.0).",
                 "pusher/pusher-php-server": "Required to use the Pusher broadcast driver (^3.0).",
-                "symfony/cache": "Required to PSR-6 cache bridge (^4.3).",
-                "symfony/psr-http-message-bridge": "Required to use PSR-7 bridging features (^1.1).",
+                "symfony/cache": "Required to PSR-6 cache bridge (^4.3.4).",
+                "symfony/psr-http-message-bridge": "Required to use PSR-7 bridging features (^1.2).",
                 "wildbit/swiftmailer-postmark": "Required to use Postmark mail driver (^3.0)."
             },
             "type": "library",
@@ -913,7 +913,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2019-09-03T13:09:57+00:00"
+            "time": "2019-09-05T20:31:10+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -980,16 +980,16 @@
         },
         {
             "name": "laravelcollective/html",
-            "version": "v6.0",
+            "version": "v6.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/LaravelCollective/html.git",
-                "reference": "6d5c71602191be5f3479fbd9acbc593d9f6b0c81"
+                "reference": "4aecb0bb71013d1218c70ee02b011944840dcb60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/6d5c71602191be5f3479fbd9acbc593d9f6b0c81",
-                "reference": "6d5c71602191be5f3479fbd9acbc593d9f6b0c81",
+                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/4aecb0bb71013d1218c70ee02b011944840dcb60",
+                "reference": "4aecb0bb71013d1218c70ee02b011944840dcb60",
                 "shasum": ""
             },
             "require": {
@@ -1044,7 +1044,7 @@
             ],
             "description": "HTML and Form Builders for the Laravel Framework",
             "homepage": "https://laravelcollective.com",
-            "time": "2019-08-27T20:36:57+00:00"
+            "time": "2019-09-05T12:33:18+00:00"
         },
         {
             "name": "league/flysystem",
@@ -1331,34 +1331,35 @@
         },
         {
             "name": "ocramius/package-versions",
-            "version": "1.4.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Ocramius/PackageVersions.git",
-                "reference": "a4d4b60d0e60da2487bd21a2c6ac089f85570dbb"
+                "reference": "1d32342b8c1eb27353c8887c366147b4c2da673c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/a4d4b60d0e60da2487bd21a2c6ac089f85570dbb",
-                "reference": "a4d4b60d0e60da2487bd21a2c6ac089f85570dbb",
+                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/1d32342b8c1eb27353c8887c366147b4c2da673c",
+                "reference": "1d32342b8c1eb27353c8887c366147b4c2da673c",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.0.0",
-                "php": "^7.1.0"
+                "php": "^7.3.0"
             },
             "require-dev": {
-                "composer/composer": "^1.6.3",
-                "doctrine/coding-standard": "^5.0.1",
+                "composer/composer": "^1.8.6",
+                "doctrine/coding-standard": "^6.0.0",
                 "ext-zip": "*",
-                "infection/infection": "^0.7.1",
-                "phpunit/phpunit": "^7.0.0"
+                "infection/infection": "^0.13.4",
+                "phpunit/phpunit": "^8.2.5",
+                "vimeo/psalm": "^3.4.9"
             },
             "type": "composer-plugin",
             "extra": {
                 "class": "PackageVersions\\Installer",
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "1.6.x-dev"
                 }
             },
             "autoload": {
@@ -1377,7 +1378,7 @@
                 }
             ],
             "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
-            "time": "2019-02-21T12:16:21+00:00"
+            "time": "2019-07-17T15:49:50+00:00"
         },
         {
             "name": "opis/closure",
@@ -4230,7 +4231,7 @@
     "packages-dev": [
         {
             "name": "barryvdh/laravel-ide-helper",
-            "version": "dev-master",
+            "version": "v2.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-ide-helper.git",
@@ -4412,16 +4413,16 @@
         },
         {
             "name": "codacy/coverage",
-            "version": "dev-master",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/codacy/php-codacy-coverage.git",
-                "reference": "629d1fd597f91fb072bd822830059fd5145ce49a"
+                "reference": "4988cd098db4d578681bfd3176071931ad475150"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codacy/php-codacy-coverage/zipball/629d1fd597f91fb072bd822830059fd5145ce49a",
-                "reference": "629d1fd597f91fb072bd822830059fd5145ce49a",
+                "url": "https://api.github.com/repos/codacy/php-codacy-coverage/zipball/4988cd098db4d578681bfd3176071931ad475150",
+                "reference": "4988cd098db4d578681bfd3176071931ad475150",
                 "shasum": ""
             },
             "require": {
@@ -4453,7 +4454,7 @@
             ],
             "description": "Sends PHP test coverage information to Codacy.",
             "homepage": "https://github.com/codacy/php-codacy-coverage",
-            "time": "2018-04-30T16:23:12+00:00"
+            "time": "2018-03-22T16:43:39+00:00"
         },
         {
             "name": "codeception/codeception",
@@ -6161,16 +6162,16 @@
         },
         {
             "name": "mockery/mockery",
-            "version": "dev-master",
+            "version": "1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
-                "reference": "d8059bee60225b0b339e14f73b7d2ca50cfb0132"
+                "reference": "4eff936d83eb809bde2c57a3cea0ee9643769031"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/d8059bee60225b0b339e14f73b7d2ca50cfb0132",
-                "reference": "d8059bee60225b0b339e14f73b7d2ca50cfb0132",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/4eff936d83eb809bde2c57a3cea0ee9643769031",
+                "reference": "4eff936d83eb809bde2c57a3cea0ee9643769031",
                 "shasum": ""
             },
             "require": {
@@ -6184,7 +6185,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2.x-dev"
+                    "dev-master": "1.0.x-dev"
                 }
             },
             "autoload": {
@@ -6222,7 +6223,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2019-09-02T11:57:47+00:00"
+            "time": "2019-08-07T15:01:07+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -8704,10 +8705,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "bepsvpt/secure-headers": 20,
-        "barryvdh/laravel-ide-helper": 20,
-        "codacy/coverage": 20,
-        "mockery/mockery": 20
+        "bepsvpt/secure-headers": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

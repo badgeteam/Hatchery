@@ -23,14 +23,15 @@
         "bepsvpt/secure-headers": "dev-laravel6"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "dev-master",
-        "codacy/coverage": "dev-master",
         "codeception/codeception": "^3.1",
         "doctrine/dbal": "^2.9",
         "fzaninotto/faker": "~1.8",
-        "mockery/mockery": "dev-master",
         "nunomaduro/larastan": "^0.4",
         "phpunit/phpunit": "^8",
+        "barryvdh/laravel-ide-helper": "^2.6",
+        "codacy/coverage": "^1.4.2",
+        "mockery/mockery": "^1.2.3",
+        "phpstan/phpstan": "^0.11.4",
         "sempro/phpunit-pretty-print": "^1.0"
     },
     "autoload": {

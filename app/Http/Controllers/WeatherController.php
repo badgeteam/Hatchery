@@ -29,12 +29,13 @@ class WeatherController extends Controller
 
     /**
      * @param string $location
+     *
      * @return JsonResponse
      */
     public function location(string $location): JsonResponse
     {
         if (preg_match('/^([-+]?)([\d]{1,2})(((\.)(\d+)(,)))(\s*)(([-+]?)([\d]{1,3})((\.)(\d+))?)$/', $location) !== 1) {
-            abort(412, "Location invalid");
+            abort(412, 'Location invalid');
         }
 
         $this->url = 'https://api.darksky.net/forecast/'

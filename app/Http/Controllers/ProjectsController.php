@@ -29,6 +29,7 @@ class ProjectsController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
+     *
      * @return View
      */
     public function index(Request $request): View
@@ -43,6 +44,7 @@ class ProjectsController extends Controller
             $projects = $badge->projects()->orderBy('id', 'DESC');
             $badge = $badge->slug;
         }
+
         return view('projects.index')->with(['projects' => $projects->paginate()])->with('badge', $badge);
     }
 
@@ -86,7 +88,6 @@ class ProjectsController extends Controller
                 $badges = Badge::find($request->badge_ids);
                 $project->badges()->attach($badges);
             }
-
         } catch (\Exception $e) {
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
         }
