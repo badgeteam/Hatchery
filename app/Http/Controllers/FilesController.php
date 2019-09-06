@@ -12,6 +12,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
+/**
+ * Class FilesController
+ * @package App\Http\Controllers
+ */
 class FilesController extends Controller
 {
     /**

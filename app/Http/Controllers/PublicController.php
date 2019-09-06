@@ -12,6 +12,10 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use stdClass;
 
+/**
+ * Class PublicController
+ * @package App\Http\Controllers
+ */
 class PublicController extends Controller
 {
     /**
@@ -28,36 +32,55 @@ class PublicController extends Controller
             /** @var Badge $badge */
             $badge = Badge::where('slug', $request->get('badge'))->firstOrFail();
 
-            return $this->badge($badge);
+            return $this->badge($badge, $request);
         }
         $projects = Project::whereHas('versions', function ($query) {
             $query->published();
         })->orderBy('id', 'DESC');
+
+        if ($request->has('category')) {
+            $category = Category::where('slug', $request->get('category'))->first();
+            $projects = $projects->where('category_id', $category->id);
+            $category = $category->slug;
+        } else {
+            $category = '';
+        }
 
         return view('welcome')->with([
             'users'     => User::count(),
             'projects'  => Project::count(),
             'published' => $projects->paginate(50),
             'badge'     => '',
+            'category'  => $category,
         ]);
     }
 
     /**
      * @param Badge $badge
+     * @param Request $request
      *
      * @return View
      */
-    public function badge(Badge $badge)
+    public function badge(Badge $badge, Request $request)
     {
         $projects = $badge->projects()->whereHas('versions', function ($query) {
             $query->published();
         })->orderBy('id', 'DESC');
+
+        if ($request->has('category')) {
+            $category = Category::where('slug', $request->get('category'))->first();
+            $projects = $projects->where('category_id', $category->id);
+            $category = $category->slug;
+        } else {
+            $category = '';
+        }
 
         return view('welcome')->with([
             'users'     => User::count(),
             'projects'  => Project::count(),
             'published' => $projects->paginate(50),
             'badge'     => $badge->slug,
+            'category'  => $category,
         ]);
     }
 

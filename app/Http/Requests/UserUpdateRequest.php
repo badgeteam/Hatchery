@@ -5,6 +5,10 @@ namespace App\Http\Requests;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class UserUpdateRequest
+ * @package App\Http\Requests
+ */
 class UserUpdateRequest extends FormRequest
 {
     /**

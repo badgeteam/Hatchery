@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
 use App\Models\Badge;
+use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\Version;
@@ -14,6 +15,10 @@ use Illuminate\Support\Str;
 use Illuminate\View\View;
 use PharData;
 
+/**
+ * Class ProjectsController
+ * @package App\Http\Controllers
+ */
 class ProjectsController extends Controller
 {
     /**
@@ -44,8 +49,15 @@ class ProjectsController extends Controller
             $projects = $badge->projects()->orderBy('id', 'DESC');
             $badge = $badge->slug;
         }
+        if ($request->has('category')) {
+            $category = Category::where('slug', $request->get('category'))->first();
+            $projects = $projects->where('category_id', $category->id);
+            $category = $category->slug;
+        } else {
+            $category = '';
+        }
 
-        return view('projects.index')->with(['projects' => $projects->paginate()])->with('badge', $badge);
+        return view('projects.index')->with(['projects' => $projects->paginate()])->with('badge', $badge)->with('category', $category);;
     }
 
     /**

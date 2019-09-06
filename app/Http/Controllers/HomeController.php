@@ -6,6 +6,10 @@ use App\Models\Project;
 use App\Models\User;
 use Illuminate\View\View;
 
+/**
+ * Class HomeController
+ * @package App\Http\Controllers
+ */
 class HomeController extends Controller
 {
     /**

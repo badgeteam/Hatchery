@@ -5,6 +5,10 @@ namespace App\Http\Requests;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class FileStoreRequest
+ * @package App\Http\Requests
+ */
 class FileStoreRequest extends FormRequest
 {
     /**
