@@ -46,8 +46,8 @@
 					Eggs: {{$projects}}
 				</div>
 				<div>
-					@foreach(App\Models\Badge::all() as $badge)
-						{{ $badge->name }}: {{ $badge->projects->count() }}
+					@foreach(App\Models\Badge::all() as $selectBadge)
+						{{ $selectBadge->name }}: {{ $selectBadge->projects->count() }}
 					@endforeach
 				</div>
 

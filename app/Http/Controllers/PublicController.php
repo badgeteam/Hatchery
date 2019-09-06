@@ -27,7 +27,6 @@ class PublicController extends Controller
         if ($request->has('badge')) {
             /** @var Badge $badge */
             $badge = Badge::where('slug', $request->get('badge'))->firstOrFail();
-
             return $this->badge($badge);
         }
         $projects = Project::whereHas('versions', function ($query) {
