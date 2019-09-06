@@ -43,9 +43,9 @@ class Project extends Model
 {
     use SoftDeletes;
 
-    protected $appends = ['revision', 'size_of_zip', 'size_of_content', 'category'];
+    protected $appends = ['revision', 'size_of_zip', 'size_of_content', 'category', 'description'];
 
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'user_id', 'id', 'category_id', 'pivot'];
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'user_id', 'id', 'category_id', 'pivot', 'versions'];
 
     public static $forbidden = [
         'os', 'uos', 'badge', 'esp32', 'ussl', 'time', 'utime', 'splash', 'launcher', 'installer', 'ota_update',
