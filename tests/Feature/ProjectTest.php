@@ -21,22 +21,23 @@ class ProjectTest extends TestCase
     /**
      * Check the projects list.
      */
-    public function testProjectsIndexRedirect()
+    public function testProjectsIndexPublic()
     {
         $response = $this
             ->get('/projects');
-        $response->assertStatus(302);
+        $response->assertStatus(200)
+            ->assertViewHas('projects', Project::paginate());
     }
 
-//    public function testProjectsIndex()
-//    {
-//        $user = factory(User::class)->create();
-//        $response = $this
-//            ->actingAs($user)
-//            ->get('/projects');
-//        $response->assertStatus(200)
-//            ->assertViewHas('projects', Project::paginate());
-//    }
+    public function testProjectsIndex()
+    {
+        $user = factory(User::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->get('/projects');
+        $response->assertStatus(200)
+            ->assertViewHas('projects', Project::paginate());
+    }
 
     /**
      * Check the projects creation page exists.
