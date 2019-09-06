@@ -12,7 +12,6 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-
 use Illuminate\Support\Str;
 
 $factory->define(App\Models\User::class, function (Faker\Generator $faker) {

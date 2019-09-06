@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge query()
  * @mixin \Eloquent
+ *
  * @property-read int|null $projects_count
  */
 class Badge extends Model

@@ -22,6 +22,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withoutTrashed()
  * @mixin \Eloquent
+ *
  * @property-read int|null $projects_count
  */
 class Category extends Model

@@ -7,8 +7,7 @@ use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class FileUploadRequest
- * @package App\Http\Requests
+ * Class FileUploadRequest.
  */
 class FileUploadRequest extends FormRequest
 {

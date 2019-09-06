@@ -7,8 +7,7 @@ use App\Models\User;
 use Illuminate\View\View;
 
 /**
- * Class HomeController
- * @package App\Http\Controllers
+ * Class HomeController.
  */
 class HomeController extends Controller
 {

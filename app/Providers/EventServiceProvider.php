@@ -6,8 +6,7 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 
 /**
- * Class EventServiceProvider
- * @package App\Providers
+ * Class EventServiceProvider.
  */
 class EventServiceProvider extends ServiceProvider
 {

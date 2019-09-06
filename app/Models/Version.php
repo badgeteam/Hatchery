@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Version withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Version withoutTrashed()
  * @mixin \Eloquent
+ *
  * @property-read int|null $files_count
  */
 class Version extends Model

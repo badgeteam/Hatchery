@@ -6,8 +6,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
- * Class UserPolicy
- * @package App\Policies
+ * Class UserPolicy.
  */
 class UserPolicy
 {
