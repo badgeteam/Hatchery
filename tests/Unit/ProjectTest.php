@@ -106,7 +106,6 @@ class ProjectTest extends TestCase
         $user = factory(User::class)->create();
         $this->be($user);
         $project = new Project();
-        $project->description = 'test bla';
         $project->name = 'test';
         $project->save();
 

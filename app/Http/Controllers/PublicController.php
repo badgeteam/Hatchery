@@ -145,9 +145,9 @@ class PublicController extends Controller
         return response()->json(Project::whereHas('versions', function ($query) {
             $query->published();
         })->where('name', 'like', $what)
-            ->orWhere('description', 'like', $what)
             ->orderBy('id', 'DESC')
             ->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        // @todo possibly search in README.md
     }
 
     /**
@@ -203,9 +203,9 @@ class PublicController extends Controller
         return response()->json($badge->projects()->whereHas('versions', function ($query) {
             $query->published();
         })->where('name', 'like', $what)
-            ->orWhere('description', 'like', $what)
             ->orderBy('id', 'DESC')
             ->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        // @todo possibly search in README.md
     }
 
     /**

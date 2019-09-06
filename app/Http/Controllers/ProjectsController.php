@@ -108,12 +108,14 @@ class ProjectsController extends Controller
                 $badges = Badge::find($request->badge_ids);
                 $project->badges()->attach($badges);
             }
-            $version = $project->versions->last();
-            $file = new File();
-            $file->name = 'README.md';
-            $file->content = $request->description;
-            $file->version()->associate($version);
-            $file->save();
+            if ($request->description) {
+                $version = $project->versions->last();
+                $file = new File();
+                $file->name = 'README.md';
+                $file->content = $request->description;
+                $file->version()->associate($version);
+                $file->save();
+            }
         } catch (\Exception $e) {
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
         }
