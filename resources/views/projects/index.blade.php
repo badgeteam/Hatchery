@@ -80,14 +80,14 @@
         $(document).ready(function () {
           $('#badge').change(function () {
             if ($(this).val()) {
-              window.location.href = '{{ route('projects.index') }}?{{ $category ? "category=$category&" : "" }}badge=' + $(this).val();
+              window.location.href = '{{ route('projects.index') }}?{!! $category ? "category=$category&" : "" !!}badge=' + $(this).val();
             } else {
               window.location.href = '{{ route('projects.index')  . $category ? "?category=$category" : "" }}';
             }
           })
           $('#category').change(function () {
             if ($(this).val()) {
-              window.location.href = '{{ route('projects.index')  }}?{{ $badge ? "badge=$badge&" : "" }}category=' + $(this).val();
+              window.location.href = '{{ route('projects.index')  }}?{!! $badge ? "badge=$badge&" : "" !!}category=' + $(this).val();
             } else {
               window.location.href = '{{ route('projects.index') . $badge ? "?badge=$badge" : "" }}';
             }
