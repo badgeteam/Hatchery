@@ -42,7 +42,7 @@ class File extends Model
         'elf'  => 'application/x-elf',
     ];
 
-    protected $editable = ['py', 'txt', 'md'];
+    protected $editables = ['py', 'txt', 'md', 'json'];
 
     protected $appends = ['editable', 'extension', 'size_of_content'];
 
@@ -93,7 +93,7 @@ class File extends Model
      */
     public function getEditableAttribute(): bool
     {
-        return in_array($this->extension, $this->editable);
+        return in_array($this->extension, $this->editables);
     }
 
     /**

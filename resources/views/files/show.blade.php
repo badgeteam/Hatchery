@@ -25,6 +25,7 @@
                             <div class="form-group">
                                 {{ Form::label('file_content', 'Content', ['class' => 'control-label']) }}
                                 {{ Form::textarea('file_content', $file->content, ['class' => 'form-control', 'id' => 'content-readonly']) }}
+                                {{ Form::hidden('extension', $file->extension, ['id' => 'extension']) }}
                             </div>
                         </div>
 
