@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
  * @property-read int $size_of_content
  * @property-read \App\Models\User $user
  * @property-read \App\Models\Version $version
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newQuery()

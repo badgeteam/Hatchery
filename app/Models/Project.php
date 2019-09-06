@@ -23,6 +23,7 @@ use Illuminate\Support\Str;
  * @property-read int $size_of_zip
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Version[] $versions
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()
@@ -32,6 +33,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withoutTrashed()
  * @mixin \Eloquent
+ *
  * @property-read int|null $badges_count
  * @property-read int|null $dependants_count
  * @property-read int|null $dependencies_count
@@ -217,6 +219,7 @@ class Project extends Model
         if ($version && $version->files()->where('name', 'like', 'README.md')->count() === 1) {
             return $version->files()->where('name', 'like', 'README.md')->first()->content;
         }
+
         return null;
     }
 
@@ -225,6 +228,7 @@ class Project extends Model
         if ($this->description) {
             return Markdown::parse($this->description);
         }
+
         return null;
     }
 }
