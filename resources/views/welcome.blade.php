@@ -81,8 +81,12 @@
 					@endforelse
 						</tbody>
 					</table>
-					@if ($badge)
+					@if ($badge && $category)
+						{{ $published->appends(['badge' => $badge, 'category' => $category])->links() }}
+					@elseif ($badge)
 						{{ $published->appends(['badge' => $badge])->links() }}
+					@elseif ($category)
+						{{ $published->appends(['category' => $category])->links() }}
 					@else
 						{{ $published->links() }}
 					@endif

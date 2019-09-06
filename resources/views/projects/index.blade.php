@@ -59,10 +59,14 @@
                     <div class="pull-right">
                         <a href="{{ route('projects.create') }}" class="btn btn-default">Add</a>
                     </div>
-                    @if ($badge)
-                    {{ $projects->appends(['badge' => $badge])->links() }}
+                    @if ($badge && $category)
+                        {{ $published->appends(['badge' => $badge, 'category' => $category])->links() }}
+                    @elseif ($badge)
+                        {{ $published->appends(['badge' => $badge])->links() }}
+                    @elseif ($category)
+                        {{ $published->appends(['category' => $category])->links() }}
                     @else
-                    {{ $projects->links() }}
+                        {{ $published->links() }}
                     @endif
                 </div>
             </div>
