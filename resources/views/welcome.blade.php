@@ -53,7 +53,7 @@
 
 				<div class="spacer col-md-12 hidden-xs"></div>
 				{{ Form::select('badge_id', \App\Models\Badge::pluck('name', 'slug')->reverse()->prepend('Choose a badge model', ''), $badge, ['id' => 'badge']) }}
-
+				{{ Form::select('category_id', \App\Models\Category::pluck('name', 'slug')->reverse()->prepend('Choose a category', ''), $category, ['id' => 'category']) }}
 				<table class="table table-condensed">
 						<thead>
 					<tr>
@@ -101,6 +101,13 @@
 					window.location.href = '{{ route('splash') }}/badge/' + $(this).val();
 				} else {
 					window.location.href = '{{ route('splash') }}';
+				}
+			})
+			$('#category').change(function () {
+				if ($(this).val()) {
+					window.location.href = '{{ url()->current() }}?category=' + $(this).val();
+				} else {
+					window.location.href = '{{url()->current()}}';
 				}
 			})
 		})

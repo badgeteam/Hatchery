@@ -7,6 +7,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use stdClass;
 
+/**
+ * Class WeatherController
+ * @package App\Http\Controllers
+ */
 class WeatherController extends Controller
 {
     private $minutes = 10; // max 144 requests/day ;)

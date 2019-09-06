@@ -6,6 +6,10 @@ use App\Models\File;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
+/**
+ * Class FilePolicy
+ * @package App\Policies]
+ */
 class FilePolicy
 {
     use HandlesAuthorization;

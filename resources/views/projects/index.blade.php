@@ -13,6 +13,8 @@
 
                     {{ Form::select('badge_id', \App\Models\Badge::pluck('name', 'slug')->reverse()->prepend('Choose a badge model', ''), $badge, ['id' => 'badge']) }}
 
+                    {{ Form::select('category_id', \App\Models\Category::pluck('name', 'slug')->reverse()->prepend('Choose a category', ''), $category, ['id' => 'category']) }}
+
                     <div class="pull-right">
                         <a href="{{ route('projects.create') }}" class="btn btn-success btn-xs">Add</a>
                     </div>
@@ -74,9 +76,16 @@
         $(document).ready(function () {
           $('#badge').change(function () {
             if ($(this).val()) {
-              window.location.href = '{{ route('projects.index') }}?badge=' + $(this).val();
+              window.location.href = '{{ route('projects.index') }}?{{ $category ? "category=$category&" : "" }}badge=' + $(this).val();
             } else {
-              window.location.href = '{{ route('projects.index') }}';
+              window.location.href = '{{ route('projects.index')  . $category ? "?category=$category" : "" }}';
+            }
+          })
+          $('#category').change(function () {
+            if ($(this).val()) {
+              window.location.href = '{{ route('projects.index')  }}?{{ $badge ? "badge=$badge&" : "" }}category=' + $(this).val();
+            } else {
+              window.location.href = '{{ route('projects.index') . $badge ? "?badge=$badge" : "" }}';
             }
           })
         })

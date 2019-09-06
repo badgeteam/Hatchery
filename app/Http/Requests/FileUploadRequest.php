@@ -6,6 +6,10 @@ use App\Models\File;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class FileUploadRequest
+ * @package App\Http\Requests
+ */
 class FileUploadRequest extends FormRequest
 {
     /**
