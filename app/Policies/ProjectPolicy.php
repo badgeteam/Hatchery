@@ -14,6 +14,17 @@ class ProjectPolicy
     use HandlesAuthorization;
 
     /**
+     * Determine whether the user can list projects.
+     *
+     * @return mixed
+     */
+    public function index()
+    {
+        // Everybody can list projects
+        return true;
+    }
+
+    /**
      * Determine whether the user can create projects.
      *
      * @return mixed

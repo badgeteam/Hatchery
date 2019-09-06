@@ -13,7 +13,7 @@
 
                     {{ Form::select('badge_id', \App\Models\Badge::pluck('name', 'slug')->reverse()->prepend('Choose a badge model', ''), $badge, ['id' => 'badge']) }}
 
-                    {{ Form::select('category_id', \App\Models\Category::pluck('name', 'slug')->reverse()->prepend('Choose a category', ''), $category, ['id' => 'category']) }}
+                    {{ Form::select('category_id', \App\Models\Category::where('hidden', false)->pluck('name', 'slug')->reverse()->prepend('Choose a category', ''), $category, ['id' => 'category']) }}
 
                     <div class="pull-right">
                         <a href="{{ route('projects.create') }}" class="btn btn-success btn-xs">Add</a>
@@ -59,10 +59,14 @@
                     <div class="pull-right">
                         <a href="{{ route('projects.create') }}" class="btn btn-default">Add</a>
                     </div>
-                    @if ($badge)
-                    {{ $projects->appends(['badge' => $badge])->links() }}
+                    @if ($badge && $category)
+                        {{ $published->appends(['badge' => $badge, 'category' => $category])->links() }}
+                    @elseif ($badge)
+                        {{ $published->appends(['badge' => $badge])->links() }}
+                    @elseif ($category)
+                        {{ $published->appends(['category' => $category])->links() }}
                     @else
-                    {{ $projects->links() }}
+                        {{ $published->links() }}
                     @endif
                 </div>
             </div>
