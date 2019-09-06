@@ -73,7 +73,11 @@
     <script>
         $(document).ready(function () {
           $('#badge').change(function () {
-            window.location.href = '{{ route('projects.index') }}?badge=' + $(this).val()
+            if ($(this).val()) {
+              window.location.href = '{{ route('projects.index') }}?badge=' + $(this).val();
+            } else {
+              window.location.href = '{{ route('projects.index') }}';
+            }
           })
         })
     </script>

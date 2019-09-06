@@ -97,7 +97,11 @@
 	<script>
 		$(document).ready(function () {
 			$('#badge').change(function () {
-				window.location.href = '{{ route('splash') }}/badge/' + $(this).val()
+				if ($(this).val()) {
+					window.location.href = '{{ route('splash') }}/badge/' + $(this).val();
+				} else {
+					window.location.href = '{{ route('splash') }}';
+				}
 			})
 		})
 	</script>
