@@ -40,6 +40,9 @@
 				<div class="spacer col-md-12 hidden-xs"></div>
 				{{ Form::select('badge_id', \App\Models\Badge::pluck('name', 'slug')->reverse()->prepend('Choose a badge model', ''), $badge, ['id' => 'badge']) }}
 				{{ Form::select('category_id', \App\Models\Category::where('hidden', false)->pluck('name', 'slug')->reverse()->prepend('Choose a category', ''), $category, ['id' => 'category']) }}
+				{{ Form::open(['method' => 'post', 'route' => ['projects.search', 'badge' => $badge, 'category' => $category], 'class' => 'searchform'])  }}
+					{{ Form::text('search', null, ['placeholder' => 'Search']) }}
+				{{ Form::close() }}
 				<table class="table table-condensed">
 						<thead>
 					<tr>

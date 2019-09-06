@@ -76,7 +76,7 @@ class FilesController extends Controller
             if ($pyflakes['return_value'] == 0) {
                 return redirect()
                     ->route('projects.edit', ['project' => $file->version->project->slug])
-                    ->withSuccesses([$file->name . ' saved']);
+                    ->withSuccesses([$file->name.' saved']);
             } elseif (!empty($pyflakes[0])) {
                 return redirect()->route('files.edit', ['file' => $file->id])
                     ->withInput()
@@ -87,9 +87,10 @@ class FilesController extends Controller
                 ->withInput()
                 ->withErrors(explode("\n", $pyflakes[1]));
         }
+
         return redirect()
             ->route('projects.edit', ['project' => $file->version->project->slug])
-            ->withSuccesses([$file->name . ' saved']);
+            ->withSuccesses([$file->name.' saved']);
     }
 
     /**
