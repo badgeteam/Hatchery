@@ -21,9 +21,7 @@
                     <div class="row">
 
                         <div class="col-md-8 clearfix">
-                            @foreach(explode("\n", $project->description) as $line)
-                                {{$line}}<br/>
-                            @endforeach
+                            {!! $project->descriptionHtml !!}
                         </div>
                         <div class="col-md-4 clearfix">
                             Category: {{ $project->category }}

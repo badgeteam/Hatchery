@@ -12,7 +12,6 @@ use Illuminate\Support\Str;
  *
  * @property-read int $eggs
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
- *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newQuery()
@@ -22,6 +21,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withoutTrashed()
  * @mixin \Eloquent
+ * @property-read int|null $projects_count
  */
 class Category extends Model
 {

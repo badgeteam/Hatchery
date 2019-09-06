@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Mail\Markdown;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -22,7 +23,6 @@ use Illuminate\Support\Str;
  * @property-read int $size_of_zip
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Version[] $versions
- *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()
@@ -32,6 +32,10 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withoutTrashed()
  * @mixin \Eloquent
+ * @property-read int|null $badges_count
+ * @property-read int|null $dependants_count
+ * @property-read int|null $dependencies_count
+ * @property-read int|null $versions_count
  */
 class Project extends Model
 {
@@ -202,5 +206,25 @@ class Project extends Model
     public static function isForbidden(string $slug)
     {
         return in_array($slug, self::$forbidden);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescriptionAttribute(): ? string
+    {
+        $version = $this->versions->last();
+        if ($version && $version->files()->where('name', 'like', 'README.md')->count() === 1) {
+            return $version->files()->where('name', 'like', 'README.md')->first()->content;
+        }
+        return null;
+    }
+
+    public function getDescriptionHtmlAttribute(): ? string
+    {
+        if ($this->description) {
+            return Markdown::parse($this->description);
+        }
+        return null;
     }
 }
