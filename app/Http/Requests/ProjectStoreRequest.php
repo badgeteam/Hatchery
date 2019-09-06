@@ -6,8 +6,7 @@ use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class ProjectStoreRequest
- * @package App\Http\Requests
+ * Class ProjectStoreRequest.
  */
 class ProjectStoreRequest extends FormRequest
 {

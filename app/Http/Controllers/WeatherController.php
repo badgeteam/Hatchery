@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use stdClass;
 
 /**
- * Class WeatherController
- * @package App\Http\Controllers
+ * Class WeatherController.
  */
 class WeatherController extends Controller
 {

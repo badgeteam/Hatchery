@@ -16,8 +16,7 @@ use Illuminate\View\View;
 use PharData;
 
 /**
- * Class ProjectsController
- * @package App\Http\Controllers
+ * Class ProjectsController.
  */
 class ProjectsController extends Controller
 {
@@ -57,7 +56,7 @@ class ProjectsController extends Controller
             $category = '';
         }
 
-        return view('projects.index')->with(['projects' => $projects->paginate()])->with('badge', $badge)->with('category', $category);;
+        return view('projects.index')->with(['projects' => $projects->paginate()])->with('badge', $badge)->with('category', $category);
     }
 
     /**

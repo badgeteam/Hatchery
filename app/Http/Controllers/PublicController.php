@@ -13,8 +13,7 @@ use Illuminate\View\View;
 use stdClass;
 
 /**
- * Class PublicController
- * @package App\Http\Controllers
+ * Class PublicController.
  */
 class PublicController extends Controller
 {
@@ -56,7 +55,7 @@ class PublicController extends Controller
     }
 
     /**
-     * @param Badge $badge
+     * @param Badge   $badge
      * @param Request $request
      *
      * @return View

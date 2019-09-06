@@ -13,8 +13,7 @@ use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 /**
- * Class FilesController
- * @package App\Http\Controllers
+ * Class FilesController.
  */
 class FilesController extends Controller
 {
