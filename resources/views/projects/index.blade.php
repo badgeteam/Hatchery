@@ -87,16 +87,16 @@
         $(document).ready(function () {
           $('#badge').change(function () {
             if ($(this).val()) {
-              window.location.href = '{{ route('projects.index') }}?{!! ($category ? "category=$category&" : "") !!}{!! ($search ? "search=$search&" : "") !!}badge=' + $(this).val();
+              window.location.href = '{{ $search ? route('projects.search') : route('projects.index') }}?{!! ($category ? "category=$category&" : "") !!}{!! ($search ? "search=$search&" : "") !!}badge=' + $(this).val();
             } else {
-              window.location.href = '{{ route('projects.index')  . ($category ? "?category=$category" : "") . ($search ? ($category ? '&' : '?') . "search=$search" : "") }}';
+              window.location.href = '{{ $search ? route('projects.search') : route('projects.index')  . ($category ? "?category=$category" : "") . ($search ? ($category ? '&' : '?') . "search=$search" : "") }}';
             }
           })
           $('#category').change(function () {
             if ($(this).val()) {
-              window.location.href = '{{ route('projects.index')  }}?{!! ($badge ? "badge=$badge&" : "") !!}{!! ($search ? "search=$search&" : "") !!}category=' + $(this).val();
+              window.location.href = '{{ $search ? route('projects.search') : route('projects.index')  }}?{!! ($badge ? "badge=$badge&" : "") !!}{!! ($search ? "search=$search&" : "") !!}category=' + $(this).val();
             } else {
-              window.location.href = '{{ route('projects.index') . ($badge ? "?badge=$badge" : "") . ($search ? ($badge ? '&' : '?') . "search=$search" : "")  }}';
+              window.location.href = '{{ $search ? route('projects.search') : route('projects.index') . ($badge ? "?badge=$badge" : "") . ($search ? ($badge ? '&' : '?') . "search=$search" : "")  }}';
             }
           })
         })

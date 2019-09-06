@@ -56,11 +56,12 @@ class ProjectsController extends Controller
         }
         if ($request->has('search')) {
             $search = $request->get('search');
-            $projects = $projects->where(function(Builder $query) use ($search) {
+            $projects = $projects->where(function (Builder $query) use ($search) {
                 $query->where('name', 'like', '%'.$search.'%')
                     ->orWhere('description', 'like', '%'.$search.'%');
             });
         }
+
         return view('projects.index')
             ->with(['projects' => $projects->paginate()])
             ->with('badge', $badge)
