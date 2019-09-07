@@ -51,6 +51,9 @@
 						<th>Size of zip</th>
 						<th>Size of content</th>
 						<th>Category</th>
+						<th><img src="{{ asset('img/rulez.gif') }}" alt="up" /></th>
+						<th><img src="{{ asset('img/isok.gif') }}" alt="pig" /></th>
+						<th><img src="{{ asset('img/sucks.gif') }}" alt="down" /></th>
 						<th>Last release</th>
 					</tr>
 					</thead>
@@ -62,7 +65,9 @@
 						<td>{{ $project->size_of_zip }}</td>
 						<td>{{ $project->size_of_content }}</td>
 						<td>{{ $project->category }}</td>
-
+						<td>{{ $project->votes->where('type', 'up')->count() }}</td>
+						<td>{{ $project->votes->where('type', 'pig')->count() }}</td>
+						<td>{{ $project->votes->where('type', 'down')->count() }}</td>
 						<td>{{ $project->versions()->published()->get()->last()->updated_at->diffForHumans() }}</td>
 					</tr>
 					@empty

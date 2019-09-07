@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Policies\FilePolicy;
+use App\Policies\ProjectPolicy;
+use App\Policies\UserPolicy;
+use App\Policies\VotePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 /**
@@ -15,10 +19,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model'          => 'App\Policies\ModelPolicy',
-        'App\Models\Project' => 'App\Policies\ProjectPolicy',
-        'App\Models\File'    => 'App\Policies\FilePolicy',
-        'App\Models\User'    => 'App\Policies\UserPolicy',
+        'App\Models\Project' => ProjectPolicy::class,
+        'App\Models\File'    => FilePolicy::class,
+        'App\Models\User'    => UserPolicy::class,
+        'App\Models\Vote'    => VotePolicy::class,
     ];
 
     /**

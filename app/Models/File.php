@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Auth;
  * @property-read int $size_of_content
  * @property-read \App\Models\User $user
  * @property-read \App\Models\Version $version
- *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newQuery()
@@ -25,12 +24,39 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\File withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\File withoutTrashed()
  * @mixin \Eloquent
+ * @property int $id
+ * @property int|null $user_id
+ * @property int $version_id
+ * @property string $name
+ * @property mixed|null $content
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereVersionId($value)
  */
 class File extends Model
 {
     use SoftDeletes;
 
+    /**
+     * Supported extensions.
+     *
+     * @var array
+     */
     public static $extensions = ['py', 'txt', 'pyc', 'png', 'json', 'md', 'mp3', 'elf'];
+
+    /**
+     * Mime types for supported extensions.
+     *
+     * @var array
+     */
     public static $mimes = [
         'py'   => 'application/x-python-code',
         'txt'  => 'text/plain',
@@ -44,10 +70,23 @@ class File extends Model
 
     protected $editables = ['py', 'txt', 'md', 'json'];
 
+    /**
+     * Appended magic variables.
+     *
+     * @var array
+     */
     protected $appends = ['editable', 'extension', 'size_of_content'];
 
+    /**
+     * Mass assignable variables.
+     *
+     * @var array
+     */
     protected $fillable = ['name'];
 
+    /**
+     * Make sure a file is owned by a user.
+     */
     public static function boot()
     {
         parent::boot();
