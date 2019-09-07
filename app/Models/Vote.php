@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * App\Models\Vote
+ * App\Models\Vote.
  *
  * @property int $id
  * @property int $user_id
@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Project $project
  * @property-read \App\Models\User $user
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote newQuery()
@@ -50,7 +51,6 @@ class Vote extends Model
     protected $fillable = [
         'project_id', 'type',
     ];
-
 
     /**
      * Make sure a user is assigned.

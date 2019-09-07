@@ -23,6 +23,7 @@ use Illuminate\Support\Str;
  * @property-read int $size_of_zip
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Version[] $versions
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()
@@ -32,6 +33,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withoutTrashed()
  * @mixin \Eloquent
+ *
  * @property-read int|null $badges_count
  * @property-read int|null $dependants_count
  * @property-read int|null $dependencies_count
@@ -50,6 +52,7 @@ use Illuminate\Support\Str;
  * @property-read string|null $description_html
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
  * @property-read int|null $votes_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereDeletedAt($value)
@@ -295,6 +298,7 @@ class Project extends Model
         if (is_null($user)) {
             return null;
         }
+
         return $this->votes()->where('user_id', $user->id)->exists();
     }
 }

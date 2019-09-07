@@ -29,7 +29,7 @@ class VoteRequest extends FormRequest
     {
         return [
             'project_id'   => 'required|exists:projects,id',
-            'type' => 'required|in:up,down,pig',
+            'type'         => 'required|in:up,down,pig',
         ];
     }
 }

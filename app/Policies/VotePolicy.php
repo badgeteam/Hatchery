@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Vote;
 use App\Models\User;
+use App\Models\Vote;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
