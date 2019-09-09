@@ -35,7 +35,8 @@
 
                                 <div class="form-group @if($errors->has('description')) has-error @endif">
                                     {{ Form::label('description', 'Description', ['class' => 'control-label']) }}
-                                    {{ Form::textarea('description', null, ['class' => 'form-control', 'id' => 'description']) }}
+                                    {{ Form::textarea('description', null, ['class' => 'form-control', 'id' => 'content']) }}
+                                    {{ Form::hidden('extension', 'md', ['id' => 'extension']) }}
                                 </div>
 
                                 <input name="status" type="hidden" value="3" />

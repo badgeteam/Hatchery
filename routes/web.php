@@ -19,9 +19,10 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('projects', 'ProjectsController');
+Route::post('/search', 'ProjectsController@index')->name('projects.search');
+Route::get('/search', 'ProjectsController@index')->name('projects.search');
 
 Route::post('/upload/{version}', 'FilesController@upload')->name('files.upload');
-
 Route::post('/release/{project}', 'ProjectsController@publish')->name('project.publish');
 
 Route::resource('files', 'FilesController');
@@ -29,6 +30,8 @@ Route::get('create-icon', 'FilesController@createIcon')->name('files.create-icon
 Route::get('download/{file}', 'FilesController@download')->name('files.download');
 
 Route::resource('users', 'UsersController', ['only' => ['edit', 'update', 'destroy']]);
+
+Route::resource('votes', 'VotesController', ['only' => ['store', 'destroy']]);
 
 Route::get('/eggs/get/{project}/json', 'PublicController@projectJson')->name('project.json');
 

@@ -144,10 +144,22 @@ window.pixelToHexA = function(rgba) {
 };
 
 window.onload = function() {
+	const ext = document.getElementById('extension');
+	let langmode = 'python';
+	if (ext) {
+		if (ext.getAttribute('value')  === 'json') {
+			langmode = 'javascript';
+		} else if (ext.getAttribute('value') === 'md' || ext.getAttribute('value') === 'txt') {
+			langmode = 'markdown';
+		}
+	}
+
 	if (document.getElementById('content')) {
 		window.CodeMirror = require([
 			'../../../node_modules/codemirror/lib/codemirror',
 			'../../../node_modules/codemirror/mode/python/python',
+			'../../../node_modules/codemirror/mode/javascript/javascript',
+			'../../../node_modules/codemirror/mode/markdown/markdown',
 			'../../../node_modules/codemirror/addon/dialog/dialog.js',
 			'../../../node_modules/codemirror/addon/search/searchcursor.js',
 			'../../../node_modules/codemirror/keymap/vim.js',
@@ -156,10 +168,11 @@ window.onload = function() {
 		], function (CodeMirror) {
 			editor = CodeMirror.fromTextArea(document.getElementById('content'), {
 				lineNumbers: true,
-				mode: 'python',
+				mode: langmode,
 				showCursorWhenSelecting: true,
 				indentWithTabs: true,
 				keyMap: window.keymap,
+				json: true
 			});
 		});
 		// Enable navigation prompt
@@ -172,10 +185,12 @@ window.onload = function() {
 	}
 	if (document.getElementById('content-readonly')) {
 		window.CodeMirror = require(['../../../node_modules/codemirror/lib/codemirror',
-			'../../../node_modules/codemirror/mode/python/python'], function (CodeMirror) {
+			'../../../node_modules/codemirror/mode/python/python',
+			'../../../node_modules/codemirror/mode/javascript/javascript',
+			'../../../node_modules/codemirror/mode/markdown/markdown'], function (CodeMirror) {
 			CodeMirror.fromTextArea(document.getElementById('content-readonly'), {
 				lineNumbers: true,
-				mode: 'python',
+				mode: langmode,
 				readOnly: true
 			});
 		});

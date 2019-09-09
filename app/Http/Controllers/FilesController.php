@@ -71,20 +71,26 @@ class FilesController extends Controller
             return redirect()->route('files.edit', ['file' => $file->id])->withInput()->withErrors([$e->getMessage()]);
         }
 
-        $pyflakes = $this->lintContent($request->file_content);
-        if ($pyflakes['return_value'] == 0) {
-            return redirect()
-                ->route('projects.edit', ['project' => $file->version->project->slug])
-                ->withSuccesses([$file->name.' saved']);
-        } elseif (!empty($pyflakes[0])) {
+        if ($file->extension === 'py') {
+            $pyflakes = $this->lintContent($request->file_content);
+            if ($pyflakes['return_value'] == 0) {
+                return redirect()
+                    ->route('projects.edit', ['project' => $file->version->project->slug])
+                    ->withSuccesses([$file->name.' saved']);
+            } elseif (!empty($pyflakes[0])) {
+                return redirect()->route('files.edit', ['file' => $file->id])
+                    ->withInput()
+                    ->withWarnings(explode("\n", $pyflakes[0]));
+            }
+
             return redirect()->route('files.edit', ['file' => $file->id])
                 ->withInput()
-                ->withWarnings(explode("\n", $pyflakes[0]));
+                ->withErrors(explode("\n", $pyflakes[1]));
         }
 
-        return redirect()->route('files.edit', ['file' => $file->id])
-            ->withInput()
-            ->withErrors(explode("\n", $pyflakes[1]));
+        return redirect()
+            ->route('projects.edit', ['project' => $file->version->project->slug])
+            ->withSuccesses([$file->name.' saved']);
     }
 
     /**

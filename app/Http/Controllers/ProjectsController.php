@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\Version;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -38,7 +39,7 @@ class ProjectsController extends Controller
      */
     public function index(Request $request): View
     {
-        $badge = '';
+        $badge = $category = $search = '';
         if ($request->has('badge')) {
             $badge = Badge::where('slug', $request->get('badge'))->first();
         }
@@ -48,15 +49,24 @@ class ProjectsController extends Controller
             $projects = $badge->projects()->orderBy('id', 'DESC');
             $badge = $badge->slug;
         }
-        if ($request->has('category')) {
+        if ($request->has('category') && $request->get('category')) {
             $category = Category::where('slug', $request->get('category'))->first();
             $projects = $projects->where('category_id', $category->id);
             $category = $category->slug;
-        } else {
-            $category = '';
+        }
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $projects = $projects->where(function (Builder $query) use ($search) {
+                $query->where('name', 'like', '%'.$search.'%');
+                // @todo perhaps search in README ?
+            });
         }
 
-        return view('projects.index')->with(['projects' => $projects->paginate()])->with('badge', $badge)->with('category', $category);
+        return view('projects.index')
+            ->with(['projects' => $projects->paginate()])
+            ->with('badge', $badge)
+            ->with('category', $category)
+            ->with('search', $search);
     }
 
     /**
@@ -90,7 +100,6 @@ class ProjectsController extends Controller
 
         try {
             $project->name = $request->name;
-            $project->description = $request->description;
             $project->category_id = $request->category_id;
             $project->status = 'unknown';
             $project->save();
@@ -98,6 +107,14 @@ class ProjectsController extends Controller
             if ($request->badge_ids) {
                 $badges = Badge::find($request->badge_ids);
                 $project->badges()->attach($badges);
+            }
+            if ($request->description) {
+                $version = $project->versions->last();
+                $file = new File();
+                $file->name = 'README.md';
+                $file->content = $request->description;
+                $file->version()->associate($version);
+                $file->save();
             }
         } catch (\Exception $e) {
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
@@ -130,7 +147,6 @@ class ProjectsController extends Controller
     public function update(ProjectUpdateRequest $request, Project $project): RedirectResponse
     {
         try {
-            $project->description = $request->description;
             $project->category_id = $request->category_id;
             $project->status = $request->status;
             if ($request->has('dependencies')) {
@@ -205,7 +221,6 @@ class ProjectsController extends Controller
         }
 
 //        $zip->compress(Phar::GZ);
-
         system('minigzip < '.public_path($filename).' > '.public_path($filename.'.gz'));
 
         $version->zip = $filename.'.gz';

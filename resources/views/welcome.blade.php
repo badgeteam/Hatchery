@@ -20,20 +20,6 @@
 				<div class="title m-b-md">
 					<h1 class="hatcher"><span class="hidden-xs">Badge.team</span> {{ config('app.name', 'Laravel') }}</h1>
 				</div>
-				<div>
-					<a href="https://github.com/badgeteam/ESP32-platform-firmware">ESP32-platform-firmware</a>
-					<a href="https://travis-ci.org/badgeteam/ESP32-platform-firmware" rel="nofollow">
-						<img src="https://travis-ci.org/badgeteam/ESP32-platform-firmware.svg?branch=master" alt="ESP32-platform-firmware build status"  data-canonical-src="https://travis-ci.org/badgeteam/ESP32-platform-firmware.svg" style="max-width:100%;" />
-					</a>
-					<a href="https://github.com/badgeteam/Hatchery">Hatchery</a>
-					<a href="https://travis-ci.org/badgeteam/Hatchery" rel="nofollow">
-						<img src="https://travis-ci.org/badgeteam/Hatchery.svg?branch=master" alt="Hatchery build status" data-canonical-src="https://travis-ci.org/badgeteam/Hatchery.svg" style="max-width:100%;" />
-					</a>
-					<a href="https://github.com/badgeteam/ESP32-platform-firmware/tree/master/documentation">Docs website:</a>
-					<a href="https://travis-ci.org/badgeteam/website-docs" rel="nofollow">
-						<img src="https://travis-ci.org/badgeteam/website-docs.svg?branch=master" alt="website-docs build status" data-canonical-src="https://travis-ci.org/badgeteam/website-docs.svg" style="max-width:100%;" />
-					</a>
-				</div>
 				<div class="spacer col-md-12 hidden-xs"></div>
 				<div class="links">
 					<a href="https://docs.badge.team/">Documentation</a>
@@ -54,6 +40,9 @@
 				<div class="spacer col-md-12 hidden-xs"></div>
 				{{ Form::select('badge_id', \App\Models\Badge::pluck('name', 'slug')->reverse()->prepend('Choose a badge model', ''), $badge, ['id' => 'badge']) }}
 				{{ Form::select('category_id', \App\Models\Category::where('hidden', false)->pluck('name', 'slug')->reverse()->prepend('Choose a category', ''), $category, ['id' => 'category']) }}
+				{{ Form::open(['method' => 'post', 'route' => ['projects.search', 'badge' => $badge, 'category' => $category], 'class' => 'searchform'])  }}
+					{{ Form::text('search', null, ['placeholder' => 'Search']) }}
+				{{ Form::close() }}
 				<table class="table table-condensed">
 						<thead>
 					<tr>
@@ -62,6 +51,9 @@
 						<th>Size of zip</th>
 						<th>Size of content</th>
 						<th>Category</th>
+						<th><img src="{{ asset('img/rulez.gif') }}" alt="up" /></th>
+						<th><img src="{{ asset('img/isok.gif') }}" alt="pig" /></th>
+						<th><img src="{{ asset('img/sucks.gif') }}" alt="down" /></th>
 						<th>Last release</th>
 					</tr>
 					</thead>
@@ -73,7 +65,9 @@
 						<td>{{ $project->size_of_zip }}</td>
 						<td>{{ $project->size_of_content }}</td>
 						<td>{{ $project->category }}</td>
-
+						<td>{{ $project->votes->where('type', 'up')->count() }}</td>
+						<td>{{ $project->votes->where('type', 'pig')->count() }}</td>
+						<td>{{ $project->votes->where('type', 'down')->count() }}</td>
 						<td>{{ $project->versions()->published()->get()->last()->updated_at->diffForHumans() }}</td>
 					</tr>
 					@empty

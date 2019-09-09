@@ -30,13 +30,40 @@ use Illuminate\Support\Facades\Auth;
  * @mixin \Eloquent
  *
  * @property-read int|null $files_count
+ * @property int $id
+ * @property int|null $user_id
+ * @property int $project_id
+ * @property int $revision
+ * @property string|null $zip
+ * @property int|null $size_of_zip
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereProjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereRevision($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereSizeOfZip($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereZip($value)
  */
 class Version extends Model
 {
     use SoftDeletes;
 
+    /**
+     * Appended magic data.
+     *
+     * @var array
+     */
     protected $appends = ['published'];
 
+    /**
+     * Make sure a user is assigned.
+     */
     public static function boot()
     {
         parent::boot();

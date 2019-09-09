@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Mail\Markdown;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -37,15 +38,56 @@ use Illuminate\Support\Str;
  * @property-read int|null $dependants_count
  * @property-read int|null $dependencies_count
  * @property-read int|null $versions_count
+ * @property int $id
+ * @property int $category_id
+ * @property int $user_id
+ * @property string $name
+ * @property string|null $slug
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $download_counter
+ * @property string $status
+ * @property-read string|null $description_html
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
+ * @property-read int|null $votes_count
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereDownloadCounter($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUserId($value)
  */
 class Project extends Model
 {
     use SoftDeletes;
 
-    protected $appends = ['revision', 'size_of_zip', 'size_of_content', 'category'];
+    /**
+     * Appended magic data.
+     *
+     * @var array
+     */
+    protected $appends = ['revision', 'size_of_zip', 'size_of_content', 'category', 'description'];
 
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'user_id', 'id', 'category_id', 'pivot'];
+    /**
+     * Hidden data.
+     *
+     * @var array
+     */
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'user_id', 'id', 'category_id', 'pivot', 'versions'];
 
+    /**
+     * Forbidden names for apps.
+     *
+     * @var array
+     */
     public static $forbidden = [
         'os', 'uos', 'badge', 'esp32', 'ussl', 'time', 'utime', 'splash', 'launcher', 'installer', 'ota_update',
         'boot', 'appglue', 'database', 'dialogs', 'deepsleep', 'magic', 'ntp', 'rtcmem', 'machine', 'setup', 'version',
@@ -53,6 +95,9 @@ class Project extends Model
         'zlib', 'ssl',
     ];
 
+    /**
+     * Magical methods that associate a user and make sure projects have an empty __init__.py added.
+     */
     public static function boot()
     {
         parent::boot();
@@ -111,6 +156,16 @@ class Project extends Model
     public function versions(): HasMany
     {
         return $this->hasMany(Version::class);
+    }
+
+    /**
+     * Get the Votes this Project has.
+     *
+     * @return HasMany
+     */
+    public function votes(): HasMany
+    {
+        return $this->hasMany(Vote::class);
     }
 
     /**
@@ -207,5 +262,43 @@ class Project extends Model
     public static function isForbidden(string $slug)
     {
         return in_array($slug, self::$forbidden);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescriptionAttribute(): ? string
+    {
+        $version = $this->versions->last();
+        if ($version && $version->files()->where('name', 'like', 'README.md')->count() === 1) {
+            return $version->files()->where('name', 'like', 'README.md')->first()->content;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescriptionHtmlAttribute(): ? string
+    {
+        if ($this->description) {
+            return Markdown::parse($this->description);
+        }
+
+        return null;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function userVoted(): ? bool
+    {
+        $user = Auth::guard()->user();
+        if (is_null($user)) {
+            return null;
+        }
+
+        return $this->votes()->where('user_id', $user->id)->exists();
     }
 }

@@ -1,7 +1,7 @@
 {
   "name": "hatchery",
   "version": "0.2.0",
-  "description": "Badge.team Hatchery",
+  "description": "badge.team Hatchery",
   "author": "Anne Jan Brouwer <annejan@noprotocol.nl>",
   "private": true,
   "scripts": {

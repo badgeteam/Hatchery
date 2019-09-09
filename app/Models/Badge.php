@@ -16,6 +16,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @mixin \Eloquent
  *
  * @property-read int|null $projects_count
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereUpdatedAt($value)
  */
 class Badge extends Model
 {

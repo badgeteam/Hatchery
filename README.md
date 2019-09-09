@@ -26,10 +26,6 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## Installation
 
-TODO:
-
-* Use mainline "bepsvpt/secure-headers": "^5" when updated
-
 Requires PHP 7.2 or later!
 
 For deployment on a server.
@@ -82,6 +78,7 @@ If you don't want to install things and do the above steps, Docker makes all the
 ```bash
 docker-compose up
 docker exec -it hatchery_laravel_1 php artisan migrate --seed
+docker exec -it hatchery_laravel_1 yarn watch
 ```
 
 Enjoy your Hatchery at http://localhost:8000

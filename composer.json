@@ -20,7 +20,7 @@
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^6.0",
         "sentry/sentry-laravel": "^1.0.2",
-        "bepsvpt/secure-headers": "dev-laravel6"
+        "bepsvpt/secure-headers": "^5.5.0"
     },
     "require-dev": {
         "codeception/codeception": "^3.1",
@@ -67,11 +67,5 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
-    },
-    "repositories":[
-        {
-            "type": "vcs",
-            "url": "git@github.com:ildyria/secure-headers.git"
-        }
-    ]
+    }
 }
