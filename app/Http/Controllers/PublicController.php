@@ -10,8 +10,8 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use stdClass;
 use OpenApi\Annotations as OA;
+use stdClass;
 
 /**
  * Class PublicController.
