@@ -151,13 +151,11 @@ class File extends Model
     }
 
     /**
-     * @param File $file
-     *
      * @return string
      */
-    public static function getMime(self $file): string
+    public function getMimeAttribute(): string
     {
-        $name = collect(explode('.', $file->name));
+        $name = collect(explode('.', $this->name));
 
         if (in_array($name->last(), self::$extensions)) {
             return self::$mimes[$name->last()];
