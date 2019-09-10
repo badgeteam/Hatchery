@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use stdClass;
+use OpenApi\Annotations as OA;
 
 /**
  * Class PublicController.
@@ -19,12 +20,6 @@ class PublicController extends Controller
 {
     /**
      * Show the application dashboard.
-     *
-     * @OA\Get(
-     *   path="/",
-     *   tags={"public"},
-     *   @OA\Response(response="default",ref="#/components/responses/html")
-     * )
      *
      * @param Request $request
      *
@@ -90,9 +85,21 @@ class PublicController extends Controller
     }
 
     /**
-     * Get the latest released version.
+     * Get the latest released version of a project.
      *
      * @param string $slug
+     *
+     * @OA\Get(
+     *   path="/eggs/get/{project}/json",
+     *   @OA\Parameter(
+     *     name="project",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="string", format="slug", example="game_of_life")
+     *   ),
+     *   tags={"Egg"},
+     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * )
      *
      * @return JsonResponse
      */
@@ -128,6 +135,12 @@ class PublicController extends Controller
     /**
      * Get the latest released versions.
      *
+     * @OA\Get(
+     *   path="/eggs/list/json",
+     *   tags={"Egg"},
+     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * )
+     *
      * @return JsonResponse
      */
     public function listJson(): JsonResponse
@@ -139,6 +152,18 @@ class PublicController extends Controller
 
     /**
      * Find the latest released versions.
+     *
+     * @OA\Get(
+     *   path="/eggs/search/{words}/json",
+     *   @OA\Parameter(
+     *     name="words",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="string", example="cool")
+     *   ),
+     *   tags={"Egg"},
+     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * )
      *
      * @param string $search
      *
@@ -157,7 +182,19 @@ class PublicController extends Controller
     }
 
     /**
-     * Get the latest released versions.
+     * Get the latest released versions in a category.
+     *
+     * @OA\Get(
+     *   path="/eggs/category/{category}/json",
+     *   @OA\Parameter(
+     *     name="category",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="string", format="slug", example="utility")
+     *   ),
+     *   tags={"Egg"},
+     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * )
      *
      * @param Category $category
      *
@@ -171,7 +208,13 @@ class PublicController extends Controller
     }
 
     /**
-     * Get the categories.
+     * Get a list of the categories.
+     *
+     * @OA\Get(
+     *   path="/eggs/categories/json",
+     *   tags={"Egg"},
+     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * )
      *
      * @return JsonResponse
      */
@@ -181,7 +224,14 @@ class PublicController extends Controller
     }
 
     /**
-     * Get the latest released versions for a badge.
+     * Get the latest released versions for a badge model.
+     *
+     * @OA\Get(
+     *   path="/basket/{badge}/list/json",
+     *   @OA\Parameter(ref="#/components/parameters/badge"),
+     *   tags={"Basket"},
+     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * )
      *
      * @param Badge $badge
      *
@@ -195,7 +245,20 @@ class PublicController extends Controller
     }
 
     /**
-     * Find the latest released versions.
+     * Find the latest released versions for a badge model.
+     *
+     * @OA\Get(
+     *   path="/basket/{badge}/search/{words}/json",
+     *   @OA\Parameter(ref="#/components/parameters/badge"),
+     *   @OA\Parameter(
+     *     name="words",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="string", example="cool")
+     *   ),
+     *   tags={"Basket"},
+     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * )
      *
      * @param Badge  $badge
      * @param string $search
@@ -215,7 +278,20 @@ class PublicController extends Controller
     }
 
     /**
-     * Get the latest released versions.
+     * Get the latest released versions in a category for a specific badge model.
+     *
+     * @OA\Get(
+     *   path="/basket/{badge}/category/{category}/json",
+     *   @OA\Parameter(ref="#/components/parameters/badge"),
+     *   @OA\Parameter(
+     *     name="category",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="string", format="slug", example="utility")
+     *   ),
+     *   tags={"Basket"},
+     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * )
      *
      * @param Badge    $badge
      * @param Category $category

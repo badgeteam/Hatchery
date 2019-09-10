@@ -152,7 +152,7 @@ class ProjectTest extends TestCase
      */
     public function testProjectUserVoted()
     {
-        $project = new Project;
+        $project = new Project();
         $this->assertNull($project->userVoted());
         $user = factory(User::class)->create();
         $this->be($user);

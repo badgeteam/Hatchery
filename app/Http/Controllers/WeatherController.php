@@ -6,17 +6,24 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use stdClass;
+use OpenApi\Annotations as OA;
 
 /**
  * Class WeatherController.
  */
 class WeatherController extends Controller
 {
-    private $minutes = 10; // max 144 requests/day ;)
+    private $minutes = 10; // max 144 requests/day per location ;)
     private $url = '';
 
     /**
-     * Show schedule of a day.
+     * Show weather forecast for today.
+     *
+     *  @OA\Get(
+     *   path="/weather",
+     *   tags={"External"},
+     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * )
      *
      * @return JsonResponse
      */
@@ -35,6 +42,20 @@ class WeatherController extends Controller
     }
 
     /**
+     * Show weather forecast for a given location for today.
+     *
+     * @OA\Get(
+     *   path="/weather/{location}",
+     *   @OA\Parameter(
+     *     name="location",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="string", format="geolocation", example="52.2822616,5.5218715")
+     *   ),
+     *   tags={"External"},
+     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * )
+     *
      * @param string $location
      *
      * @return JsonResponse
