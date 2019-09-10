@@ -30,3 +30,4 @@ _ide_helper.php
 .phpstorm.meta.php
 .env
 /.php_cs.cache
+/storage/api-docs/
