@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
-use stdClass;
 use OpenApi\Annotations as OA;
+use stdClass;
 
 /**
  * Class WeatherController.
