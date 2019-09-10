@@ -3,7 +3,56 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Info(
+ *   title="Hatchery by badge.team",
+ *   version="0.2",
+ *   description="Simple micropython software repository for Badges.",
+ *   @OA\Contact(
+ *     name="Hatchery",
+ *     url="https://docs.badge.team/hatchery",
+ *     email="hatchery@badge.team"
+ *   ),
+ *   @OA\License(
+ *       name="MIT",
+ *       url="https://opensource.org/licenses/MIT"
+ *   )
+ * )
+ *
+ * @OA\Parameter(
+ *   parameter="badge",
+ *   name="badge",
+ *   in="path",
+ *   required=true,
+ *   @OA\Schema(type="string", format="slug", example="sha2017")
+ * )
+ *
+ * @OA\Response(
+ *   response="html",
+ *   description="Undocumented HTML response",
+ *   @OA\XmlContent()
+ * ),
+ * @OA\Response(
+ *   response="undocumented",
+ *   description="Undocumented JSON response",
+ *   @OA\JsonContent()
+ * )
+ *
+ * @OA\Tag(
+ *   name="Basket",
+ *   description="Related to getting Projects for specific Badge models."
+ * ),
+ * @OA\Tag(
+ *   name="Egg",
+ *   description="Related to getting Eggs / Projects."
+ * ),
+ * @OA\Tag(
+ *   name="External",
+ *   description="External api proxies for convenience of apps."
+ * )
+ */
 class Kernel extends HttpKernel
 {
     /**

@@ -37,6 +37,6 @@ return [
 
     'darksky' => [
         'key'      => env('DARKSKY_API_KEY'),
-        'location' => env('DARKSKY_LOCATION', '52.3451,5.4581'),
+        'location' => env('DARKSKY_LOCATION', '52.2822616,5.5218715'),
     ],
 ];

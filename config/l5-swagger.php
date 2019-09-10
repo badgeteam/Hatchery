@@ -42,9 +42,9 @@ return [
         |--------------------------------------------------------------------------
          */
         'middleware' => [
-            'api' => [],
-            'asset' => [],
-            'docs' => [],
+            'api'             => [],
+            'asset'           => [],
+            'docs'            => [],
             'oauth2_callback' => [],
         ],
     ],
@@ -233,6 +233,6 @@ return [
      */
     'constants' => [
         'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'https://badge.team'),
-        'L5_SWAGGER_BASE_URL' => env('L5_SWAGGER_BASE_URL', '/'),
+        'L5_SWAGGER_BASE_URL'   => env('L5_SWAGGER_BASE_URL', '/'),
     ],
 ];
