@@ -33,7 +33,9 @@
 				</div>
 				<div>
 					@foreach(App\Models\Badge::all() as $selectBadge)
+						@if ($selectBadge->projects->isNotEmpty())
 						{{ $selectBadge->name }}: {{ $selectBadge->projects->count() }}
+						@endif
 					@endforeach
 				</div>
 
