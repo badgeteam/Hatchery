@@ -26,8 +26,12 @@ class WeatherController extends Controller
             .config('services.darksky.key')
             .'/'.config('services.darksky.location').'?units=ca&exclude=currently,alerts,flags,daily,minutely';
 
-        return response()->json($this->getJson(), 200,
-            ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        return response()->json(
+            $this->getJson(),
+            200,
+            ['Content-Type' => 'application/json'],
+            JSON_UNESCAPED_SLASHES
+        );
     }
 
     /**
@@ -45,8 +49,12 @@ class WeatherController extends Controller
             .config('services.darksky.key')
             .'/'.$location.'?units=ca&exclude=currently,alerts,flags,daily,minutely';
 
-        return response()->json($this->getJson(), 200,
-            ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        return response()->json(
+            $this->getJson(),
+            200,
+            ['Content-Type' => 'application/json'],
+            JSON_UNESCAPED_SLASHES
+        );
     }
 
     /**

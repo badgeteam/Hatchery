@@ -236,7 +236,7 @@ class FilesController extends Controller
         return response($file->content)
             ->header('Cache-Control', 'no-cache private')
             ->header('Content-Description', 'File Transfer')
-            ->header('Content-Type', File::getMime($file))
+            ->header('Content-Type', $file->mime)
             ->header('Content-length', (string) strlen($file->content))
             ->header('Content-Disposition', 'attachment; filename='.$file->name)
             ->header('Content-Transfer-Encoding', 'binary');

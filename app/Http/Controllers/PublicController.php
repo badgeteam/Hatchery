@@ -20,6 +20,12 @@ class PublicController extends Controller
     /**
      * Show the application dashboard.
      *
+     * @OA\Get(
+     *   path="/",
+     *   tags={"public"},
+     *   @OA\Response(response="default",ref="#/components/responses/html")
+     * )
+     *
      * @param Request $request
      *
      * @return View

@@ -15,6 +15,7 @@
     "require": {
         "php": ">=7.2",
         "ext-json": "*",
+        "darkaonline/l5-swagger": "^6.0",
         "filp/whoops": "~2.0",
         "laravel/framework": "^6.0",
         "laravel/tinker": "~1.0",

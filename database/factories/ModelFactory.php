@@ -73,3 +73,12 @@ $factory->define(App\Models\Badge::class, function (Faker\Generator $faker) {
         'slug' => $faker->slug,
     ];
 });
+
+/* @var \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(App\Models\Vote::class, function (Faker\Generator $faker) {
+    return [
+        'project_id' => function () {
+            return factory(App\Models\Project::class)->create()->id;
+        },
+    ];
+});

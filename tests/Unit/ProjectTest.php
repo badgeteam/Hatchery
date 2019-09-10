@@ -3,9 +3,11 @@
 namespace Tests\Unit;
 
 use App\Models\Category;
+use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
+use App\Models\Vote;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -115,5 +117,48 @@ class ProjectTest extends TestCase
         $project->category()->associate($category);
 
         $this->assertEquals($category->slug, $project->category);
+    }
+
+    /**
+     * Test the description helper.
+     */
+    public function testProjectDescriptionAttribute()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $this->assertNull($project->description);
+
+        $file = factory(File::class)->create(['content' => 'Description', 'name' => 'ReadMe.md']);
+        $this->assertEquals('Description', $file->version->project->description);
+    }
+
+    /**
+     * Test the descriptionHtml (Markdown) helper.
+     */
+    public function testProjectDescriptionHtmlAttribute()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $this->assertNull($project->descriptionHtml);
+
+        $file = factory(File::class)->create(['content' => "Description\n----------", 'name' => 'ReadMe.md']);
+        $this->assertEquals('<h2>Description</h2>', $file->version->project->descriptionHtml);
+    }
+
+    /**
+     * Test the userVoted helper.
+     */
+    public function testProjectUserVoted()
+    {
+        $project = new Project;
+        $this->assertNull($project->userVoted());
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $this->assertFalse($project->userVoted());
+        factory(Vote::class)->create(['project_id' => $project->id]);
+        $this->assertTrue($project->userVoted());
     }
 }

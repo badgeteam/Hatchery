@@ -60,4 +60,37 @@ class FileTest extends TestCase
         $file = factory(File::class)->create(['content' => '123']);
         $this->assertEquals(3, $file->size_of_content);
     }
+
+    /**
+     * Assert py file mime type.
+     */
+    public function testFilePythonMimeAttribute()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create(['name' => 'test.py']);
+        $this->assertEquals('application/x-python-code', $file->mime);
+    }
+
+    /**
+     * Assert png file mime type.
+     */
+    public function testFilePngMimeAttribute()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create(['name' => 'test.png']);
+        $this->assertEquals('image/png', $file->mime);
+    }
+
+    /**
+     * Assert unknown (octet-stream) file mime type.
+     */
+    public function testFileUnknownMimeAttribute()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create(['name' => 'test.unknown']);
+        $this->assertEquals('application/octet-stream', $file->mime);
+    }
 }
