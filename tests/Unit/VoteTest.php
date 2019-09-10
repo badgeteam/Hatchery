@@ -33,7 +33,7 @@ class VoteTest extends TestCase
     {
         $user = factory(User::class)->create();
         $this->be($user);
-        $project =  factory(Project::class)->create();
+        $project = factory(Project::class)->create();
         $vote = factory(Vote::class)->create(['project_id' => $project->id]);
         $this->assertInstanceOf(Project::class, $vote->project);
         $this->assertEquals($project->id, $vote->project->id);
@@ -47,7 +47,7 @@ class VoteTest extends TestCase
         $user = factory(User::class)->create();
         $this->be($user);
         $vote = factory(Vote::class)->create();
-        $this->assertNull( $vote->type);
+        $this->assertNull($vote->type);
         $vote = Vote::find($vote->id);
         $this->assertEquals('up', $vote->type);
     }
@@ -59,7 +59,7 @@ class VoteTest extends TestCase
     {
         $user = factory(User::class)->create();
         $this->be($user);
-        $project =  factory(Project::class)->create();
+        $project = factory(Project::class)->create();
         $vote = factory(Vote::class)->create(['project_id' => $project->id, 'type' => 'pig']);
         $this->assertEquals('pig', $vote->type);
         $vote = Vote::find($vote->id);
@@ -73,7 +73,7 @@ class VoteTest extends TestCase
     {
         $user = factory(User::class)->create();
         $this->be($user);
-        $project =  factory(Project::class)->create();
+        $project = factory(Project::class)->create();
         $vote = factory(Vote::class)->create(['project_id' => $project->id, 'type' => 'down']);
         $this->assertEquals('down', $vote->type);
         $vote = Vote::find($vote->id);
@@ -88,8 +88,7 @@ class VoteTest extends TestCase
         $this->expectException(QueryException::class);
         $user = factory(User::class)->create();
         $this->be($user);
-        $project =  factory(Project::class)->create();
-        $vote = factory(Vote::class)->create(['project_id' => $project->id, 'type' => 'broken']);
-        $this->assertNull($vote);
+        $project = factory(Project::class)->create();
+        factory(Vote::class)->create(['project_id' => $project->id, 'type' => 'broken']);
     }
 }
