@@ -12,7 +12,8 @@
 
 Simple micropython software repository for Badges.
 
-[Live Site](http://badge.team) | [API Documentation](https://badge.team/api)
+[Live Site](http://badge.team) | 
+[API Documentation](https://badge.team/api) |
 [Documentation](https://docs.badge.team/hatchery/) |
 [Documentation (wiki)](https://wiki.badge.team/Hatchery) |
 [Project Wiki](https://wiki.badge.team) |

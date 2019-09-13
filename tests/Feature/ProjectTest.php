@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Mail\ProjectNotificationMail;
 use App\Models\Badge;
 use App\Models\Category;
 use App\Models\File;
@@ -12,11 +13,21 @@ use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class ProjectTest extends TestCase
 {
     use DatabaseTransactions, DatabaseMigrations, WithFaker;
+
+    /**
+     * Unit test setup use Mail faker.
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+        Mail::fake();
+    }
 
     /**
      * Check the projects list.
@@ -311,5 +322,20 @@ class ProjectTest extends TestCase
                 'status'       => 'unknown',
             ]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
+    }
+
+    /**
+     * Check that badge.team can be notified of dangerous projects.
+     */
+    public function testProjectsNotify()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/notify/'.$project->slug, ['description', 'het zuigt']);
+        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
+        Mail::assertSent(ProjectNotificationMail::class);
     }
 }

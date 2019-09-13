@@ -13,7 +13,8 @@
                     <strong>{{ $project->name }}</strong>
                     @can('delete', $project)
                     <div class="pull-right">
-                        {!! Form::open(['method' => 'delete', 'route' => ['projects.destroy', 'project' => $project->slug]]) !!}
+                        <a href="{{ route('projects.show', ['project' => $project]) }}" class="btn btn-default btn-xs">show</a>
+                        {!! Form::open(['method' => 'delete', 'route' => ['projects.destroy', 'project' => $project->slug], 'class' => 'deleteform']) !!}
                         <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">delete</button>
                         {!! Form::close() !!}
                     </div>

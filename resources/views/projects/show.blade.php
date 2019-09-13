@@ -27,7 +27,7 @@
                             Category: {{ $project->category }}
                             <hr>
                             Status: {{ $project->status }}
-                            @include('projects.partials.show-votes')
+                            @include('projects.partials.vote-and-notify')
                             @include('projects.partials.show-compatibility')
                             @include('projects.partials.show-dependencies')
                         </div>

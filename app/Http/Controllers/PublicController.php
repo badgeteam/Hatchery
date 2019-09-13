@@ -105,6 +105,7 @@ class PublicController extends Controller
      */
     public function projectJson(string $slug): JsonResponse
     {
+        /** @var Project|null $project */
         $project = Project::where('slug', $slug)->first();
         if (is_null($project)) {
             return response()->json(['message' => 'No releases found'], 404, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);

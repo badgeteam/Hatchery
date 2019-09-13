@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProjectNotificationRequest;
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
+use App\Mail\ProjectNotificationMail;
 use App\Models\Badge;
 use App\Models\Category;
 use App\Models\File;
@@ -12,6 +14,7 @@ use App\Models\Version;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use PharData;
@@ -273,5 +276,19 @@ class ProjectsController extends Controller
     {
         return view('projects.show')
             ->with('project', $project);
+    }
+
+    /**
+     * Notify badge.team of broken or dangerous app.
+     *
+     * @param Project $project
+     *
+     * @return RedirectResponse
+     */
+    public function notify(Project $project, ProjectNotificationRequest $request): RedirectResponse
+    {
+        $mail = new ProjectNotificationMail($project, $request->description);
+        Mail::to('bugs@badge.team=')->send($mail);
+        return redirect()->route('projects.show', ['project' => $project])->withSuccesses(['Notification sent to badge.team']);
     }
 }
