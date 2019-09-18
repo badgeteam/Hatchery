@@ -1,6 +1,6 @@
 Hey,
 
-Deze app suckt: {{ route('projects.show', ['project', $project]) }}
+Deze app suckt: {{ route('projects.show', ['project' => $project]) }}
 Kijk er effies naar ofzo.
 
 MvG,
