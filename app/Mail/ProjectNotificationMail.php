@@ -33,6 +33,8 @@ class ProjectNotificationMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.projectNotify');
+        return $this
+            ->subject('App notification: '.$this->project->name)
+            ->text('mails.projectNotify');
     }
 }
