@@ -88,6 +88,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the (Project)Warnings for the User.
+     */
+    public function warnings(): HasMany
+    {
+        return $this->hasMany(Warning::class);
+    }
+
+    /**
      * Change the email to an impossible email.
      */
     public function delete()

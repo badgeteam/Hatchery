@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\Version;
+use App\Models\Warning;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -288,7 +289,8 @@ class ProjectsController extends Controller
      */
     public function notify(Project $project, ProjectNotificationRequest $request): RedirectResponse
     {
-        $mail = new ProjectNotificationMail($project, $request->description);
+        $warning = Warning::create(['project_id' => $project->id, 'description' => $request->description]);
+        $mail = new ProjectNotificationMail($warning);
         Mail::to('bugs@badge.team')->send($mail);
 
         return redirect()->route('projects.show', ['project' => $project])->withSuccesses(['Notification sent to badge.team']);

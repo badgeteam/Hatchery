@@ -169,6 +169,14 @@ class Project extends Model
     }
 
     /**
+     * Get the Warnings for the Project.
+     */
+    public function warnings(): HasMany
+    {
+        return $this->hasMany(Warning::class);
+    }
+
+    /**
      * @return string
      */
     public function getRevisionAttribute(): ? string

@@ -9,6 +9,7 @@ use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
+use App\Models\Warning;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -337,5 +338,8 @@ class ProjectTest extends TestCase
             ->call('post', '/notify/'.$project->slug, ['description' => 'het zuigt']);
         $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
         Mail::assertSent(ProjectNotificationMail::class);
+        $this->assertCount(1, Warning::all());
+        $project = Project::find($project->id);
+        $this->assertEquals('het zuigt', $project->warnings()->first()->description);
     }
 }
