@@ -77,8 +77,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <h3>So, you have issue?</h3>
-                {!! Form::open(['method' => 'post', 'route' => ['projects.notify'], 'id' => 'notify-form']) !!}
-                {{ Form::hidden('project_id', $project->id) }}
+                {!! Form::open(['method' => 'post', 'route' => ['projects.notify', $project], 'id' => 'notify-form']) !!}
                 <div class="form-group @if($errors->has('description')) has-error @endif">
                     {{ Form::label('description', 'Description', ['class' => 'control-label']) }}
                     {{ Form::textarea('description', null, ['class' => 'form-control', 'id' => 'description']) }}
