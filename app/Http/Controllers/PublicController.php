@@ -296,15 +296,18 @@ class PublicController extends Controller
     {
         $data = [];
         foreach (Category::where('hidden', false)->get() as $category) {
-            $data[] = [
-                'name' => $category->name,
-                'slug' => $category->slug,
-                'eggs' => $category->projects()->whereHas('badges', function ($query) use ($badge) {
-                    $query->where('slug', $badge->slug);
-                })->whereHas('versions', function ($query) {
-                    $query->whereNotNull('zip');
-                })->count(),
-            ];
+            $eggs = $category->projects()->whereHas('badges', function ($query) use ($badge) {
+                $query->where('slug', $badge->slug);
+            })->whereHas('versions', function ($query) {
+                $query->whereNotNull('zip');
+            })->count();
+            if ($eggs > 0) {
+                $data[] = [
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                    'eggs' => $eggs,
+                ];
+            }
         }
 
         return response()->json($data, 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);

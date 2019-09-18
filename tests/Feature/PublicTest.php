@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Badge;
+use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
@@ -414,6 +415,19 @@ class PublicTest extends TestCase
         $response = $this->json('GET', '/basket/'.$badge->slug.'/categories/json');
         $response->assertStatus(200)
             ->assertExactJson([
+                [
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                    'eggs' => 1,
+                ],
+            ]);
+
+        factory(Category::class)->create();
+
+        $this->assertCount(2, Category::all());
+
+        $response = $this->json('GET', '/basket/'.$badge->slug.'/categories/json');
+        $response->assertExactJson([
                 [
                     'name' => $category->name,
                     'slug' => $category->slug,
