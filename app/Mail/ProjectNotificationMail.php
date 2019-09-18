@@ -18,7 +18,7 @@ class ProjectNotificationMail extends Mailable
      * Create a new message instance.
      *
      * @param Project $project
-     * @param string $description
+     * @param string  $description
      */
     public function __construct(Project $project, string $description)
     {
