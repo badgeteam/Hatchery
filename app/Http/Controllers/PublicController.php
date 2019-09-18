@@ -303,9 +303,10 @@ class PublicController extends Controller
                     $query->whereNotNull('zip');
                 })->whereHas('badges', function ($query) use ($badge) {
                     $query->where('slug', $badge->slug);
-                })->count()
+                })->count(),
             ];
         }
+
         return response()->json($data, 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
 

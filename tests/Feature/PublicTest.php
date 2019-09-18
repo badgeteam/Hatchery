@@ -392,6 +392,7 @@ class PublicTest extends TestCase
                 ],
             ]);
     }
+
     /**
      * Check JSON basket request . .
      */
