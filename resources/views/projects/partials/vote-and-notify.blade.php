@@ -40,7 +40,7 @@
         </tr>
     </tfoot>
 </table>
-@if(!$project->warnings()->isEmpty())
+@if($project->warnings()->count() > 0)
 <table class="table table-striped">
     <tbody>
         @foreach($project->warnings as $warning)
