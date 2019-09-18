@@ -299,10 +299,10 @@ class PublicController extends Controller
             $data[] = [
                 'name' => $category->name,
                 'slug' => $category->slug,
-                'eggs' => $category->projects()->whereHas('versions', function ($query) {
-                    $query->whereNotNull('zip');
-                })->whereHas('badges', function ($query) use ($badge) {
+                'eggs' => $category->projects()->whereHas('badges', function ($query) use ($badge) {
                     $query->where('slug', $badge->slug);
+                })->whereHas('versions', function ($query) {
+                    $query->whereNotNull('zip');
                 })->count(),
             ];
         }
