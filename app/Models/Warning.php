@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * App\Models\Warning
+ * App\Models\Warning.
  *
  * @property int $id
  * @property int $user_id
@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Project $project
  * @property-read \App\Models\User $user
- * 
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning newQuery()
