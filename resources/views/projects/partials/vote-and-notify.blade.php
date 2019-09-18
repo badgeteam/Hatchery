@@ -1,10 +1,10 @@
 <table class="table table-striped">
     <thead>
-    <tr>
-        <th>Vote</th>
-        <th>Comment</th>
-        <th>Date</th>
-    </tr>
+        <tr>
+            <th>Vote</th>
+            <th>Comment</th>
+            <th>Date</th>
+        </tr>
     </thead>
     <tbody>
     @forelse($project->votes as $vote)
@@ -42,6 +42,11 @@
 </table>
 @if($project->warnings()->count() > 0)
 <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Warning!</th>
+        </tr>
+    </thead>
     <tbody>
         @foreach($project->warnings as $warning)
         <tr>
