@@ -40,45 +40,71 @@
         </tr>
     </tfoot>
 </table>
-@if ($project->userVoted() === false)
 <div id="vote-dialog" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <h3>How do you rate this app?</h3>
-                    {!! Form::open(['method' => 'post', 'route' => ['votes.store'], 'id' => 'vote-form']) !!}
-                    {{ Form::hidden('project_id', $project->id) }}
-                    <label>
-                        {{ Form::radio('type', 'up' , false) }}
-                        <img src="{{ asset('img/rulez.gif') }}" alt="up" />
-                    </label>
-                    <label>
-                        {{ Form::radio('type', 'pig' , true) }}
-                        <img src="{{ asset('img/isok.gif') }}" alt="pig" />
-                    </label>
-                    <label>
-                        {{ Form::radio('type', 'down' , false) }}
-                        <img src="{{ asset('img/sucks.gif') }}" alt="down" />
-                    </label>
-                    <div class="form-group @if($errors->has('comment')) has-error @endif">
-                        {{ Form::label('comment', 'Comment', ['class' => 'control-label']) }}
-                        {{ Form::textarea('comment', null, ['class' => 'form-control', 'id' => 'comment']) }}
-                    </div>
-                    {!! Form::close() !!}
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>How do you rate this app?</h3>
+                {!! Form::open(['method' => 'post', 'route' => ['votes.store'], 'id' => 'vote-form']) !!}
+                {{ Form::hidden('project_id', $project->id) }}
+                <label>
+                    {{ Form::radio('type', 'up' , false) }}
+                    <img src="{{ asset('img/rulez.gif') }}" alt="up" />
+                </label>
+                <label>
+                    {{ Form::radio('type', 'pig' , true) }}
+                    <img src="{{ asset('img/isok.gif') }}" alt="pig" />
+                </label>
+                <label>
+                    {{ Form::radio('type', 'down' , false) }}
+                    <img src="{{ asset('img/sucks.gif') }}" alt="down" />
+                </label>
+                <div class="form-group @if($errors->has('comment')) has-error @endif">
+                    {{ Form::label('comment', 'Comment', ['class' => 'control-label']) }}
+                    {{ Form::textarea('comment', null, ['class' => 'form-control', 'id' => 'comment']) }}
                 </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-danger" id="vote">Vote</button>
-                    <button type="button" data-dismiss="modal" class="btn">Cancel</button>
-                </div>
+                {!! Form::close() !!}
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger" id="vote">Vote</button>
+                <button type="button" data-dismiss="modal" class="btn">Cancel</button>
             </div>
         </div>
     </div>
+</div>
+<div id="notify-dialog" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>So, you have issue?</h3>
+                {!! Form::open(['method' => 'post', 'route' => ['projects.notify'], 'id' => 'notify-form']) !!}
+                {{ Form::hidden('project_id', $project->id) }}
+                <div class="form-group @if($errors->has('description')) has-error @endif">
+                    {{ Form::label('description', 'Description', ['class' => 'control-label']) }}
+                    {{ Form::textarea('description', null, ['class' => 'form-control', 'id' => 'description']) }}
+                </div>
+                {!! Form::close() !!}
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger" id="notify">Notify</button>
+                <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section('script')
     <script type="text/javascript">
       $('button[name="vote"]').on('click', function (e) {
         e.preventDefault()
         var $form = $('#vote-form')
         $('#vote-dialog').modal({ backdrop: 'static', keyboard: false }).one('click', '#vote', function (e) {
+          $form.trigger('submit')
+        })
+      })
+      $('button[name="notify"]').on('click', function (e) {
+        e.preventDefault()
+        var $form = $('#notify-form')
+        $('#notify-dialog').modal({ backdrop: 'static', keyboard: false }).one('click', '#notify', function (e) {
           $form.trigger('submit')
         })
       })
@@ -99,37 +125,4 @@
         }
     </style>
 @endsection
-@endif
-@auth
-    <div id="notify-dialog" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <h3>So, you have issue?</h3>
-                    {!! Form::open(['method' => 'post', 'route' => ['votes.store'], 'id' => 'notify-form']) !!}
-                    {{ Form::hidden('project_id', $project->id) }}
-                    <div class="form-group @if($errors->has('description')) has-error @endif">
-                        {{ Form::label('description', 'Description', ['class' => 'control-label']) }}
-                        {{ Form::textarea('description', null, ['class' => 'form-control', 'id' => 'description']) }}
-                    </div>
-                    {!! Form::close() !!}
-                </div>s
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-danger" id="notify">Notify</button>
-                    <button type="button" data-dismiss="modal" class="btn">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-@section('script')
-    <script type="text/javascript">
-      $('button[name="notify"]').on('click', function (e) {
-        e.preventDefault()
-        var $form = $('#notify-form')
-        $('#notify-dialog').modal({ backdrop: 'static', keyboard: false }).one('click', '#notify', function (e) {
-          $form.trigger('submit')
-        })
-      })
-    </script>
-@endsection
-@endauth
+
