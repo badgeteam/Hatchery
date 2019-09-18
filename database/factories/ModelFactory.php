@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -13,7 +14,7 @@ use Illuminate\Support\Str;
 |
 */
 
-/** @var Factory $factory */
+/* @var Factory $factory */
 $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     static $password;
 
@@ -89,6 +90,6 @@ $factory->define(App\Models\Warning::class, function (Faker\Generator $faker) {
         'project_id' => function () {
             return factory(App\Models\Project::class)->create()->id;
         },
-        'description' => $faker->paragraph
+        'description' => $faker->paragraph,
     ];
 });
