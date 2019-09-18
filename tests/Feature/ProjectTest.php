@@ -334,7 +334,7 @@ class ProjectTest extends TestCase
         $project = factory(Project::class)->create();
         $response = $this
             ->actingAs($user)
-            ->call('post', '/notify/'.$project->slug, ['description', 'het zuigt']);
+            ->call('post', '/notify/'.$project->slug, ['description' => 'het zuigt']);
         $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
         Mail::assertSent(ProjectNotificationMail::class);
     }

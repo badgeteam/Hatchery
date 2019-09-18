@@ -282,13 +282,14 @@ class ProjectsController extends Controller
      * Notify badge.team of broken or dangerous app.
      *
      * @param Project $project
+     * @param ProjectNotificationRequest $request
      *
      * @return RedirectResponse
      */
     public function notify(Project $project, ProjectNotificationRequest $request): RedirectResponse
     {
         $mail = new ProjectNotificationMail($project, $request->description);
-        Mail::to('bugs@badge.team=')->send($mail);
+        Mail::to('bugs@badge.team')->send($mail);
         return redirect()->route('projects.show', ['project' => $project])->withSuccesses(['Notification sent to badge.team']);
     }
 }
