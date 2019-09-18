@@ -279,6 +279,37 @@ class PublicController extends Controller
     }
 
     /**
+     * Get a list of the categories for a badge.
+     *
+     * @OA\Get(
+     *   path="/basket/{badge}/categories/json",
+     *   @OA\Parameter(ref="#/components/parameters/badge"),
+     *   tags={"Basket"},
+     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * )
+     *
+     * @param Badge $badge
+     *
+     * @return JsonResponse
+     */
+    public function badgeCategoriesJson(Badge $badge): JsonResponse
+    {
+        $data = [];
+        foreach (Category::where('hidden', false)->get() as $category) {
+            $data[] = [
+                'name' => $category->name,
+                'slug' => $category->slug,
+                'eggs' => $category->projects()->whereHas('versions', function ($query) {
+                    $query->whereNotNull('zip');
+                })->whereHas('badges', function ($query) use ($badge) {
+                    $query->where('slug', $badge->slug);
+                })->count()
+            ];
+        }
+        return response()->json($data, 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+    }
+
+    /**
      * Get the latest released versions in a category for a specific badge model.
      *
      * @OA\Get(

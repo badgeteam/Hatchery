@@ -320,7 +320,7 @@ class PublicTest extends TestCase
     }
 
     /**
-     * Check JSON eggs request . .
+     * Check JSON basket request . .
      */
     public function testBasketListJson()
     {
@@ -355,7 +355,7 @@ class PublicTest extends TestCase
     }
 
     /**
-     * Check JSON eggs request . .
+     * Check JSON basket request . .
      */
     public function testBasketSearchJson()
     {
@@ -392,9 +392,37 @@ class PublicTest extends TestCase
                 ],
             ]);
     }
+    /**
+     * Check JSON basket request . .
+     */
+    public function testBasketCategoriesJson()
+    {
+        $badge = factory(Badge::class)->create();
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $version->zip = 'some_path.tar.gz';
+        $version->save();
+        $version->project->badges()->attach($badge);
+
+        $category = $version->project->category()->first();
+
+        $response = $this->json('GET', '/basket/nonexisting/categories/json');
+        $response->assertStatus(404);
+
+        $response = $this->json('GET', '/basket/'.$badge->slug.'/categories/json');
+        $response->assertStatus(200)
+            ->assertExactJson([
+                [
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                    'eggs' => 1,
+                ],
+            ]);
+    }
 
     /**
-     * Check JSON eggs request . .
+     * Check JSON basket request . .
      */
     public function testBasketCategoryJson()
     {
