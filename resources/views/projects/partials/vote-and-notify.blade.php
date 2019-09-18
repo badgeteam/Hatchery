@@ -40,6 +40,19 @@
         </tr>
     </tfoot>
 </table>
+@if(!$project->warnings()->isEmpty())
+<table class="table table-striped">
+    <tbody>
+        @foreach($project->warnings as $warning)
+        <tr>
+            <td>
+                {{ $warning->description }}
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+@endif
 <div id="vote-dialog" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

@@ -34,7 +34,7 @@
                                 <th><img src="{{ asset('img/rulez.gif') }}" alt="up" /></th>
                                 <th><img src="{{ asset('img/isok.gif') }}" alt="pig" /></th>
                                 <th><img src="{{ asset('img/sucks.gif') }}" alt="down" /></th>
-                                <th><img src="{{ asset('img/alert.gif.gif') }}" alt="alert" /></th>
+                                <th><img src="{{ asset('img/alert.gif') }}" alt="alert" /></th>
                                 <th>Last release</th>
                             </tr>
                         </thead>
