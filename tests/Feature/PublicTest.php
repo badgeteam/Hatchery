@@ -101,7 +101,6 @@ class PublicTest extends TestCase
             ->assertViewHas('category', $category->slug);
     }
 
-
     /**
      * Check redirect to /login when going to the /home page.
      */
