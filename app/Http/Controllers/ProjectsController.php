@@ -7,6 +7,7 @@ use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
 use App\Mail\ProjectNotificationMail;
 use App\Models\Badge;
+use App\Models\BadgeProject;
 use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
@@ -176,9 +177,10 @@ class ProjectsController extends Controller
             }
             $project->save();
 
-            foreach ($project->states as $state) {
-                if ($request->has("badge_status[$state->badge_id]")) {
-                    $state->status = $request->get("badge_status[$state->badge_id]");
+            foreach ($request->badge_ids as $badge_id) {
+                if ($request->has("badge_status[$badge_id]")) {
+                    $state = BadgeProject::where('badge_id', $badge_id)->where('project_id', $project->id)->first();
+                    $state->status = $request->get("badge_status[$badge_id]");
                     $state->save();
                 }
             }

@@ -314,6 +314,7 @@ class ProjectTest extends TestCase
         $project = factory(Project::class)->create();
         $faker = Factory::create();
         $badge = factory(Badge::class)->create();
+        $this->assertEquals('unknown', $project->status);
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
