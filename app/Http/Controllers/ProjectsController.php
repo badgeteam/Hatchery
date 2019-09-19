@@ -174,16 +174,16 @@ class ProjectsController extends Controller
                 $project->badges()->detach();
                 $badges = Badge::find($request->badge_ids);
                 $project->badges()->attach($badges);
-            }
-            $project->save();
 
-            foreach ($request->badge_ids as $badge_id) {
-                if ($request->has("badge_status[$badge_id]")) {
-                    $state = BadgeProject::where('badge_id', $badge_id)->where('project_id', $project->id)->first();
-                    $state->status = $request->get("badge_status[$badge_id]");
-                    $state->save();
+                foreach ($request->badge_ids as $badge_id) {
+                    if ($request->has("badge_status[$badge_id]")) {
+                        $state = BadgeProject::where('badge_id', $badge_id)->where('project_id', $project->id)->first();
+                        $state->status = $request->get("badge_status[$badge_id]");
+                        $state->save();
+                    }
                 }
             }
+            $project->save();
 
             if (isset($request->publish)) {
                 return $this->publish($project);
