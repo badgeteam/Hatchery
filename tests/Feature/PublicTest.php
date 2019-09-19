@@ -22,9 +22,52 @@ class PublicTest extends TestCase
     public function testWelcome()
     {
         $response = $this->get('/');
-
         $response->assertStatus(200)
             ->assertViewHas('badge', '')
+            ->assertViewHas('category', '')
+            ->assertViewHas('users', User::count())
+            ->assertViewHas('projects', Project::count());
+    }
+
+    /**
+     * A basic test example with a Badge.
+     */
+    public function testWelcomeBadge()
+    {
+        $badge = factory(Badge::class)->create();
+        $response = $this->get('/?badge='.$badge->slug);
+        $response->assertStatus(200)
+            ->assertViewHas('badge', $badge->slug)
+            ->assertViewHas('category', '')
+            ->assertViewHas('users', User::count())
+            ->assertViewHas('projects', Project::count());
+    }
+
+    /**
+     * A basic test example with a Category.
+     */
+    public function testWelcomeCategory()
+    {
+        $category = factory(Category::class)->create();
+        $response = $this->get('/?category='.$category->slug);
+        $response->assertStatus(200)
+            ->assertViewHas('badge', '')
+            ->assertViewHas('category', $category->slug)
+            ->assertViewHas('users', User::count())
+            ->assertViewHas('projects', Project::count());
+    }
+
+    /**
+     * A basic test example with Badge and Category.
+     */
+    public function testWelcomeBadgeCategory()
+    {
+        $badge = factory(Badge::class)->create();
+        $category = factory(Category::class)->create();
+        $response = $this->get('/?badge='.$badge->slug.'&category='.$category->slug);
+        $response->assertStatus(200)
+            ->assertViewHas('badge', $badge->slug)
+            ->assertViewHas('category', $category->slug)
             ->assertViewHas('users', User::count())
             ->assertViewHas('projects', Project::count());
     }
@@ -39,8 +82,25 @@ class PublicTest extends TestCase
         $response->assertStatus(200)
             ->assertViewHas('badge', $badge->slug)
             ->assertViewHas('users', User::count())
-            ->assertViewHas('projects', Project::count());
+            ->assertViewHas('projects', Project::count())
+            ->assertViewHas('category', '');
     }
+
+    /**
+     * A badge category example.
+     */
+    public function testBadgeCategory()
+    {
+        $badge = factory(Badge::class)->create();
+        $category = factory(Category::class)->create();
+        $response = $this->get('/badge/'.$badge->slug.'?category='.$category->slug);
+        $response->assertStatus(200)
+            ->assertViewHas('badge', $badge->slug)
+            ->assertViewHas('users', User::count())
+            ->assertViewHas('projects', Project::count())
+            ->assertViewHas('category', $category->slug);
+    }
+
 
     /**
      * Check redirect to /login when going to the /home page.

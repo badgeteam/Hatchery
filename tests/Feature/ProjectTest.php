@@ -9,6 +9,7 @@ use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
+use App\Models\Vote;
 use App\Models\Warning;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -345,5 +346,57 @@ class ProjectTest extends TestCase
         $this->assertCount(1, Warning::all());
         $project = Project::find($project->id);
         $this->assertEquals('het zuigt', $project->warnings()->first()->description);
+    }
+
+    /**
+     * Check that a User can Vote for a Project.
+     */
+    public function testProjectsVote()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
+        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
+        $this->assertCount(1, Vote::all());
+        $project = Project::find($project->id);
+        $this->assertEquals('pig', $project->votes()->first()->type);
+    }
+
+    /**
+     * Check that a User can Vote for a Project only once.
+     */
+    public function testProjectsVoteOnce()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
+        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
+        $this->assertCount(1, Vote::all());
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
+        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('errors');
+        $this->assertCount(1, Vote::all());
+    }
+
+    /**
+     * Check that a Vote has existing type.
+     */
+    public function testProjectsVoteTypeExists()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'awesome']);
+        $response->assertRedirect('')->assertSessionHas('errors');
+        $this->assertEmpty(Vote::all());
     }
 }

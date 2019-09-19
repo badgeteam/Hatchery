@@ -87,7 +87,7 @@ class User extends Authenticatable
      */
     public function votes(): HasMany
     {
-        return $this->hasMany(Vote::class);
+        return $this->hasMany(Vote::class)->withTrashed();
     }
 
     /**
@@ -95,7 +95,7 @@ class User extends Authenticatable
      */
     public function warnings(): HasMany
     {
-        return $this->hasMany(Warning::class);
+        return $this->hasMany(Warning::class)->withTrashed();
     }
 
     /**
