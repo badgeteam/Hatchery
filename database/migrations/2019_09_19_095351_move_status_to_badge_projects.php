@@ -14,7 +14,7 @@ class MoveStatusToBadgeProjects extends Migration
     public function up()
     {
         foreach (\App\Models\BadgeProject::all() as $bp) {
-            $bp->status = $bp->project->status;
+            $bp->status = $bp->project->getOriginal('status');
             $bp->save();
         }
         Schema::table('projects', function (Blueprint $table) {
