@@ -44,7 +44,7 @@ class BadgeProject extends Model
      */
     public function project(): BelongsTo
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class)->withTrashed();
     }
 
     /**
@@ -54,6 +54,6 @@ class BadgeProject extends Model
      */
     public function badge(): BelongsTo
     {
-        return $this->belongsTo(Badge::class);
+        return $this->belongsTo(Badge::class)->withTrashed();
     }
 }

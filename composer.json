@@ -21,7 +21,8 @@
         "laravel/framework": "5.8.*",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.8",
-        "sentry/sentry-laravel": "^1.0.2"
+        "sentry/sentry-laravel": "^1.0.2",
+        "doctrine/dbal": "^2.9"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",
