@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Str;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -11,9 +14,7 @@
 |
 */
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-use Illuminate\Support\Str;
-
+/* @var Factory $factory */
 $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     static $password;
 
@@ -25,7 +26,7 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-/* @var \Illuminate\Database\Eloquent\Factory $factory */
+/* @var Factory $factory */
 $factory->define(App\Models\Project::class, function (Faker\Generator $faker) {
     return [
         'name'    => $faker->name,
@@ -38,7 +39,7 @@ $factory->define(App\Models\Project::class, function (Faker\Generator $faker) {
     ];
 });
 
-/* @var \Illuminate\Database\Eloquent\Factory $factory */
+/* @var Factory $factory */
 $factory->define(App\Models\Version::class, function (Faker\Generator $faker) {
     return [
         'revision'   => 1,
@@ -48,7 +49,7 @@ $factory->define(App\Models\Version::class, function (Faker\Generator $faker) {
     ];
 });
 
-/* @var \Illuminate\Database\Eloquent\Factory $factory */
+/* @var Factory $factory */
 $factory->define(App\Models\File::class, function (Faker\Generator $faker) {
     return [
         'version_id' => function () {
@@ -59,14 +60,14 @@ $factory->define(App\Models\File::class, function (Faker\Generator $faker) {
     ];
 });
 
-/* @var \Illuminate\Database\Eloquent\Factory $factory */
+/* @var Factory $factory */
 $factory->define(App\Models\Category::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
     ];
 });
 
-/* @var \Illuminate\Database\Eloquent\Factory $factory */
+/* @var Factory $factory */
 $factory->define(App\Models\Badge::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
@@ -74,11 +75,21 @@ $factory->define(App\Models\Badge::class, function (Faker\Generator $faker) {
     ];
 });
 
-/* @var \Illuminate\Database\Eloquent\Factory $factory */
+/* @var Factory $factory */
 $factory->define(App\Models\Vote::class, function (Faker\Generator $faker) {
     return [
         'project_id' => function () {
             return factory(App\Models\Project::class)->create()->id;
         },
+    ];
+});
+
+/* @var Factory $factory */
+$factory->define(App\Models\Warning::class, function (Faker\Generator $faker) {
+    return [
+        'project_id' => function () {
+            return factory(App\Models\Project::class)->create()->id;
+        },
+        'description' => $faker->paragraph,
     ];
 });

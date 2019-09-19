@@ -86,10 +86,17 @@
   left: 10px;
   top: 10px;
 }
-.searchform {
+.searchform, .deleteform {
   display: inline-block;
 }
 #uploader {
   width: 100%;
 }
-
+.compatibility-block {
+  min-height: 36px;
+}
+.compatibility {
+  display: inline-block;
+  float: right;
+  width: auto;
+}

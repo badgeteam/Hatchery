@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Badge.
@@ -29,6 +30,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereUpdatedAt($value)
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
+ * @property-read int|null $states_count
  */
 class Badge extends Model
 {
@@ -37,7 +41,15 @@ class Badge extends Model
      */
     public function projects(): BelongsToMany
     {
-        return $this->belongsToMany(Project::class);
+        return $this->belongsToMany(Project::class)->withTimestamps();
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function states(): HasMany
+    {
+        return $this->hasMany(BadgeProject::class);
     }
 
     /**

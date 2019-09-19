@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProjectNotificationRequest;
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
+use App\Mail\ProjectNotificationMail;
 use App\Models\Badge;
+use App\Models\BadgeProject;
 use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\Version;
+use App\Models\Warning;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use PharData;
@@ -101,7 +106,6 @@ class ProjectsController extends Controller
         try {
             $project->name = $request->name;
             $project->category_id = $request->category_id;
-            $project->status = 'unknown';
             $project->save();
 
             if ($request->badge_ids) {
@@ -148,7 +152,6 @@ class ProjectsController extends Controller
     {
         try {
             $project->category_id = $request->category_id;
-            $project->status = $request->status;
             if ($request->has('dependencies')) {
                 $dependencies = $request->get('dependencies');
                 foreach ($project->dependencies as $dependency) {
@@ -171,8 +174,15 @@ class ProjectsController extends Controller
                 $project->badges()->detach();
                 $badges = Badge::find($request->badge_ids);
                 $project->badges()->attach($badges);
-            }
 
+                foreach ($request->badge_ids as $badge_id) {
+                    if (array_key_exists($badge_id, $request->badge_status)) {
+                        $state = BadgeProject::where('badge_id', $badge_id)->where('project_id', $project->id)->first();
+                        $state->status = $request->badge_status[$badge_id];
+                        $state->save();
+                    }
+                }
+            }
             $project->save();
 
             if (isset($request->publish)) {
@@ -273,5 +283,22 @@ class ProjectsController extends Controller
     {
         return view('projects.show')
             ->with('project', $project);
+    }
+
+    /**
+     * Notify badge.team of broken or dangerous app.
+     *
+     * @param Project                    $project
+     * @param ProjectNotificationRequest $request
+     *
+     * @return RedirectResponse
+     */
+    public function notify(Project $project, ProjectNotificationRequest $request): RedirectResponse
+    {
+        $warning = Warning::create(['project_id' => $project->id, 'description' => $request->description]);
+        $mail = new ProjectNotificationMail($warning);
+        Mail::to('bugs@badge.team')->send($mail);
+
+        return redirect()->route('projects.show', ['project' => $project])->withSuccesses(['Notification sent to badge.team']);
     }
 }

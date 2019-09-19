@@ -48,6 +48,9 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
+ * @property-read int|null $warnings_count
  */
 class User extends Authenticatable
 {
@@ -84,7 +87,15 @@ class User extends Authenticatable
      */
     public function votes(): HasMany
     {
-        return $this->hasMany(Vote::class);
+        return $this->hasMany(Vote::class)->withTrashed();
+    }
+
+    /**
+     * Get the (Project)Warnings for the User.
+     */
+    public function warnings(): HasMany
+    {
+        return $this->hasMany(Warning::class)->withTrashed();
     }
 
     /**

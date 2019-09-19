@@ -21,7 +21,8 @@
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^6.0",
         "sentry/sentry-laravel": "^1.0.2",
-        "bepsvpt/secure-headers": "^5.5.0"
+        "bepsvpt/secure-headers": "^5.5.0",
+        "doctrine/dbal": "^2.9"
     },
     "require-dev": {
         "codeception/codeception": "^3.1",

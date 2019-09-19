@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * Class ProjectUpdateRequest.
  */
-class ProjectUpdateRequest extends FormRequest
+class ProjectNotificationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,6 +28,7 @@ class ProjectUpdateRequest extends FormRequest
     public function rules()
     {
         return [
+            'description' => 'required',
         ];
     }
 }

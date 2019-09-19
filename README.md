@@ -12,7 +12,8 @@
 
 Simple micropython software repository for Badges.
 
-[Live Site](http://badge.team) | [API Documentation](https://badge.team/api)
+[Live Site](http://badge.team) | 
+[API Documentation](https://badge.team/api) |
 [Documentation](https://docs.badge.team/hatchery/) |
 [Documentation (wiki)](https://wiki.badge.team/Hatchery) |
 [Project Wiki](https://wiki.badge.team) |
@@ -96,6 +97,7 @@ Apps
 
 /basket/[badge]/list/json           - a list of all eggs for specific [badge]
 /basket/[badge]/search/[words]/json - [badge] specific search for [words]
+/basket/[badge]/categories/json     - [badge] specific list of categories
 /basket/[badge]/category/[cat]/json - json data for category [cat] on [badge]
 ```
 

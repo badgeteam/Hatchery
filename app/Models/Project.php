@@ -64,6 +64,11 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUserId($value)
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
+ * @property-read int|null $states_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
+ * @property-read int|null $warnings_count
  */
 class Project extends Model
 {
@@ -74,14 +79,14 @@ class Project extends Model
      *
      * @var array
      */
-    protected $appends = ['revision', 'size_of_zip', 'size_of_content', 'category', 'description'];
+    protected $appends = ['revision', 'size_of_zip', 'size_of_content', 'category', 'description', 'status'];
 
     /**
      * Hidden data.
      *
      * @var array
      */
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'user_id', 'id', 'category_id', 'pivot', 'versions'];
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'user_id', 'id', 'category_id', 'pivot', 'versions', 'states'];
 
     /**
      * Forbidden names for apps.
@@ -169,6 +174,23 @@ class Project extends Model
     }
 
     /**
+     * Get the Warnings for the Project.
+     */
+    public function warnings(): HasMany
+    {
+        return $this->hasMany(Warning::class);
+    }
+
+    /**
+     * Get the BadgeProjects for the Project.
+     * This contains support state per badge.
+     */
+    public function states(): HasMany
+    {
+        return $this->hasMany(BadgeProject::class);
+    }
+
+    /**
      * @return string
      */
     public function getRevisionAttribute(): ? string
@@ -201,7 +223,7 @@ class Project extends Model
      */
     public function badges(): BelongsToMany
     {
-        return $this->belongsToMany(Badge::class);
+        return $this->belongsToMany(Badge::class)->withTimestamps();
     }
 
     /**
@@ -300,5 +322,37 @@ class Project extends Model
         }
 
         return $this->votes()->where('user_id', $user->id)->exists();
+    }
+
+    /**
+     * Ugly hack for now . .
+     *
+     * @return string
+     */
+    public function getStatusAttribute(): string
+    {
+        $status = 'unknown';
+        foreach ($this->states as $state) {
+            if ($status === 'unknown') {
+                $status = $state->status;
+            }
+            if ($status === 'broken') {
+                if ($state->status !== 'unknown') {
+                    $status = $state->status;
+                }
+            }
+            if ($status === 'in_progress') {
+                if ($state->status !== 'broken' && $state->status !== 'unknown') {
+                    $status = $state->status;
+                }
+            }
+            if ($status === 'working') {
+                if ($state->status !== 'broken' && $state->status !== 'unknown' && $state->status !== 'in_progress') {
+                    $status = $state->status;
+                }
+            }
+        }
+
+        return $status;
     }
 }

@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Vote;
+use App\Models\Warning;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -49,6 +50,25 @@ class UserTest extends TestCase
         $this->assertEquals($vote->id, $user->votes->first()->id);
         factory(Vote::class)->create(['user_id' => $user->id]);
         $user = User::find($user->id);
-        $this->assertCount(2, $user->projects);
+        $this->assertCount(2, $user->votes);
+    }
+
+    /**
+     * Assert the User has a relation with zero or more Warnings(s).
+     */
+    public function testUserWarningsRelationship()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $this->assertEmpty($user->votes);
+        $user = User::find($user->id);
+        $warning = factory(Warning::class)->create(['user_id' => $user->id]);
+        $this->assertCount(1, $user->warnings);
+        $this->assertInstanceOf(Collection::class, $user->votes);
+        $this->assertInstanceOf(Warning::class, $user->warnings->first());
+        $this->assertEquals($warning->id, $user->warnings->first()->id);
+        factory(Warning::class)->create(['user_id' => $user->id]);
+        $user = User::find($user->id);
+        $this->assertCount(2, $user->warnings);
     }
 }

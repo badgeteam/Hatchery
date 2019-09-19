@@ -105,6 +105,7 @@ class PublicController extends Controller
      */
     public function projectJson(string $slug): JsonResponse
     {
+        /** @var Project|null $project */
         $project = Project::where('slug', $slug)->first();
         if (is_null($project)) {
             return response()->json(['message' => 'No releases found'], 404, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
@@ -275,6 +276,41 @@ class PublicController extends Controller
             ->orderBy('id', 'DESC')
             ->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
         // @todo possibly search in README.md
+    }
+
+    /**
+     * Get a list of the categories for a badge.
+     *
+     * @OA\Get(
+     *   path="/basket/{badge}/categories/json",
+     *   @OA\Parameter(ref="#/components/parameters/badge"),
+     *   tags={"Basket"},
+     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * )
+     *
+     * @param Badge $badge
+     *
+     * @return JsonResponse
+     */
+    public function badgeCategoriesJson(Badge $badge): JsonResponse
+    {
+        $data = [];
+        foreach (Category::where('hidden', false)->get() as $category) {
+            $eggs = $category->projects()->whereHas('badges', function ($query) use ($badge) {
+                $query->where('slug', $badge->slug);
+            })->whereHas('versions', function ($query) {
+                $query->whereNotNull('zip');
+            })->count();
+            if ($eggs > 0) {
+                $data[] = [
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                    'eggs' => $eggs,
+                ];
+            }
+        }
+
+        return response()->json($data, 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
 
     /**

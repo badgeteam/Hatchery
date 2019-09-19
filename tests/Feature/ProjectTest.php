@@ -2,21 +2,34 @@
 
 namespace Tests\Feature;
 
+use App\Mail\ProjectNotificationMail;
 use App\Models\Badge;
 use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
+use App\Models\Vote;
+use App\Models\Warning;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class ProjectTest extends TestCase
 {
     use DatabaseTransactions, DatabaseMigrations, WithFaker;
+
+    /**
+     * Unit test setup use Mail faker.
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+        Mail::fake();
+    }
 
     /**
      * Check the projects list.
@@ -310,14 +323,88 @@ class ProjectTest extends TestCase
         $project = factory(Project::class)->create();
         $faker = Factory::create();
         $badge = factory(Badge::class)->create();
+        $this->assertEquals('unknown', $project->status);
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
                 'description'  => $faker->paragraph,
                 'category_id'  => $project->category_id,
                 'badge_ids'    => [$badge->id],
-                'status'       => 'unknown',
+                'badge_status' => [$badge->id => 'working'],
             ]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
+        $project = Project::find($project->id);
+        $this->assertCount(1, $project->states);
+        $this->assertEquals('working', $project->status);
+    }
+
+    /**
+     * Check that badge.team can be notified of dangerous projects.
+     */
+    public function testProjectsNotify()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/notify/'.$project->slug, ['description' => 'het zuigt']);
+        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
+        Mail::assertSent(ProjectNotificationMail::class);
+        $this->assertCount(1, Warning::all());
+        $project = Project::find($project->id);
+        $this->assertEquals('het zuigt', $project->warnings()->first()->description);
+    }
+
+    /**
+     * Check that a User can Vote for a Project.
+     */
+    public function testProjectsVote()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
+        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
+        $this->assertCount(1, Vote::all());
+        $project = Project::find($project->id);
+        $this->assertEquals('pig', $project->votes()->first()->type);
+    }
+
+    /**
+     * Check that a User can Vote for a Project only once.
+     */
+    public function testProjectsVoteOnce()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
+        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
+        $this->assertCount(1, Vote::all());
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
+        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('errors');
+        $this->assertCount(1, Vote::all());
+    }
+
+    /**
+     * Check that a Vote has existing type.
+     */
+    public function testProjectsVoteTypeExists()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'awesome']);
+        $response->assertRedirect('')->assertSessionHas('errors');
+        $this->assertEmpty(Vote::all());
     }
 }

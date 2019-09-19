@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Badge;
+use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
@@ -21,9 +22,52 @@ class PublicTest extends TestCase
     public function testWelcome()
     {
         $response = $this->get('/');
-
         $response->assertStatus(200)
             ->assertViewHas('badge', '')
+            ->assertViewHas('category', '')
+            ->assertViewHas('users', User::count())
+            ->assertViewHas('projects', Project::count());
+    }
+
+    /**
+     * A basic test example with a Badge.
+     */
+    public function testWelcomeBadge()
+    {
+        $badge = factory(Badge::class)->create();
+        $response = $this->get('/?badge='.$badge->slug);
+        $response->assertStatus(200)
+            ->assertViewHas('badge', $badge->slug)
+            ->assertViewHas('category', '')
+            ->assertViewHas('users', User::count())
+            ->assertViewHas('projects', Project::count());
+    }
+
+    /**
+     * A basic test example with a Category.
+     */
+    public function testWelcomeCategory()
+    {
+        $category = factory(Category::class)->create();
+        $response = $this->get('/?category='.$category->slug);
+        $response->assertStatus(200)
+            ->assertViewHas('badge', '')
+            ->assertViewHas('category', $category->slug)
+            ->assertViewHas('users', User::count())
+            ->assertViewHas('projects', Project::count());
+    }
+
+    /**
+     * A basic test example with Badge and Category.
+     */
+    public function testWelcomeBadgeCategory()
+    {
+        $badge = factory(Badge::class)->create();
+        $category = factory(Category::class)->create();
+        $response = $this->get('/?badge='.$badge->slug.'&category='.$category->slug);
+        $response->assertStatus(200)
+            ->assertViewHas('badge', $badge->slug)
+            ->assertViewHas('category', $category->slug)
             ->assertViewHas('users', User::count())
             ->assertViewHas('projects', Project::count());
     }
@@ -38,8 +82,25 @@ class PublicTest extends TestCase
         $response->assertStatus(200)
             ->assertViewHas('badge', $badge->slug)
             ->assertViewHas('users', User::count())
-            ->assertViewHas('projects', Project::count());
+            ->assertViewHas('projects', Project::count())
+            ->assertViewHas('category', '');
     }
+
+    /**
+     * A badge category example.
+     */
+    public function testBadgeCategory()
+    {
+        $badge = factory(Badge::class)->create();
+        $category = factory(Category::class)->create();
+        $response = $this->get('/badge/'.$badge->slug.'?category='.$category->slug);
+        $response->assertStatus(200)
+            ->assertViewHas('badge', $badge->slug)
+            ->assertViewHas('users', User::count())
+            ->assertViewHas('projects', Project::count())
+            ->assertViewHas('category', $category->slug);
+    }
+
 
     /**
      * Check redirect to /login when going to the /home page.
@@ -320,7 +381,7 @@ class PublicTest extends TestCase
     }
 
     /**
-     * Check JSON eggs request . .
+     * Check JSON basket request . .
      */
     public function testBasketListJson()
     {
@@ -355,7 +416,7 @@ class PublicTest extends TestCase
     }
 
     /**
-     * Check JSON eggs request . .
+     * Check JSON basket request . .
      */
     public function testBasketSearchJson()
     {
@@ -394,7 +455,49 @@ class PublicTest extends TestCase
     }
 
     /**
-     * Check JSON eggs request . .
+     * Check JSON basket request . .
+     */
+    public function testBasketCategoriesJson()
+    {
+        $badge = factory(Badge::class)->create();
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $version->zip = 'some_path.tar.gz';
+        $version->save();
+        $version->project->badges()->attach($badge);
+
+        $category = $version->project->category()->first();
+
+        $response = $this->json('GET', '/basket/nonexisting/categories/json');
+        $response->assertStatus(404);
+
+        $response = $this->json('GET', '/basket/'.$badge->slug.'/categories/json');
+        $response->assertStatus(200)
+            ->assertExactJson([
+                [
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                    'eggs' => 1,
+                ],
+            ]);
+
+        factory(Category::class)->create();
+
+        $this->assertCount(2, Category::all());
+
+        $response = $this->json('GET', '/basket/'.$badge->slug.'/categories/json');
+        $response->assertExactJson([
+                [
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                    'eggs' => 1,
+                ],
+            ]);
+    }
+
+    /**
+     * Check JSON basket request . .
      */
     public function testBasketCategoryJson()
     {

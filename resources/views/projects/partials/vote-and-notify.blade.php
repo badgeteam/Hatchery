@@ -1,10 +1,10 @@
 <table class="table table-striped">
     <thead>
-    <tr>
-        <th>Vote</th>
-        <th>Comment</th>
-        <th>Date</th>
-    </tr>
+        <tr>
+            <th>Vote</th>
+            <th>Comment</th>
+            <th>Date</th>
+        </tr>
     </thead>
     <tbody>
     @forelse($project->votes as $vote)
@@ -27,17 +27,37 @@
         </tr>
     @endforelse
     </tbody>
-    @if ($project->userVoted() === false)
     <tfoot>
         <tr>
             <td colspan="3">
+                @if ($project->userVoted() === false)
                 <button name="vote" class="btn btn-default">Vote</button>
+                @endif
+                @auth
+                <button name="notify" class="btn btn-warning">Notify team</button>
+                @endauth
             </td>
         </tr>
     </tfoot>
-    @endif
 </table>
-@if ($project->userVoted() === false)
+@if($project->warnings()->count() > 0)
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Warning!</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($project->warnings as $warning)
+        <tr>
+            <td>
+                {{ $warning->description }}
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+@endif
 <div id="vote-dialog" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -70,13 +90,38 @@
         </div>
     </div>
 </div>
-
+<div id="notify-dialog" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h3>So, you have issue?</h3>
+                {!! Form::open(['method' => 'post', 'route' => ['projects.notify', $project], 'id' => 'notify-form']) !!}
+                <div class="form-group @if($errors->has('description')) has-error @endif">
+                    {{ Form::label('description', 'Description', ['class' => 'control-label']) }}
+                    {{ Form::textarea('description', null, ['class' => 'form-control', 'id' => 'description']) }}
+                </div>
+                {!! Form::close() !!}
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-danger" id="notify">Notify</button>
+                <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section('script')
     <script type="text/javascript">
       $('button[name="vote"]').on('click', function (e) {
         e.preventDefault()
         var $form = $('#vote-form')
         $('#vote-dialog').modal({ backdrop: 'static', keyboard: false }).one('click', '#vote', function (e) {
+          $form.trigger('submit')
+        })
+      })
+      $('button[name="notify"]').on('click', function (e) {
+        e.preventDefault()
+        var $form = $('#notify-form')
+        $('#notify-dialog').modal({ backdrop: 'static', keyboard: false }).one('click', '#notify', function (e) {
           $form.trigger('submit')
         })
       })
@@ -97,4 +142,4 @@
         }
     </style>
 @endsection
-@endif
+
