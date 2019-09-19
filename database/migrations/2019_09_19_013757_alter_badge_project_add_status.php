@@ -30,7 +30,6 @@ class AlterBadgeProjectAddStatus extends Migration
             $table->dropColumn('status');
             $table->dropColumn('created_at');
             $table->dropColumn('updated_at');
-
         });
     }
 }
