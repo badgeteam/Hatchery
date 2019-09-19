@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\BadgeProject
+ * App\Models\BadgeProject.
  *
  * @property-read \App\Models\Badge $badge
  * @property-read \App\Models\Project $project
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject query()
@@ -30,10 +31,10 @@ class BadgeProject extends Model
      * @var array
      */
     public static $states = [
-        'working' => 'Working',
+        'working'     => 'Working',
         'in_progress' => 'In progress',
-        'broken' => 'Broken',
-        'unknown' => 'Unknown'
+        'broken'      => 'Broken',
+        'unknown'     => 'Unknown',
     ];
 
     /**

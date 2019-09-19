@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class MoveStatusToBadgeProjects extends Migration
 {
@@ -13,7 +13,7 @@ class MoveStatusToBadgeProjects extends Migration
      */
     public function up()
     {
-        foreach(\App\Models\BadgeProject::all() as $bp) {
+        foreach (\App\Models\BadgeProject::all() as $bp) {
             $bp->status = $bp->project->status;
             $bp->save();
         }
@@ -33,7 +33,7 @@ class MoveStatusToBadgeProjects extends Migration
             $table->enum('status', ['working', 'in_progress', 'broken', 'unknown'])->default('unknown');
         });
         // NB very naive implementation
-        foreach(\App\Models\BadgeProject::all() as $bp) {
+        foreach (\App\Models\BadgeProject::all() as $bp) {
             $bp->project->status = $bp->status;
             $bp->project->save();
         }

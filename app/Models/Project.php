@@ -23,6 +23,7 @@ use Illuminate\Support\Str;
  * @property-read int $size_of_zip
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Version[] $versions
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()
@@ -32,6 +33,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withoutTrashed()
  * @mixin \Eloquent
+ *
  * @property-read int|null $badges_count
  * @property-read int|null $dependants_count
  * @property-read int|null $dependencies_count
@@ -50,6 +52,7 @@ use Illuminate\Support\Str;
  * @property-read string|null $description_html
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
  * @property-read int|null $votes_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereDeletedAt($value)
@@ -61,6 +64,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUserId($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
  * @property-read int|null $states_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
@@ -338,12 +342,12 @@ class Project extends Model
                 }
             }
             if ($status === 'in_progress') {
-                if ($state->status !== 'broken' || $state->status !== 'unknown') {
+                if ($state->status !== 'broken' && $state->status !== 'unknown') {
                     $status = $state->status;
                 }
             }
             if ($status === 'working') {
-                if ($state->status !== 'broken' || $state->status !== 'unknown' || $state->status !== 'in_progress') {
+                if ($state->status !== 'broken' && $state->status !== 'unknown' && $state->status !== 'in_progress') {
                     $status = $state->status;
                 }
             }
