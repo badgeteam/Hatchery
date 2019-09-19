@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Auth;
  * @property-read int $size_of_content
  * @property-read \App\Models\User $user
  * @property-read \App\Models\Version $version
- *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newQuery()
@@ -25,7 +24,6 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\File withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\File withoutTrashed()
  * @mixin \Eloquent
- *
  * @property int $id
  * @property int|null $user_id
  * @property int $version_id
@@ -34,7 +32,6 @@ use Illuminate\Support\Facades\Auth;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereDeletedAt($value)
@@ -43,7 +40,6 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereVersionId($value)
- *
  * @property-read string $mime
  */
 class File extends Model

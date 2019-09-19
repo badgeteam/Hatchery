@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Auth;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Project $project
  * @property-read \App\Models\User $user
- *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote newQuery()

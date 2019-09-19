@@ -105,7 +105,6 @@ class ProjectsController extends Controller
         try {
             $project->name = $request->name;
             $project->category_id = $request->category_id;
-            $project->status = 'unknown';
             $project->save();
 
             if ($request->badge_ids) {
@@ -152,7 +151,6 @@ class ProjectsController extends Controller
     {
         try {
             $project->category_id = $request->category_id;
-            $project->status = $request->status;
             if ($request->has('dependencies')) {
                 $dependencies = $request->get('dependencies');
                 foreach ($project->dependencies as $dependency) {
