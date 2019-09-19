@@ -317,12 +317,15 @@ class ProjectTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
-                'description'  => $faker->paragraph,
-                'category_id'  => $project->category_id,
-                'badge_ids'    => [$badge->id],
-                'status'       => 'unknown',
+                'description'              => $faker->paragraph,
+                'category_id'              => $project->category_id,
+                'badge_ids'                => [$badge->id],
+                "badge_status[$badge->id]" => 'working',
             ]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
+        $project = Project::find($project->id);
+        $this->assertCount(1, $project->states);
+        $this->assertEquals('working', $project->status);
     }
 
     /**

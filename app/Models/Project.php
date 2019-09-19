@@ -223,7 +223,7 @@ class Project extends Model
      */
     public function badges(): BelongsToMany
     {
-        return $this->belongsToMany(Badge::class);
+        return $this->belongsToMany(Badge::class)->withTimestamps();
     }
 
     /**
@@ -352,7 +352,6 @@ class Project extends Model
                 }
             }
         }
-
         return $status;
     }
 }

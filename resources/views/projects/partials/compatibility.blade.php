@@ -11,8 +11,9 @@
         /** @var \Illuminate\Database\Eloquent\Relations\HasMany $state */
         $state = $project->states()->where('badge_id', $badge->id);
     @endphp
-    {{ Form::checkbox('badge_ids['.$badge->id.']', 1, $state->count() > 0) }}
+    {{ Form::checkbox('badge_ids[]', $badge->id, $state->count() > 0) }}
     {{ $badge->name }}
-    {{ Form::select('badge_status['.$badge->id.']', \App\Models\BadgeProject::$states, $state->count() > 0 ? $state->first()->status : 'unknown', ['class' => 'form-control', 'id' => 'status']) }}
+    {{ Form::select("badge_status[$badge->id]", \App\Models\BadgeProject::$states, $state->count() > 0 ? $state->first()->status : 'unknown', ['class' => 'form-control compatibility']) }}
+    <br>
 @endforeach
 </div>
