@@ -176,9 +176,9 @@ class ProjectsController extends Controller
                 $project->badges()->attach($badges);
 
                 foreach ($request->badge_ids as $badge_id) {
-                    if ($request->has("badge_status[$badge_id]")) {
+                    if (array_key_exists($badge_id, $request->badge_status)) {
                         $state = BadgeProject::where('badge_id', $badge_id)->where('project_id', $project->id)->first();
-                        $state->status = $request->get("badge_status[$badge_id]");
+                        $state->status = $request->badge_status[$badge_id];
                         $state->save();
                     }
                 }
