@@ -343,8 +343,9 @@ class ProjectTest extends TestCase
             ->actingAs($user)
             ->call('post', '/notify/'.$project->slug, ['description' => 'het zuigt']);
         $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
-        Mail::assertSent(ProjectNotificationMail::class, function(ProjectNotificationMail $mail) {
+        Mail::assertSent(ProjectNotificationMail::class, function (ProjectNotificationMail $mail) {
             Container::getInstance()->call([$mail, 'build']);
+
             return 'mails.projectNotify' === $mail->build()->textView;
         });
         $this->assertCount(1, Warning::all());
