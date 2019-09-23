@@ -12,6 +12,7 @@ use App\Models\Version;
 use App\Models\Vote;
 use App\Models\Warning;
 use Faker\Factory;
+use Illuminate\Container\Container;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -342,7 +343,10 @@ class ProjectTest extends TestCase
             ->actingAs($user)
             ->call('post', '/notify/'.$project->slug, ['description' => 'het zuigt']);
         $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
-        Mail::assertSent(ProjectNotificationMail::class);
+        Mail::assertSent(ProjectNotificationMail::class, function(ProjectNotificationMail $mail) {
+            Container::getInstance()->call([$mail, 'build']);
+            return 'mails.projectNotify' === $mail->build()->textView;
+        });
         $this->assertCount(1, Warning::all());
         $project = Project::find($project->id);
         $this->assertEquals('het zuigt', $project->warnings()->first()->description);
