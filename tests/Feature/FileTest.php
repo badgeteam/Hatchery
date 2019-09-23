@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class FileTest extends TestCase
@@ -19,7 +20,7 @@ class FileTest extends TestCase
     public function testUploadFile()
     {
         $stub = __DIR__.'/heart.png';
-        $name = str_random(8).'.png';
+        $name = Str::random(8).'.png';
         $path = sys_get_temp_dir().'/'.$name;
         copy($stub, $path);
         $file = new UploadedFile($path, $name, 'image/png', null, true);
