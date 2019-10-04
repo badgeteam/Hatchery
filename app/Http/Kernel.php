@@ -52,6 +52,17 @@ use OpenApi\Annotations as OA;
  *   name="External",
  *   description="External api proxies for convenience of apps."
  * )
+ *
+ *　　　　　　 ＿＿
+ *　　　　　／＞　　フ
+ *　　　　　|  _　 _l  Not adding OA doc blocks makes kitty sad!!
+ *　 　　　／`ミ＿xノ
+ *　　 　 /　　　 　|
+ *　　　 /　 ヽ　　 ﾉ
+ *　 　 │　　|　|　|
+ *　／￣|　　 |　|　|
+ *　| (￣ヽ＿_ヽ_)__)
+ *　＼二つ
  */
 class Kernel extends HttpKernel
 {

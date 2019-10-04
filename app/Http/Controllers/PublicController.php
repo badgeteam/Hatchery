@@ -87,8 +87,6 @@ class PublicController extends Controller
     /**
      * Get the latest released version of a project.
      *
-     * @param string $slug
-     *
      * @OA\Get(
      *   path="/eggs/get/{project}/json",
      *   @OA\Parameter(
@@ -100,6 +98,8 @@ class PublicController extends Controller
      *   tags={"Egg"},
      *   @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
+     *
+     * @param string $slug
      *
      * @return JsonResponse
      */
