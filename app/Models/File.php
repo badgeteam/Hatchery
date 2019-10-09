@@ -55,7 +55,14 @@ class File extends Model
      *
      * @var array
      */
-    public static $extensions = ['py', 'txt', 'pyc', 'png', 'bmp', 'jpg', 'json', 'md', 'wav', 'mp3', 'ogg', 'elf', 'bin'];
+    public static $extensions = [
+        'py', 'pyc',
+        'png', 'bmp', 'jpg',
+        'json', 'txt', 'md',
+        'wav', 'mp3', 'ogg',
+        'mod', 'xm', 's3m',
+        'elf', 'bin',
+    ];
 
     /**
      * Mime types for supported extensions.
@@ -75,6 +82,9 @@ class File extends Model
         'jpg'  => 'image/jpeg',
         'wav'  => 'audio/wave',
         'ogg'  => 'audio/ogg',
+        'mod'  => 'audio/mod',
+        'xm'   => 'audio/module-xm',
+        's3m'  => 'audio/s3m',
     ];
 
     protected $editables = ['py', 'txt', 'md', 'json'];
