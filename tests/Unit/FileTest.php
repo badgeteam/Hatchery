@@ -93,4 +93,26 @@ class FileTest extends TestCase
         $file = factory(File::class)->create(['name' => 'test.unknown']);
         $this->assertEquals('application/octet-stream', $file->mime);
     }
+
+    /**
+     * Assert wav file mime type.
+     */
+    public function testFileWavMimeAttribute()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create(['name' => 'test.wav']);
+        $this->assertEquals('audio/wave', $file->mime);
+    }
+
+    /**
+     * Assert bin (octet-stream) file mime type.
+     */
+    public function testBinMimeAttribute()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create(['name' => 'test.bin']);
+        $this->assertEquals('application/octet-stream', $file->mime);
+    }
 }

@@ -113,7 +113,7 @@ class PublicController extends Controller
         }
         $releases = [];
         foreach ($project->versions()->published()->orderBy('revision', 'desc')->limit(5)->get() as $version) {
-            /** @var Version $version */
+            /* @var Version $version */
             $releases[$version->revision] = [['url' => url($version->zip)]];
         }
 

@@ -55,7 +55,7 @@ class File extends Model
      *
      * @var array
      */
-    public static $extensions = ['py', 'txt', 'pyc', 'png', 'json', 'md', 'mp3', 'elf', 'bmp'];
+    public static $extensions = ['py', 'txt', 'pyc', 'png', 'bmp', 'jpg', 'json', 'md', 'wav', 'mp3', 'ogg', 'elf', 'bin'];
 
     /**
      * Mime types for supported extensions.
@@ -72,6 +72,9 @@ class File extends Model
         'mp3'  => 'audio/mpeg',
         'elf'  => 'application/x-elf',
         'bmp'  => 'image/bmp',
+        'jpg'  => 'image/jpeg',
+        'wav'  => 'audio/wave',
+        'ogg'  => 'audio/ogg',
     ];
 
     protected $editables = ['py', 'txt', 'md', 'json'];
@@ -160,7 +163,7 @@ class File extends Model
     {
         $name = collect(explode('.', $this->name));
 
-        if (in_array($name->last(), self::$extensions)) {
+        if (array_key_exists($name->last(), self::$mimes)) {
             return self::$mimes[$name->last()];
         }
 
