@@ -39,7 +39,7 @@ class PublicController extends Controller
         })->orderBy('id', 'DESC');
 
         if ($request->has('category')) {
-            $category = Category::where('slug', $request->get('category'))->first();
+            $category = Category::where('slug', $request->get('category'))->firstOrFail();
             $projects = $projects->where('category_id', $category->id);
             $category = $category->slug;
         } else {
