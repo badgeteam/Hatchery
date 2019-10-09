@@ -71,7 +71,7 @@ class File extends Model
         'md'   => 'text/markdown',
         'mp3'  => 'audio/mpeg',
         'elf'  => 'application/x-elf',
-        'bmp'  => 'image/bmp'
+        'bmp'  => 'image/bmp',
     ];
 
     protected $editables = ['py', 'txt', 'md', 'json'];

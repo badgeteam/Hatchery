@@ -7,6 +7,7 @@ use App\Models\Badge;
 use App\Models\Category;
 use App\Models\Project;
 use App\Models\User;
+use App\Models\Version;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -112,6 +113,7 @@ class PublicController extends Controller
         }
         $releases = [];
         foreach ($project->versions()->published()->orderBy('revision', 'desc')->limit(5)->get() as $version) {
+            /** @var Version $version */
             $releases[$version->revision] = [['url' => url($version->zip)]];
         }
 

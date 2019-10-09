@@ -31,7 +31,7 @@
         "doctrine/dbal": "^2.9",
         "fzaninotto/faker": "~1.8",
         "mockery/mockery": "^1.2.3",
-        "nunomaduro/larastan": "^0.4",
+        "nunomaduro/larastan": "0.4.0",
         "phpunit/phpunit": "^7",
         "sempro/phpunit-pretty-print": "^1.1"
     },
