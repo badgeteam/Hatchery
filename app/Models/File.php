@@ -87,7 +87,17 @@ class File extends Model
         's3m'  => 'audio/s3m',
     ];
 
-    protected $editables = ['py', 'txt', 'md', 'json'];
+    /**
+     * File extensions editable by Hatchery.
+     *
+     * @var array
+     */
+    protected $editables = [
+        'py',
+        'txt',
+        'md',
+        'json',
+    ];
 
     /**
      * Appended magic variables.
