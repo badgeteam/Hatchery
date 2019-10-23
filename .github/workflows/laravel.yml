@@ -21,4 +21,11 @@ jobs:
     - name: Generate key
       run: php artisan key:generate
     - name: Execute tests (Unit and Feature tests) via PHPUnit
+      env:
+        DB_DATABASE: badge
+        DB_USERNAME: root
+        DB_PASSWORD: root
+        DB_TEST_DATABASE: badge
+        DB_TEST_USERNAME: root
+        DB_TEST_PASSWORD: root
       run: vendor/bin/phpunit
