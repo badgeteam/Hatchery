@@ -7,19 +7,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Shutdown MySQL
-      run: sudo service mysql stop
-    - uses: mirromutth/mysql-action@v1.1
-      with:
-        mysql database: badge
-        mysql user: badge
-        mysql password: badge
     - name: Install Linux packages
       run: sudo apt update && sudo apt install -y --no-install-recommends pyflakes
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+    - name: Create Database
+      run: mysql -uroot -proot -e 'create database badge'
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+      run: |
+        composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+        yarn
+        yarn build
     - name: Generate key
       run: php artisan key:generate
     - name: Execute tests (Unit and Feature tests) via PHPUnit
