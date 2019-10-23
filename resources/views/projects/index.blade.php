@@ -47,7 +47,7 @@
 					@else
 						<a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
 					@endcan
-                                    <td>{{ $project->versions()->published()->count() > 0 ? $project->versions()->published()->get()->last()->revision : 'unpublished' }}</td>
+                                    <td>{{ $project->versions()->published()->count() > 0 ? $project->versions()->published()->get()->last()->revision : 'unreleased' }}</td>
                                     <td>{{ $project->size_of_zip }}</td>
                                     <td>{{ $project->size_of_content }}</td>
                                     <td>{{ $project->category }}</td>

@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Shutdown MySQL
+      run: sudo service mysql stop
     - uses: mirromutth/mysql-action@v1.1
       with:
         mysql database: badge
