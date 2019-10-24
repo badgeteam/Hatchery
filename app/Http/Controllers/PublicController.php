@@ -37,7 +37,7 @@ class PublicController extends Controller
         }
         $projects = Project::whereHas('versions', function ($query) {
             $query->published();
-        })->orderBy('id', 'DESC');
+        });
 
         if ($request->has('category')) {
             $category = Category::where('slug', $request->get('category'))->firstOrFail();
@@ -46,6 +46,17 @@ class PublicController extends Controller
         } else {
             $category = '';
         }
+
+        $orderField = 'id';
+        $orderDirection = 'desc';
+        if ($request->has('order')) {
+            $orderField = $request->get('order');
+            if ($request->has('direction') && $request->get('direction') === 'asc') {
+                $orderDirection = 'asc';
+            }
+        }
+
+        $projects = $projects->orderBy($orderField, $orderDirection);
 
         return view('welcome')->with([
             'users'     => User::count(),
