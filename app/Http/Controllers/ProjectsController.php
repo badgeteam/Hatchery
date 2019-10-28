@@ -249,6 +249,9 @@ class ProjectsController extends Controller
             $newFile->save();
         }
 
+        $project->published_at = now();
+        $project->save();
+
         return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' published']);
     }
 

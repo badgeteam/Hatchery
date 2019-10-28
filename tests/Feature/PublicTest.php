@@ -204,6 +204,7 @@ class PublicTest extends TestCase
                     'category'                => $category->slug,
                     'download_counter'        => 0,
                     'status'                  => 'unknown',
+                    'published_at'            => null,
                 ],
             ]);
     }
@@ -229,15 +230,16 @@ class PublicTest extends TestCase
         $response->assertStatus(200)
             ->assertExactJson([
                 [
-                    'description'     => null,
-                    'name'            => $version->project->name,
-                    'revision'        => '1',
-                    'slug'            => $version->project->slug,
-                    'size_of_content' => 0,
-                    'size_of_zip'     => 0,
-                    'category'        => $category->slug,
-            'download_counter'        => 0,
-            'status'                  => 'unknown',
+                    'description'      => null,
+                    'name'             => $version->project->name,
+                    'revision'         => '1',
+                    'slug'             => $version->project->slug,
+                    'size_of_content'  => 0,
+                    'size_of_zip'      => 0,
+                    'category'         => $category->slug,
+                    'download_counter' => 0,
+                    'status'           => 'unknown',
+                    'published_at'     => null,
                 ],
             ]);
     }
@@ -270,7 +272,8 @@ class PublicTest extends TestCase
                     'size_of_zip'      => 0,
                     'category'         => $category->slug,
                     'download_counter' => 0,
-            'status'                   => 'unknown',
+                    'status'           => 'unknown',
+                    'published_at'     => null,
                 ],
             ]);
     }
@@ -410,6 +413,7 @@ class PublicTest extends TestCase
                     'category'                => $category->slug,
                     'download_counter'        => 0,
                     'status'                  => 'unknown',
+                    'published_at'            => null,
                 ],
             ]);
     }
@@ -449,6 +453,7 @@ class PublicTest extends TestCase
                     'category'                => $category->slug,
                     'download_counter'        => 0,
                     'status'                  => 'unknown',
+                    'published_at'            => null,
                 ],
             ]);
     }
@@ -526,6 +531,7 @@ class PublicTest extends TestCase
                     'category'         => $category->slug,
                     'download_counter' => 0,
                     'status'           => 'unknown',
+                    'published_at'     => null,
                 ],
             ]);
     }

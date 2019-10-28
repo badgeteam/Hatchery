@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -19,6 +21,12 @@ use stdClass;
  */
 class PublicController extends Controller
 {
+    private $orderFields = [
+        'id',
+        'name',
+        'published_at'
+    ];
+
     /**
      * Show the application dashboard.
      *
@@ -39,32 +47,7 @@ class PublicController extends Controller
             $query->published();
         });
 
-        if ($request->has('category')) {
-            $category = Category::where('slug', $request->get('category'))->firstOrFail();
-            $projects = $projects->where('category_id', $category->id);
-            $category = $category->slug;
-        } else {
-            $category = '';
-        }
-
-        $orderField = 'id';
-        $orderDirection = 'desc';
-        if ($request->has('order')) {
-            $orderField = $request->get('order');
-            if ($request->has('direction') && $request->get('direction') === 'asc') {
-                $orderDirection = 'asc';
-            }
-        }
-
-        $projects = $projects->orderBy($orderField, $orderDirection);
-
-        return view('welcome')->with([
-            'users'     => User::count(),
-            'projects'  => Project::count(),
-            'published' => $projects->paginate(50),
-            'badge'     => '',
-            'category'  => $category,
-        ]);
+        return $this->returnProjectView($request, $projects);
     }
 
     /**
@@ -77,7 +60,7 @@ class PublicController extends Controller
     {
         $projects = $badge->projects()->whereHas('versions', function ($query) {
             $query->published();
-        })->orderBy('id', 'DESC');
+        });
 
         if ($request->has('category')) {
             $category = Category::where('slug', $request->get('category'))->first();
@@ -87,12 +70,44 @@ class PublicController extends Controller
             $category = '';
         }
 
+        return $this->returnProjectView($request, $projects, $badge->slug);
+    }
+
+    /**
+     * @param Request $request
+     * @param BelongsToMany|Builder $projects
+     * @param string $badge = ''
+     * @return View
+     */
+    private function returnProjectView(Request $request, $projects, string $badge = '')
+    {
+        if ($request->has('category')) {
+            $category = Category::where('slug', $request->get('category'))->firstOrFail();
+            $projects = $projects->where('category_id', $category->id);
+            $category = $category->slug;
+        } else {
+            $category = '';
+        }
+
+        $orderField = 'id';
+        $orderDirection = 'desc';
+        if ($request->has('order') && in_array($request->get('order'), $this->orderFields)) {
+            $orderField = $request->get('order');
+            if ($request->has('direction') && $request->get('direction') === 'asc') {
+                $orderDirection = 'asc';
+            }
+        }
+
+        $projects = $projects->orderBy($orderField, $orderDirection);
+
         return view('welcome')->with([
             'users'     => User::count(),
             'projects'  => Project::count(),
             'published' => $projects->paginate(50),
-            'badge'     => $badge->slug,
+            'badge'     => $badge,
             'category'  => $category,
+            'order'     => $orderField,
+            'direction' => $orderDirection
         ]);
     }
 

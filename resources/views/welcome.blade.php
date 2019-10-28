@@ -72,7 +72,7 @@
 						<td>{{ $project->votes->where('type', 'pig')->count() }}</td>
 						<td>{{ $project->votes->where('type', 'down')->count() }}</td>
 						<td>{{ $project->warnings->count() }}</td>
-						<td>{{ $project->versions()->published()->get()->last()->updated_at->diffForHumans() }}</td>
+						<td>{{ $project->published_at->diffForHumans() }}</td>
 					</tr>
 					@empty
 					<tr><td>No published eggs</td></tr>

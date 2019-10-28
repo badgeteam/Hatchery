@@ -69,6 +69,9 @@ use Illuminate\Support\Str;
  * @property-read int|null $states_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
  * @property-read int|null $warnings_count
+ * @property \Illuminate\Support\Carbon|null $published_at
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project wherePublishedAt($value)
  */
 class Project extends Model
 {
@@ -87,6 +90,15 @@ class Project extends Model
      * @var array
      */
     protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'user_id', 'id', 'category_id', 'pivot', 'versions', 'states'];
+
+    /**
+     * DateTime conversion for these fields.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'created_at', 'updated_at', 'deleted_at', 'published_at'
+    ];
 
     /**
      * Forbidden names for apps.

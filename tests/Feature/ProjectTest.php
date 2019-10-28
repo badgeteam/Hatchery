@@ -214,6 +214,7 @@ class ProjectTest extends TestCase
         $file = factory(File::class, ['version_id' => $project->versions()->unPublished()->first()->id])->create();
         $file->first()->version_id = $project->versions()->unPublished()->first()->id; // yah ugly
         $file->first()->save(); // wut?
+        $this->assertNull($project->published_at);
 
         $response = $this
             ->actingAs($user)
@@ -224,6 +225,10 @@ class ProjectTest extends TestCase
 
         $this->assertFileExists(public_path($version->zip));
         unlink(public_path($version->zip));
+
+        $project = Project::find($project->id);
+        $this->assertNotNull($project->published_at);
+        $this->assertTrue(now()->isSameDay($project->published_at));
     }
 
     /**
