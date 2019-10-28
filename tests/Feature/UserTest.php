@@ -117,7 +117,7 @@ class UserTest extends TestCase
         $response->assertStatus(200);
 
         $faker = Factory::create();
-        $password = $faker->password;
+        $password = $faker->password(8, 20);
 
         $response = $this
             ->withSession(['_token'=>'test'])
@@ -146,7 +146,7 @@ class UserTest extends TestCase
     public function testRegister()
     {
         $faker = Factory::create();
-        $password = $faker->password;
+        $password = $faker->password(8, 20);
         $email = $faker->email;
         $response = $this
             ->withSession(['_token'=>'test'])
