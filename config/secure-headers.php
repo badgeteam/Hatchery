@@ -117,8 +117,7 @@ return [
     'custom-csp' => null,
 
     'csp' => [
-    //    'report-only' => env('APP_ENV') == 'local',
-        'report-only' => true,
+        'report-only' => env('APP_ENV') === 'local' || env('APP_ENV') === 'testing',
 
         'report-uri' => env('SENTRY_CSP_URI', null),
 
