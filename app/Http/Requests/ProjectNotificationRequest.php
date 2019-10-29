@@ -7,8 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class ProjectNotificationRequest.
- *
- * @package App\Http\Requests
  */
 class ProjectNotificationRequest extends FormRequest
 {

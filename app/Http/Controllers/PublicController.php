@@ -18,13 +18,11 @@ use stdClass;
 
 /**
  * Class PublicController.
- *
- * @package App\Http\Controllers
  */
 class PublicController extends Controller
 {
     /**
-     * Fields allowed for ordering the main view ;)
+     * Fields allowed for ordering the main view ;).
      *
      * @var array
      */
@@ -116,7 +114,7 @@ class PublicController extends Controller
             $appends['badge'] = $badge;
         }
         if ($orderField !== '') {
-            $appends['order']     = $orderField;
+            $appends['order'] = $orderField;
             $appends['direction'] = $orderDirection;
         }
 
@@ -156,8 +154,8 @@ class PublicController extends Controller
     public function projectJson(string $slug): JsonResponse
     {
         /**
- * @var Project|null $project 
-*/
+         * @var Project|null
+         */
         $project = Project::where('slug', $slug)->first();
         if (is_null($project)) {
             return response()->json(['message' => 'No releases found'], 404, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);

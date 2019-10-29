@@ -65,8 +65,6 @@ use OpenApi\Annotations as OA;
  * 　／￣|　　 |　|　|
  * 　| (￣ヽ＿_ヽ_)__)
  * 　＼二つ
- *
- * @package App\Http
  */
 class Kernel extends HttpKernel
 {

@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Route;
 
 /**
  * Class RouteServiceProvider.
- *
- * @package App\Providers
  */
 class RouteServiceProvider extends ServiceProvider
 {

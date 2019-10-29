@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * Class VotesController.
- *
- * @package App\Http\Controllers
  */
 class VotesController extends Controller
 {

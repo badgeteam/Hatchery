@@ -8,8 +8,6 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
  * Class FilePolicy.
- *
- * @package App\Policies
  */
 class FilePolicy
 {

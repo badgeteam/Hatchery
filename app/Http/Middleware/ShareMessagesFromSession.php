@@ -8,8 +8,6 @@ use Illuminate\Support\MessageBag;
 
 /**
  * Class ShareMessagesFromSession.
- *
- * @package App\Http\Middleware
  */
 class ShareMessagesFromSession
 {

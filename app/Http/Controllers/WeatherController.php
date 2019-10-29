@@ -10,8 +10,6 @@ use stdClass;
 
 /**
  * Class WeatherController.
- *
- * @package App\Http\Controllers
  */
 class WeatherController extends Controller
 {

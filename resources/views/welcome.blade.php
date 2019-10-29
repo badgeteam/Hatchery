@@ -47,7 +47,7 @@
 						<thead>
 							<tr>
 								<th>
-									<a href="{{ Request::fullUrlWithQuery(['order' => 'name', 'direction' => $direction == 'desc' ? 'asc' : 'desc']) }}">
+									<a href="{{ Request::fullUrlWithQuery(['order' => 'name', 'direction' => $direction === 'asc' ? 'desc' : 'asc']) }}">
 										Name
 										@if($order === 'name')
 											{{$direction === 'desc' ? '↓' : '↑'}}
@@ -63,7 +63,7 @@
 								<th><img src="{{ asset('img/sucks.gif') }}" alt="down" /></th>
 								<th><img src="{{ asset('img/alert.gif') }}" alt="alert" /></th>
 								<th>
-									<a href="{{ Request::fullUrlWithQuery(['order' => 'published_at', 'direction' => $direction == 'desc' ? 'asc' : 'desc']) }}">
+									<a href="{{ Request::fullUrlWithQuery(['order' => 'published_at', 'direction' => $direction === 'asc' ? 'desc' : 'asc']) }}">
 										Last release
 										@if($order === 'published_at')
 											{{$direction === 'desc' ? '↓' : '↑'}}

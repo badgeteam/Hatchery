@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\App;
 
 /**
  * Class VerifyCsrfToken.
- *
- * @package App\Http\Middleware
  */
 class VerifyCsrfToken extends BaseVerifier
 {

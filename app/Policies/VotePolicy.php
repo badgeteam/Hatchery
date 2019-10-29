@@ -8,8 +8,6 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
  * Class VotePolicy.
- *
- * @package App\Policies
  */
 class VotePolicy
 {

@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Validator;
  * This controller handles the registration of new users as well as their
  * validation and creation. By default this controller uses a trait to
  * provide this functionality without requiring any additional code.
- *
- * @package App\Http\Controllers\Auth
  */
 class RegisterController extends Controller
 {

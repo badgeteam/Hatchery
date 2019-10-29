@@ -11,8 +11,6 @@ use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
  * This controller is responsible for handling password reset emails and
  * includes a trait which assists in sending these notifications from
  * your application to your users. Feel free to explore this trait.
- *
- * @package App\Http\Controllers\Auth
  */
 class ForgotPasswordController extends Controller
 {

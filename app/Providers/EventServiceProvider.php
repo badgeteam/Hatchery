@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Event;
 
 /**
  * Class EventServiceProvider.
- *
- * @package App\Providers
  */
 class EventServiceProvider extends ServiceProvider
 {

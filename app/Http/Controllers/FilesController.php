@@ -14,8 +14,6 @@ use Illuminate\View\View;
 
 /**
  * Class FilesController.
- *
- * @package App\Http\Controllers
  */
 class FilesController extends Controller
 {

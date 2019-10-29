@@ -7,8 +7,6 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
  * Class UserPolicy.
- *
- * @package App\Policies
  */
 class UserPolicy
 {

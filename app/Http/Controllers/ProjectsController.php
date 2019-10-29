@@ -23,8 +23,6 @@ use PharData;
 
 /**
  * Class ProjectsController.
- *
- * @package App\Http\Controllers
  */
 class ProjectsController extends Controller
 {
