@@ -120,7 +120,7 @@ return [
     //    'report-only' => env('APP_ENV') == 'local',
         'report-only' => true,
 
-        'report-uri' => env('SENTRY_LARAVEL_DSN', null),
+        'report-uri' => env('SENTRY_CSP_URI', null),
 
         'upgrade-insecure-requests' => true,
 
