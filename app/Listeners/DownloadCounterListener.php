@@ -6,8 +6,10 @@ use App\Events\DownloadCounter;
 
 /**
  * Class DownloadCounterListner.
+ *
+ * @package App\Listeners
  */
-class DownloadCounterListner
+class DownloadCounterListener
 {
     /**
      * Create the event listener.

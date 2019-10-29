@@ -17,9 +17,11 @@ class MoveStatusToBadgeProjects extends Migration
             $bp->status = $bp->project->getOriginal('status');
             $bp->save();
         }
-        Schema::table('projects', function (Blueprint $table) {
-            $table->dropColumn('status');
-        });
+        Schema::table(
+            'projects', function (Blueprint $table) {
+                $table->dropColumn('status');
+            }
+        );
     }
 
     /**
@@ -29,9 +31,11 @@ class MoveStatusToBadgeProjects extends Migration
      */
     public function down()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->enum('status', ['working', 'in_progress', 'broken', 'unknown'])->default('unknown');
-        });
+        Schema::table(
+            'projects', function (Blueprint $table) {
+                $table->enum('status', ['working', 'in_progress', 'broken', 'unknown'])->default('unknown');
+            }
+        );
         // NB very naive implementation
         foreach (\App\Models\BadgeProject::all() as $bp) {
             $bp->project->status = $bp->status;

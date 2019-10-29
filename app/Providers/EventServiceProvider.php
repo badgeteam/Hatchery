@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Event;
 
 /**
  * Class EventServiceProvider.
+ *
+ * @package App\Providers
  */
 class EventServiceProvider extends ServiceProvider
 {
@@ -17,7 +19,7 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'App\Events\DownloadCounter' => [
-            'App\Listeners\DownloadCounterListner',
+            'App\Listeners\DownloadCounterListener',
         ],
     ];
 

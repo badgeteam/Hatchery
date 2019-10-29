@@ -8,6 +8,8 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
  * Class ProjectPolicy.
+ *
+ * @package App\Policies
  */
 class ProjectPolicy
 {

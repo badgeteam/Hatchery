@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject query()
- * @mixin \Eloquent
+ * @mixin  \Eloquent
  *
  * @property int $id
  * @property int $badge_id

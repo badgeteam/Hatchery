@@ -7,6 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class VoteRequest.
+ *
+ * @package App\Http\Requests
  */
 class VoteRequest extends FormRequest
 {

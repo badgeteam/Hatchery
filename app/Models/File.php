@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static bool|null restore()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\File withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\File withoutTrashed()
- * @mixin \Eloquent
+ * @mixin  \Eloquent
  *
  * @property int $id
  * @property int|null $user_id
@@ -120,10 +120,12 @@ class File extends Model
     {
         parent::boot();
 
-        static::creating(function ($file) {
-            $user = Auth::guard()->user();
-            $file->user()->associate($user);
-        });
+        static::creating(
+            function ($file) {
+                $user = Auth::guard()->user();
+                $file->user()->associate($user);
+            }
+        );
     }
 
     /**

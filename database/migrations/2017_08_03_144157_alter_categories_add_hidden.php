@@ -13,9 +13,11 @@ class AlterCategoriesAddHidden extends Migration
      */
     public function up()
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->boolean('hidden')->default(false);
-        });
+        Schema::table(
+            'categories', function (Blueprint $table) {
+                $table->boolean('hidden')->default(false);
+            }
+        );
     }
 
     /**
@@ -25,8 +27,10 @@ class AlterCategoriesAddHidden extends Migration
      */
     public function down()
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->dropColumn('hidden');
-        });
+        Schema::table(
+            'categories', function (Blueprint $table) {
+                $table->dropColumn('hidden');
+            }
+        );
     }
 }

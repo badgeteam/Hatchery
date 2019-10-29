@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\Project;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddPublishedAtToProjectsTable extends Migration
 {
@@ -14,12 +14,16 @@ class AddPublishedAtToProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->timestamp('published_at')->nullable()->after('slug');
-        });
-        $projects = Project::whereHas('versions', function ($query) {
-            $query->published();
-        });
+        Schema::table(
+            'projects', function (Blueprint $table) {
+                $table->timestamp('published_at')->nullable()->after('slug');
+            }
+        );
+        $projects = Project::whereHas(
+            'versions', function ($query) {
+                $query->published();
+            }
+        );
         foreach ($projects->get() as $project) {
             $project->published_at = $project->versions()->published()->get()->last()->updated_at;
             $project->save();
@@ -33,8 +37,10 @@ class AddPublishedAtToProjectsTable extends Migration
      */
     public function down()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->dropColumn('published_at');
-        });
+        Schema::table(
+            'projects', function (Blueprint $table) {
+                $table->dropColumn('published_at');
+            }
+        );
     }
 }

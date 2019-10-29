@@ -13,9 +13,11 @@ class AlterWarningsMakeDescriptionLong extends Migration
      */
     public function up()
     {
-        Schema::table('warnings', function (Blueprint $table) {
-            $table->longText('description')->change();
-        });
+        Schema::table(
+            'warnings', function (Blueprint $table) {
+                $table->longText('description')->change();
+            }
+        );
     }
 
     /**
@@ -25,8 +27,8 @@ class AlterWarningsMakeDescriptionLong extends Migration
      */
     public function down()
     {
-//        Schema::table('warnings', function (Blueprint $table) {
-//            $table->string('description')->change();
-//        });
+        //        Schema::table('warnings', function (Blueprint $table) {
+        //            $table->string('description')->change();
+        //        });
     }
 }

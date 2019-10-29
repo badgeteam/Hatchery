@@ -32,23 +32,23 @@ use Illuminate\Support\Str;
  * @method static bool|null restore()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withoutTrashed()
- * @mixin \Eloquent
+ * @mixin  \Eloquent
  *
  * @property-read int|null $badges_count
  * @property-read int|null $dependants_count
  * @property-read int|null $dependencies_count
  * @property-read int|null $versions_count
- * @property int $id
- * @property int $category_id
- * @property int $user_id
- * @property string $name
- * @property string|null $slug
- * @property string|null $description
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property int $download_counter
- * @property string $status
+ * @property      int $id
+ * @property      int $category_id
+ * @property      int $user_id
+ * @property      string $name
+ * @property      string|null $slug
+ * @property      string|null $description
+ * @property      \Illuminate\Support\Carbon|null $deleted_at
+ * @property      \Illuminate\Support\Carbon|null $created_at
+ * @property      \Illuminate\Support\Carbon|null $updated_at
+ * @property      int $download_counter
+ * @property      string $status
  * @property-read string|null $description_html
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
  * @property-read int|null $votes_count
@@ -69,7 +69,7 @@ use Illuminate\Support\Str;
  * @property-read int|null $states_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
  * @property-read int|null $warnings_count
- * @property \Illuminate\Support\Carbon|null $published_at
+ * @property      \Illuminate\Support\Carbon|null $published_at
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project wherePublishedAt($value)
  */
@@ -97,7 +97,7 @@ class Project extends Model
      * @var array
      */
     protected $dates = [
-        'created_at', 'updated_at', 'deleted_at', 'published_at'
+        'created_at', 'updated_at', 'deleted_at', 'published_at',
     ];
 
     /**
@@ -119,30 +119,36 @@ class Project extends Model
     {
         parent::boot();
 
-        static::creating(function ($project) {
-            $user = Auth::guard()->user();
-            $project->user()->associate($user);
-        });
-
-        static::created(function ($project) {
-            $version = new Version();
-            $version->revision = 1;
-            $version->project()->associate($project);
-            $version->save();
-            // add first empty python file :)
-            $file = new File();
-            $file->name = '__init__.py';
-            $file->content = '';
-            $file->version()->associate($version);
-            $file->save();
-        });
-
-        static::saving(function ($project) {
-            $project->slug = Str::slug($project->name, '_');
-            if (self::isForbidden($project->slug)) {
-                throw new \Exception('reserved name');
+        static::creating(
+            function ($project) {
+                $user = Auth::guard()->user();
+                $project->user()->associate($user);
             }
-        });
+        );
+
+        static::created(
+            function ($project) {
+                $version = new Version();
+                $version->revision = 1;
+                $version->project()->associate($project);
+                $version->save();
+                // add first empty python file :)
+                $file = new File();
+                $file->name = '__init__.py';
+                $file->content = '';
+                $file->version()->associate($version);
+                $file->save();
+            }
+        );
+
+        static::saving(
+            function ($project) {
+                $project->slug = Str::slug($project->name, '_');
+                if (self::isForbidden($project->slug)) {
+                    throw new \Exception('reserved name');
+                }
+            }
+        );
     }
 
     /**

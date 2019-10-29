@@ -13,16 +13,20 @@ class CreateCategoriesTableAlterProjectsAddCategory extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name')->unique();
-            $table->string('slug');
-            $table->softDeletes();
-            $table->nullableTimestamps();
-        });
-        Schema::table('projects', function (Blueprint $table) {
-            $table->integer('category_id')->unsigned()->default(1)->after('id');
-        });
+        Schema::create(
+            'categories', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('name')->unique();
+                $table->string('slug');
+                $table->softDeletes();
+                $table->nullableTimestamps();
+            }
+        );
+        Schema::table(
+            'projects', function (Blueprint $table) {
+                $table->integer('category_id')->unsigned()->default(1)->after('id');
+            }
+        );
     }
 
     /**
@@ -32,9 +36,11 @@ class CreateCategoriesTableAlterProjectsAddCategory extends Migration
      */
     public function down()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->dropColumn('category_id');
-        });
+        Schema::table(
+            'projects', function (Blueprint $table) {
+                $table->dropColumn('category_id');
+            }
+        );
         Schema::dropIfExists('categories');
     }
 }

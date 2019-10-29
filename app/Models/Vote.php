@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\Auth;
 /**
  * App\Models\Vote.
  *
- * @property int $id
- * @property int $user_id
- * @property int $project_id
- * @property string $type
- * @property string|null $comment
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property      int $id
+ * @property      int $user_id
+ * @property      int $project_id
+ * @property      string $type
+ * @property      string|null $comment
+ * @property      \Illuminate\Support\Carbon|null $deleted_at
+ * @property      \Illuminate\Support\Carbon|null $created_at
+ * @property      \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Project $project
  * @property-read \App\Models\User $user
  *
@@ -37,7 +37,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Vote withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Vote withoutTrashed()
- * @mixin \Eloquent
+ * @mixin  \Eloquent
  */
 class Vote extends Model
 {
@@ -59,10 +59,12 @@ class Vote extends Model
     {
         parent::boot();
 
-        static::creating(function ($vote) {
-            $user = Auth::guard()->user();
-            $vote->user()->associate($user);
-        });
+        static::creating(
+            function ($vote) {
+                $user = Auth::guard()->user();
+                $vote->user()->associate($user);
+            }
+        );
     }
 
     /**

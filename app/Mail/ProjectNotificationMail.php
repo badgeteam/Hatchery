@@ -7,6 +7,11 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class ProjectNotificationMail
+ *
+ * @package App\Mail
+ */
 class ProjectNotificationMail extends Mailable
 {
     use Queueable, SerializesModels;

@@ -21,16 +21,16 @@ use Illuminate\Support\Str;
  * @method static bool|null restore()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withoutTrashed()
- * @mixin \Eloquent
+ * @mixin  \Eloquent
  *
  * @property-read int|null $projects_count
- * @property int $id
- * @property string $name
- * @property string $slug
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property int $hidden
+ * @property      int $id
+ * @property      string $name
+ * @property      string $slug
+ * @property      \Illuminate\Support\Carbon|null $deleted_at
+ * @property      \Illuminate\Support\Carbon|null $created_at
+ * @property      \Illuminate\Support\Carbon|null $updated_at
+ * @property      int $hidden
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereDeletedAt($value)
@@ -65,9 +65,11 @@ class Category extends Model
     {
         parent::boot();
 
-        static::saving(function ($project) {
-            $project->slug = Str::slug($project->name, '_');
-        });
+        static::saving(
+            function ($project) {
+                $project->slug = Str::slug($project->name, '_');
+            }
+        );
     }
 
     /**
@@ -97,8 +99,10 @@ class Category extends Model
      */
     public function getEggsAttribute(): int
     {
-        return $this->projects()->whereHas('versions', function ($query) {
-            $query->whereNotNull('zip');
-        })->count();
+        return $this->projects()->whereHas(
+            'versions', function ($query) {
+                $query->whereNotNull('zip');
+            }
+        )->count();
     }
 }

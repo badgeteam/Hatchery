@@ -13,9 +13,11 @@ class AlterUsersAddEditorField extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('editor', 80)->default('default')->after('remember_token');
-        });
+        Schema::table(
+            'users', function (Blueprint $table) {
+                $table->string('editor', 80)->default('default')->after('remember_token');
+            }
+        );
     }
 
     /**
@@ -25,8 +27,10 @@ class AlterUsersAddEditorField extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('editor');
-        });
+        Schema::table(
+            'users', function (Blueprint $table) {
+                $table->dropColumn('editor');
+            }
+        );
     }
 }

@@ -21,20 +21,20 @@ use Illuminate\Notifications\Notifiable;
  * @method static bool|null restore()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withoutTrashed()
- * @mixin \Eloquent
+ * @mixin  \Eloquent
  *
  * @property-read int|null $notifications_count
  * @property-read int|null $projects_count
- * @property int $id
- * @property int $admin
- * @property string $name
- * @property string $email
- * @property string $password
- * @property string|null $remember_token
- * @property string $editor
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property      int $id
+ * @property      int $admin
+ * @property      string $name
+ * @property      string $email
+ * @property      string $password
+ * @property      string|null $remember_token
+ * @property      string $editor
+ * @property      \Illuminate\Support\Carbon|null $deleted_at
+ * @property      \Illuminate\Support\Carbon|null $created_at
+ * @property      \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
  * @property-read int|null $votes_count
  *

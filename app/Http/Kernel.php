@@ -6,16 +6,18 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use OpenApi\Annotations as OA;
 
 /**
+ * Class Kernel.
+ *
  * @OA\Info(
  *   title="Hatchery by badge.team",
  *   version="0.2",
  *   description="Simple micropython software repository for Badges.",
- *   @OA\Contact(
+ * @OA\Contact(
  *     name="Hatchery",
  *     url="https://docs.badge.team/hatchery",
  *     email="hatchery@badge.team"
  *   ),
- *   @OA\License(
+ * @OA\License(
  *       name="MIT",
  *       url="https://opensource.org/licenses/MIT"
  *   )
@@ -26,18 +28,18 @@ use OpenApi\Annotations as OA;
  *   name="badge",
  *   in="path",
  *   required=true,
- *   @OA\Schema(type="string", format="slug", example="sha2017")
+ * @OA\Schema(type="string", format="slug", example="sha2017")
  * )
  *
  * @OA\Response(
  *   response="html",
  *   description="Undocumented HTML response",
- *   @OA\XmlContent()
+ * @OA\XmlContent()
  * ),
  * @OA\Response(
  *   response="undocumented",
  *   description="Undocumented JSON response",
- *   @OA\JsonContent()
+ * @OA\JsonContent()
  * )
  *
  * @OA\Tag(
@@ -53,16 +55,18 @@ use OpenApi\Annotations as OA;
  *   description="External api proxies for convenience of apps."
  * )
  *
- *　　　　　　 ＿＿
- *　　　　　／＞　　フ
- *　　　　　|  _　 _l  Not adding OA doc blocks makes kitty sad!!
- *　 　　　／`ミ＿xノ
- *　　 　 /　　　 　|
- *　　　 /　 ヽ　　 ﾉ
- *　 　 │　　|　|　|
- *　／￣|　　 |　|　|
- *　| (￣ヽ＿_ヽ_)__)
- *　＼二つ
+ * 　　　　　　 ＿＿
+ * 　　　　　／＞　　フ
+ * 　　　　　|  _　 _l  Not adding OA doc blocks makes kitty sad!!
+ * 　 　　　／`ミ＿xノ
+ * 　　 　 /　　　 　|
+ * 　　　 /　 ヽ　　 ﾉ
+ * 　 　 │　　|　|　|
+ * 　／￣|　　 |　|　|
+ * 　| (￣ヽ＿_ヽ_)__)
+ * 　＼二つ
+ *
+ * @package App\Http
  */
 class Kernel extends HttpKernel
 {

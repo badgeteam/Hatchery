@@ -23,6 +23,8 @@ use PharData;
 
 /**
  * Class ProjectsController.
+ *
+ * @package App\Http\Controllers
  */
 class ProjectsController extends Controller
 {
@@ -61,10 +63,12 @@ class ProjectsController extends Controller
         }
         if ($request->has('search')) {
             $search = $request->get('search');
-            $projects = $projects->where(function (Builder $query) use ($search) {
-                $query->where('name', 'like', '%'.$search.'%');
-                // @todo perhaps search in README ?
-            });
+            $projects = $projects->where(
+                function (Builder $query) use ($search) {
+                    $query->where('name', 'like', '%'.$search.'%');
+                    // @todo perhaps search in README ?
+                }
+            );
         }
 
         return view('projects.index')
@@ -214,13 +218,15 @@ class ProjectsController extends Controller
             $zip[$project->slug.'/'.$file->name] = $file->content;
         }
 
-        $zip[$project->slug.'/metadata.json'] = json_encode([
-            'name'        => $project->name,
-            'description' => $project->description,
-            'category'    => $project->category,
-            'author'      => $project->user->name,
-            'revision'    => $version->revision,
-        ]);
+        $zip[$project->slug.'/metadata.json'] = json_encode(
+            [
+                'name'        => $project->name,
+                'description' => $project->description,
+                'category'    => $project->category,
+                'author'      => $project->user->name,
+                'revision'    => $version->revision,
+            ]
+        );
 
         if (!$project->dependencies->isEmpty()) {
             $dep = '';
@@ -230,7 +236,7 @@ class ProjectsController extends Controller
             $zip[$project->slug.'/'.$project->slug.'.egg-info/requires.txt'] = $dep;
         }
 
-//        $zip->compress(Phar::GZ);
+        //        $zip->compress(Phar::GZ);
         system('minigzip < '.public_path($filename).' > '.public_path($filename.'.gz'));
 
         $version->zip = $filename.'.gz';

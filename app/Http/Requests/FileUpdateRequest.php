@@ -7,6 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class FileUpdateRequest.
+ *
+ * @package App\Http\Requests
  */
 class FileUpdateRequest extends FormRequest
 {

@@ -117,10 +117,10 @@ return [
     'custom-csp' => null,
 
     'csp' => [
-//        'report-only' => env('APP_ENV') == 'local',
+    //    'report-only' => env('APP_ENV') == 'local',
         'report-only' => true,
 
-        'report-uri' => null,
+        'report-uri' => env('SENTRY_LARAVEL_DSN', null),
 
         'upgrade-insecure-requests' => true,
 

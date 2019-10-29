@@ -27,18 +27,18 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version unPublished()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Version withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Version withoutTrashed()
- * @mixin \Eloquent
+ * @mixin  \Eloquent
  *
  * @property-read int|null $files_count
- * @property int $id
- * @property int|null $user_id
- * @property int $project_id
- * @property int $revision
- * @property string|null $zip
- * @property int|null $size_of_zip
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property      int $id
+ * @property      int|null $user_id
+ * @property      int $project_id
+ * @property      int $revision
+ * @property      string|null $zip
+ * @property      int|null $size_of_zip
+ * @property      \Illuminate\Support\Carbon|null $deleted_at
+ * @property      \Illuminate\Support\Carbon|null $created_at
+ * @property      \Illuminate\Support\Carbon|null $updated_at
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereDeletedAt($value)
@@ -68,10 +68,12 @@ class Version extends Model
     {
         parent::boot();
 
-        static::creating(function ($version) {
-            $user = Auth::guard()->user();
-            $version->user()->associate($user);
-        });
+        static::creating(
+            function ($version) {
+                $user = Auth::guard()->user();
+                $version->user()->associate($user);
+            }
+        );
     }
 
     /**

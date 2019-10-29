@@ -11,6 +11,8 @@ use Illuminate\View\View;
 
 /**
  * Class UsersController.
+ *
+ * @package App\Http\Controllers
  */
 class UsersController extends Controller
 {

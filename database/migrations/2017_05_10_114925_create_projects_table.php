@@ -13,14 +13,16 @@ class CreateProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('projects', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->string('name')->unique();
-            $table->softDeletes();
-            $table->nullableTimestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-        });
+        Schema::create(
+            'projects', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('user_id')->unsigned();
+                $table->string('name')->unique();
+                $table->softDeletes();
+                $table->nullableTimestamps();
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            }
+        );
     }
 
     /**
@@ -30,9 +32,11 @@ class CreateProjectsTable extends Migration
      */
     public function down()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-        });
+        Schema::table(
+            'projects', function (Blueprint $table) {
+                $table->dropForeign(['user_id']);
+            }
+        );
         Schema::dropIfExists('projects');
     }
 }

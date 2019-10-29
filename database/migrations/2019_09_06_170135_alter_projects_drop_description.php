@@ -25,9 +25,11 @@ class AlterProjectsDropDescription extends Migration
                 }
             }
         }
-        Schema::table('projects', function (Blueprint $table) {
-            $table->dropColumn('description');
-        });
+        Schema::table(
+            'projects', function (Blueprint $table) {
+                $table->dropColumn('description');
+            }
+        );
     }
 
     /**
@@ -37,9 +39,11 @@ class AlterProjectsDropDescription extends Migration
      */
     public function down()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->text('description')->nullable();
-        });
+        Schema::table(
+            'projects', function (Blueprint $table) {
+                $table->text('description')->nullable();
+            }
+        );
         foreach (Project::all() as $project) {
             $version = $project->versions->last();
             if ($version && $version->files()->where('name', 'like', 'README.md')->count() === 1) {
