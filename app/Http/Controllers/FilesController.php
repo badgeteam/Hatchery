@@ -77,7 +77,7 @@ class FilesController extends Controller
                 return redirect()
                     ->route('projects.edit', ['project' => $file->version->project->slug])
                     ->withSuccesses([$file->name.' saved']);
-            } elseif (!empty($pyflakes[0])) {
+            } elseif (! empty($pyflakes[0])) {
                 return redirect()->route('files.edit', ['file' => $file->id])
                     ->withInput()
                     ->withWarnings(explode("\n", $pyflakes[0]));

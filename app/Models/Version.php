@@ -107,7 +107,7 @@ class Version extends Model
      */
     public function getPublishedAttribute(): bool
     {
-        return !empty($this->zip);
+        return ! empty($this->zip);
     }
 
     /**

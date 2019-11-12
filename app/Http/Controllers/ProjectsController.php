@@ -48,7 +48,7 @@ class ProjectsController extends Controller
         if ($request->has('badge')) {
             $badge = Badge::where('slug', $request->get('badge'))->first();
         }
-        if ($badge === '' || !$badge) {
+        if ($badge === '' || ! $badge) {
             $projects = Project::orderBy('id', 'DESC');
         } else {
             $projects = $badge->projects()->orderBy('id', 'DESC');
@@ -157,12 +157,12 @@ class ProjectsController extends Controller
             if ($request->has('dependencies')) {
                 $dependencies = $request->get('dependencies');
                 foreach ($project->dependencies as $dependency) {
-                    if (!in_array($dependency->id, $dependencies)) {
+                    if (! in_array($dependency->id, $dependencies)) {
                         $dependency->pivot->delete();
                     }
                 }
                 foreach ($dependencies as $dependency) {
-                    if (!$project->dependencies->contains($dependency)) {
+                    if (! $project->dependencies->contains($dependency)) {
                         $project->dependencies()->save(Project::find($dependency));
                     }
                 }
@@ -226,7 +226,7 @@ class ProjectsController extends Controller
             ]
         );
 
-        if (!$project->dependencies->isEmpty()) {
+        if (! $project->dependencies->isEmpty()) {
             $dep = '';
             foreach ($project->dependencies as $dependency) {
                 $dep .= $dependency->slug."\n";

@@ -17,7 +17,7 @@ class AlterProjectsDropDescription extends Migration
         auth()->loginUsingId(1);
         foreach (Project::all() as $project) {
             $version = $project->versions->last();
-            if (!empty($project->description)) {
+            if (! empty($project->description)) {
                 if ($version && $version->files()->where('name', 'like', 'README.md')->count() === 0) {
                     $file = $version->files()->firstOrNew(['name' => 'README.md']);
                     $file->content = $project->description;
