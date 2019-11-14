@@ -10,6 +10,7 @@
 [![Build Status](https://scrutinizer-ci.com/g/badgeteam/Hatchery/badges/build.png?b=master)](https://scrutinizer-ci.com/g/badgeteam/Hatchery/build-status/master)
 [![codecov](https://codecov.io/gh/badgeteam/Hatchery/branch/master/graph/badge.svg)](https://codecov.io/gh/badgeteam/Hatchery)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery?ref=badge_shield)
+[![Known Vulnerabilities](https://snyk.io/test/github/badgeteam/Hatchery/badge.svg)](https://snyk.io/test/github/badgeteam/Hatchery)
 
 Simple micropython software repository for Badges.
 
