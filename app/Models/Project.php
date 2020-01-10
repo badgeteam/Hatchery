@@ -211,7 +211,7 @@ class Project extends Model
     /**
      * @return string
      */
-    public function getRevisionAttribute(): ? string
+    public function getRevisionAttribute(): ?string
     {
         $version = $this->versions()->published()->get()->last();
 
@@ -247,7 +247,7 @@ class Project extends Model
     /**
      * @return int
      */
-    public function getSizeOfZipAttribute(): ? int
+    public function getSizeOfZipAttribute(): ?int
     {
         $version = $this->versions()->published()->get()->last();
 
@@ -257,7 +257,7 @@ class Project extends Model
     /**
      * @return int
      */
-    public function getSizeOfContentAttribute(): ? int
+    public function getSizeOfContentAttribute(): ?int
     {
         $version = $this->versions()->published()->get()->last();
         if (is_null($version)) {
@@ -285,7 +285,7 @@ class Project extends Model
     /**
      * @return string
      */
-    public function getCategoryAttribute(): ? string
+    public function getCategoryAttribute(): ?string
     {
         if (is_null($this->category()->first())) {
             return 'uncategorised';
@@ -307,7 +307,7 @@ class Project extends Model
     /**
      * @return string|null
      */
-    public function getDescriptionAttribute(): ? string
+    public function getDescriptionAttribute(): ?string
     {
         $version = $this->versions->last();
         if ($version && $version->files()->where('name', 'like', 'README.md')->count() === 1) {
@@ -320,7 +320,7 @@ class Project extends Model
     /**
      * @return string|null
      */
-    public function getDescriptionHtmlAttribute(): ? string
+    public function getDescriptionHtmlAttribute(): ?string
     {
         if ($this->description) {
             return Markdown::parse($this->description);
@@ -332,7 +332,7 @@ class Project extends Model
     /**
      * @return bool|null
      */
-    public function userVoted(): ? bool
+    public function userVoted(): ?bool
     {
         $user = Auth::guard()->user();
         if (is_null($user)) {

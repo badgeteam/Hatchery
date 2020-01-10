@@ -11,8 +11,8 @@ use Tests\TestCase;
 
 class WarningTest extends TestCase
 {
-    use DatabaseTransactions, DatabaseMigrations;
-
+    use DatabaseTransactions;
+    use DatabaseMigrations;
     /**
      * Assert the Warning is cast by a User.
      */

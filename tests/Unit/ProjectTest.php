@@ -17,8 +17,8 @@ use Tests\TestCase;
 
 class ProjectTest extends TestCase
 {
-    use DatabaseTransactions, DatabaseMigrations;
-
+    use DatabaseTransactions;
+    use DatabaseMigrations;
     /**
      * Assert the Project has a relation with a single User.
      */

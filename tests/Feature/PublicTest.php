@@ -14,8 +14,8 @@ use Tests\TestCase;
 
 class PublicTest extends TestCase
 {
-    use DatabaseTransactions, DatabaseMigrations;
-
+    use DatabaseTransactions;
+    use DatabaseMigrations;
     /**
      * A basic test example.
      */
@@ -492,12 +492,12 @@ class PublicTest extends TestCase
 
         $response = $this->json('GET', '/basket/'.$badge->slug.'/categories/json');
         $response->assertExactJson([
-                [
-                    'name' => $category->name,
-                    'slug' => $category->slug,
-                    'eggs' => 1,
-                ],
-            ]);
+            [
+                'name' => $category->name,
+                'slug' => $category->slug,
+                'eggs' => 1,
+            ],
+        ]);
     }
 
     /**

@@ -54,8 +54,8 @@ use Illuminate\Notifications\Notifiable;
  */
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes;
-
+    use Notifiable;
+    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *

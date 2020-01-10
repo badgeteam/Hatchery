@@ -12,8 +12,8 @@ use Tests\TestCase;
 
 class FileTest extends TestCase
 {
-    use DatabaseTransactions, DatabaseMigrations;
-
+    use DatabaseTransactions;
+    use DatabaseMigrations;
     /**
      * Assert the File has a relation with a single Project Version.
      */

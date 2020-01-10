@@ -12,8 +12,8 @@ use Illuminate\Queue\SerializesModels;
  */
 class ProjectNotificationMail extends Mailable
 {
-    use Queueable, SerializesModels;
-
+    use Queueable;
+    use SerializesModels;
     public $project;
     public $description;
 

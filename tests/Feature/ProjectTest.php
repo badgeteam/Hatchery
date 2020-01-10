@@ -21,8 +21,9 @@ use Tests\TestCase;
 
 class ProjectTest extends TestCase
 {
-    use DatabaseTransactions, DatabaseMigrations, WithFaker;
-
+    use DatabaseTransactions;
+    use DatabaseMigrations;
+    use WithFaker;
     /**
      * Unit test setup use Mail faker.
      */

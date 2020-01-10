@@ -14,10 +14,10 @@ class BadgesSeeder extends Seeder
     {
         if (Badge::count() === 0) {
             foreach ([
-                         'sha2017' => 'SHA2017 Badge',
-                         'disobey2019' => 'Disobey 2019',
-                         'hackerhotel2019' => 'Hacker Hotel 2019',
-                     ] as $slug => $name) {
+                'sha2017' => 'SHA2017 Badge',
+                'disobey2019' => 'Disobey 2019',
+                'hackerhotel2019' => 'Hacker Hotel 2019',
+            ] as $slug => $name) {
                 Badge::create(['slug' => $slug, 'name' => $name]);
             }
         }

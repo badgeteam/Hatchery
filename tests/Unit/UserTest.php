@@ -13,8 +13,8 @@ use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    use DatabaseTransactions, DatabaseMigrations;
-
+    use DatabaseTransactions;
+    use DatabaseMigrations;
     /**
      * Assert the User has a relation with zero or more Project(s).
      */
