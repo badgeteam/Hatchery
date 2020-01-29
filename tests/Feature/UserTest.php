@@ -15,6 +15,7 @@ class UserTest extends TestCase
 {
     use DatabaseTransactions;
     use DatabaseMigrations;
+
     /**
      * login failed get redirected.
      */

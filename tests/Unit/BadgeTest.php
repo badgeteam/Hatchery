@@ -14,6 +14,7 @@ class BadgeTest extends TestCase
 {
     use DatabaseTransactions;
     use DatabaseMigrations;
+
     /**
      * Assert the Badge has a collection of Projects.
      */

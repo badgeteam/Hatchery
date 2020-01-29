@@ -24,6 +24,7 @@ class ProjectTest extends TestCase
     use DatabaseTransactions;
     use DatabaseMigrations;
     use WithFaker;
+
     /**
      * Unit test setup use Mail faker.
      */

@@ -18,6 +18,7 @@ class FileTest extends TestCase
     use DatabaseTransactions;
     use DatabaseMigrations;
     use WithFaker;
+
     public function testUploadFile()
     {
         $stub = __DIR__.'/heart.png';

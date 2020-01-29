@@ -14,6 +14,7 @@ class VersionTest extends TestCase
 {
     use DatabaseTransactions;
     use DatabaseMigrations;
+
     /**
      * Assert the Version has a relation with a single Project.
      */

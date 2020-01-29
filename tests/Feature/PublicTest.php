@@ -16,6 +16,7 @@ class PublicTest extends TestCase
 {
     use DatabaseTransactions;
     use DatabaseMigrations;
+
     /**
      * A basic test example.
      */

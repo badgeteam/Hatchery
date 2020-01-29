@@ -15,6 +15,7 @@ class UserTest extends TestCase
 {
     use DatabaseTransactions;
     use DatabaseMigrations;
+
     /**
      * Assert the User has a relation with zero or more Project(s).
      */
