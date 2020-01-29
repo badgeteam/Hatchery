@@ -14,6 +14,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css', !App::environment(['local', 'testing'])) }}" rel="stylesheet">
+    <meta name="theme-color" content="#f00">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="640x640" href="/img/bs.png">
+    <link rel="apple-touch-icon" sizes="640x640" href="/img/bs.png">
 
     <!-- Scripts -->
     <script>
