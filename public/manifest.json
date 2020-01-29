@@ -1,0 +1,22 @@
+{
+ "name": "The hathery is the application repository which hosts the apps (“eggs”) you can load onto your badge.",
+ "short_name": "Hatchery",
+ "start_url": "/",
+ "display": "standalone",
+ "background_color": "#39c",
+ "theme_color": "#fff",
+ "icons": [
+  {
+   "src": "\/favicon.ico",
+   "sizes": "16x16",
+   "type": "image\/x-icon",
+   "density": "1.0"
+  },
+  {
+   "src": "\/img\/bs.png",
+   "sizes": "640x640",
+   "type": "image\/png",
+   "density": "2.0"
+  }
+ ]
+}
