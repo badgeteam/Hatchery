@@ -1,4 +1,4 @@
-const cacheName = 'hatchery::20190129::static';
+const cacheName = 'hatchery::20190129';
 
 self.addEventListener('install', e => {
   e.waitUntil(
