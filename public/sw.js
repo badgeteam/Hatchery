@@ -1,4 +1,4 @@
-const cacheName = 'hatchery::20190129';
+const cacheName = 'hatchery::20200205';
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -36,8 +36,6 @@ self.addEventListener('install', e => {
         '/badge/ohs2018',
         '/badge/hacktivity2019',
         '/badge/fri3d2020',
-        '/login',
-        '/register',
         '/projects',
         '/icons/blank.gif',
         '/icons/back.gif',
