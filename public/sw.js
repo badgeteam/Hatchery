@@ -1,4 +1,4 @@
-const cacheName = 'hatchery::20200205';
+const cacheName = 'hatchery::20200206';
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -25,18 +25,6 @@ self.addEventListener('install', e => {
         '/mix-manifest.json',
         '/0.js',
         '/2.js',
-        '/badge/sha2017',
-        '/badge/disobey2019',
-        '/badge/hackerhotel2019',
-        '/badge/card10',
-        '/badge/campzone2019',
-        '/badge/disobey2020',
-        '/badge/troopers2019',
-        '/badge/fri3d2018',
-        '/badge/ohs2018',
-        '/badge/hacktivity2019',
-        '/badge/fri3d2020',
-        '/projects',
         '/icons/blank.gif',
         '/icons/back.gif',
         '/icons/tar.gif',
