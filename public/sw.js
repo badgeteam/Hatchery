@@ -4,7 +4,6 @@ self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(cacheName).then(cache => {
       return cache.addAll([
-        '/',
         '/eggs/',
         '/svg/500.svg',
         '/svg/503.svg',
