@@ -10,19 +10,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property-read \App\Models\Badge $badge
  * @property-read \App\Models\Project $project
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject query()
- * @mixin  \Eloquent
- *
+ * @mixin \Eloquent
  * @property int $id
  * @property int $badge_id
  * @property int $project_id
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject whereBadgeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject whereId($value)

@@ -12,7 +12,6 @@ use Illuminate\Support\Str;
  *
  * @property-read int $eggs
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
- *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newQuery()
@@ -21,17 +20,15 @@ use Illuminate\Support\Str;
  * @method static bool|null restore()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withoutTrashed()
- * @mixin  \Eloquent
- *
+ * @mixin \Eloquent
  * @property-read int|null $projects_count
- * @property      int $id
- * @property      string $name
- * @property      string $slug
- * @property      \Illuminate\Support\Carbon|null $deleted_at
- * @property      \Illuminate\Support\Carbon|null $created_at
- * @property      \Illuminate\Support\Carbon|null $updated_at
- * @property      int $hidden
- *
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $hidden
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereHidden($value)

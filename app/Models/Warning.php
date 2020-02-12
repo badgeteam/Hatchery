@@ -10,16 +10,15 @@ use Illuminate\Support\Facades\Auth;
 /**
  * App\Models\Warning.
  *
- * @property      int $id
- * @property      int $user_id
- * @property      int $project_id
- * @property      string $description
- * @property      \Illuminate\Support\Carbon|null $deleted_at
- * @property      \Illuminate\Support\Carbon|null $created_at
- * @property      \Illuminate\Support\Carbon|null $updated_at
+ * @property int $id
+ * @property int $user_id
+ * @property int $project_id
+ * @property string $description
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Project $project
  * @property-read \App\Models\User $user
- *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning newQuery()
@@ -35,7 +34,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Warning withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Warning withoutTrashed()
- * @mixin  \Eloquent
+ * @mixin \Eloquent
  */
 class Warning extends Model
 {

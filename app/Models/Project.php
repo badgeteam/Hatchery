@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Mail\Markdown;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 /**
  * App\Models\Project.
@@ -23,7 +24,6 @@ use Illuminate\Support\Str;
  * @property-read int $size_of_zip
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Version[] $versions
- *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()
@@ -32,27 +32,25 @@ use Illuminate\Support\Str;
  * @method static bool|null restore()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withoutTrashed()
- * @mixin  \Eloquent
- *
+ * @mixin \Eloquent
  * @property-read int|null $badges_count
  * @property-read int|null $dependants_count
  * @property-read int|null $dependencies_count
  * @property-read int|null $versions_count
- * @property      int $id
- * @property      int $category_id
- * @property      int $user_id
- * @property      string $name
- * @property      string|null $slug
- * @property      string|null $description
- * @property      \Illuminate\Support\Carbon|null $deleted_at
- * @property      \Illuminate\Support\Carbon|null $created_at
- * @property      \Illuminate\Support\Carbon|null $updated_at
- * @property      int $download_counter
- * @property      string $status
+ * @property int $id
+ * @property int $category_id
+ * @property int $user_id
+ * @property string $name
+ * @property string|null $slug
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $download_counter
+ * @property string $status
  * @property-read string|null $description_html
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
  * @property-read int|null $votes_count
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereDeletedAt($value)
@@ -64,13 +62,11 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUserId($value)
- *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
  * @property-read int|null $states_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
  * @property-read int|null $warnings_count
- * @property      \Illuminate\Support\Carbon|null $published_at
- *
+ * @property \Illuminate\Support\Carbon|null $published_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project wherePublishedAt($value)
  */
 class Project extends Model
@@ -82,14 +78,31 @@ class Project extends Model
      *
      * @var array
      */
-    protected $appends = ['revision', 'size_of_zip', 'size_of_content', 'category', 'description', 'status'];
+    protected $appends = [
+        'revision',
+        'size_of_zip',
+        'size_of_content',
+        'category',
+        'description',
+        'status'
+    ];
 
     /**
      * Hidden data.
      *
      * @var array
      */
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'user_id', 'id', 'category_id', 'pivot', 'versions', 'states'];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'user_id',
+        'id',
+        'category_id',
+        'pivot',
+        'versions',
+        'states'
+    ];
 
     /**
      * DateTime conversion for these fields.
@@ -372,5 +385,18 @@ class Project extends Model
         }
 
         return $status;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasValidIcon(): bool
+    {
+        /** @var File $file */
+        $file = $this->versions->last()->files()->where('name', 'icon.png')->get()->last();
+        if (is_null($file)) {
+            return false;
+        }
+        return $file->isValidIcon();
     }
 }

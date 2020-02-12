@@ -216,14 +216,20 @@ class ProjectsController extends Controller
             $zip[$project->slug.'/'.$file->name] = $file->content;
         }
 
+        $data = [
+            'name'        => $project->name,
+            'description' => $project->description,
+            'category'    => $project->category,
+            'author'      => $project->user->name,
+            'revision'    => $version->revision,
+        ];
+
+        if ($project->hasValidIcon()) {
+            $data['icon'] = 'icon.png';
+        }
+
         $zip[$project->slug.'/metadata.json'] = json_encode(
-            [
-                'name'        => $project->name,
-                'description' => $project->description,
-                'category'    => $project->category,
-                'author'      => $project->user->name,
-                'revision'    => $version->revision,
-            ]
+            $data
         );
 
         if (!$project->dependencies->isEmpty()) {
