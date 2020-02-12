@@ -109,11 +109,55 @@ class FileTest extends TestCase
     /**
      * Assert bin (octet-stream) file mime type.
      */
-    public function testBinMimeAttribute()
+    public function testFileBinMimeAttribute()
     {
         $user = factory(User::class)->create();
         $this->be($user);
         $file = factory(File::class)->create(['name' => 'test.bin']);
         $this->assertEquals('application/octet-stream', $file->mime);
+    }
+
+    /**
+     * Assert png icon
+     */
+    public function testFileIsValidIcon()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'icon.png']);
+        $this->assertFalse($file->isValidIcon());
+        $file->content = base64_decode( // 32x32 pixel PNG
+            'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFsUlEQVRYw9VXa1CUZRgFpd2lcjTR'.
+            'H82oOSYTJt7FC3kjzTQVxzHSadLQH5lUTk2ijqKZloNmk4IXWC/gZUGEJPHCqqAkxM1Vue2yy010'.
+            'Y1G5CCrYBO7pvN/3zZI1mabL5M6c2d3ve5/nnOd5zvvuty4uz+LrslYzt3CPJoPv2QlrVUG89BLh'.
+            '1m4CSJ57I30mBNK3qq/xkp8iwvmvvF2aeRVH+uL+zb2w1x6A+Lz0PbdY3urv9C5khqs7GaM0tnvl'.
+            '64F7RqC5AL9VfIvcne7NXj1dF3BJd8LVaQIKdms2VZ0eCzSedgjArWOoPjcZUctUBi4ZSbg7hTx/'.
+            't8bTfKDz763VkW3kTZeAu7lovb4T5oMedn/fjt9w6StEB2dUr6+7EAjcySB5voMcd7KAhhOoNyzE'.
+            'yVC1jUsnE52e9rbzF2az1x4ieR7qq3OQmpoKvV6Pq5YU4PZZ2Gv2yIac4xbDkH5PzZDF0RpV0V5N'.
+            'RXPZV6w4h5UbkJN1FsnJyUhKSsLxpER24BS9cBTNZWuRvcO9qUd31w8Y2u2pGJKtXyUZ7xaJ7l4g'.
+            'spF2Vi+RJyQkIDY2lgKO8/5PQM1uyZDblqgyGDqcUD9p63tYdB5NLbZtcvVi3nfSkXn+BOLj4xET'.
+            'E4PjR3WyuPp4oFaHVtsWFO/3uO83uMMKpujxRF1g9XH1hgWs8JhMfjudOEcBidDpdIiOjkZK8j4H'.
+            'OWr4+cYOGjIQietUFcoJ+eJ/PfHGScar2UvyTBKfl8wmzoAiwxFERUVBq9UiTc/7tQdJHg3c3AVY'.
+            'l8J+9UvJkIv93bRM5fnYhqTxOhbt0RQ0lYSQ8AyJf5bJhdkaTuJKUTwiIyMRHh6O3LTINvJfVwHm'.
+            'iUDxaDRbliEjzL2x8wuus5my6+MeOp8K49lFZYK8MUUhPyG5vdEah7CwMGzevBmX07eTXCuTl0wB'.
+            'jENlVMyXDLlp0XNnmHIIoXokckOExoPGu9ViC5eJRQca9G1Or0/AvWqdRL5hwwZUGSnAGkzyyYBp'.
+            'WJsA4zC0Wr9G0b6uLT5eHZYw9cuPZEhWr5WMVxcnn/kNydJ5L5PTbHUxnPl+7AgPRXBwMG6bPmLb'.
+            'uU1Nw2UBfxZRMh0iV9walYWpxxLP/9u2G0rz3LeLeUrkJ0mcROIjD5CDp976kED4DHudhCMIHwXD'.
+            '/ybEbl0uGTJoplsEKfo+1JA0XmaThcar/1EhPyqTi27UcZvdjACqVnK+7yNgSjdMGt2FhntDwai/'.
+            'CFE6YRqLJssKGlL9cENy2wXaUvwgVS/mLSoWW/D6dzTYCqCSYymdKrfbPA6Ht3jj8FZvtvlN6TvM'.
+            'Y2SYRspdMSoCCgYB5YEPN6TDeFXfsxJfh4mkSopHyNWZWaVlAsFtVk63l79DTFdAYSWTuGa84gfG'.
+            'FDG+cAiQR5EX+9OQ6/7ZkA7jces4yAUk8tFyZaJS4fSKGQhdNgAMkxAwrRevvUsRM9iht7l2giy4'.
+            'kPF5AwCDF5D1Kj+PlwwZE6IyPWBIGm9a1bmp1+2VQVQ9RMFQmdzMRBZB7sfkrPrKTI5iDvr06uQQ'.
+            'IIBrC3lvLkX4M4ZCjRSdzxwXWX22J/BLbyC9J3MG4Ip+UgtPyG2M6yMZktUnNpeuYRBbXDiQGCQL'.
+            'MPrI4xBtL2V7y1hhJSu9+iEiN45zkC//hOusQdJ1lM3i+rc4d8ZdGgzk9gMyWX0Gu3SeArI8Ibhi'.
+            'Q1SljJ1CdHbhQ+ZdcdFe+THJR8ltyx8oz9A0Sm5pKZOWsbrKAIJE1kXcDZ8DtqV8/4LfF3MM80jO'.
+            'NSZ24DI7YGAhOf0kUmT2oQh2wTxbEsCut5D8M+nxLXu7OtmWOhEtVWH84YlyKsTPuuDiA2w1yVcT'.
+            'r7kcXKmaf2qj2sQfILQHDq1W1c4a0zGN5EHKAyzn4OLiq7QklPjByQhVuHwVbulo7EL0JryJwU6G'.
+            't8LVpV3/T/5vX38A+s3uXtUCwqEAAAAASUVORK5CYII=');
+        $this->assertTrue($file->isValidIcon());
+        $file->content = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGP6zwAAAgcBApocMXEA'.
+            'AAAASUVORK5CYII=');    // file too low resolution :)
+        $this->assertFalse($file->isValidIcon());
     }
 }

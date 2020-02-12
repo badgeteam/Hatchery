@@ -226,11 +226,92 @@ class ProjectTest extends TestCase
         $version = Version::published()->where('project_id', $project->id)->get()->last();
 
         $this->assertFileExists(public_path($version->zip));
+
+        $p = new \PharData(public_path($version->zip));
+        $this->assertTrue($p->extractTo(sys_get_temp_dir())); // Extract all files
+        $path = sys_get_temp_dir().'/'.$project->slug;
+        $json = file_get_contents($path.'/metadata.json');
+
+        $this->assertJsonStringEqualsJsonString(json_encode([
+            'name' => $project->name,
+            'description' => null,
+            'category' => $project->category,
+            'author' => $project->user->name,
+            'revision' => 1
+        ]), $json);
+
+        $dep = file_get_contents($path.'/'.$project->slug.'.egg-info/requires.txt');
+        $this->assertEquals($projectDep->slug."\n", $dep);
+
         unlink(public_path($version->zip));
+        $this->delTree($path);
 
         $project = Project::find($project->id);
         $this->assertNotNull($project->published_at);
         $this->assertTrue(now()->isSameDay($project->published_at));
+    }
+
+    /**
+     * Check published project with icon has correct metadata.
+     */
+    public function testProjectsPublishIconMeta()
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $file = factory(File::class, ['version_id' => $project->versions()->unPublished()->first()->id])->create();
+        $file->first()->content = 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAF'.
+                'FElEQVRYw+1XfVDTZRxXj9oxN4a8bGMbG4ONTdBUEuVFQImjk5ISxBOQN3kJDSFAQgMRQh0ahLyj'.
+                'EBAblaF2cnqWRml1h1meCUmGQhmVvQioMC8RsM8ToxR/v59o/FF3/u6e+217vs/3+/m+fb7Ppkx5'.
+                '9Pyfnp2r+a5n8+WaAa3q+IBO3Y339QGtulevVbX31Ni/eyRDunat7wz+pBs+sEESAGOtep3qZl+d'.
+                '/fvHNktfKYwUBHyYJX0qO8jCt2adVWRbgW0RgHQQmct7lLUbnze3/teGIxfzzK/U2DcN6FQDMLA1'.
+                '2pt3l3cAkz3+TGGEwKu31v4jAO4/ud0m5qGNZwSYy6Hk4rU3VS2blpvLx++nLjNzRPhvwVMp1fmj'.
+                'm6VRBPilckXhAxuP8zEVwHjXb9X2B7xnsVlUMhWxwjC9Tn37p93KKjo9JWuEzkhJT2epIm/CxmdL'.
+                'WVMRwua+OtWJxQ7sx+nkymOF4QQADAwm+ZmJQz1MLJuzpKvGy1W9YOUOmT8+yJQGTAgACiwainuh'.
+                'VEQnczxb5v9xtsxjFID6du06q/CmdAkJeRuV/OfbbdL1WvXl0EUmXEbj8PgxhL4bxZPMJNdRbKeF'.
+                '3DtY1wiAUxobL3z+FkZGVrpxeePlXZTGRmT/bL5tBiMAeBIIwd7lC7hsJrkLxXYNxDBk96IQr5L3'.
+                'WDTWeJvKqM40pVvHIULdnjONp9EqRkE1dFcoq++Xpk9eleUaDI5A6fCYcfDAcMBCLofqTJALl4f9'.
+                'm5oQvgutYnhySbteFMxk/ODLkqWnd8jdwYQjfxs2rH6tqoXpLNlHjaVSbj49d7ox8SjN3+wJJiXn'.
+                'd9nVAGgV1utYPQbPSRquvp0kdquME86HDjnV2fZC22qkbw+l4hUuXDFRttrTRMQEAGlqInI/lCuS'.
+                '614UOZLPRzOlridyZPO6KxVliMwA0jCd6mzzFqnmlyrlfkrFgS5cEVEW4cUTMwHoLLHTjhageqi/'.
+                'XlVkKMYv8P2vlGAo7Wdo3zwA2Ee56TObzSJFBNp1otoP8+QJ30oS++xLlcSO5RwFOHRnDcD73sxA'.
+                'CwVD99QihRW03gHAhcYUSQTVXmOKmLTRxZJogQW8PATZXw3e3zC8WwvC+XOYogeeOH14k3UircB3'.
+                'ZYo3wP8NVHuYhruJIUzHg+AJI7RiMPnekCjyAMNZz7JmTfWcyTbatspSTjNZ+QAwlLXCYi4tgNJo'.
+                '4VIyRiFsSkc+ZP1YqdgKuXbk/ZxheAlBzQlkeuaH8xdQckeOLAUp6mAkmHk2rGmEMtEuW+6p4Cxp'.
+                'xvjcQ/YbDJouvaEAMcQOU+l9xoljTCj+s1xZ4n2H0d5kMehYrdeE8pV3/h7jbSrSG7ifasHA7+h/'.
+                'GQ137MB+J7iGNaGJiCtVIw58Fex+9/TaFSmYj9/P3wMADFoUKaDM7aGNEn+cGdStFy2e8J3gWScO'.
+                '93q96gxuQ59GLfmnHnJWWjgg3IMEHIyew7sFBJT2nDOHQ0PbfqRLQN0vPfCtKHiRiSUAnCIXzap4'.
+                'K2fy25d58nzk/IYmxNKB6SzphtYC20xyWTmzU77hoe+FSxzZxl2ligqAuIW01OGe4FYcJbChjdyT'.
+                'HBa8DhntENXPIC2/SbmWvxbGXwjyOYI2Gobir3HHK8N8T6yOtwqrTxBFgWIzCQXD4z6k6Eprvm1u'.
+                'kKsJb9L/H8T7zpC9lyZJ+L5coQOQk6QNsdqQqmMIdWFZjHCZ75wJVvqj57/y/AkQ6a2eMiXbygAA'.
+                'AABJRU5ErkJggg==';
+        $file->first()->name = 'icon.png';
+        $file->first()->version_id = $project->versions()->unPublished()->first()->id; // yah ugly
+        $file->first()->save(); // wut?
+        $this->assertNull($project->published_at);
+
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/release/'.$project->slug);
+        $response->assertRedirect();
+        $version = Version::published()->where('project_id', $project->id)->get()->last();
+
+        $p = new \PharData(public_path($version->zip));
+        $this->assertTrue($p->extractTo(sys_get_temp_dir())); // Extract all files
+        $path = sys_get_temp_dir().'/'.$project->slug;
+        $json = file_get_contents($path.'/metadata.json');
+
+        $this->assertJsonStringEqualsJsonString(json_encode([
+            'name' => $project->name,
+            'description' => null,
+            'category' => $project->category,
+            'author' => $project->user->name,
+            'revision' => 1,
+            'icon' => 'icon.png'
+        ]), $json);
+
+        unlink(public_path($version->zip));
+        $this->delTree($path);
     }
 
     /**
@@ -410,5 +491,17 @@ class ProjectTest extends TestCase
             ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'awesome']);
         $response->assertRedirect('')->assertSessionHas('errors');
         $this->assertEmpty(Vote::all());
+    }
+
+    /**
+     * @param $dir
+     * @return bool
+     */
+    private function delTree($dir) {
+        $files = array_diff(scandir($dir), array('.','..'));
+        foreach ($files as $file) {
+            (is_dir("$dir/$file")) ? $this->delTree("$dir/$file") : unlink("$dir/$file");
+        }
+        return rmdir($dir);
     }
 }

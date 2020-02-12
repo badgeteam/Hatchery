@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Exception\NotReadableException;
 use Intervention\Image\Facades\Image;
 
 /**
@@ -201,7 +202,11 @@ class File extends Model
         if ($this->extension != 'png') {
             return false;
         }
-        $icon = Image::make($this->content);
+        try {
+            $icon = Image::make($this->content);
+        } catch (NotReadableException $e) {
+            return false;
+        }
 
         return $icon->width() == 32 && $icon->height() == 32;
     }
