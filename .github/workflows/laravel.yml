@@ -54,6 +54,7 @@ jobs:
       run: php artisan migrate --force
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
+        DB_CONNECTION: mysql
         DB_HOST: 127.0.0.1
         DB_PORT: 33306
         DB_DATABASE: badge
