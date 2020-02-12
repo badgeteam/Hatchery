@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use PharData;
+use Phar;
 
 /**
  * Class ProjectsController.
@@ -240,8 +241,11 @@ class ProjectsController extends Controller
             $zip[$project->slug.'/'.$project->slug.'.egg-info/requires.txt'] = $dep;
         }
 
-        //        $zip->compress(Phar::GZ);
-        system('minigzip < '.public_path($filename).' > '.public_path($filename.'.gz'));
+        if (empty(system('which minigzip'))) {
+            $zip->compress(Phar::GZ);
+        } else {
+            system('minigzip < ' . public_path($filename) . ' > ' . public_path($filename . '.gz'));
+        }
 
         $version->zip = $filename.'.gz';
         $version->size_of_zip = filesize(public_path($version->zip));
