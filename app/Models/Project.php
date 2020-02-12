@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Mail\Markdown;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
 
 /**
  * App\Models\Project.
@@ -24,6 +23,7 @@ use Intervention\Image\Facades\Image;
  * @property-read int $size_of_zip
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Version[] $versions
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()
@@ -33,6 +33,7 @@ use Intervention\Image\Facades\Image;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withoutTrashed()
  * @mixin \Eloquent
+ *
  * @property-read int|null $badges_count
  * @property-read int|null $dependants_count
  * @property-read int|null $dependencies_count
@@ -51,6 +52,7 @@ use Intervention\Image\Facades\Image;
  * @property-read string|null $description_html
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
  * @property-read int|null $votes_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereDeletedAt($value)
@@ -62,11 +64,13 @@ use Intervention\Image\Facades\Image;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUserId($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
  * @property-read int|null $states_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
  * @property-read int|null $warnings_count
  * @property \Illuminate\Support\Carbon|null $published_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project wherePublishedAt($value)
  */
 class Project extends Model
@@ -84,7 +88,7 @@ class Project extends Model
         'size_of_content',
         'category',
         'description',
-        'status'
+        'status',
     ];
 
     /**
@@ -101,7 +105,7 @@ class Project extends Model
         'category_id',
         'pivot',
         'versions',
-        'states'
+        'states',
     ];
 
     /**
@@ -397,6 +401,7 @@ class Project extends Model
         if (is_null($file)) {
             return false;
         }
+
         return $file->isValidIcon();
     }
 }

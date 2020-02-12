@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
  * @property-read bool $published
  * @property-read \App\Models\Project $project
  * @property-read \App\Models\User $user
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version newQuery()
@@ -27,6 +28,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Version withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Version withoutTrashed()
  * @mixin \Eloquent
+ *
  * @property-read int|null $files_count
  * @property int $id
  * @property int|null $user_id
@@ -37,6 +39,7 @@ use Illuminate\Support\Facades\Auth;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereId($value)
