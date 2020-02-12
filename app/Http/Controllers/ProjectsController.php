@@ -19,8 +19,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
-use PharData;
 use Phar;
+use PharData;
 
 /**
  * Class ProjectsController.
@@ -244,7 +244,7 @@ class ProjectsController extends Controller
         if (empty(system('which minigzip'))) {
             $zip->compress(Phar::GZ);
         } else {
-            system('minigzip < ' . public_path($filename) . ' > ' . public_path($filename . '.gz'));
+            system('minigzip < '.public_path($filename).' > '.public_path($filename.'.gz'));
         }
 
         $version->zip = $filename.'.gz';
