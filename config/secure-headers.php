@@ -140,7 +140,7 @@ return [
 
         'script-src' => [
             'allow' => [
-                //
+                env('APP_URL', 'https://badge.team'),
             ],
 
             'hashes' => [
@@ -160,6 +160,7 @@ return [
 
         'style-src' => [
             'allow' => [
+                env('APP_URL', 'https://badge.team'),
                 'https://fonts.googleapis.com',
             ],
 
