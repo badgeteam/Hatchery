@@ -233,11 +233,11 @@ class ProjectTest extends TestCase
         $json = file_get_contents($path.'/metadata.json');
 
         $this->assertJsonStringEqualsJsonString(json_encode([
-            'name' => $project->name,
+            'name'        => $project->name,
             'description' => null,
-            'category' => $project->category,
-            'author' => $project->user->name,
-            'revision' => 1
+            'category'    => $project->category,
+            'author'      => $project->user->name,
+            'revision'    => 1,
         ]), $json);
 
         $dep = file_get_contents($path.'/'.$project->slug.'.egg-info/requires.txt');
@@ -302,12 +302,12 @@ class ProjectTest extends TestCase
         $json = file_get_contents($path.'/metadata.json');
 
         $this->assertJsonStringEqualsJsonString(json_encode([
-            'name' => $project->name,
+            'name'        => $project->name,
             'description' => null,
-            'category' => $project->category,
-            'author' => $project->user->name,
-            'revision' => 1,
-            'icon' => 'icon.png'
+            'category'    => $project->category,
+            'author'      => $project->user->name,
+            'revision'    => 1,
+            'icon'        => 'icon.png',
         ]), $json);
 
         unlink(public_path($version->zip));
@@ -495,13 +495,16 @@ class ProjectTest extends TestCase
 
     /**
      * @param $dir
+     *
      * @return bool
      */
-    private function delTree($dir) {
-        $files = array_diff(scandir($dir), array('.','..'));
+    private function delTree($dir)
+    {
+        $files = array_diff(scandir($dir), ['.', '..']);
         foreach ($files as $file) {
             (is_dir("$dir/$file")) ? $this->delTree("$dir/$file") : unlink("$dir/$file");
         }
+
         return rmdir($dir);
     }
 }

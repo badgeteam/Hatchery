@@ -118,7 +118,7 @@ class FileTest extends TestCase
     }
 
     /**
-     * Assert png icon
+     * Assert png icon.
      */
     public function testFileIsValidIcon()
     {

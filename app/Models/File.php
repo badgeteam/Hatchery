@@ -202,6 +202,7 @@ class File extends Model
         if ($this->extension != 'png') {
             return false;
         }
+
         try {
             $icon = Image::make($this->content);
         } catch (NotReadableException $e) {

@@ -238,7 +238,7 @@ class ProjectTest extends TestCase
                 '3F26WYsNSu7VWgcAvfLeDAB08Kj1SpWw6DCyMc4wz211DgAWJSIsBXbHrclOfPAcBot6IEqyYoUhHzfR+Y407swG3aGAoNCxXkET'.
                 'oXZyRWc+oq0Bt4tTkZFxopIusPE0lcztXeQ0w8udWxjgww3oVOuO59wVe1VSlliY+peYTF9/Z3R3J2HdZBgJ3bWh62QM7IbELims'.
                 'CooYAEokWD/1cIyaTgbAuhbrZrVsfKb/hh35PHcA/wFsTxbZyiyphgAAAABJRU5ErkJggg=='),
-            'name' => 'icon.png'
+            'name' => 'icon.png',
         ]);
         $this->assertTrue($file->version->project->hasValidIcon());
     }
