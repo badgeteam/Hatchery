@@ -226,9 +226,13 @@ class ProjectTest extends TestCase
         $version = Version::published()->where('project_id', $project->id)->get()->last();
 
         $this->assertFileExists(public_path($version->zip));
+        $this->assertFileNotExists(public_path(str_replace('.gz', '', $version->zip)));
 
         $p = new \PharData(public_path($version->zip));
-        $this->assertTrue($p->extractTo(sys_get_temp_dir())); // Extract all files
+        $this->assertEquals(\Phar::GZ, $p->isCompressed());
+
+        exec('tar xf '.public_path($version->zip).' -C '.sys_get_temp_dir());
+
         $path = sys_get_temp_dir().'/'.$project->slug;
         $json = file_get_contents($path.'/metadata.json');
 
@@ -296,8 +300,7 @@ class ProjectTest extends TestCase
         $response->assertRedirect();
         $version = Version::published()->where('project_id', $project->id)->get()->last();
 
-        $p = new \PharData(public_path($version->zip));
-        $this->assertTrue($p->extractTo(sys_get_temp_dir())); // Extract all files
+        exec('tar xf '.public_path($version->zip).' -C '.sys_get_temp_dir());
         $path = sys_get_temp_dir().'/'.$project->slug;
         $json = file_get_contents($path.'/metadata.json');
 
