@@ -396,7 +396,7 @@ class Project extends Model
      */
     public function hasValidIcon(): bool
     {
-        /** @var File $file */
+        /** @var File|null $file */
         $file = $this->versions->last()->files()->where('name', 'icon.png')->get()->last();
         if (is_null($file)) {
             return false;
