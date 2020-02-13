@@ -10,7 +10,7 @@ use Intervention\Image\Exception\NotReadableException;
 use Intervention\Image\Facades\Image;
 
 /**
- * Class File
+ * Class File.
  *
  * @property-read bool $editable
  * @property-read string $extension
@@ -49,7 +49,6 @@ use Intervention\Image\Facades\Image;
  * @property-read string $mime
  *
  * @author annejan@badge.team
- * @package App\Models
  */
 class File extends Model
 {

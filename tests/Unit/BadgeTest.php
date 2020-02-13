@@ -11,9 +11,9 @@ use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 /**
- * Class BadgeTest
+ * Class BadgeTest.
+ *
  * @author annejan@badge.team
- * @package Tests\Unit
  */
 class BadgeTest extends TestCase
 {

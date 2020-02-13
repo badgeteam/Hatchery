@@ -13,9 +13,9 @@ use App\Policies\VotePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 /**
- * Class AuthServiceProvider
+ * Class AuthServiceProvider.
+ *
  * @author annejan@badge.team
- * @package App\Providers
  */
 class AuthServiceProvider extends ServiceProvider
 {

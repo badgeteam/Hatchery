@@ -6,9 +6,9 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Class ProjectNotificationRequest
+ * Class ProjectNotificationRequest.
+ *
  * @author annejan@badge.team
- * @package App\Http\Requests
  */
 class ProjectNotificationRequest extends FormRequest
 {

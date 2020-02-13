@@ -12,9 +12,9 @@ use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 /**
- * Class BadgeProjectTest
+ * Class BadgeProjectTest.
+ *
  * @author annejan@badge.team
- * @package Tests\Unit
  */
 class BadgeProjectTest extends TestCase
 {

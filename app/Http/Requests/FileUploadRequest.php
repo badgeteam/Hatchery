@@ -6,9 +6,9 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Class FileUploadRequest
+ * Class FileUploadRequest.
+ *
  * @author annejan@badge.team
- * @package App\Http\Requests
  */
 class FileUploadRequest extends FormRequest
 {

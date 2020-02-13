@@ -14,9 +14,9 @@ use Illuminate\Support\Str;
 use Tests\TestCase;
 
 /**
- * Class FileTest
+ * Class FileTest.
+ *
  * @author annejan@badge.team
- * @package Tests\Feature
  */
 class FileTest extends TestCase
 {

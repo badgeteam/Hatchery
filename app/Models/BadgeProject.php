@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Class BadgeProject
+ * Class BadgeProject.
  *
  * @property-read \App\Models\Badge $badge
  * @property-read \App\Models\Project $project
@@ -31,7 +31,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject whereUpdatedAt($value)
  *
  * @author annejan@badge.team
- * @package App\Models
  */
 class BadgeProject extends Model
 {

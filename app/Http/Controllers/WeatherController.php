@@ -9,9 +9,9 @@ use OpenApi\Annotations as OA;
 use stdClass;
 
 /**
- * Class WeatherController
+ * Class WeatherController.
+ *
  * @author annejan@badge.team
- * @package App\Http\Controllers
  */
 class WeatherController extends Controller
 {

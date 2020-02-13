@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Class Warning
+ * Class Warning.
  *
  * @property int $id
  * @property int $user_id
@@ -38,7 +38,6 @@ use Illuminate\Support\Facades\Auth;
  * @mixin \Eloquent
  *
  * @author annejan@badge.team
- * @package App\Models
  */
 class Warning extends Model
 {

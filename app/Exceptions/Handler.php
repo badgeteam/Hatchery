@@ -11,9 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 /**
- * Class Handler
+ * Class Handler.
+ *
  * @author annejan@badge.team
- * @package App\Exceptions
  */
 class Handler extends ExceptionHandler
 {

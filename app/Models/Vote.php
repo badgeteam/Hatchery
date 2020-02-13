@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Class Vote
+ * Class Vote.
  *
  * @property int $id
  * @property int $user_id
@@ -40,7 +40,6 @@ use Illuminate\Support\Facades\Auth;
  * @mixin \Eloquent
  *
  * @author annejan@badge.team
- * @package App\Models
  */
 class Vote extends Model
 {

@@ -13,9 +13,9 @@ use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 /**
- * Class FilesController
+ * Class FilesController.
+ *
  * @author annejan@badge.team
- * @package App\Http\Controllers
  */
 class FilesController extends Controller
 {

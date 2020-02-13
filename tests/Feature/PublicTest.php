@@ -13,9 +13,9 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 /**
- * Class PublicTest
+ * Class PublicTest.
+ *
  * @author annejan@badge.team
- * @package Tests\Feature
  */
 class PublicTest extends TestCase
 {

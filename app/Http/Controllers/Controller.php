@@ -8,9 +8,9 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
 /**
- * Class Controller
+ * Class Controller.
+ *
  * @author annejan@badge.team
- * @package App\Http\Controllers
  */
 class Controller extends BaseController
 {

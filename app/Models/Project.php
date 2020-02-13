@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 /**
- * Class Project
+ * Class Project.
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Badge[] $badges
  * @property-read string $category
@@ -74,7 +74,6 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project wherePublishedAt($value)
  *
  * @author annejan@badge.team
- * @package App\Models
  */
 class Project extends Model
 {

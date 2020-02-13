@@ -5,9 +5,9 @@ namespace App\Http\Middleware;
 use Illuminate\Foundation\Http\Middleware\TrimStrings as BaseTrimmer;
 
 /**
- * Class TrimStrings
+ * Class TrimStrings.
+ *
  * @author annejan@badge.team
- * @package App\Http\Middleware
  */
 class TrimStrings extends BaseTrimmer
 {

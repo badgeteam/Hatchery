@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 /**
- * Class UserTest
+ * Class UserTest.
+ *
  * @author annejan@badge.team
- * @package Tests\Feature
  */
 class UserTest extends TestCase
 {

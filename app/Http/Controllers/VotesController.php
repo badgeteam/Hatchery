@@ -9,9 +9,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Class VotesController
+ * Class VotesController.
+ *
  * @author annejan@badge.team
- * @package App\Http\Controllers
  */
 class VotesController extends Controller
 {

@@ -5,9 +5,9 @@ namespace App\Listeners;
 use App\Events\DownloadCounter;
 
 /**
- * Class DownloadCounterListener
+ * Class DownloadCounterListener.
+ *
  * @author annejan@badge.team
- * @package App\Listeners
  */
 class DownloadCounterListener
 {

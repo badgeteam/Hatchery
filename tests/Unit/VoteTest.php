@@ -11,9 +11,9 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 /**
- * Class VoteTest
+ * Class VoteTest.
+ *
  * @author annejan@badge.team
- * @package Tests\Unit
  */
 class VoteTest extends TestCase
 {

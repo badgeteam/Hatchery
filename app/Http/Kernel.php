@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use OpenApi\Annotations as OA;
 
 /**
- * Class Kernel
+ * Class Kernel.
  *
  * @OA\Info(
  *   title="Hatchery by badge.team",
@@ -67,7 +67,6 @@ use OpenApi\Annotations as OA;
  * 　＼二つ
  *
  * @author annejan@badge.team
- * @package App\Http
  */
 class Kernel extends HttpKernel
 {

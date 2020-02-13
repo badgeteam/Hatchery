@@ -6,9 +6,9 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Class VoteRequest
+ * Class VoteRequest.
+ *
  * @author annejan@badge.team
- * @package App\Http\Requests
  */
 class VoteRequest extends FormRequest
 {

@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * Class User
+ * Class User.
  *
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
@@ -53,7 +53,6 @@ use Illuminate\Notifications\Notifiable;
  * @property-read int|null $warnings_count
  *
  * @author annejan@badge.team
- * @package App\Models
  */
 class User extends Authenticatable
 {
@@ -104,10 +103,11 @@ class User extends Authenticatable
     /**
      * Change the email to an impossible email.
      */
-    public function delete():? bool
+    public function delete(): ?bool
     {
         $this->email = 'deleted'.mt_rand().'#'.$this->email;
         $this->save();
+
         return parent::delete();
     }
 }

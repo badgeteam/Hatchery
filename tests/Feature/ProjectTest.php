@@ -20,9 +20,9 @@ use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 /**
- * Class ProjectTest
+ * Class ProjectTest.
+ *
  * @author annejan@badge.team
- * @package Tests\Feature
  */
 class ProjectTest extends TestCase
 {

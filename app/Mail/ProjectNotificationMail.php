@@ -9,9 +9,9 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * Class ProjectNotificationMail
+ * Class ProjectNotificationMail.
+ *
  * @author annejan@badge.team
- * @package App\Mail
  */
 class ProjectNotificationMail extends Mailable
 {

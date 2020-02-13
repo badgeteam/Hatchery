@@ -11,9 +11,9 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 /**
- * Class FileTest
+ * Class FileTest.
+ *
  * @author annejan@badge.team
- * @package Tests\Unit
  */
 class FileTest extends TestCase
 {

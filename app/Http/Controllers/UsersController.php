@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 /**
- * Class UsersController
+ * Class UsersController.
+ *
  * @author annejan@badge.team
- * @package App\Http\Controllers
  */
 class UsersController extends Controller
 {

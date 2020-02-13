@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Class Version
+ * Class Version.
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\File[] $files
  * @property-read bool $published
@@ -51,7 +51,6 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereZip($value)
  *
  * @author annejan@badge.team
- * @package App\Models
  */
 class Version extends Model
 {

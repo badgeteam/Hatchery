@@ -17,9 +17,9 @@ use OpenApi\Annotations as OA;
 use stdClass;
 
 /**
- * Class PublicController
+ * Class PublicController.
+ *
  * @author annejan@badge.team
- * @package App\Http\Controllers
  */
 class PublicController extends Controller
 {

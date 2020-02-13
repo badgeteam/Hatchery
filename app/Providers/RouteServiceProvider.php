@@ -6,9 +6,9 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Route;
 
 /**
- * Class RouteServiceProvider
+ * Class RouteServiceProvider.
+ *
  * @author annejan@badge.team
- * @package App\Providers
  */
 class RouteServiceProvider extends ServiceProvider
 {

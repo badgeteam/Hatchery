@@ -6,9 +6,9 @@ use App\Models\Project;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * Class DownloadCounter
+ * Class DownloadCounter.
+ *
  * @author annejan@badge.team
- * @package App\Events
  */
 class DownloadCounter
 {

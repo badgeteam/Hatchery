@@ -11,9 +11,9 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 /**
- * Class VersionTest
+ * Class VersionTest.
+ *
  * @author annejan@badge.team
- * @package Tests\Unit
  */
 class VersionTest extends TestCase
 {
