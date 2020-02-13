@@ -7,7 +7,9 @@ use App\Models\Vote;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
- * Class VotePolicy.
+ * Class VotePolicy
+ * @author annejan@badge.team
+ * @package App\Policies
  */
 class VotePolicy
 {

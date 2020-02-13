@@ -3,7 +3,12 @@ includes:
 parameters:
     paths:
         - app
-    level: 5
+        - bootstrap
+        - config
+        - public
+        - routes
+        - tests
+    level: 6
     inferPrivatePropertyTypeFromConstructor: true
     ignoreErrors:
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\BelongsTo::withTrashed().#'
@@ -11,3 +16,7 @@ parameters:
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::published().#'
         - '#Method App\\Models\\Version::scopePublished()#'
         - '#Access to an undefined property App\\Models\\Project::\$pivot.#'
+        - '#Function factory invoked with 1 parameter, 0 required.#'
+        - '#Function factory invoked with 2 parameters, 0 required.#'
+    excludes_analyse:
+            - tests/_support/*

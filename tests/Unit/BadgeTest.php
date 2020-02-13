@@ -10,6 +10,11 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
 
+/**
+ * Class BadgeTest
+ * @author annejan@badge.team
+ * @package Tests\Unit
+ */
 class BadgeTest extends TestCase
 {
     use DatabaseTransactions;
@@ -18,7 +23,7 @@ class BadgeTest extends TestCase
     /**
      * Assert the Badge has a collection of Projects.
      */
-    public function testBadgeProjectRelationship()
+    public function testBadgeProjectRelationship(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);

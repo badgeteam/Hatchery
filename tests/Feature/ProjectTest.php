@@ -19,6 +19,11 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
+/**
+ * Class ProjectTest
+ * @author annejan@badge.team
+ * @package Tests\Feature
+ */
 class ProjectTest extends TestCase
 {
     use DatabaseTransactions;
@@ -37,7 +42,7 @@ class ProjectTest extends TestCase
     /**
      * Check the projects list.
      */
-    public function testProjectsIndexPublic()
+    public function testProjectsIndexPublic(): void
     {
         $response = $this
             ->get('/projects');
@@ -45,7 +50,7 @@ class ProjectTest extends TestCase
             ->assertViewHas('projects', Project::paginate());
     }
 
-    public function testProjectsIndex()
+    public function testProjectsIndex(): void
     {
         $user = factory(User::class)->create();
         $response = $this
@@ -58,7 +63,7 @@ class ProjectTest extends TestCase
     /**
      * Check the projects creation page exists.
      */
-    public function testProjectsCreate()
+    public function testProjectsCreate(): void
     {
         $user = factory(User::class)->create();
         $response = $this
@@ -70,7 +75,7 @@ class ProjectTest extends TestCase
     /**
      * Check the projects can be stored.
      */
-    public function testProjectsStore()
+    public function testProjectsStore(): void
     {
         $user = factory(User::class)->create();
         $faker = Factory::create();
@@ -87,7 +92,7 @@ class ProjectTest extends TestCase
     /**
      * Check the projects can be stored.
      */
-    public function testProjectsStoreUnique()
+    public function testProjectsStoreUnique(): void
     {
         $user = factory(User::class)->create();
         $faker = Factory::create();
@@ -116,7 +121,7 @@ class ProjectTest extends TestCase
     /**
      * Check the projects edit page functions.
      */
-    public function testProjectsEdit()
+    public function testProjectsEdit(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -130,7 +135,7 @@ class ProjectTest extends TestCase
     /**
      * Check the projects edit page functions for other users.
      */
-    public function testProjectsEditOtherUser()
+    public function testProjectsEditOtherUser(): void
     {
         $user = factory(User::class)->create();
         $otherUser = factory(User::class)->create();
@@ -145,7 +150,7 @@ class ProjectTest extends TestCase
     /**
      * Check the projects can be stored.
      */
-    public function testProjectsUpdate()
+    public function testProjectsUpdate(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -178,7 +183,7 @@ class ProjectTest extends TestCase
     /**
      * Check the projects can't be stored by other users.
      */
-    public function testProjectsUpdateOtherUser()
+    public function testProjectsUpdateOtherUser(): void
     {
         $user = factory(User::class)->create();
         $otherUser = factory(User::class)->create();
@@ -212,7 +217,7 @@ class ProjectTest extends TestCase
     /**
      * Check the projects can be published.
      */
-    public function testProjectsPublish()
+    public function testProjectsPublish(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -231,6 +236,7 @@ class ProjectTest extends TestCase
             ->call('post', '/release/'.$project->slug);
         $response->assertRedirect('/projects/'.$project->slug.'/edit')->assertSessionHas('successes');
 
+        /** @var Version $version */
         $version = Version::published()->where('project_id', $project->id)->get()->last();
 
         $this->assertFileExists(public_path($version->zip));
@@ -266,7 +272,7 @@ class ProjectTest extends TestCase
     /**
      * Check published project with icon has correct metadata.
      */
-    public function testProjectsPublishIconMeta()
+    public function testProjectsPublishIconMeta(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -306,6 +312,7 @@ class ProjectTest extends TestCase
             ->actingAs($user)
             ->call('post', '/release/'.$project->slug);
         $response->assertRedirect();
+        /** @var Version $version */
         $version = Version::published()->where('project_id', $project->id)->get()->last();
 
         exec('tar xf '.public_path($version->zip).' -C '.sys_get_temp_dir());
@@ -328,7 +335,7 @@ class ProjectTest extends TestCase
     /**
      * Check the projects can be deleted.
      */
-    public function testProjectsDestroy()
+    public function testProjectsDestroy(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -342,7 +349,7 @@ class ProjectTest extends TestCase
     /**
      * Check the projects can't be deleted by other users.
      */
-    public function testProjectsDestroyOtherUser()
+    public function testProjectsDestroyOtherUser(): void
     {
         $user = factory(User::class)->create();
         $otherUser = factory(User::class)->create();
@@ -357,7 +364,7 @@ class ProjectTest extends TestCase
     /**
      * Check the projects can be deleted by admin users.
      */
-    public function testProjectsDestroyAdminUser()
+    public function testProjectsDestroyAdminUser(): void
     {
         $user = factory(User::class)->create();
         $otherUser = factory(User::class)->create(['admin' => true]);
@@ -372,7 +379,7 @@ class ProjectTest extends TestCase
     /**
      * Check the projects can be viewed (publicly).
      */
-    public function testProjectsView()
+    public function testProjectsView(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -385,7 +392,7 @@ class ProjectTest extends TestCase
     /**
      * Check the projects can be stored.
      */
-    public function testProjectsStoreBadge()
+    public function testProjectsStoreBadge(): void
     {
         $user = factory(User::class)->create();
         $faker = Factory::create();
@@ -408,7 +415,7 @@ class ProjectTest extends TestCase
     /**
      * Check the projects can be stored.
      */
-    public function testProjectsUpdateBadge()
+    public function testProjectsUpdateBadge(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -433,7 +440,7 @@ class ProjectTest extends TestCase
     /**
      * Check that badge.team can be notified of dangerous projects.
      */
-    public function testProjectsNotify()
+    public function testProjectsNotify(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -455,7 +462,7 @@ class ProjectTest extends TestCase
     /**
      * Check that a User can Vote for a Project.
      */
-    public function testProjectsVote()
+    public function testProjectsVote(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -472,7 +479,7 @@ class ProjectTest extends TestCase
     /**
      * Check that a User can Vote for a Project only once.
      */
-    public function testProjectsVoteOnce()
+    public function testProjectsVoteOnce(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -492,7 +499,7 @@ class ProjectTest extends TestCase
     /**
      * Check that a Vote has existing type.
      */
-    public function testProjectsVoteTypeExists()
+    public function testProjectsVoteTypeExists(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -505,11 +512,11 @@ class ProjectTest extends TestCase
     }
 
     /**
-     * @param $dir
+     * @param string $dir
      *
      * @return bool
      */
-    private function delTree($dir)
+    private function delTree(string $dir): bool
     {
         $files = array_diff(scandir($dir), ['.', '..']);
         foreach ($files as $file) {

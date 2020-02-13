@@ -15,6 +15,11 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
+/**
+ * Class ProjectTest
+ * @author annejan@badge.team
+ * @package Tests\Unit
+ */
 class ProjectTest extends TestCase
 {
     use DatabaseTransactions;
@@ -23,7 +28,7 @@ class ProjectTest extends TestCase
     /**
      * Assert the Project has a relation with a single User.
      */
-    public function testProjectUserRelationship()
+    public function testProjectUserRelationship(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -34,7 +39,7 @@ class ProjectTest extends TestCase
     /**
      * Assert the Project can have a collection of Versions.
      */
-    public function testProjectVersionRelationship()
+    public function testProjectVersionRelationship(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -45,7 +50,7 @@ class ProjectTest extends TestCase
     /**
      * Assert the Project always has at-least one Version.
      */
-    public function testNewProjectHasAVersion()
+    public function testNewProjectHasAVersion(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -56,7 +61,7 @@ class ProjectTest extends TestCase
     /**
      * Check if Project revision helper.
      */
-    public function testProjectRevisionAttribute()
+    public function testProjectRevisionAttribute(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -70,7 +75,7 @@ class ProjectTest extends TestCase
     /**
      * Check if Project size_of_content helper works without release.
      */
-    public function testProjectSizeOfContentNoRelease()
+    public function testProjectSizeOfContentNoRelease(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -81,7 +86,7 @@ class ProjectTest extends TestCase
     /**
      * Assert the Project isForbidden.
      */
-    public function testProjectForbiddenNames()
+    public function testProjectForbiddenNames(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -92,7 +97,7 @@ class ProjectTest extends TestCase
     /**
      * Assert the Project can't use illegal name.
      */
-    public function testProjectSaveForbiddenNames()
+    public function testProjectSaveForbiddenNames(): void
     {
         $this->expectException(\Exception::class);
         $user = factory(User::class)->create();
@@ -106,7 +111,7 @@ class ProjectTest extends TestCase
     /**
      * Test the Category helper.
      */
-    public function testProjectCategoryAttribute()
+    public function testProjectCategoryAttribute(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -125,7 +130,7 @@ class ProjectTest extends TestCase
     /**
      * Test the description helper.
      */
-    public function testProjectDescriptionAttribute()
+    public function testProjectDescriptionAttribute(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -139,7 +144,7 @@ class ProjectTest extends TestCase
     /**
      * Test the descriptionHtml (Markdown) helper.
      */
-    public function testProjectDescriptionHtmlAttribute()
+    public function testProjectDescriptionHtmlAttribute(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -153,7 +158,7 @@ class ProjectTest extends TestCase
     /**
      * Test the userVoted helper.
      */
-    public function testProjectUserVoted()
+    public function testProjectUserVoted(): void
     {
         $project = new Project();
         $this->assertNull($project->userVoted());
@@ -168,7 +173,7 @@ class ProjectTest extends TestCase
     /**
      * Test the status helper (gets data from BadgeProject(s)).
      */
-    public function testProjectStatusMagic()
+    public function testProjectStatusMagic(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -208,7 +213,7 @@ class ProjectTest extends TestCase
     /**
      * Test the hasValidIcon() helper.
      */
-    public function testProjectHasValidIcon()
+    public function testProjectHasValidIcon(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);

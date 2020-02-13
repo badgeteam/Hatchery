@@ -6,14 +6,16 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
 use Illuminate\Support\Facades\App;
 
 /**
- * Class VerifyCsrfToken.
+ * Class VerifyCsrfToken
+ * @author annejan@badge.team
+ * @package App\Http\Middleware
  */
 class VerifyCsrfToken extends BaseVerifier
 {
     /**
      * The URIs that should be excluded from CSRF verification.
      *
-     * @var array
+     * @var array<string>
      */
     protected $except = [
         //

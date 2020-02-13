@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\File;
+use App\Models\Project;
+use App\Models\User;
+use App\Models\Vote;
 use App\Policies\FilePolicy;
 use App\Policies\ProjectPolicy;
 use App\Policies\UserPolicy;
@@ -9,20 +13,22 @@ use App\Policies\VotePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 /**
- * Class AuthServiceProvider.
+ * Class AuthServiceProvider
+ * @author annejan@badge.team
+ * @package App\Providers
  */
 class AuthServiceProvider extends ServiceProvider
 {
     /**
      * The policy mappings for the application.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $policies = [
-        'App\Models\Project' => ProjectPolicy::class,
-        'App\Models\File'    => FilePolicy::class,
-        'App\Models\User'    => UserPolicy::class,
-        'App\Models\Vote'    => VotePolicy::class,
+        Project::class => ProjectPolicy::class,
+        File::class    => FilePolicy::class,
+        User::class    => UserPolicy::class,
+        Vote::class    => VotePolicy::class,
     ];
 
     /**

@@ -126,7 +126,7 @@ vendor/bin/phpstan analyse
 Run all the tests
 
 ```bash
-vendor/bin/hpunit
+vendor/bin/hpunit --no-coverage
 ```
 
 Run a test suite (for a list of availabe suites, see `/phpunit.xml`)
@@ -147,7 +147,7 @@ Run a specific test case
 vendor/bin/phpunit --filter <test_case_name>
 ```
 
-Generate code coverage
+Generate code coverage as HTML
 
 ```bash
 vendor/bin/phpunit --coverage-html docs/coverage

@@ -9,6 +9,11 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
+/**
+ * Class WarningTest
+ * @author annejan@badge.team
+ * @package Tests\Unit
+ */
 class WarningTest extends TestCase
 {
     use DatabaseTransactions;
@@ -17,7 +22,7 @@ class WarningTest extends TestCase
     /**
      * Assert the Warning is cast by a User.
      */
-    public function testWarningUserRelationship()
+    public function testWarningUserRelationship(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -29,7 +34,7 @@ class WarningTest extends TestCase
     /**
      * Assert the Warning is cast on a Project.
      */
-    public function testWarningProjectRelationship()
+    public function testWarningProjectRelationship(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);

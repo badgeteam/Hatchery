@@ -17,11 +17,13 @@
         "ext-gd": "*",
         "ext-json": "*",
         "bepsvpt/secure-headers": "^5.5",
+        "darkaonline/l5-swagger": "dev-master",
         "intervention/image": "^2.5",
         "laravel/framework": "6.*",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^6",
-        "sentry/sentry-laravel": "^1.6.1"
+        "sentry/sentry-laravel": "^1.6.1",
+        "symfony/yaml": "^5.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",

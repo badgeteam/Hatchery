@@ -2,19 +2,30 @@
 
 namespace App\Mail;
 
+use App\Models\Project;
 use App\Models\Warning;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * Class ProjectNotificationMail.
+ * Class ProjectNotificationMail
+ * @author annejan@badge.team
+ * @package App\Mail
  */
 class ProjectNotificationMail extends Mailable
 {
     use Queueable;
     use SerializesModels;
+
+    /**
+     * @var Project
+     */
     public $project;
+
+    /**
+     * @var string
+     */
     public $description;
 
     /**

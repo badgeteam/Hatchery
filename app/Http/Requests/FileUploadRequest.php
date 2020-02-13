@@ -6,7 +6,9 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Class FileUploadRequest.
+ * Class FileUploadRequest
+ * @author annejan@badge.team
+ * @package App\Http\Requests
  */
 class FileUploadRequest extends FormRequest
 {
@@ -15,7 +17,7 @@ class FileUploadRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return Auth::guard()->check();
     }
@@ -23,9 +25,9 @@ class FileUploadRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'file' => 'required|file', //|mimes:'.implode(',', File::$extensions),

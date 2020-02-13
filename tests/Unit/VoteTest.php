@@ -10,6 +10,11 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
+/**
+ * Class VoteTest
+ * @author annejan@badge.team
+ * @package Tests\Unit
+ */
 class VoteTest extends TestCase
 {
     use DatabaseTransactions;
@@ -18,7 +23,7 @@ class VoteTest extends TestCase
     /**
      * Assert the Vote is cast by a User.
      */
-    public function testVoteUserRelationship()
+    public function testVoteUserRelationship(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -30,7 +35,7 @@ class VoteTest extends TestCase
     /**
      * Assert the Vote is cast on a Project.
      */
-    public function testVoteProjectRelationship()
+    public function testVoteProjectRelationship(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -43,7 +48,7 @@ class VoteTest extends TestCase
     /**
      * Assert the Vote type is sane.
      */
-    public function testVoteTypeEnumDefault()
+    public function testVoteTypeEnumDefault(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -56,7 +61,7 @@ class VoteTest extends TestCase
     /**
      * Assert the Vote type is sane.
      */
-    public function testVoteTypeEnumPig()
+    public function testVoteTypeEnumPig(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -70,7 +75,7 @@ class VoteTest extends TestCase
     /**
      * Assert the Vote type is sane.
      */
-    public function testVoteTypeEnumDown()
+    public function testVoteTypeEnumDown(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -84,7 +89,7 @@ class VoteTest extends TestCase
 //    /**
 //     * Assert the Vote type is sane.
 //     */
-//    public function testVoteTypeEnumIllegal()
+//    public function testVoteTypeEnumIllegal(): void
 //    {
 //        $this->expectException(QueryException::class);
 //        $user = factory(User::class)->create();

@@ -10,12 +10,17 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+/**
+ * Class Handler
+ * @author annejan@badge.team
+ * @package App\Exceptions
+ */
 class Handler extends ExceptionHandler
 {
     /**
      * A list of the exception types that should not be reported.
      *
-     * @var array
+     * @var array<string>
      */
     protected $dontReport = [
         \Illuminate\Auth\AuthenticationException::class,

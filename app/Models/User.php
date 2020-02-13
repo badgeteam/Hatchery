@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * App\Models\User.
+ * Class User
  *
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
@@ -51,6 +51,9 @@ use Illuminate\Notifications\Notifiable;
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
  * @property-read int|null $warnings_count
+ *
+ * @author annejan@badge.team
+ * @package App\Models
  */
 class User extends Authenticatable
 {
@@ -59,7 +62,7 @@ class User extends Authenticatable
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'name', 'email', 'password', 'editor',
@@ -68,7 +71,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array
+     * @var array<string>
      */
     protected $hidden = [
         'password', 'remember_token',
@@ -101,10 +104,10 @@ class User extends Authenticatable
     /**
      * Change the email to an impossible email.
      */
-    public function delete()
+    public function delete():? bool
     {
         $this->email = 'deleted'.mt_rand().'#'.$this->email;
         $this->save();
-        parent::delete();
+        return parent::delete();
     }
 }

@@ -10,6 +10,11 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
+/**
+ * Class VersionTest
+ * @author annejan@badge.team
+ * @package Tests\Unit
+ */
 class VersionTest extends TestCase
 {
     use DatabaseTransactions;
@@ -18,7 +23,7 @@ class VersionTest extends TestCase
     /**
      * Assert the Version has a relation with a single Project.
      */
-    public function testVersionProjectRelationship()
+    public function testVersionProjectRelationship(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -29,7 +34,7 @@ class VersionTest extends TestCase
     /**
      * Assert the Version can have a collection of Files.
      */
-    public function testVersionFileRelationship()
+    public function testVersionFileRelationship(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -41,7 +46,7 @@ class VersionTest extends TestCase
     /**
      * Check if published (anything with a zip) functions as expected.
      */
-    public function testVersionPublishedHelper()
+    public function testVersionPublishedHelper(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -54,7 +59,7 @@ class VersionTest extends TestCase
     /**
      * Check if Version published and unPublished scopes function.
      */
-    public function testVersionScopes()
+    public function testVersionScopes(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);

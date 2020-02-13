@@ -7,7 +7,9 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 /**
- * Class ProjectPolicy.
+ * Class ProjectPolicy
+ * @author annejan@badge.team
+ * @package App\Policies
  */
 class ProjectPolicy
 {

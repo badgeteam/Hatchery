@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * App\Models\Badge.
+ * Class Badge
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
  *
@@ -33,6 +33,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
  * @property-read int|null $states_count
+ *
+ * @author annejan@badge.team
+ * @package App\Models
  */
 class Badge extends Model
 {

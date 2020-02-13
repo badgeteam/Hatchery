@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class AppServiceProvider.
+ * Class AppServiceProvider
+ * @author annejan@badge.team
+ * @package App\Providers
  */
 class AppServiceProvider extends ServiceProvider
 {

@@ -7,7 +7,9 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Support\MessageBag;
 
 /**
- * Class ShareMessagesFromSession.
+ * Class ShareMessagesFromSession
+ * @author annejan@badge.team
+ * @package App\Http\Middleware
  */
 class ShareMessagesFromSession
 {

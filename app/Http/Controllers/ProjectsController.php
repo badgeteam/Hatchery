@@ -23,7 +23,9 @@ use Phar;
 use PharData;
 
 /**
- * Class ProjectsController.
+ * Class ProjectsController
+ * @author annejan@badge.team
+ * @package App\Http\Controllers
  */
 class ProjectsController extends Controller
 {

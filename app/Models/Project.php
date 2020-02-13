@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 /**
- * App\Models\Project.
+ * Class Project
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Badge[] $badges
  * @property-read string $category
@@ -72,6 +72,9 @@ use Illuminate\Support\Str;
  * @property \Illuminate\Support\Carbon|null $published_at
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project wherePublishedAt($value)
+ *
+ * @author annejan@badge.team
+ * @package App\Models
  */
 class Project extends Model
 {
@@ -80,7 +83,7 @@ class Project extends Model
     /**
      * Appended magic data.
      *
-     * @var array
+     * @var array<string>
      */
     protected $appends = [
         'revision',
@@ -94,7 +97,7 @@ class Project extends Model
     /**
      * Hidden data.
      *
-     * @var array
+     * @var array<string>
      */
     protected $hidden = [
         'created_at',
@@ -111,7 +114,7 @@ class Project extends Model
     /**
      * DateTime conversion for these fields.
      *
-     * @var array
+     * @var array<string>
      */
     protected $dates = [
         'created_at', 'updated_at', 'deleted_at', 'published_at',
@@ -120,7 +123,7 @@ class Project extends Model
     /**
      * Forbidden names for apps.
      *
-     * @var array
+     * @var array<string>
      */
     public static $forbidden = [
         'os', 'uos', 'badge', 'esp32', 'ussl', 'time', 'utime', 'splash', 'launcher', 'installer', 'ota_update',
@@ -132,7 +135,7 @@ class Project extends Model
     /**
      * Magical methods that associate a user and make sure projects have an empty __init__.py added.
      */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 

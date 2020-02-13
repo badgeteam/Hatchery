@@ -11,6 +11,11 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
+/**
+ * Class UserTest
+ * @author annejan@badge.team
+ * @package Tests\Feature
+ */
 class UserTest extends TestCase
 {
     use DatabaseTransactions;
@@ -19,7 +24,7 @@ class UserTest extends TestCase
     /**
      * login failed get redirected.
      */
-    public function testLoginFail()
+    public function testLoginFail(): void
     {
         $response = $this
             ->withSession(['_token'=>'test'])
@@ -40,7 +45,7 @@ class UserTest extends TestCase
     /**
      * Login, go to home.
      */
-    public function testLogin()
+    public function testLogin(): void
     {
         $faker = Factory::create();
         $password = $faker->password;
@@ -58,7 +63,7 @@ class UserTest extends TestCase
     /**
      * Check the homepage / dashboard.
      */
-    public function testHome()
+    public function testHome(): void
     {
         $user = factory(User::class)->create();
         $response = $this
@@ -72,7 +77,7 @@ class UserTest extends TestCase
     /**
      * Check the logout functionality.
      */
-    public function testLogout()
+    public function testLogout(): void
     {
         $user = factory(User::class)->create();
         $response = $this
@@ -85,7 +90,7 @@ class UserTest extends TestCase
     /**
      * Test a password change and login (full flow).
      */
-    public function testUserResetPassword()
+    public function testUserResetPassword(): void
     {
         Notification::fake();
 
@@ -144,7 +149,7 @@ class UserTest extends TestCase
     /**
      * Register, go to /home . .
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         $faker = Factory::create();
         $password = $faker->password(8, 20);
@@ -165,7 +170,7 @@ class UserTest extends TestCase
     /**
      * Check the user can be deleted.
      */
-    public function testUserDestroy()
+    public function testUserDestroy(): void
     {
         $user = factory(User::class)->create();
         $response = $this
@@ -179,7 +184,7 @@ class UserTest extends TestCase
     /**
      * Check the users can't be deleted by other users.
      */
-    public function testUserDestroyOtherUser()
+    public function testUserDestroyOtherUser(): void
     {
         $user = factory(User::class)->create();
         $otherUser = factory(User::class)->create();
@@ -192,7 +197,7 @@ class UserTest extends TestCase
     /**
      * Check the users can be deleted by admin users.
      */
-    public function testUserDestroyAdminUser()
+    public function testUserDestroyAdminUser(): void
     {
         $user = factory(User::class)->create();
         $otherUser = factory(User::class)->create();
@@ -207,7 +212,7 @@ class UserTest extends TestCase
     /**
      * Check the user edit page functions.
      */
-    public function testUserEdit()
+    public function testUserEdit(): void
     {
         $user = factory(User::class)->create();
         $response = $this
@@ -219,7 +224,7 @@ class UserTest extends TestCase
     /**
      * Check the user edit page functions.
      */
-    public function testUserEditOtherUser()
+    public function testUserEditOtherUser(): void
     {
         $user = factory(User::class)->create();
         $otherUser = factory(User::class)->create();
@@ -232,7 +237,7 @@ class UserTest extends TestCase
     /**
      * Check the user can be stored.
      */
-    public function testUserUpdate()
+    public function testUserUpdate(): void
     {
         $user = factory(User::class)->create();
         $response = $this
@@ -248,7 +253,7 @@ class UserTest extends TestCase
     /**
      * Check the other user can't be stored.
      */
-    public function testUserUpdateOtherUser()
+    public function testUserUpdateOtherUser(): void
     {
         $user = factory(User::class)->create();
         $otherUser = factory(User::class)->create();

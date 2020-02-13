@@ -10,7 +10,7 @@ use Intervention\Image\Exception\NotReadableException;
 use Intervention\Image\Facades\Image;
 
 /**
- * App\Models\File.
+ * Class File
  *
  * @property-read bool $editable
  * @property-read string $extension
@@ -47,6 +47,9 @@ use Intervention\Image\Facades\Image;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereVersionId($value)
  *
  * @property-read string $mime
+ *
+ * @author annejan@badge.team
+ * @package App\Models
  */
 class File extends Model
 {
@@ -55,7 +58,7 @@ class File extends Model
     /**
      * Supported extensions.
      *
-     * @var array
+     * @var array<string>
      */
     public static $extensions = [
         'py', 'pyc',
@@ -69,7 +72,7 @@ class File extends Model
     /**
      * Mime types for supported extensions.
      *
-     * @var array
+     * @var array<string>
      */
     public static $mimes = [
         'py'   => 'application/x-python-code',
@@ -92,7 +95,7 @@ class File extends Model
     /**
      * File extensions editable by Hatchery.
      *
-     * @var array
+     * @var array<string>
      */
     protected $editables = [
         'py',
@@ -104,21 +107,21 @@ class File extends Model
     /**
      * Appended magic variables.
      *
-     * @var array
+     * @var array<string>
      */
     protected $appends = ['editable', 'extension', 'size_of_content'];
 
     /**
      * Mass assignable variables.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = ['name'];
 
     /**
      * Make sure a file is owned by a user.
      */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 

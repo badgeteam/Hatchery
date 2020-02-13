@@ -11,6 +11,11 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
 
+/**
+ * Class BadgeProjectTest
+ * @author annejan@badge.team
+ * @package Tests\Unit
+ */
 class BadgeProjectTest extends TestCase
 {
     use DatabaseTransactions;
@@ -19,7 +24,7 @@ class BadgeProjectTest extends TestCase
     /**
      * Assert the Badge has a collection of BadgeProjects.
      */
-    public function testBadgeProjectBadgeRelationship()
+    public function testBadgeProjectBadgeRelationship(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -31,14 +36,16 @@ class BadgeProjectTest extends TestCase
         $this->assertInstanceOf(Collection::class, $badge->states);
         $this->assertInstanceOf(BadgeProject::class, $badge->states->first());
         $this->assertCount(1, $badge->states);
-        $this->assertInstanceOf(Badge::class, $badge->states->first()->badge);
-        $this->assertEquals($badge->id, $badge->states->first()->badge->id);
+        /** @var BadgeProject $state */
+        $state = $badge->states->first();
+        $this->assertInstanceOf(Badge::class, $state->badge);
+        $this->assertEquals($badge->id, $state->badge->id);
     }
 
     /**
      * Assert the Project has a collection of BadgeProjects.
      */
-    public function testBadgeProjectProjectRelationship()
+    public function testBadgeProjectProjectRelationship(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -52,7 +59,9 @@ class BadgeProjectTest extends TestCase
         $this->assertInstanceOf(Collection::class, $project->states);
         $this->assertInstanceOf(BadgeProject::class, $project->states->first());
         $this->assertCount(1, $project->states);
-        $this->assertInstanceOf(Badge::class, $project->states->first()->badge);
-        $this->assertEquals($badge->id, $project->states->first()->badge->id);
+        /** @var BadgeProject $state */
+        $state = $badge->states->first();
+        $this->assertInstanceOf(Badge::class, $state->badge);
+        $this->assertEquals($badge->id, $state->badge->id);
     }
 }

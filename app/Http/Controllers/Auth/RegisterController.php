@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Validator;
  * This controller handles the registration of new users as well as their
  * validation and creation. By default this controller uses a trait to
  * provide this functionality without requiring any additional code.
+ *
+ *  @package App\Http\Controllers\Auth
  */
 class RegisterController extends Controller
 {
@@ -36,7 +38,7 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param array $data
+     * @param array<string, mixed> $data
      *
      * @return \Illuminate\Contracts\Validation\Validator
      */
@@ -54,7 +56,7 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param array $data
+     * @param array<string, mixed> $data
      *
      * @return User
      */

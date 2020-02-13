@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * App\Models\Vote.
+ * Class Vote
  *
  * @property int $id
  * @property int $user_id
@@ -38,6 +38,9 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Vote withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Vote withoutTrashed()
  * @mixin \Eloquent
+ *
+ * @author annejan@badge.team
+ * @package App\Models
  */
 class Vote extends Model
 {
@@ -46,7 +49,7 @@ class Vote extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'project_id', 'type',
@@ -55,7 +58,7 @@ class Vote extends Model
     /**
      * Make sure a user is assigned.
      */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 

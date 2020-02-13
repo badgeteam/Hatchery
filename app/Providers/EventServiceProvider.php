@@ -2,22 +2,26 @@
 
 namespace App\Providers;
 
+use App\Events\DownloadCounter;
+use App\Listeners\DownloadCounterListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
 /**
- * Class EventServiceProvider.
+ * Class EventServiceProvider
+ * @author annejan@badge.team
+ * @package App\Providers
  */
 class EventServiceProvider extends ServiceProvider
 {
     /**
      * The event listener mappings for the application.
      *
-     * @var array
+     * @var array<array>
      */
     protected $listen = [
-        'App\Events\DownloadCounter' => [
-            'App\Listeners\DownloadCounterListener',
+        DownloadCounter::class => [
+            DownloadCounterListener::class,
         ],
     ];
 
@@ -29,7 +33,5 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
-        //
     }
 }

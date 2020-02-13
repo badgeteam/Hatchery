@@ -13,13 +13,18 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
+/**
+ * Class FileTest
+ * @author annejan@badge.team
+ * @package Tests\Feature
+ */
 class FileTest extends TestCase
 {
     use DatabaseTransactions;
     use DatabaseMigrations;
     use WithFaker;
 
-    public function testUploadFile()
+    public function testUploadFile(): void
     {
         $stub = __DIR__.'/heart.png';
         $name = Str::random(8).'.png';
@@ -40,7 +45,7 @@ class FileTest extends TestCase
         $this->assertEquals($name, File::where('name', '!=', '__init__.py')->first()->name);
     }
 
-//    public function testUploadIllegalFile()
+//    public function testUploadIllegalFile(): void
 //    {
 //        $stub = __DIR__.'/empty.zip';
 //        $name = str_random(8).'.zip';
@@ -60,7 +65,7 @@ class FileTest extends TestCase
     /**
      * Check the files edit page functions.
      */
-    public function testFilesEdit()
+    public function testFilesEdit(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -74,7 +79,7 @@ class FileTest extends TestCase
     /**
      * Check the files edit page functions for other users.
      */
-    public function testFilesEditOtherUser()
+    public function testFilesEditOtherUser(): void
     {
         $user = factory(User::class)->create();
         $otherUser = factory(User::class)->create();
@@ -89,7 +94,7 @@ class FileTest extends TestCase
     /**
      * Check the files can be stored.
      */
-    public function testFilesUpdate()
+    public function testFilesUpdate(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -106,7 +111,7 @@ time.localtime()';
     /**
      * Check the files can't be stored by other users.
      */
-    public function testFilesUpdateOtherUser()
+    public function testFilesUpdateOtherUser(): void
     {
         $user = factory(User::class)->create();
         $otherUser = factory(User::class)->create();
@@ -123,7 +128,7 @@ time.localtime()';
     /**
      * Check the files can be deleted.
      */
-    public function testFilesDestroy()
+    public function testFilesDestroy(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -137,7 +142,7 @@ time.localtime()';
     /**
      * Check the files create page functions.
      */
-    public function testFilesCreate()
+    public function testFilesCreate(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -152,7 +157,7 @@ time.localtime()';
     /**
      * Check the files can be stored.
      */
-    public function testFilesStore()
+    public function testFilesStore(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -170,7 +175,7 @@ time.localtime()';
     /**
      * Check the files can be stored.
      */
-    public function testFilesUpdateLintWarning()
+    public function testFilesUpdateLintWarning(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -185,7 +190,7 @@ time.localtime()';
     /**
      * Check the files can be stored.
      */
-    public function testFilesUpdateLintError()
+    public function testFilesUpdateLintError(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -200,7 +205,7 @@ time.localtime()';
     /**
      * Check the files can be viewed (publicly).
      */
-    public function testFilesView()
+    public function testFilesView(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);

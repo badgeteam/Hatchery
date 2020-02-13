@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * App\Models\Version.
+ * Class Version
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\File[] $files
  * @property-read bool $published
@@ -49,6 +49,9 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereZip($value)
+ *
+ * @author annejan@badge.team
+ * @package App\Models
  */
 class Version extends Model
 {
@@ -57,14 +60,14 @@ class Version extends Model
     /**
      * Appended magic data.
      *
-     * @var array
+     * @var array<string>
      */
     protected $appends = ['published'];
 
     /**
      * Make sure a user is assigned.
      */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 

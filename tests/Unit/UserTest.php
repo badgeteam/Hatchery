@@ -11,6 +11,11 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
+/**
+ * Class UserTest
+ * @author annejan@badge.team
+ * @package Tests\Unit
+ */
 class UserTest extends TestCase
 {
     use DatabaseTransactions;
@@ -19,17 +24,21 @@ class UserTest extends TestCase
     /**
      * Assert the User has a relation with zero or more Project(s).
      */
-    public function testUserProjectsRelationship()
+    public function testUserProjectsRelationship(): void
     {
+        /** @var User $user */
         $user = factory(User::class)->create();
         $this->be($user);
         $this->assertEmpty($user->projects);
+        /** @var Project $project */
         $project = factory(Project::class)->create(['user_id' => $user->id]);
         $user = User::find($user->id);
         $this->assertCount(1, $user->projects);
         $this->assertInstanceOf(Collection::class, $user->projects);
         $this->assertInstanceOf(Project::class, $user->projects->first());
-        $this->assertEquals($project->id, $user->projects->first()->id);
+        /** @var Project $userProject */
+        $userProject = $user->projects->first();
+        $this->assertEquals($project->id, $userProject->id);
         factory(Project::class)->create(['user_id' => $user->id]);
         $user = User::find($user->id);
         $this->assertCount(2, $user->projects);
@@ -38,17 +47,21 @@ class UserTest extends TestCase
     /**
      * Assert the User has a relation with zero or more Votes(s).
      */
-    public function testUserVotesRelationship()
+    public function testUserVotesRelationship(): void
     {
+        /** @var User $user */
         $user = factory(User::class)->create();
         $this->be($user);
         $this->assertEmpty($user->votes);
         $user = User::find($user->id);
+        /** @var Vote $vote */
         $vote = factory(Vote::class)->create(['user_id' => $user->id]);
         $this->assertCount(1, $user->votes);
         $this->assertInstanceOf(Collection::class, $user->votes);
         $this->assertInstanceOf(Vote::class, $user->votes->first());
-        $this->assertEquals($vote->id, $user->votes->first()->id);
+        /** @var Vote $userVote */
+        $userVote = $user->votes->first();
+        $this->assertEquals($vote->id, $userVote->id);
         factory(Vote::class)->create(['user_id' => $user->id]);
         $user = User::find($user->id);
         $this->assertCount(2, $user->votes);
@@ -57,7 +70,7 @@ class UserTest extends TestCase
     /**
      * Assert the User has a relation with zero or more Warnings(s).
      */
-    public function testUserWarningsRelationship()
+    public function testUserWarningsRelationship(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -67,7 +80,9 @@ class UserTest extends TestCase
         $this->assertCount(1, $user->warnings);
         $this->assertInstanceOf(Collection::class, $user->votes);
         $this->assertInstanceOf(Warning::class, $user->warnings->first());
-        $this->assertEquals($warning->id, $user->warnings->first()->id);
+        /** @var Warning $userWarning */
+        $userWarning = $user->warnings->first();
+        $this->assertEquals($warning->id, $userWarning->id);
         factory(Warning::class)->create(['user_id' => $user->id]);
         $user = User::find($user->id);
         $this->assertCount(2, $user->warnings);

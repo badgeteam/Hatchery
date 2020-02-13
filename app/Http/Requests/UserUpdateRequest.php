@@ -6,7 +6,9 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Class UserUpdateRequest.
+ * Class UserUpdateRequest
+ * @author annejan@badge.team
+ * @package App\Http\Requests
  */
 class UserUpdateRequest extends FormRequest
 {
@@ -15,7 +17,7 @@ class UserUpdateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return Auth::guard()->check();
     }
@@ -23,9 +25,9 @@ class UserUpdateRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name'  => 'required',

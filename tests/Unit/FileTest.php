@@ -10,6 +10,11 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
+/**
+ * Class FileTest
+ * @author annejan@badge.team
+ * @package Tests\Unit
+ */
 class FileTest extends TestCase
 {
     use DatabaseTransactions;
@@ -18,7 +23,7 @@ class FileTest extends TestCase
     /**
      * Assert the File has a relation with a single Project Version.
      */
-    public function testFileVersionProjectRelationship()
+    public function testFileVersionProjectRelationship(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -30,7 +35,7 @@ class FileTest extends TestCase
     /**
      * Assert File extension helper work in a basic case.
      */
-    public function testFileExtensionAttribute()
+    public function testFileExtensionAttribute(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -41,7 +46,7 @@ class FileTest extends TestCase
     /**
      * Assert txt Files are flagged editable.
      */
-    public function testFileEditableAttribute()
+    public function testFileEditableAttribute(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -52,7 +57,7 @@ class FileTest extends TestCase
     /**
      * Check the size of content helper.
      */
-    public function testFileSizeOfContentAttribute()
+    public function testFileSizeOfContentAttribute(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -65,7 +70,7 @@ class FileTest extends TestCase
     /**
      * Assert py file mime type.
      */
-    public function testFilePythonMimeAttribute()
+    public function testFilePythonMimeAttribute(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -76,7 +81,7 @@ class FileTest extends TestCase
     /**
      * Assert png file mime type.
      */
-    public function testFilePngMimeAttribute()
+    public function testFilePngMimeAttribute(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -87,7 +92,7 @@ class FileTest extends TestCase
     /**
      * Assert unknown (octet-stream) file mime type.
      */
-    public function testFileUnknownMimeAttribute()
+    public function testFileUnknownMimeAttribute(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -98,7 +103,7 @@ class FileTest extends TestCase
     /**
      * Assert wav file mime type.
      */
-    public function testFileWavMimeAttribute()
+    public function testFileWavMimeAttribute(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -109,7 +114,7 @@ class FileTest extends TestCase
     /**
      * Assert bin (octet-stream) file mime type.
      */
-    public function testFileBinMimeAttribute()
+    public function testFileBinMimeAttribute(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -120,7 +125,7 @@ class FileTest extends TestCase
     /**
      * Assert png icon.
      */
-    public function testFileIsValidIcon()
+    public function testFileIsValidIcon(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);

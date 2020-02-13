@@ -12,6 +12,11 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
+/**
+ * Class PublicTest
+ * @author annejan@badge.team
+ * @package Tests\Feature
+ */
 class PublicTest extends TestCase
 {
     use DatabaseTransactions;
@@ -20,7 +25,7 @@ class PublicTest extends TestCase
     /**
      * A basic test example.
      */
-    public function testWelcome()
+    public function testWelcome(): void
     {
         $response = $this->get('/');
         $response->assertStatus(200)
@@ -33,7 +38,7 @@ class PublicTest extends TestCase
     /**
      * A basic test example with a Badge.
      */
-    public function testWelcomeBadge()
+    public function testWelcomeBadge(): void
     {
         $badge = factory(Badge::class)->create();
         $response = $this->get('/?badge='.$badge->slug);
@@ -47,7 +52,7 @@ class PublicTest extends TestCase
     /**
      * A basic test example with a Category.
      */
-    public function testWelcomeCategory()
+    public function testWelcomeCategory(): void
     {
         $category = factory(Category::class)->create();
         $response = $this->get('/?category='.$category->slug);
@@ -61,7 +66,7 @@ class PublicTest extends TestCase
     /**
      * A basic test example with Badge and Category.
      */
-    public function testWelcomeBadgeCategory()
+    public function testWelcomeBadgeCategory(): void
     {
         $badge = factory(Badge::class)->create();
         $category = factory(Category::class)->create();
@@ -76,7 +81,7 @@ class PublicTest extends TestCase
     /**
      * A badge test example.
      */
-    public function testBadge()
+    public function testBadge(): void
     {
         $badge = factory(Badge::class)->create();
         $response = $this->get('/badge/'.$badge->slug);
@@ -90,7 +95,7 @@ class PublicTest extends TestCase
     /**
      * A badge category example.
      */
-    public function testBadgeCategory()
+    public function testBadgeCategory(): void
     {
         $badge = factory(Badge::class)->create();
         $category = factory(Category::class)->create();
@@ -105,7 +110,7 @@ class PublicTest extends TestCase
     /**
      * Check redirect to /login when going to the /home page.
      */
-    public function testHomeRedirect()
+    public function testHomeRedirect(): void
     {
         $response = $this->get('/home');
         $response->assertStatus(302)
@@ -115,7 +120,7 @@ class PublicTest extends TestCase
     /**
      * Check JSON request Unauthenticated . .
      */
-    public function testJsonRedirect()
+    public function testJsonRedirect(): void
     {
         $response = $this->json('GET', '/home');
         $response->assertStatus(401)
@@ -125,7 +130,7 @@ class PublicTest extends TestCase
     /**
      * Check JSON egg request . .
      */
-    public function testProjectGetJsonModelNotFound()
+    public function testProjectGetJsonModelNotFound(): void
     {
         $response = $this->json('GET', '/eggs/get/something/json');
         $response->assertStatus(404)
@@ -135,7 +140,7 @@ class PublicTest extends TestCase
     /**
      * Check JSON egg request . .
      */
-    public function testProjectGetJson()
+    public function testProjectGetJson(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -164,7 +169,7 @@ class PublicTest extends TestCase
     /**
      * Check JSON egg request . .
      */
-    public function testProjectGetJson404()
+    public function testProjectGetJson404(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -178,7 +183,7 @@ class PublicTest extends TestCase
     /**
      * Check JSON eggs request . .
      */
-    public function testProjectListJson()
+    public function testProjectListJson(): void
     {
         $response = $this->json('GET', '/eggs/list/json');
         $response->assertStatus(200)->assertExactJson([]);
@@ -213,7 +218,7 @@ class PublicTest extends TestCase
     /**
      * Check JSON eggs request . .
      */
-    public function testProjectSearchJson()
+    public function testProjectSearchJson(): void
     {
         $response = $this->json('GET', '/eggs/search/something/json');
         $response->assertStatus(200)->assertExactJson([]);
@@ -248,7 +253,7 @@ class PublicTest extends TestCase
     /**
      * Check JSON eggs request . .
      */
-    public function testProjectCategoryJson()
+    public function testProjectCategoryJson(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -282,7 +287,7 @@ class PublicTest extends TestCase
     /**
      * Check JSON eggs request . .
      */
-    public function testCategoriesJson()
+    public function testCategoriesJson(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -307,7 +312,7 @@ class PublicTest extends TestCase
     /**
      * Check JSON eggs request . .
      */
-    public function testCategoriesCountJson()
+    public function testCategoriesCountJson(): void
     {
         $user = factory(User::class)->create();
 
@@ -333,7 +338,7 @@ class PublicTest extends TestCase
     /**
      * Check JSON eggs request . .
      */
-    public function testCategoriesUnpublishedJson()
+    public function testCategoriesUnpublishedJson(): void
     {
         $user = factory(User::class)->create();
 
@@ -358,7 +363,7 @@ class PublicTest extends TestCase
     /**
      * Check public project view.
      */
-    public function testProjectShow()
+    public function testProjectShow(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -372,7 +377,7 @@ class PublicTest extends TestCase
     /**
      * Check public file view.
      */
-    public function testFileShow()
+    public function testFileShow(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -386,7 +391,7 @@ class PublicTest extends TestCase
     /**
      * Check JSON basket request . .
      */
-    public function testBasketListJson()
+    public function testBasketListJson(): void
     {
         $badge = factory(Badge::class)->create();
         $user = factory(User::class)->create();
@@ -422,7 +427,7 @@ class PublicTest extends TestCase
     /**
      * Check JSON basket request . .
      */
-    public function testBasketSearchJson()
+    public function testBasketSearchJson(): void
     {
         $badge = factory(Badge::class)->create();
         $response = $this->json('GET', '/eggs/search/something/json');
@@ -462,7 +467,7 @@ class PublicTest extends TestCase
     /**
      * Check JSON basket request . .
      */
-    public function testBasketCategoriesJson()
+    public function testBasketCategoriesJson(): void
     {
         $badge = factory(Badge::class)->create();
         $user = factory(User::class)->create();
@@ -504,7 +509,7 @@ class PublicTest extends TestCase
     /**
      * Check JSON basket request . .
      */
-    public function testBasketCategoryJson()
+    public function testBasketCategoryJson(): void
     {
         $badge = factory(Badge::class)->create();
         $user = factory(User::class)->create();

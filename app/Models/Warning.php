@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * App\Models\Warning.
+ * Class Warning
  *
  * @property int $id
  * @property int $user_id
@@ -36,6 +36,9 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Warning withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Warning withoutTrashed()
  * @mixin \Eloquent
+ *
+ * @author annejan@badge.team
+ * @package App\Models
  */
 class Warning extends Model
 {
@@ -44,7 +47,7 @@ class Warning extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'project_id', 'description',
@@ -53,7 +56,7 @@ class Warning extends Model
     /**
      * Make sure a user is assigned.
      */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 

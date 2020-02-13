@@ -13,7 +13,9 @@ use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 /**
- * Class FilesController.
+ * Class FilesController
+ * @author annejan@badge.team
+ * @package App\Http\Controllers
  */
 class FilesController extends Controller
 {
@@ -32,7 +34,7 @@ class FilesController extends Controller
      * @param Version           $version
      * @param FileUploadRequest $request
      */
-    public function upload(Version $version, FileUploadRequest $request)
+    public function upload(Version $version, FileUploadRequest $request): void
     {
         $upload = $request->file('file');
         /** @var File $file */
@@ -103,6 +105,7 @@ class FilesController extends Controller
     public function create(Request $request): View
     {
         $version = Version::where('id', $request->get('version'))->firstOrFail();
+
         return view('files.create')->with('version', $version);
     }
 
@@ -181,7 +184,7 @@ class FilesController extends Controller
      * @param string $content
      * @param string $command = "pyflakes"
      *
-     * @return array
+     * @return array<string|int, string|int|null>
      */
     public static function lintContent(string $content, string $command = 'pyflakes'): array
     {

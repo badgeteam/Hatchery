@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 /**
- * App\Models\Category.
+ * Class Category
  *
  * @property-read int $eggs
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
@@ -39,6 +39,9 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereUpdatedAt($value)
+ *
+ * @author annejan@badge.team
+ * @package App\Models
  */
 class Category extends Model
 {
@@ -47,21 +50,21 @@ class Category extends Model
     /**
      * Hidden attributes.
      *
-     * @var array
+     * @var array<string>
      */
     protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'id', 'hidden'];
 
     /**
      * Appended attributes.
      *
-     * @var array
+     * @var array<string>
      */
     protected $appends = ['eggs'];
 
     /**
      * Boot function to create slug from name upon saving.
      */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
