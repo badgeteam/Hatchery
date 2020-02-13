@@ -38,6 +38,7 @@ class VotesController extends Controller
         if (Vote::where('user_id', $user->id)->where('project_id', $request->project_id)->exists()) {
             /** @var Project $project */
             $project = Project::find($request->project_id);
+
             return redirect()
                 ->route('projects.show', ['project' => $project->slug])
                 ->withInput()

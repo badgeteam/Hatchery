@@ -333,6 +333,7 @@ class Project extends Model
         if ($version && $version->files()->where('name', 'like', 'README.md')->count() === 1) {
             /** @var File $file */
             $file = $version->files()->where('name', 'like', 'README.md')->first();
+
             return $file->content;
         }
 
