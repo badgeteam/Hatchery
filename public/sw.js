@@ -1,10 +1,9 @@
-const cacheName = 'hatchery::20200206';
+const cacheName = 'hatchery::20200213';
 
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(cacheName).then(cache => {
       return cache.addAll([
-        '/eggs/',
         '/svg/500.svg',
         '/svg/503.svg',
         '/svg/403.svg',
