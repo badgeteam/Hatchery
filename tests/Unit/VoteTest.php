@@ -5,7 +5,6 @@ namespace Tests\Unit;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Vote;
-use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -54,6 +53,7 @@ class VoteTest extends TestCase
         $this->be($user);
         $vote = factory(Vote::class)->create();
         $this->assertNull($vote->type);
+        /** @var Vote $vote */
         $vote = Vote::find($vote->id);
         $this->assertEquals('up', $vote->type);
     }
@@ -68,6 +68,7 @@ class VoteTest extends TestCase
         $project = factory(Project::class)->create();
         $vote = factory(Vote::class)->create(['project_id' => $project->id, 'type' => 'pig']);
         $this->assertEquals('pig', $vote->type);
+        /** @var Vote $vote */
         $vote = Vote::find($vote->id);
         $this->assertEquals('pig', $vote->type);
     }
@@ -82,6 +83,7 @@ class VoteTest extends TestCase
         $project = factory(Project::class)->create();
         $vote = factory(Vote::class)->create(['project_id' => $project->id, 'type' => 'down']);
         $this->assertEquals('down', $vote->type);
+        /** @var Vote $vote */
         $vote = Vote::find($vote->id);
         $this->assertEquals('down', $vote->type);
     }

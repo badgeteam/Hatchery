@@ -13,6 +13,7 @@ use App\Models\Vote;
 use App\Models\Warning;
 use Faker\Factory;
 use Illuminate\Container\Container;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -224,6 +225,7 @@ class ProjectTest extends TestCase
         $projectDep = factory(Project::class)->create();
         $projectDep->versions()->first()->zip = 'test';
         $projectDep->versions()->first()->save();
+        /** @var Project $project */
         $project = factory(Project::class)->create();
         $project->dependencies()->save($projectDep);
         $file = factory(File::class, ['version_id' => $project->versions()->unPublished()->first()->id])->create();
@@ -235,9 +237,10 @@ class ProjectTest extends TestCase
             ->actingAs($user)
             ->call('post', '/release/'.$project->slug);
         $response->assertRedirect('/projects/'.$project->slug.'/edit')->assertSessionHas('successes');
-
+        /** @var Collection $versions */
+        $versions = Version::published()->where('project_id', $project->id)->get();
         /** @var Version $version */
-        $version = Version::published()->where('project_id', $project->id)->get()->last();
+        $version = $versions->last();
 
         $this->assertFileExists(public_path($version->zip));
         $this->assertFileNotExists(public_path(str_replace('.gz', '', $version->zip)));
@@ -248,15 +251,15 @@ class ProjectTest extends TestCase
         exec('tar xf '.public_path($version->zip).' -C '.sys_get_temp_dir());
 
         $path = sys_get_temp_dir().'/'.$project->slug;
-        $json = file_get_contents($path.'/metadata.json');
+        $json = strval(file_get_contents($path.'/metadata.json'));
 
-        $this->assertJsonStringEqualsJsonString(json_encode([
+        $this->assertJsonStringEqualsJsonString(strval(json_encode([
             'name'        => $project->name,
             'description' => null,
             'category'    => $project->category,
             'author'      => $project->user->name,
             'revision'    => 1,
-        ]), $json);
+        ])), $json);
 
         $dep = file_get_contents($path.'/'.$project->slug.'.egg-info/requires.txt');
         $this->assertEquals($projectDep->slug."\n", $dep);
@@ -312,21 +315,23 @@ class ProjectTest extends TestCase
             ->actingAs($user)
             ->call('post', '/release/'.$project->slug);
         $response->assertRedirect();
+        /** @var Collection $versions */
+        $versions = Version::published()->where('project_id', $project->id)->get();
         /** @var Version $version */
-        $version = Version::published()->where('project_id', $project->id)->get()->last();
+        $version = $versions->last();
 
         exec('tar xf '.public_path($version->zip).' -C '.sys_get_temp_dir());
         $path = sys_get_temp_dir().'/'.$project->slug;
-        $json = file_get_contents($path.'/metadata.json');
+        $json = strval(file_get_contents($path.'/metadata.json'));
 
-        $this->assertJsonStringEqualsJsonString(json_encode([
+        $this->assertJsonStringEqualsJsonString(strval(json_encode([
             'name'        => $project->name,
             'description' => null,
             'category'    => $project->category,
             'author'      => $project->user->name,
             'revision'    => 1,
             'icon'        => 'icon.png',
-        ]), $json);
+        ])), $json);
 
         unlink(public_path($version->zip));
         $this->delTree($path);
@@ -419,6 +424,7 @@ class ProjectTest extends TestCase
     {
         $user = factory(User::class)->create();
         $this->be($user);
+        /** @var Project $project */
         $project = factory(Project::class)->create();
         $faker = Factory::create();
         $badge = factory(Badge::class)->create();
@@ -444,6 +450,7 @@ class ProjectTest extends TestCase
     {
         $user = factory(User::class)->create();
         $this->be($user);
+        /** @var Project $project */
         $project = factory(Project::class)->create();
         $response = $this
             ->actingAs($user)
@@ -454,7 +461,9 @@ class ProjectTest extends TestCase
 
             return 'mails.projectNotify' === $mail->build()->textView;
         });
-        $this->assertCount(1, Warning::all());
+        /** @var Collection $warnings */
+        $warnings = Warning::all();
+        $this->assertCount(1, $warnings);
         $project = Project::find($project->id);
         $this->assertEquals('het zuigt', $project->warnings()->first()->description);
     }
@@ -466,6 +475,7 @@ class ProjectTest extends TestCase
     {
         $user = factory(User::class)->create();
         $this->be($user);
+        /** @var Project $project */
         $project = factory(Project::class)->create();
         $response = $this
             ->actingAs($user)
@@ -518,7 +528,11 @@ class ProjectTest extends TestCase
      */
     private function delTree(string $dir): bool
     {
-        $files = array_diff(scandir($dir), ['.', '..']);
+        $files = scandir($dir);
+        if (!$files) {
+            return false;
+        }
+        $files = array_diff($files, ['.', '..']);
         foreach ($files as $file) {
             (is_dir("$dir/$file")) ? $this->delTree("$dir/$file") : unlink("$dir/$file");
         }

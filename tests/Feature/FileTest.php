@@ -98,6 +98,7 @@ class FileTest extends TestCase
     {
         $user = factory(User::class)->create();
         $this->be($user);
+        /** @var File $file */
         $file = factory(File::class)->create();
         $data = 'import time
 time.localtime()';

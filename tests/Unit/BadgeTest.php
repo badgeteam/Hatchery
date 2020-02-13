@@ -30,7 +30,7 @@ class BadgeTest extends TestCase
         $badge = factory(Badge::class)->create();
         $project = factory(Project::class)->create();
         $project->badges()->attach($badge);
-
+        /** @var Badge $badge */
         $badge = Badge::find($badge->id);
         $this->assertInstanceOf(Collection::class, $badge->projects);
         $this->assertInstanceOf(Project::class, $badge->projects->first());

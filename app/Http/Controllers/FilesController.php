@@ -10,6 +10,7 @@ use App\Models\Version;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\UploadedFile;
 use Illuminate\View\View;
 
 /**
@@ -36,6 +37,7 @@ class FilesController extends Controller
      */
     public function upload(Version $version, FileUploadRequest $request): void
     {
+        /** @var UploadedFile $upload */
         $upload = $request->file('file');
         /** @var File $file */
         $file = $version->files()->firstOrNew(['name' => $upload->getClientOriginalName()]);
@@ -82,12 +84,12 @@ class FilesController extends Controller
             } elseif (!empty($pyflakes[0])) {
                 return redirect()->route('files.edit', ['file' => $file->id])
                     ->withInput()
-                    ->withWarnings(explode("\n", $pyflakes[0]));
+                    ->withWarnings(explode("\n", strval($pyflakes[0])));
             }
 
             return redirect()->route('files.edit', ['file' => $file->id])
                 ->withInput()
-                ->withErrors(explode("\n", $pyflakes[1]));
+                ->withErrors(explode("\n", strval($pyflakes[1])));
         }
 
         return redirect()

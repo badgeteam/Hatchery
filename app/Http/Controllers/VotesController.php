@@ -36,9 +36,12 @@ class VotesController extends Controller
         $user = Auth::guard()->user();
 
         if (Vote::where('user_id', $user->id)->where('project_id', $request->project_id)->exists()) {
+            /** @var Project $project */
             $project = Project::find($request->project_id);
-
-            return redirect()->route('projects.show', ['project' => $project->slug])->withInput()->withErrors(['Already voted, no update method yet implemented']);
+            return redirect()
+                ->route('projects.show', ['project' => $project->slug])
+                ->withInput()
+                ->withErrors(['Already voted, no update method yet implemented']);
         }
 
         $vote = new Vote();

@@ -75,6 +75,7 @@ class UserTest extends TestCase
         $user = factory(User::class)->create();
         $this->be($user);
         $this->assertEmpty($user->votes);
+        /** @var User $user */
         $user = User::find($user->id);
         $warning = factory(Warning::class)->create(['user_id' => $user->id]);
         $this->assertCount(1, $user->warnings);

@@ -184,6 +184,7 @@ class ProjectTest extends TestCase
         $state = BadgeProject::where('badge_id', $badge->id)->where('project_id', $project->id)->first();
         $state->status = 'broken';
         $state->save();
+        /** @var Project $project */
         $project = Project::find($project->id);
         $this->assertEquals('broken', $project->status);
         $badge = factory(Badge::class)->create();
