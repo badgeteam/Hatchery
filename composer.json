@@ -24,15 +24,17 @@
         "sentry/sentry-laravel": "^1.6.1"
     },
     "require-dev": {
-        "codeception/codeception": "^4.1",
-        "doctrine/dbal": "^2.10",
-        "fzaninotto/faker": "^1.9",
-        "nunomaduro/larastan": "^0.5",
-        "phpunit/phpunit": "^8",
         "barryvdh/laravel-ide-helper": "^2.6",
         "codacy/coverage": "^1.4",
+        "codeception/codeception": "^4.1",
+        "codeception/module-asserts": "^1.1",
+        "codeception/module-laravel5": "^1.0",
+        "doctrine/dbal": "^2.10",
+        "fzaninotto/faker": "^1.9",
         "mockery/mockery": "^1.2",
+        "nunomaduro/larastan": "^0.5",
         "phpstan/phpstan": "^0.12",
+        "phpunit/phpunit": "^8",
         "sempro/phpunit-pretty-print": "^1.1"
     },
     "autoload": {

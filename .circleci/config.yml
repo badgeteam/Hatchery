@@ -54,5 +54,5 @@ jobs:
       - run: php artisan config:cache --env=testing
 
       # run tests with codecept
-      - run: ./vendor/bin/codecept build
-      - run: ./vendor/bin/codecept run
+      - run: vendor/bin/codecept build
+      - run: vendor/bin/codecept run

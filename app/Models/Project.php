@@ -280,7 +280,7 @@ class Project extends Model
         if (is_null($version)) {
             $version = $this->versions->last();
         }
-
+        /** @var Version $version */
         $size = 0;
         foreach ($version->files as $file) {
             $size += strlen($file->content);
@@ -326,6 +326,7 @@ class Project extends Model
      */
     public function getDescriptionAttribute(): ?string
     {
+        /** @var Version|null $version */
         $version = $this->versions->last();
         if ($version && $version->files()->where('name', 'like', 'README.md')->count() === 1) {
             return $version->files()->where('name', 'like', 'README.md')->first()->content;
@@ -396,8 +397,10 @@ class Project extends Model
      */
     public function hasValidIcon(): bool
     {
+        /** @var Version $version */
+        $version = $this->versions->last();
         /** @var File|null $file */
-        $file = $this->versions->last()->files()->where('name', 'icon.png')->get()->last();
+        $file = $version->files()->where('name', 'icon.png')->get()->last();
         if (is_null($file)) {
             return false;
         }

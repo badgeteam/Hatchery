@@ -35,7 +35,7 @@ class FilesController extends Controller
     public function upload(Version $version, FileUploadRequest $request)
     {
         $upload = $request->file('file');
-
+        /** @var File $file */
         $file = $version->files()->firstOrNew(['name' => $upload->getClientOriginalName()]);
         $file->content = file_get_contents($upload->path());
         $file->save();
@@ -103,7 +103,6 @@ class FilesController extends Controller
     public function create(Request $request): View
     {
         $version = Version::where('id', $request->get('version'))->firstOrFail();
-
         return view('files.create')->with('version', $version);
     }
 

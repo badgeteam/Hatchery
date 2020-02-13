@@ -229,9 +229,7 @@ class ProjectsController extends Controller
             $data['icon'] = 'icon.png';
         }
 
-        $zip[$project->slug.'/metadata.json'] = json_encode(
-            $data
-        );
+        $zip[$project->slug.'/metadata.json'] = strval(json_encode($data));
 
         if (!$project->dependencies->isEmpty()) {
             $dep = '';

@@ -116,34 +116,41 @@ App specific
 
 ## Running tests
 
+### Static analysis
+
+```bash
+vendor/bin/phpstan analyse
+```
+
+### Unit and Feature testing
 Run all the tests
 
 ```bash
-phpunit
+vendor/bin/hpunit
 ```
 
 Run a test suite (for a list of availabe suites, see `/phpunit.xml`)
 
 ```bash
-phpunit --testsuite <suite_name>
+vendor/bin/phpunit --testsuite <suite_name>
 ```
 
 Run a specific test file
 
 ```bash
-phpunit tests/<optional_folders>/TestFileName
+vendor/bin/phpunit tests/<optional_folders>/TestFileName
 ```
 
 Run a specific test case
 
 ```bash
-phpunit --filter <test_case_name>
+vendor/bin/phpunit --filter <test_case_name>
 ```
 
 Generate code coverage
 
 ```bash
-phpunit --coverage-html docs/coverage
+vendor/bin/phpunit --coverage-html docs/coverage
 ```
 
 This will create the code coverage docs in `docs/coverage/index.html`
@@ -151,6 +158,6 @@ This will create the code coverage docs in `docs/coverage/index.html`
 Testing with Codeception
 
 ```bash
-./vendor/bin/codecept build
-./vendor/bin/codecept run
+vendor/bin/codecept build
+vendor/bin/codecept run
 ```

@@ -40,7 +40,7 @@ jobs:
     - name: Generate key
       run: php artisan key:generate
     - name: LaraStan
-      run: php artisan code:analyse
+      run: vendor/bin/phpstan analyse
     - name: Swagger generate
       run: php artisan l5-swagger:generate
     - name: Populate DB

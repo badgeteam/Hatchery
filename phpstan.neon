@@ -1,9 +1,13 @@
 includes:
     - ./vendor/nunomaduro/larastan/extension.neon
 parameters:
+    paths:
+        - app
+    level: 5
     inferPrivatePropertyTypeFromConstructor: true
     ignoreErrors:
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\BelongsTo::withTrashed().#'
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::unPublished().#'
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::published().#'
         - '#Method App\\Models\\Version::scopePublished()#'
+        - '#Access to an undefined property App\\Models\\Project::\$pivot.#'
