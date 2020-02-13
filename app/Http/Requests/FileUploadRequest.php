@@ -2,9 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Models\File;
-use Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class FileUploadRequest.

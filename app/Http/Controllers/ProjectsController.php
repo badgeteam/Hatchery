@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Phar;
 use PharData;
 
 /**
@@ -61,10 +62,12 @@ class ProjectsController extends Controller
         }
         if ($request->has('search')) {
             $search = $request->get('search');
-            $projects = $projects->where(function (Builder $query) use ($search) {
-                $query->where('name', 'like', '%'.$search.'%');
-                // @todo perhaps search in README ?
-            });
+            $projects = $projects->where(
+                function (Builder $query) use ($search) {
+                    $query->where('name', 'like', '%'.$search.'%');
+                    // @todo perhaps search in README ?
+                }
+            );
         }
 
         return view('projects.index')
@@ -214,13 +217,21 @@ class ProjectsController extends Controller
             $zip[$project->slug.'/'.$file->name] = $file->content;
         }
 
-        $zip[$project->slug.'/metadata.json'] = json_encode([
+        $data = [
             'name'        => $project->name,
             'description' => $project->description,
             'category'    => $project->category,
             'author'      => $project->user->name,
             'revision'    => $version->revision,
-        ]);
+        ];
+
+        if ($project->hasValidIcon()) {
+            $data['icon'] = 'icon.png';
+        }
+
+        $zip[$project->slug.'/metadata.json'] = json_encode(
+            $data
+        );
 
         if (!$project->dependencies->isEmpty()) {
             $dep = '';
@@ -230,8 +241,12 @@ class ProjectsController extends Controller
             $zip[$project->slug.'/'.$project->slug.'.egg-info/requires.txt'] = $dep;
         }
 
-//        $zip->compress(Phar::GZ);
-        system('minigzip < '.public_path($filename).' > '.public_path($filename.'.gz'));
+        if (empty(exec('which minigzip'))) {
+            $zip->compress(Phar::GZ);
+        } else {
+            system('minigzip < '.public_path($filename).' > '.public_path($filename.'.gz'));
+        }
+        unlink(public_path($filename));
 
         $version->zip = $filename.'.gz';
         $version->size_of_zip = filesize(public_path($version->zip));
@@ -248,6 +263,9 @@ class ProjectsController extends Controller
             $newFile->version()->associate($newVersion);
             $newFile->save();
         }
+
+        $project->published_at = now();
+        $project->save();
 
         return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' published']);
     }

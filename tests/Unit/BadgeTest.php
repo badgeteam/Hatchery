@@ -12,7 +12,8 @@ use Tests\TestCase;
 
 class BadgeTest extends TestCase
 {
-    use DatabaseTransactions, DatabaseMigrations;
+    use DatabaseTransactions;
+    use DatabaseMigrations;
 
     /**
      * Assert the Badge has a collection of Projects.

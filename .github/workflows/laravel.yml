@@ -1,0 +1,66 @@
+name: Laravel
+
+on: [push, pull_request]
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 3
+      matrix:
+        php-versions: ['7.2', '7.3']
+    services:
+      mysql:
+        image: mariadb:latest
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: badge
+        ports:
+          - 33306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install Linux packages
+      run: sudo apt update && sudo apt install -y --no-install-recommends pyflakes
+    - name: Install PHP
+      uses: shivammathur/setup-php@master
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: xdebug, imagick
+        ini-values: "post_max_size=256M"
+    - name: Check PHP Version
+      run: php -v
+    - name: Copy .env
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+    - name: Install Dependencies
+      run: |
+        composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+        yarn
+        yarn build
+    - name: Generate key
+      run: php artisan key:generate
+    - name: LaraStan
+      run: php artisan code:analyse
+    - name: Swagger generate
+      run: php artisan l5-swagger:generate
+    - name: Populate DB
+      env:
+        DB_CONNECTION: mysql
+        DB_HOST: 127.0.0.1
+        DB_PORT: 33306
+        DB_DATABASE: badge
+        DB_USERNAME: root
+        DB_PASSWORD: root
+      run: php artisan migrate --force
+    - name: Execute tests (Unit and Feature tests) via PHPUnit
+      env:
+        DB_CONNECTION: mysql
+        DB_HOST: 127.0.0.1
+        DB_PORT: 33306
+        DB_DATABASE: badge
+        DB_USERNAME: root
+        DB_PASSWORD: root
+        DB_TEST_DATABASE: badge
+        DB_TEST_USERNAME: root
+        DB_TEST_PASSWORD: root
+      run: vendor/bin/phpunit

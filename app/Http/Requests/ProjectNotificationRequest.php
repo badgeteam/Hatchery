@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 /**
- * Class ProjectUpdateRequest.
+ * Class ProjectNotificationRequest.
  */
 class ProjectNotificationRequest extends FormRequest
 {

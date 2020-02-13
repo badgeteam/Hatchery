@@ -1,6 +1,6 @@
 build:
     environment:
-        php: 7.2
+        php: 7.3
     nodes:
         analysis:
             project_setup:
@@ -11,7 +11,7 @@ build:
         tests:
             environment:
                 php:
-                    version: 7.2
+                    version: 7.3
                 mysql: 5.7
                 variables:
                     DB_TEST_USERNAME: root

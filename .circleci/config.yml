@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # Specify the version you desire here
-      - image: circleci/php:7.2-node-browsers
+      - image: circleci/php:7.3-node-browsers
       - image: circleci/mysql:5.7-ram
         environment:
           - MYSQL_ROOT_PASSWORD=
@@ -17,8 +17,9 @@ jobs:
       - run: cp .env.testing .env
 
       - run: sudo apt update
+      - run: sudo apt-get install -y libpng-dev
       - run: sudo docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd
-      - run: sudo docker-php-ext-install zip pdo_mysql
+      - run: sudo docker-php-ext-install zip pdo_mysql gd
       - run: sudo apt-get install mariadb-client pyflakes
 
       # Download and cache dependencies

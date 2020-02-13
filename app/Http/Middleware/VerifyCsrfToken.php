@@ -5,6 +5,9 @@ namespace App\Http\Middleware;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
 use Illuminate\Support\Facades\App;
 
+/**
+ * Class VerifyCsrfToken.
+ */
 class VerifyCsrfToken extends BaseVerifier
 {
     /**

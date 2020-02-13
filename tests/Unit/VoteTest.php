@@ -12,7 +12,8 @@ use Tests\TestCase;
 
 class VoteTest extends TestCase
 {
-    use DatabaseTransactions, DatabaseMigrations;
+    use DatabaseTransactions;
+    use DatabaseMigrations;
 
     /**
      * Assert the Vote is cast by a User.

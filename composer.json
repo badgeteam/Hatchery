@@ -14,27 +14,26 @@
     "type": "project",
     "require": {
         "php": ">=7.2",
+        "ext-gd": "*",
         "ext-json": "*",
-        "darkaonline/l5-swagger": "^6.0",
-        "filp/whoops": "~2.0",
-        "laravel/framework": "^6.0",
+        "bepsvpt/secure-headers": "^5.5",
+        "intervention/image": "^2.5",
+        "laravel/framework": "6.*",
         "laravel/tinker": "~1.0",
-        "laravelcollective/html": "^6.0",
-        "sentry/sentry-laravel": "^1.0.2",
-        "bepsvpt/secure-headers": "^5.5.0",
-        "doctrine/dbal": "^2.9"
+        "laravelcollective/html": "^6",
+        "sentry/sentry-laravel": "^1.6.1"
     },
     "require-dev": {
-        "codeception/codeception": "^3.1",
-        "doctrine/dbal": "^2.9",
-        "fzaninotto/faker": "~1.8",
-        "nunomaduro/larastan": "^0.4",
+        "codeception/codeception": "^4.1",
+        "doctrine/dbal": "^2.10",
+        "fzaninotto/faker": "^1.9",
+        "nunomaduro/larastan": "^0.5",
         "phpunit/phpunit": "^8",
         "barryvdh/laravel-ide-helper": "^2.6",
-        "codacy/coverage": "^1.4.2",
-        "mockery/mockery": "^1.2.3",
-        "phpstan/phpstan": "^0.11.4",
-        "sempro/phpunit-pretty-print": "^1.0"
+        "codacy/coverage": "^1.4",
+        "mockery/mockery": "^1.2",
+        "phpstan/phpstan": "^0.12",
+        "sempro/phpunit-pretty-print": "^1.1"
     },
     "autoload": {
         "classmap": [

@@ -69,6 +69,9 @@ use Illuminate\Support\Str;
  * @property-read int|null $states_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
  * @property-read int|null $warnings_count
+ * @property \Illuminate\Support\Carbon|null $published_at
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project wherePublishedAt($value)
  */
 class Project extends Model
 {
@@ -79,14 +82,40 @@ class Project extends Model
      *
      * @var array
      */
-    protected $appends = ['revision', 'size_of_zip', 'size_of_content', 'category', 'description', 'status'];
+    protected $appends = [
+        'revision',
+        'size_of_zip',
+        'size_of_content',
+        'category',
+        'description',
+        'status',
+    ];
 
     /**
      * Hidden data.
      *
      * @var array
      */
-    protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'user_id', 'id', 'category_id', 'pivot', 'versions', 'states'];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'user_id',
+        'id',
+        'category_id',
+        'pivot',
+        'versions',
+        'states',
+    ];
+
+    /**
+     * DateTime conversion for these fields.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'created_at', 'updated_at', 'deleted_at', 'published_at',
+    ];
 
     /**
      * Forbidden names for apps.
@@ -107,30 +136,36 @@ class Project extends Model
     {
         parent::boot();
 
-        static::creating(function ($project) {
-            $user = Auth::guard()->user();
-            $project->user()->associate($user);
-        });
-
-        static::created(function ($project) {
-            $version = new Version();
-            $version->revision = 1;
-            $version->project()->associate($project);
-            $version->save();
-            // add first empty python file :)
-            $file = new File();
-            $file->name = '__init__.py';
-            $file->content = '';
-            $file->version()->associate($version);
-            $file->save();
-        });
-
-        static::saving(function ($project) {
-            $project->slug = Str::slug($project->name, '_');
-            if (self::isForbidden($project->slug)) {
-                throw new \Exception('reserved name');
+        static::creating(
+            function ($project) {
+                $user = Auth::guard()->user();
+                $project->user()->associate($user);
             }
-        });
+        );
+
+        static::created(
+            function ($project) {
+                $version = new Version();
+                $version->revision = 1;
+                $version->project()->associate($project);
+                $version->save();
+                // add first empty python file :)
+                $file = new File();
+                $file->name = '__init__.py';
+                $file->content = '';
+                $file->version()->associate($version);
+                $file->save();
+            }
+        );
+
+        static::saving(
+            function ($project) {
+                $project->slug = Str::slug($project->name, '_');
+                if (self::isForbidden($project->slug)) {
+                    throw new \Exception('reserved name');
+                }
+            }
+        );
     }
 
     /**
@@ -193,7 +228,7 @@ class Project extends Model
     /**
      * @return string
      */
-    public function getRevisionAttribute(): ? string
+    public function getRevisionAttribute(): ?string
     {
         $version = $this->versions()->published()->get()->last();
 
@@ -229,7 +264,7 @@ class Project extends Model
     /**
      * @return int
      */
-    public function getSizeOfZipAttribute(): ? int
+    public function getSizeOfZipAttribute(): ?int
     {
         $version = $this->versions()->published()->get()->last();
 
@@ -239,7 +274,7 @@ class Project extends Model
     /**
      * @return int
      */
-    public function getSizeOfContentAttribute(): ? int
+    public function getSizeOfContentAttribute(): ?int
     {
         $version = $this->versions()->published()->get()->last();
         if (is_null($version)) {
@@ -267,7 +302,7 @@ class Project extends Model
     /**
      * @return string
      */
-    public function getCategoryAttribute(): ? string
+    public function getCategoryAttribute(): ?string
     {
         if (is_null($this->category()->first())) {
             return 'uncategorised';
@@ -289,7 +324,7 @@ class Project extends Model
     /**
      * @return string|null
      */
-    public function getDescriptionAttribute(): ? string
+    public function getDescriptionAttribute(): ?string
     {
         $version = $this->versions->last();
         if ($version && $version->files()->where('name', 'like', 'README.md')->count() === 1) {
@@ -302,7 +337,7 @@ class Project extends Model
     /**
      * @return string|null
      */
-    public function getDescriptionHtmlAttribute(): ? string
+    public function getDescriptionHtmlAttribute(): ?string
     {
         if ($this->description) {
             return Markdown::parse($this->description);
@@ -314,7 +349,7 @@ class Project extends Model
     /**
      * @return bool|null
      */
-    public function userVoted(): ? bool
+    public function userVoted(): ?bool
     {
         $user = Auth::guard()->user();
         if (is_null($user)) {
@@ -354,5 +389,19 @@ class Project extends Model
         }
 
         return $status;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasValidIcon(): bool
+    {
+        /** @var File|null $file */
+        $file = $this->versions->last()->files()->where('name', 'icon.png')->get()->last();
+        if (is_null($file)) {
+            return false;
+        }
+
+        return $file->isValidIcon();
     }
 }

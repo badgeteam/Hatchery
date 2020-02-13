@@ -20,9 +20,11 @@ class AlterProjectsDescriptionNullable extends Migration
      */
     public function up()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->text('description')->nullable()->change();
-        });
+        Schema::table(
+            'projects', function (Blueprint $table) {
+                $table->text('description')->nullable()->change();
+            }
+        );
     }
 
     /**
@@ -32,8 +34,10 @@ class AlterProjectsDescriptionNullable extends Migration
      */
     public function down()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->text('description')->change();
-        });
+        Schema::table(
+            'projects', function (Blueprint $table) {
+                $table->text('description')->change();
+            }
+        );
     }
 }

@@ -68,10 +68,12 @@ class Version extends Model
     {
         parent::boot();
 
-        static::creating(function ($version) {
-            $user = Auth::guard()->user();
-            $version->user()->associate($user);
-        });
+        static::creating(
+            function ($version) {
+                $user = Auth::guard()->user();
+                $version->user()->associate($user);
+            }
+        );
     }
 
     /**

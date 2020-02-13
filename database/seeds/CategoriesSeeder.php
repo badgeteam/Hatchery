@@ -14,21 +14,21 @@ class CategoriesSeeder extends Seeder
     {
         if (Category::count() === 0) {
             foreach ([
-                         'Uncategorised',
-                         'Event related',
-                         'Games',
-                         'Graphics',
-                         'Hardware',
-                         'Utility',
-                         'Wearable',
-                         'Data',
-                         'Silly',
-                         'Hacking',
-                         'Troll',
-                         'Unusable',
-                         'Adult',
-                         'Virus',
-                     ] as $name) {
+                'Uncategorised',
+                'Event related',
+                'Games',
+                'Graphics',
+                'Hardware',
+                'Utility',
+                'Wearable',
+                'Data',
+                'Silly',
+                'Hacking',
+                'Troll',
+                'Unusable',
+                'Adult',
+                'Virus',
+            ] as $name) {
                 Category::create(['name' => $name]);
             }
         }

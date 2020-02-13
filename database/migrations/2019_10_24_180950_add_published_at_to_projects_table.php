@@ -1,10 +1,11 @@
 <?php
 
+use App\Models\Project;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterProjectsAddStatus extends Migration
+class AddPublishedAtToProjectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,9 +16,18 @@ class AlterProjectsAddStatus extends Migration
     {
         Schema::table(
             'projects', function (Blueprint $table) {
-                $table->enum('status', ['working', 'in_progress', 'broken', 'unknown'])->default('unknown');
+                $table->timestamp('published_at')->nullable()->after('slug');
             }
         );
+        $projects = Project::whereHas(
+            'versions', function ($query) {
+                $query->published();
+            }
+        );
+        foreach ($projects->get() as $project) {
+            $project->published_at = $project->versions()->published()->get()->last()->updated_at;
+            $project->save();
+        }
     }
 
     /**
@@ -29,7 +39,7 @@ class AlterProjectsAddStatus extends Migration
     {
         Schema::table(
             'projects', function (Blueprint $table) {
-                $table->dropColumn('status');
+                $table->dropColumn('published_at');
             }
         );
     }

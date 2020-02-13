@@ -7,6 +7,9 @@ use App\Models\Badge;
 use App\Models\Category;
 use App\Models\Project;
 use App\Models\User;
+use App\Models\Version;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -18,6 +21,17 @@ use stdClass;
  */
 class PublicController extends Controller
 {
+    /**
+     * Fields allowed for ordering the main view ;).
+     *
+     * @var array
+     */
+    private $orderFields = [
+        'id',
+        'name',
+        'published_at',
+    ];
+
     /**
      * Show the application dashboard.
      *
@@ -34,25 +48,14 @@ class PublicController extends Controller
 
             return $this->badge($badge, $request);
         }
-        $projects = Project::whereHas('versions', function ($query) {
-            $query->published();
-        })->orderBy('id', 'DESC');
+        /** @var Builder $projects */
+        $projects = Project::whereHas(
+            'versions', function ($query) {
+                $query->published();
+            }
+        );
 
-        if ($request->has('category')) {
-            $category = Category::where('slug', $request->get('category'))->first();
-            $projects = $projects->where('category_id', $category->id);
-            $category = $category->slug;
-        } else {
-            $category = '';
-        }
-
-        return view('welcome')->with([
-            'users'     => User::count(),
-            'projects'  => Project::count(),
-            'published' => $projects->paginate(50),
-            'badge'     => '',
-            'category'  => $category,
-        ]);
+        return $this->returnProjectView($request, $projects);
     }
 
     /**
@@ -63,55 +66,103 @@ class PublicController extends Controller
      */
     public function badge(Badge $badge, Request $request)
     {
-        $projects = $badge->projects()->whereHas('versions', function ($query) {
-            $query->published();
-        })->orderBy('id', 'DESC');
+        $projects = $badge->projects()->whereHas(
+            'versions', function ($query) {
+                $query->published();
+            }
+        );
 
+        return $this->returnProjectView($request, $projects, $badge->slug);
+    }
+
+    /**
+     * @param Request               $request
+     * @param BelongsToMany|Builder $projects
+     * @param string                $badge    = ''
+     *
+     * @return View
+     */
+    private function returnProjectView(Request $request, $projects, string $badge = '')
+    {
+        $category = '';
         if ($request->has('category')) {
-            $category = Category::where('slug', $request->get('category'))->first();
+            $category = Category::where('slug', $request->get('category'))->firstOrFail();
             $projects = $projects->where('category_id', $category->id);
             $category = $category->slug;
-        } else {
-            $category = '';
         }
 
-        return view('welcome')->with([
-            'users'     => User::count(),
-            'projects'  => Project::count(),
-            'published' => $projects->paginate(50),
-            'badge'     => $badge->slug,
-            'category'  => $category,
-        ]);
+        $orderField = 'id';
+        $orderDirection = 'desc';
+        if ($request->has('order') && in_array($request->get('order'), $this->orderFields)) {
+            $orderField = $request->get('order');
+            if ($request->has('direction') && $request->get('direction') === 'asc') {
+                $orderDirection = 'asc';
+            }
+        }
+
+        $projects = $projects->orderBy($orderField, $orderDirection);
+
+        $appends = [];
+
+        if ($badge !== '') {
+            $appends['badge'] = $badge;
+        }
+        if ($category !== '') {
+            $appends['category'] = $category;
+        }
+        if ($badge !== '') {
+            $appends['badge'] = $badge;
+        }
+        if ($orderField !== '') {
+            $appends['order'] = $orderField;
+            $appends['direction'] = $orderDirection;
+        }
+
+        return view('welcome')->with(
+            [
+                'users'     => User::count(),
+                'projects'  => Project::count(),
+                'published' => $projects->paginate(50),
+                'badge'     => $badge,
+                'category'  => $category,
+                'order'     => $orderField,
+                'direction' => $orderDirection,
+                'appends'   => $appends,
+            ]
+        );
     }
 
     /**
      * Get the latest released version of a project.
      *
-     * @param string $slug
-     *
      * @OA\Get(
      *   path="/eggs/get/{project}/json",
-     *   @OA\Parameter(
+     * @OA\Parameter(
      *     name="project",
      *     in="path",
      *     required=true,
-     *     @OA\Schema(type="string", format="slug", example="game_of_life")
+     * @OA\Schema(type="string", format="slug", example="game_of_life")
      *   ),
      *   tags={"Egg"},
-     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
+     *
+     * @param string $slug
      *
      * @return JsonResponse
      */
     public function projectJson(string $slug): JsonResponse
     {
-        /** @var Project|null $project */
+        /**
+         * @var Project|null
+         */
         $project = Project::where('slug', $slug)->first();
         if (is_null($project)) {
             return response()->json(['message' => 'No releases found'], 404, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
         }
         $releases = [];
         foreach ($project->versions()->published()->orderBy('revision', 'desc')->limit(5)->get() as $version) {
+            /* @var Version $version */
             $releases[$version->revision] = [['url' => url($version->zip)]];
         }
 
@@ -139,16 +190,20 @@ class PublicController extends Controller
      * @OA\Get(
      *   path="/eggs/list/json",
      *   tags={"Egg"},
-     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
      *
      * @return JsonResponse
      */
     public function listJson(): JsonResponse
     {
-        return response()->json(Project::whereHas('versions', function ($query) {
-            $query->published();
-        })->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        return response()->json(
+            Project::whereHas(
+                'versions', function ($query) {
+                    $query->published();
+                }
+            )->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES
+        );
     }
 
     /**
@@ -156,14 +211,14 @@ class PublicController extends Controller
      *
      * @OA\Get(
      *   path="/eggs/search/{words}/json",
-     *   @OA\Parameter(
+     * @OA\Parameter(
      *     name="words",
      *     in="path",
      *     required=true,
-     *     @OA\Schema(type="string", example="cool")
+     * @OA\Schema(type="string", example="cool")
      *   ),
      *   tags={"Egg"},
-     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
      *
      * @param string $search
@@ -174,11 +229,15 @@ class PublicController extends Controller
     {
         $what = '%'.$search.'%';
 
-        return response()->json(Project::whereHas('versions', function ($query) {
-            $query->published();
-        })->where('name', 'like', $what)
+        return response()->json(
+            Project::whereHas(
+                'versions', function ($query) {
+                    $query->published();
+                }
+            )->where('name', 'like', $what)
             ->orderBy('id', 'DESC')
-            ->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+            ->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES
+        );
         // @todo possibly search in README.md
     }
 
@@ -187,14 +246,14 @@ class PublicController extends Controller
      *
      * @OA\Get(
      *   path="/eggs/category/{category}/json",
-     *   @OA\Parameter(
+     * @OA\Parameter(
      *     name="category",
      *     in="path",
      *     required=true,
-     *     @OA\Schema(type="string", format="slug", example="utility")
+     * @OA\Schema(type="string", format="slug", example="utility")
      *   ),
      *   tags={"Egg"},
-     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
      *
      * @param Category $category
@@ -203,9 +262,13 @@ class PublicController extends Controller
      */
     public function categoryJson(Category $category): JsonResponse
     {
-        return response()->json($category->projects()->whereHas('versions', function ($query) {
-            $query->published();
-        })->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        return response()->json(
+            $category->projects()->whereHas(
+                'versions', function ($query) {
+                    $query->published();
+                }
+            )->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES
+        );
     }
 
     /**
@@ -214,7 +277,7 @@ class PublicController extends Controller
      * @OA\Get(
      *   path="/eggs/categories/json",
      *   tags={"Egg"},
-     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
      *
      * @return JsonResponse
@@ -229,9 +292,9 @@ class PublicController extends Controller
      *
      * @OA\Get(
      *   path="/basket/{badge}/list/json",
-     *   @OA\Parameter(ref="#/components/parameters/badge"),
+     * @OA\Parameter(ref="#/components/parameters/badge"),
      *   tags={"Basket"},
-     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
      *
      * @param Badge $badge
@@ -240,9 +303,13 @@ class PublicController extends Controller
      */
     public function badgeListJson(Badge $badge): JsonResponse
     {
-        return response()->json($badge->projects()->whereHas('versions', function ($query) {
-            $query->published();
-        })->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        return response()->json(
+            $badge->projects()->whereHas(
+                'versions', function ($query) {
+                    $query->published();
+                }
+            )->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES
+        );
     }
 
     /**
@@ -250,15 +317,15 @@ class PublicController extends Controller
      *
      * @OA\Get(
      *   path="/basket/{badge}/search/{words}/json",
-     *   @OA\Parameter(ref="#/components/parameters/badge"),
-     *   @OA\Parameter(
+     * @OA\Parameter(ref="#/components/parameters/badge"),
+     * @OA\Parameter(
      *     name="words",
      *     in="path",
      *     required=true,
-     *     @OA\Schema(type="string", example="cool")
+     * @OA\Schema(type="string", example="cool")
      *   ),
      *   tags={"Basket"},
-     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
      *
      * @param Badge  $badge
@@ -270,11 +337,15 @@ class PublicController extends Controller
     {
         $what = '%'.$search.'%';
 
-        return response()->json($badge->projects()->whereHas('versions', function ($query) {
-            $query->published();
-        })->where('name', 'like', $what)
+        return response()->json(
+            $badge->projects()->whereHas(
+                'versions', function ($query) {
+                    $query->published();
+                }
+            )->where('name', 'like', $what)
             ->orderBy('id', 'DESC')
-            ->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+            ->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES
+        );
         // @todo possibly search in README.md
     }
 
@@ -283,9 +354,9 @@ class PublicController extends Controller
      *
      * @OA\Get(
      *   path="/basket/{badge}/categories/json",
-     *   @OA\Parameter(ref="#/components/parameters/badge"),
+     * @OA\Parameter(ref="#/components/parameters/badge"),
      *   tags={"Basket"},
-     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
      *
      * @param Badge $badge
@@ -296,11 +367,15 @@ class PublicController extends Controller
     {
         $data = [];
         foreach (Category::where('hidden', false)->get() as $category) {
-            $eggs = $category->projects()->whereHas('badges', function ($query) use ($badge) {
-                $query->where('slug', $badge->slug);
-            })->whereHas('versions', function ($query) {
-                $query->whereNotNull('zip');
-            })->count();
+            $eggs = $category->projects()->whereHas(
+                'badges', function ($query) use ($badge) {
+                    $query->where('slug', $badge->slug);
+                }
+            )->whereHas(
+                'versions', function ($query) {
+                    $query->whereNotNull('zip');
+                }
+            )->count();
             if ($eggs > 0) {
                 $data[] = [
                     'name' => $category->name,
@@ -318,15 +393,15 @@ class PublicController extends Controller
      *
      * @OA\Get(
      *   path="/basket/{badge}/category/{category}/json",
-     *   @OA\Parameter(ref="#/components/parameters/badge"),
-     *   @OA\Parameter(
+     * @OA\Parameter(ref="#/components/parameters/badge"),
+     * @OA\Parameter(
      *     name="category",
      *     in="path",
      *     required=true,
-     *     @OA\Schema(type="string", format="slug", example="utility")
+     * @OA\Schema(type="string", format="slug", example="utility")
      *   ),
      *   tags={"Basket"},
-     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
      *
      * @param Badge    $badge
@@ -336,10 +411,16 @@ class PublicController extends Controller
      */
     public function badgeCategoryJson(Badge $badge, Category $category): JsonResponse
     {
-        return response()->json($badge->projects()->whereHas('category', function ($query) use ($category) {
-            $query->where('slug', $category->slug);
-        })->whereHas('versions', function ($query) {
-            $query->published();
-        })->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        return response()->json(
+            $badge->projects()->whereHas(
+                'category', function ($query) use ($category) {
+                    $query->where('slug', $category->slug);
+                }
+            )->whereHas(
+                'versions', function ($query) {
+                    $query->published();
+                }
+            )->orderBy('id', 'DESC')->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES
+        );
     }
 }

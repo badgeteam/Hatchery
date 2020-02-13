@@ -13,10 +13,12 @@ class AlterBadgeProjectAddStatus extends Migration
      */
     public function up()
     {
-        Schema::table('badge_project', function (Blueprint $table) {
-            $table->enum('status', ['working', 'in_progress', 'broken', 'unknown'])->default('unknown');
-            $table->nullableTimestamps();
-        });
+        Schema::table(
+            'badge_project', function (Blueprint $table) {
+                $table->enum('status', ['working', 'in_progress', 'broken', 'unknown'])->default('unknown');
+                $table->nullableTimestamps();
+            }
+        );
     }
 
     /**
@@ -26,10 +28,12 @@ class AlterBadgeProjectAddStatus extends Migration
      */
     public function down()
     {
-        Schema::table('badge_project', function (Blueprint $table) {
-            $table->dropColumn('status');
-            $table->dropColumn('created_at');
-            $table->dropColumn('updated_at');
-        });
+        Schema::table(
+            'badge_project', function (Blueprint $table) {
+                $table->dropColumn('status');
+                $table->dropColumn('created_at');
+                $table->dropColumn('updated_at');
+            }
+        );
     }
 }

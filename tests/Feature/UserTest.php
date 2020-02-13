@@ -13,7 +13,8 @@ use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    use DatabaseTransactions, DatabaseMigrations;
+    use DatabaseTransactions;
+    use DatabaseMigrations;
 
     /**
      * login failed get redirected.
@@ -31,8 +32,8 @@ class UserTest extends TestCase
             ->assertRedirect('')
             ->assertSessionHas('errors')
             ->assertSessionHas('_old_input', [
-                'email' => 'annejan@noprotocol.nl',
-        '_token'        => 'test',
+                'email'         => 'annejan@noprotocol.nl',
+                '_token'        => 'test',
             ]);
     }
 
@@ -117,17 +118,17 @@ class UserTest extends TestCase
         $response->assertStatus(200);
 
         $faker = Factory::create();
-        $password = $faker->password;
+        $password = $faker->password(8, 20);
 
         $response = $this
             ->withSession(['_token'=>'test'])
             ->post('/password/reset', [
-            'email'                 => $user->email,
-            'token'                 => $token,
-            'password'              => $password,
-            'password_confirmation' => $password,
-            '_token'                => 'test',
-        ]);
+                'email'                 => $user->email,
+                'token'                 => $token,
+                'password'              => $password,
+                'password_confirmation' => $password,
+                '_token'                => 'test',
+            ]);
         $response->assertStatus(302)->assertRedirect('/projects');
 
         $response = $this
@@ -146,7 +147,7 @@ class UserTest extends TestCase
     public function testRegister()
     {
         $faker = Factory::create();
-        $password = $faker->password;
+        $password = $faker->password(8, 20);
         $email = $faker->email;
         $response = $this
             ->withSession(['_token'=>'test'])

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Exception\NotReadableException;
+use Intervention\Image\Facades\Image;
 
 /**
  * App\Models\File.
@@ -55,7 +57,14 @@ class File extends Model
      *
      * @var array
      */
-    public static $extensions = ['py', 'txt', 'pyc', 'png', 'json', 'md', 'mp3', 'elf'];
+    public static $extensions = [
+        'py', 'pyc',
+        'png', 'bmp', 'jpg',
+        'json', 'txt', 'md',
+        'wav', 'mp3', 'ogg',
+        'mod', 'xm', 's3m',
+        'elf', 'bin',
+    ];
 
     /**
      * Mime types for supported extensions.
@@ -71,9 +80,26 @@ class File extends Model
         'md'   => 'text/markdown',
         'mp3'  => 'audio/mpeg',
         'elf'  => 'application/x-elf',
+        'bmp'  => 'image/bmp',
+        'jpg'  => 'image/jpeg',
+        'wav'  => 'audio/wave',
+        'ogg'  => 'audio/ogg',
+        'mod'  => 'audio/mod',
+        'xm'   => 'audio/module-xm',
+        's3m'  => 'audio/s3m',
     ];
 
-    protected $editables = ['py', 'txt', 'md', 'json'];
+    /**
+     * File extensions editable by Hatchery.
+     *
+     * @var array
+     */
+    protected $editables = [
+        'py',
+        'txt',
+        'md',
+        'json',
+    ];
 
     /**
      * Appended magic variables.
@@ -96,10 +122,12 @@ class File extends Model
     {
         parent::boot();
 
-        static::creating(function ($file) {
-            $user = Auth::guard()->user();
-            $file->user()->associate($user);
-        });
+        static::creating(
+            function ($file) {
+                $user = Auth::guard()->user();
+                $file->user()->associate($user);
+            }
+        );
     }
 
     /**
@@ -143,7 +171,7 @@ class File extends Model
     /**
      * @return int
      */
-    public function getSizeOfContentAttribute(): ? int
+    public function getSizeOfContentAttribute(): ?int
     {
         if (is_string($this->content)) {
             return strlen($this->content);
@@ -159,10 +187,28 @@ class File extends Model
     {
         $name = collect(explode('.', $this->name));
 
-        if (in_array($name->last(), self::$extensions)) {
+        if (array_key_exists($name->last(), self::$mimes)) {
             return self::$mimes[$name->last()];
         }
 
         return 'application/octet-stream';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValidIcon(): bool
+    {
+        if ($this->extension != 'png') {
+            return false;
+        }
+
+        try {
+            $icon = Image::make($this->content);
+        } catch (NotReadableException $e) {
+            return false;
+        }
+
+        return $icon->width() == 32 && $icon->height() == 32;
     }
 }

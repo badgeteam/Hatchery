@@ -9,6 +9,9 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/badgeteam/Hatchery/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/badgeteam/Hatchery/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/badgeteam/Hatchery/badges/build.png?b=master)](https://scrutinizer-ci.com/g/badgeteam/Hatchery/build-status/master)
 [![codecov](https://codecov.io/gh/badgeteam/Hatchery/branch/master/graph/badge.svg)](https://codecov.io/gh/badgeteam/Hatchery)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery?ref=badge_shield)
+[![Known Vulnerabilities](https://snyk.io/test/github/badgeteam/Hatchery/badge.svg)](https://snyk.io/test/github/badgeteam/Hatchery)
+[![Github Actions](https://github.com/badgeteam/Hatchery/workflows/Laravel/badge.svg)](https://github.com/badgeteam/Hatchery/actions)
 
 Simple micropython software repository for Badges.
 
@@ -24,6 +27,9 @@ Simple micropython software repository for Badges.
 Hatchery is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
 
 The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery?ref=badge_large)
 
 ## Installation
 

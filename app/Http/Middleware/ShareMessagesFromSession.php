@@ -6,6 +6,9 @@ use Closure;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Support\MessageBag;
 
+/**
+ * Class ShareMessagesFromSession.
+ */
 class ShareMessagesFromSession
 {
     /**

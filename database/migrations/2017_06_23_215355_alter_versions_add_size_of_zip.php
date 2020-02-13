@@ -13,9 +13,11 @@ class AlterVersionsAddSizeOfZip extends Migration
      */
     public function up()
     {
-        Schema::table('versions', function (Blueprint $table) {
-            $table->integer('size_of_zip')->unsigned()->nullable()->after('zip');
-        });
+        Schema::table(
+            'versions', function (Blueprint $table) {
+                $table->integer('size_of_zip')->unsigned()->nullable()->after('zip');
+            }
+        );
     }
 
     /**
@@ -25,8 +27,10 @@ class AlterVersionsAddSizeOfZip extends Migration
      */
     public function down()
     {
-        Schema::table('versions', function (Blueprint $table) {
-            $table->dropColumn('size_of_zip');
-        });
+        Schema::table(
+            'versions', function (Blueprint $table) {
+                $table->dropColumn('size_of_zip');
+            }
+        );
     }
 }

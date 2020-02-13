@@ -13,9 +13,11 @@ class AlterVersionsRemoveDependencies extends Migration
      */
     public function up()
     {
-        Schema::table('versions', function (Blueprint $table) {
-            $table->dropColumn('dependencies');
-        });
+        Schema::table(
+            'versions', function (Blueprint $table) {
+                $table->dropColumn('dependencies');
+            }
+        );
     }
 
     /**
@@ -25,8 +27,10 @@ class AlterVersionsRemoveDependencies extends Migration
      */
     public function down()
     {
-        Schema::table('versions', function (Blueprint $table) {
-            $table->string('dependencies')->nullable();
-        });
+        Schema::table(
+            'versions', function (Blueprint $table) {
+                $table->string('dependencies')->nullable();
+            }
+        );
     }
 }

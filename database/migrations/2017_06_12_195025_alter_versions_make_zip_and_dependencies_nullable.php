@@ -13,10 +13,12 @@ class AlterVersionsMakeZipAndDependenciesNullable extends Migration
      */
     public function up()
     {
-        Schema::table('versions', function (Blueprint $table) {
-            $table->string('dependencies')->nullable()->change();
-            $table->string('zip')->nullable()->change();
-        });
+        Schema::table(
+            'versions', function (Blueprint $table) {
+                $table->string('dependencies')->nullable()->change();
+                $table->string('zip')->nullable()->change();
+            }
+        );
     }
 
     /**
@@ -26,9 +28,11 @@ class AlterVersionsMakeZipAndDependenciesNullable extends Migration
      */
     public function down()
     {
-        Schema::table('versions', function (Blueprint $table) {
-            $table->string('dependencies')->change();
-            $table->string('zip')->change();
-        });
+        Schema::table(
+            'versions', function (Blueprint $table) {
+                $table->string('dependencies')->change();
+                $table->string('zip')->change();
+            }
+        );
     }
 }

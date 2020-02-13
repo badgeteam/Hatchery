@@ -13,17 +13,19 @@ class CreateVotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('votes', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('user_id')->unsigned();
-            $table->integer('project_id')->unsigned();
-            $table->enum('type', ['up', 'down', 'pig'])->default('up');
-            $table->string('comment')->nullable();
-            $table->softDeletes();
-            $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade')->onUpdate('cascade');
-        });
+        Schema::create(
+            'votes', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->integer('user_id')->unsigned();
+                $table->integer('project_id')->unsigned();
+                $table->enum('type', ['up', 'down', 'pig'])->default('up');
+                $table->string('comment')->nullable();
+                $table->softDeletes();
+                $table->timestamps();
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+                $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade')->onUpdate('cascade');
+            }
+        );
     }
 
     /**
@@ -33,10 +35,12 @@ class CreateVotesTable extends Migration
      */
     public function down()
     {
-        Schema::table('votes', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropForeign(['project_id']);
-        });
+        Schema::table(
+            'votes', function (Blueprint $table) {
+                $table->dropForeign(['user_id']);
+                $table->dropForeign(['project_id']);
+            }
+        );
         Schema::dropIfExists('votes');
     }
 }

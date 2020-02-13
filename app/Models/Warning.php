@@ -57,10 +57,12 @@ class Warning extends Model
     {
         parent::boot();
 
-        static::creating(function ($vote) {
-            $user = Auth::guard()->user();
-            $vote->user()->associate($user);
-        });
+        static::creating(
+            function ($vote) {
+                $user = Auth::guard()->user();
+                $vote->user()->associate($user);
+            }
+        );
     }
 
     /**

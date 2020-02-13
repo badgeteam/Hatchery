@@ -13,15 +13,17 @@ class CreateFilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('files', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('version_id')->unsigned();
-            $table->string('name');
-            $table->binary('content');
-            $table->softDeletes();
-            $table->nullableTimestamps();
-            $table->foreign('version_id')->references('id')->on('versions')->onDelete('cascade')->onUpdate('cascade');
-        });
+        Schema::create(
+            'files', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('version_id')->unsigned();
+                $table->string('name');
+                $table->binary('content');
+                $table->softDeletes();
+                $table->nullableTimestamps();
+                $table->foreign('version_id')->references('id')->on('versions')->onDelete('cascade')->onUpdate('cascade');
+            }
+        );
     }
 
     /**
@@ -31,9 +33,11 @@ class CreateFilesTable extends Migration
      */
     public function down()
     {
-        Schema::table('files', function (Blueprint $table) {
-            $table->dropForeign(['version_id']);
-        });
+        Schema::table(
+            'files', function (Blueprint $table) {
+                $table->dropForeign(['version_id']);
+            }
+        );
         Schema::dropIfExists('files');
     }
 }

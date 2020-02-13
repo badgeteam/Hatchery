@@ -117,10 +117,9 @@ return [
     'custom-csp' => null,
 
     'csp' => [
-//        'report-only' => env('APP_ENV') == 'local',
-        'report-only' => true,
+        'report-only' => env('APP_ENV') === 'local' || env('APP_ENV') === 'testing',
 
-        'report-uri' => null,
+        'report-uri' => env('SENTRY_CSP_URI', null),
 
         'upgrade-insecure-requests' => true,
 
@@ -141,7 +140,7 @@ return [
 
         'script-src' => [
             'allow' => [
-                //
+                env('APP_URL', 'https://badge.team'),
             ],
 
             'hashes' => [
@@ -161,6 +160,7 @@ return [
 
         'style-src' => [
             'allow' => [
+                env('APP_URL', 'https://badge.team'),
                 'https://fonts.googleapis.com',
             ],
 

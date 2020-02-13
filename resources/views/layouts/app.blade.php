@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="/manifest.json">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -13,6 +14,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css', !App::environment(['local', 'testing'])) }}" rel="stylesheet">
+    <meta name="theme-color" content="#f00">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="640x640" href="/img/bs.png">
+    <link rel="apple-touch-icon" sizes="640x640" href="/img/bs.png">
 
     <!-- Scripts -->
     <script>
@@ -20,6 +25,7 @@
             'csrfToken' => csrf_token(),
         ]) !!};
     </script>
+
 </head>
 <body>
     <div id="app">

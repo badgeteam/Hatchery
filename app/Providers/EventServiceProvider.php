@@ -17,7 +17,7 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'App\Events\DownloadCounter' => [
-            'App\Listeners\DownloadCounterListner',
+            'App\Listeners\DownloadCounterListener',
         ],
     ];
 
