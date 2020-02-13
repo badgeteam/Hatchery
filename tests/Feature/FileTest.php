@@ -41,8 +41,12 @@ class FileTest extends TestCase
         $response->assertStatus(200);
 
         $this->assertCount(2, File::all()); // you get a free __init__.py
-        $this->assertEquals('__init__.py', File::first()->name);
-        $this->assertEquals($name, File::where('name', '!=', '__init__.py')->first()->name);
+        /** @var File $file */
+        $file = File::first();
+        $this->assertEquals('__init__.py', $file->name);
+        /** @var File $file */
+        $file = File::where('name', '!=', '__init__.py')->first();
+        $this->assertEquals($name, $file->name);
     }
 
 //    public function testUploadIllegalFile(): void
@@ -106,7 +110,9 @@ time.localtime()';
             ->actingAs($user)
             ->call('put', '/files/'.$file->id, ['file_content' => $data]);
         $response->assertRedirect('/projects/'.$file->version->project->slug.'/edit')->assertSessionHas('successes');
-        $this->assertEquals($data, File::find($file->id)->content);
+        /** @var File $file */
+        $file = File::find($file->id);
+        $this->assertEquals($data, $file->content);
     }
 
     /**
@@ -168,7 +174,7 @@ time.localtime()';
             ->post('/files', ['name' => 'test.py', 'file_content' => '# test', 'version_id' => $version->id]);
         $response->assertRedirect('/projects/'.$version->project->slug.'/edit')
             ->assertSessionHas('successes');
-
+        /** @var File $file */
         $file = File::all()->last();
         $this->assertEquals('test.py', $file->name);
     }

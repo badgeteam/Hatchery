@@ -228,8 +228,12 @@ class ProjectTest extends TestCase
         /** @var Project $project */
         $project = factory(Project::class)->create();
         $project->dependencies()->save($projectDep);
-        $file = factory(File::class, ['version_id' => $project->versions()->unPublished()->first()->id])->create();
-        $file->first()->version_id = $project->versions()->unPublished()->first()->id; // yah ugly
+        /** @var Collection $versions */
+        $versions = $project->versions()->unPublished();
+        /** @var Version $version */
+        $version = $versions->first();
+        $file = factory(File::class, ['version_id' => $version->id])->create();
+        $file->first()->version_id = $version->id; // yah ugly
         $file->first()->save(); // wut?
         $this->assertNull($project->published_at);
 
@@ -242,13 +246,14 @@ class ProjectTest extends TestCase
         /** @var Version $version */
         $version = $versions->last();
 
-        $this->assertFileExists(public_path($version->zip));
-        $this->assertFileNotExists(public_path(str_replace('.gz', '', $version->zip)));
+        $zip = strval($version->zip);
+        $this->assertFileExists(public_path($zip));
+        $this->assertFileNotExists(public_path(str_replace('.gz', '', $zip)));
 
-        $p = new \PharData(public_path($version->zip));
+        $p = new \PharData(public_path($zip));
         $this->assertEquals(\Phar::GZ, $p->isCompressed());
 
-        exec('tar xf '.public_path($version->zip).' -C '.sys_get_temp_dir());
+        exec('tar xf '.public_path($zip).' -C '.sys_get_temp_dir());
 
         $path = sys_get_temp_dir().'/'.$project->slug;
         $json = strval(file_get_contents($path.'/metadata.json'));
@@ -264,9 +269,9 @@ class ProjectTest extends TestCase
         $dep = file_get_contents($path.'/'.$project->slug.'.egg-info/requires.txt');
         $this->assertEquals($projectDep->slug."\n", $dep);
 
-        unlink(public_path($version->zip));
+        unlink(public_path($zip));
         $this->delTree($path);
-
+        /** @var Project $project */
         $project = Project::find($project->id);
         $this->assertNotNull($project->published_at);
         $this->assertTrue(now()->isSameDay($project->published_at));
@@ -319,8 +324,8 @@ class ProjectTest extends TestCase
         $versions = Version::published()->where('project_id', $project->id)->get();
         /** @var Version $version */
         $version = $versions->last();
-
-        exec('tar xf '.public_path($version->zip).' -C '.sys_get_temp_dir());
+        $zip = strval($version->zip);
+        exec('tar xf '.public_path($zip).' -C '.sys_get_temp_dir());
         $path = sys_get_temp_dir().'/'.$project->slug;
         $json = strval(file_get_contents($path.'/metadata.json'));
 
@@ -333,7 +338,7 @@ class ProjectTest extends TestCase
             'icon'        => 'icon.png',
         ])), $json);
 
-        unlink(public_path($version->zip));
+        unlink(public_path($zip));
         $this->delTree($path);
     }
 
@@ -438,6 +443,7 @@ class ProjectTest extends TestCase
                 'badge_status' => [$badge->id => 'working'],
             ]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
+        /** @var Project $project */
         $project = Project::find($project->id);
         $this->assertCount(1, $project->states);
         $this->assertEquals('working', $project->status);
@@ -464,8 +470,11 @@ class ProjectTest extends TestCase
         /** @var Collection $warnings */
         $warnings = Warning::all();
         $this->assertCount(1, $warnings);
+        /** @var Project $project */
         $project = Project::find($project->id);
-        $this->assertEquals('het zuigt', $project->warnings()->first()->description);
+        /** @var Warning $warning */
+        $warning = $project->warnings()->first();
+        $this->assertEquals('het zuigt', $warning->description);
     }
 
     /**
@@ -482,8 +491,11 @@ class ProjectTest extends TestCase
             ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
         $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
         $this->assertCount(1, Vote::all());
+        /** @var Project $project */
         $project = Project::find($project->id);
-        $this->assertEquals('pig', $project->votes()->first()->type);
+        /** @var Vote $vote */
+        $vote = $project->votes()->first();
+        $this->assertEquals('pig', $vote->type);
     }
 
     /**

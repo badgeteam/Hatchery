@@ -181,6 +181,7 @@ class ProjectTest extends TestCase
         $this->assertEquals('unknown', $project->status);
         $badge = factory(Badge::class)->create();
         $project->badges()->attach($badge);
+        /** @var BadgeProject $state */
         $state = BadgeProject::where('badge_id', $badge->id)->where('project_id', $project->id)->first();
         $state->status = 'broken';
         $state->save();
@@ -189,23 +190,29 @@ class ProjectTest extends TestCase
         $this->assertEquals('broken', $project->status);
         $badge = factory(Badge::class)->create();
         $project->badges()->attach($badge);
+        /** @var BadgeProject $state */
         $state = BadgeProject::where('badge_id', $badge->id)->where('project_id', $project->id)->first();
         $state->status = 'in_progress';
         $state->save();
+        /** @var Project $project */
         $project = Project::find($project->id);
         $this->assertEquals('in_progress', $project->status);
         $badge = factory(Badge::class)->create();
         $project->badges()->attach($badge);
+        /** @var BadgeProject $state */
         $state = BadgeProject::where('badge_id', $badge->id)->where('project_id', $project->id)->first();
         $state->status = 'working';
         $state->save();
+        /** @var Project $project */
         $project = Project::find($project->id);
         $this->assertEquals('working', $project->status);
         $badge = factory(Badge::class)->create();
         $project->badges()->attach($badge);
+        /** @var BadgeProject $state */
         $state = BadgeProject::where('badge_id', $badge->id)->where('project_id', $project->id)->first();
         $state->status = 'in_progress';
         $state->save();
+        /** @var Project $project */
         $project = Project::find($project->id); // stay at working
         $this->assertEquals('working', $project->status);
         $this->assertCount(4, BadgeProject::all());

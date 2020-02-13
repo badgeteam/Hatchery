@@ -32,6 +32,7 @@ class UserTest extends TestCase
         $this->assertEmpty($user->projects);
         /** @var Project $project */
         $project = factory(Project::class)->create(['user_id' => $user->id]);
+        /** @var User $user */
         $user = User::find($user->id);
         $this->assertCount(1, $user->projects);
         $this->assertInstanceOf(Collection::class, $user->projects);
@@ -40,6 +41,7 @@ class UserTest extends TestCase
         $userProject = $user->projects->first();
         $this->assertEquals($project->id, $userProject->id);
         factory(Project::class)->create(['user_id' => $user->id]);
+        /** @var User $user */
         $user = User::find($user->id);
         $this->assertCount(2, $user->projects);
     }
@@ -53,6 +55,7 @@ class UserTest extends TestCase
         $user = factory(User::class)->create();
         $this->be($user);
         $this->assertEmpty($user->votes);
+        /** @var User $user */
         $user = User::find($user->id);
         /** @var Vote $vote */
         $vote = factory(Vote::class)->create(['user_id' => $user->id]);
@@ -63,6 +66,7 @@ class UserTest extends TestCase
         $userVote = $user->votes->first();
         $this->assertEquals($vote->id, $userVote->id);
         factory(Vote::class)->create(['user_id' => $user->id]);
+        /** @var User $user */
         $user = User::find($user->id);
         $this->assertCount(2, $user->votes);
     }
@@ -85,6 +89,7 @@ class UserTest extends TestCase
         $userWarning = $user->warnings->first();
         $this->assertEquals($warning->id, $userWarning->id);
         factory(Warning::class)->create(['user_id' => $user->id]);
+        /** @var User $user */
         $user = User::find($user->id);
         $this->assertCount(2, $user->warnings);
     }

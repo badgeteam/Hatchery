@@ -58,7 +58,7 @@ class ProjectsController extends Controller
             $badge = $badge->slug;
         }
         if ($request->has('category') && $request->get('category')) {
-            $category = Category::where('slug', $request->get('category'))->first();
+            $category = Category::where('slug', $request->get('category'))->firstOrFail();
             $projects = $projects->where('category_id', $category->id);
             $category = $category->slug;
         }
@@ -118,6 +118,7 @@ class ProjectsController extends Controller
                 $project->badges()->attach($badges);
             }
             if ($request->description) {
+                /** @var Version $version */
                 $version = $project->versions->last();
                 $file = new File();
                 $file->name = 'README.md';
@@ -184,6 +185,7 @@ class ProjectsController extends Controller
 
                 foreach ($request->badge_ids as $badge_id) {
                     if (array_key_exists($badge_id, $request->badge_status)) {
+                        /** @var BadgeProject $state */
                         $state = BadgeProject::where('badge_id', $badge_id)->where('project_id', $project->id)->first();
                         $state->status = $request->badge_status[$badge_id];
                         $state->save();
@@ -211,6 +213,7 @@ class ProjectsController extends Controller
      */
     public function publish(Project $project): RedirectResponse
     {
+        /** @var Version $version */
         $version = $project->versions()->unPublished()->first();
 
         $filename = 'eggs/'.uniqid($project->slug.'_').'.tar';
@@ -251,7 +254,7 @@ class ProjectsController extends Controller
         unlink(public_path($filename));
 
         $version->zip = $filename.'.gz';
-        $version->size_of_zip = filesize(public_path($version->zip));
+        $version->size_of_zip = intval(filesize(public_path($version->zip)));
         $version->save();
 
         $newVersion = new Version();

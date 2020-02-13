@@ -8,7 +8,7 @@ parameters:
         - public
         - routes
         - tests
-    level: 7
+    level: 8
     inferPrivatePropertyTypeFromConstructor: true
     ignoreErrors:
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\BelongsTo::withTrashed().#'
