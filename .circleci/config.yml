@@ -17,7 +17,7 @@ jobs:
       - run: cp .env.testing .env
 
       - run: sudo apt update
-      - run: sudo apt-get install -y libpng-dev
+      - run: sudo apt-get install -y libpng-dev libgmp-dev
       - run: sudo docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd
       - run: sudo docker-php-ext-install zip pdo_mysql gd
       - run: sudo apt-get install mariadb-client pyflakes
