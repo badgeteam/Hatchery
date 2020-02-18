@@ -10,12 +10,17 @@
             "role": "Developer"
         }
     ],
+    "support": {
+        "email": "hatchery@badge.team",
+        "isseus": "https://github.com/BadgeTeam/Hatchery/issues"
+    },
     "license": "MIT",
     "type": "project",
     "require": {
         "php": ">=7.2",
         "ext-gd": "*",
         "ext-json": "*",
+        "ext-gmp": "*",
         "asbiin/laravel-webauthn": "^0.7.0",
         "bepsvpt/secure-headers": "^5.5",
         "darkaonline/l5-swagger": "dev-master",

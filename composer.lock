@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11b7016e67b0224d09d1603021a265fa",
+    "content-hash": "4ce1688b76ac25fdf4ef7301d25876a5",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -704,16 +704,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.16",
+            "version": "2.1.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "5065fafc8c29d229ff207f2a89b02175f479a909"
+                "reference": "ade6887fd9bd74177769645ab5c474824f8a418a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/5065fafc8c29d229ff207f2a89b02175f479a909",
-                "reference": "5065fafc8c29d229ff207f2a89b02175f479a909",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/ade6887fd9bd74177769645ab5c474824f8a418a",
+                "reference": "ade6887fd9bd74177769645ab5c474824f8a418a",
                 "shasum": ""
             },
             "require": {
@@ -758,7 +758,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2020-02-12T22:28:28+00:00"
+            "time": "2020-02-13T22:36:52+00:00"
         },
         {
             "name": "fgrosse/phpasn1",
@@ -3601,16 +3601,16 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "1.6.1",
+            "version": "1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "6ccb88d2ef9e6c71ebdedadb59910843c47399e1"
+                "reference": "7debcb2f1ad080dff33dd1433d86ab45a3f5c01e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/6ccb88d2ef9e6c71ebdedadb59910843c47399e1",
-                "reference": "6ccb88d2ef9e6c71ebdedadb59910843c47399e1",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/7debcb2f1ad080dff33dd1433d86ab45a3f5c01e",
+                "reference": "7debcb2f1ad080dff33dd1433d86ab45a3f5c01e",
                 "shasum": ""
             },
             "require": {
@@ -3666,7 +3666,7 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2020-01-23T22:19:01+00:00"
+            "time": "2020-02-14T12:29:38+00:00"
         },
         {
             "name": "spomky-labs/base64url",
@@ -3722,16 +3722,16 @@
         },
         {
             "name": "spomky-labs/cbor-php",
-            "version": "v1.0.7",
+            "version": "v1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spomky-Labs/cbor-php.git",
-                "reference": "f937d527b05bb3ec3f6b8670ece38ccaf9a0eddd"
+                "reference": "575a66dc406575b030e3ba541b33447842f93185"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Spomky-Labs/cbor-php/zipball/f937d527b05bb3ec3f6b8670ece38ccaf9a0eddd",
-                "reference": "f937d527b05bb3ec3f6b8670ece38ccaf9a0eddd",
+                "url": "https://api.github.com/repos/Spomky-Labs/cbor-php/zipball/575a66dc406575b030e3ba541b33447842f93185",
+                "reference": "575a66dc406575b030e3ba541b33447842f93185",
                 "shasum": ""
             },
             "require": {
@@ -3742,13 +3742,14 @@
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "^2.0",
-                "phpstan/phpstan": "^0.11",
-                "phpstan/phpstan-beberlei-assert": "^0.11.0",
-                "phpstan/phpstan-deprecation-rules": "^0.11",
-                "phpstan/phpstan-phpunit": "^0.11",
-                "phpstan/phpstan-strict-rules": "^0.11",
+                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan-beberlei-assert": "^0.12",
+                "phpstan/phpstan-deprecation-rules": "^0.12",
+                "phpstan/phpstan-phpunit": "^0.12",
+                "phpstan/phpstan-strict-rules": "^0.12",
                 "phpunit/phpunit": "^7.5|^8.0",
-                "rector/rector": "^0.5"
+                "rector/rector": "^0.5|^0.6",
+                "symfony/var-dumper": "^4.3|^5.0"
             },
             "suggest": {
                 "ext-bcmath": "BCMath extension needed to handle the Big Float and Decimal Fraction Tags"
@@ -3784,7 +3785,7 @@
                 "RFC7049",
                 "cbor"
             ],
-            "time": "2019-08-15T14:53:55+00:00"
+            "time": "2020-02-18T08:37:37+00:00"
         },
         {
             "name": "swagger-api/swagger-ui",
@@ -6984,16 +6985,16 @@
         },
         {
             "name": "composer/spdx-licenses",
-            "version": "1.5.2",
+            "version": "1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/spdx-licenses.git",
-                "reference": "7ac1e6aec371357df067f8a688c3d6974df68fa5"
+                "reference": "0c3e51e1880ca149682332770e25977c70cf9dae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/spdx-licenses/zipball/7ac1e6aec371357df067f8a688c3d6974df68fa5",
-                "reference": "7ac1e6aec371357df067f8a688c3d6974df68fa5",
+                "url": "https://api.github.com/repos/composer/spdx-licenses/zipball/0c3e51e1880ca149682332770e25977c70cf9dae",
+                "reference": "0c3e51e1880ca149682332770e25977c70cf9dae",
                 "shasum": ""
             },
             "require": {
@@ -7040,7 +7041,7 @@
                 "spdx",
                 "validator"
             ],
-            "time": "2019-07-29T10:31:59+00:00"
+            "time": "2020-02-14T07:44:31+00:00"
         },
         {
             "name": "composer/xdebug-handler",
@@ -8122,16 +8123,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.10",
+            "version": "0.12.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "39004edc7fc308752f625b89b70ad1710708f45e"
+                "reference": "ca5f2b7cf81c6d8fba74f9576970399c5817e03b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/39004edc7fc308752f625b89b70ad1710708f45e",
-                "reference": "39004edc7fc308752f625b89b70ad1710708f45e",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/ca5f2b7cf81c6d8fba74f9576970399c5817e03b",
+                "reference": "ca5f2b7cf81c6d8fba74f9576970399c5817e03b",
                 "shasum": ""
             },
             "require": {
@@ -8157,7 +8158,7 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2020-02-12T22:03:42+00:00"
+            "time": "2020-02-16T14:00:29+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -9160,16 +9161,16 @@
         },
         {
             "name": "seld/phar-utils",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/phar-utils.git",
-                "reference": "84715761c35808076b00908a20317a3a8a67d17e"
+                "reference": "8800503d56b9867d43d9c303b9cbcc26016e82f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/phar-utils/zipball/84715761c35808076b00908a20317a3a8a67d17e",
-                "reference": "84715761c35808076b00908a20317a3a8a67d17e",
+                "url": "https://api.github.com/repos/Seldaek/phar-utils/zipball/8800503d56b9867d43d9c303b9cbcc26016e82f0",
+                "reference": "8800503d56b9867d43d9c303b9cbcc26016e82f0",
                 "shasum": ""
             },
             "require": {
@@ -9198,9 +9199,9 @@
             ],
             "description": "PHAR file format utilities, for when PHP phars you up",
             "keywords": [
-                "phra"
+                "phar"
             ],
-            "time": "2020-01-13T10:41:09+00:00"
+            "time": "2020-02-14T15:25:33+00:00"
         },
         {
             "name": "sempro/phpunit-pretty-print",
@@ -9448,16 +9449,16 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.6.0",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "573381c0a64f155a0d9a23f4b0c797194805b925"
+                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/573381c0a64f155a0d9a23f4b0c797194805b925",
-                "reference": "573381c0a64f155a0d9a23f4b0c797194805b925",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/aed98a490f9a8f78468232db345ab9cf606cf598",
+                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598",
                 "shasum": ""
             },
             "require": {
@@ -9492,7 +9493,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2019-11-24T13:36:37+00:00"
+            "time": "2020-02-14T12:15:55+00:00"
         }
     ],
     "aliases": [],
@@ -9505,7 +9506,8 @@
     "platform": {
         "php": ">=7.2",
         "ext-gd": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-gmp": "*"
     },
     "platform-dev": []
 }
