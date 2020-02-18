@@ -46,7 +46,7 @@
         "nunomaduro/larastan": "^0.5",
         "phpstan/phpstan": "^0.12",
         "phpunit/phpunit": "^8",
-        "sempro/phpunit-pretty-print": "dev-master"
+        "sempro/phpunit-pretty-print": "^1.2"
     },
     "autoload": {
         "classmap": [
@@ -81,11 +81,5 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/annejan/phpunit-pretty-print"
-        }
-    ]
+    }
 }

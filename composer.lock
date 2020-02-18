@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a24affd64aed266f736cff757e778856",
+    "content-hash": "f1642bed7549d4ad04ea96a12843f814",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -7842,18 +7842,18 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "role": "Developer",
-                    "email": "arne@blankerts.de"
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
                 },
                 {
                     "name": "Sebastian Heuer",
-                    "role": "Developer",
-                    "email": "sebastian@phpeople.de"
+                    "email": "sebastian@phpeople.de",
+                    "role": "Developer"
                 },
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "Developer",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "Developer"
                 }
             ],
             "description": "Component for reading phar.io manifest information from a PHP Archive (PHAR)",
@@ -9205,16 +9205,16 @@
         },
         {
             "name": "sempro/phpunit-pretty-print",
-            "version": "dev-master",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/annejan/phpunit-pretty-print.git",
-                "reference": "3dcdf7eff90291e2de08a9c4a5c2a0df35a606af"
+                "url": "https://github.com/sempro/phpunit-pretty-print.git",
+                "reference": "9a9e14c95a5a6527c25c71aa55c8295882c6fcb1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/annejan/phpunit-pretty-print/zipball/3dcdf7eff90291e2de08a9c4a5c2a0df35a606af",
-                "reference": "3dcdf7eff90291e2de08a9c4a5c2a0df35a606af",
+                "url": "https://api.github.com/repos/sempro/phpunit-pretty-print/zipball/9a9e14c95a5a6527c25c71aa55c8295882c6fcb1",
+                "reference": "9a9e14c95a5a6527c25c71aa55c8295882c6fcb1",
                 "shasum": ""
             },
             "require": {
@@ -9230,14 +9230,12 @@
                     "Sempro\\PHPUnitPrettyPrinter\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Prettify PHPUnit output",
-            "support": {
-                "source": "https://github.com/annejan/phpunit-pretty-print/tree/master"
-            },
-            "time": "2020-02-10T13:29:01+00:00"
+            "time": "2019-11-21T19:36:58+00:00"
         },
         {
             "name": "symfony/browser-kit",
@@ -9442,8 +9440,8 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "role": "Developer",
-                    "email": "arne@blankerts.de"
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
@@ -9501,8 +9499,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "darkaonline/l5-swagger": 20,
-        "sempro/phpunit-pretty-print": 20
+        "darkaonline/l5-swagger": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
