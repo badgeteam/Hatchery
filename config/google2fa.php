@@ -1,6 +1,6 @@
 <?php
 
-use \PragmaRX\Google2FALaravel\Support\Constants;
+use PragmaRX\Google2FALaravel\Support\Constants;
 
 return [
 

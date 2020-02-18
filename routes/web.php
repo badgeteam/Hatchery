@@ -19,7 +19,7 @@ Route::get('search', 'ProjectsController@index')->name('projects.search');
 
 Auth::routes();
 
-Route::group(['middleware' => ['2fa', 'webauthn']], function(){
+Route::group(['middleware' => ['2fa', 'webauthn']], function () {
     Route::get('home', 'HomeController@index')->name('home');
 
     Route::post('notify/{project}', 'ProjectsController@notify')->name('projects.notify');
