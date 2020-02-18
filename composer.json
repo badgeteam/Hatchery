@@ -19,9 +19,10 @@
     "require": {
         "php": ">=7.2",
         "ext-gd": "*",
-        "ext-json": "*",
         "ext-gmp": "*",
+        "ext-json": "*",
         "asbiin/laravel-webauthn": "^0.7.0",
+        "bacon/bacon-qr-code": "^2.0",
         "bepsvpt/secure-headers": "^5.5",
         "darkaonline/l5-swagger": "dev-master",
         "intervention/image": "^2.5",
@@ -45,7 +46,7 @@
         "nunomaduro/larastan": "^0.5",
         "phpstan/phpstan": "^0.12",
         "phpunit/phpunit": "^8",
-        "sempro/phpunit-pretty-print": "^1.1"
+        "sempro/phpunit-pretty-print": "dev-master"
     },
     "autoload": {
         "classmap": [
@@ -80,5 +81,11 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/annejan/phpunit-pretty-print"
+        }
+    ]
 }

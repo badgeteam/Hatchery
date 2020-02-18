@@ -7,9 +7,9 @@ COPY . /app
 COPY .env.dev /app/.env
 
 RUN apt update && apt upgrade -y && apt install -y python-pip git zip sudo wget nodejs gnupg \
-    zlib1g-dev libzip-dev libicu-dev libpng-dev libonig-dev
+    zlib1g-dev libzip-dev libicu-dev libpng-dev libonig-dev libgmp-dev
 
-RUN docker-php-ext-install pdo pdo_mysql mysqli pcntl zip intl gd mbstring
+RUN docker-php-ext-install pdo pdo_mysql mysqli pcntl zip intl gd mbstring gmp
 
 ENV COMPOSER_HOME /composer
 ENV COMPOSER_ALLOW_SUPERUSER 1
