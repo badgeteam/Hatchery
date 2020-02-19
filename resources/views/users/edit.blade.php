@@ -73,14 +73,17 @@
                                         Save
                                     </button>
 
+                                    {!! Form::close() !!}
+
                                     <a href="{{ route('webauthn.register') }}" class="btn btn-info">
                                         Add WebAuthn token
                                     </a>
 
                                     @if($user->webauthnKeys()->count() > 0)
+                                    <hr>
                                         @foreach($user->webauthnKeys as $key)
                                         {!! Form::open(['method' => 'delete', 'route' => ['webauthn.destroy', 'id' => $key->id]]) !!}
-                                            <button class="btn btn-danger" name="delete-token" type="submit" value="delete">Delete WebaAthn token added {{ $key->created_at->format('Y-m-d') }}</button>
+                                            <button class="btn btn-danger btn-xs" name="delete-token" type="submit" value="delete">Delete WebaAuthn token added {{ $key->created_at->format('Y-m-d') }}</button>
                                         {!! Form::close() !!}
                                         @endforeach
                                     @endif
@@ -125,7 +128,6 @@
 			</table>
                     {{ $user->projects()->paginate()->render() }}
 
-                        {!! Form::close() !!}
                     </div>
                 </div>
             </div>
@@ -185,7 +187,13 @@
           e.preventDefault()
           var $form = $(this).closest('form')
           $('#confirm-delete-token').modal({ backdrop: 'static', keyboard: false }).one('click', '#delete', function (e) {
-            $form.trigger('submit')
+            $.ajax({
+              url: $form.attr('action'),
+              type: 'DELETE',
+              success: function(result) {
+                location.reload()
+              }
+            });
           })
         })
     </script>
