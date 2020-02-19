@@ -28,6 +28,7 @@ class UsersController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return RedirectResponse
      */
     public function redirect(Request $request): RedirectResponse

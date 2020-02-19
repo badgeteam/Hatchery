@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -13,7 +14,6 @@ use LaravelWebauthn\Models\WebauthnKey;
  *
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
- *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
@@ -23,7 +23,6 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withoutTrashed()
  * @mixin \Eloquent
- *
  * @property-read int|null $notifications_count
  * @property-read int|null $projects_count
  * @property int $id
@@ -38,7 +37,6 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
  * @property-read int|null $votes_count
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAdmin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereDeletedAt($value)
@@ -49,14 +47,15 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
- *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
  * @property-read int|null $warnings_count
- *
- * @author annejan@badge.team
- *
  * @property-read \Illuminate\Database\Eloquent\Collection|\LaravelWebauthn\Models\WebauthnKey[] $webauthnKeys
  * @property-read int|null $webauthn_keys_count
+ * @property int $google2fa_enabled
+ * @property string|null $google2fa_secret
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereGoogle2faEnabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereGoogle2faSecret($value)
+ * @author annejan@badge.team
  */
 class User extends Authenticatable
 {
@@ -77,7 +76,7 @@ class User extends Authenticatable
      * @var array<string>
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'google2fa_secret'
     ];
 
     /**

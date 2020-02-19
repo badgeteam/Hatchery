@@ -68,7 +68,7 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
+                                <div class="col-md-7 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">
                                         Save
                                     </button>
@@ -76,7 +76,11 @@
                                     {!! Form::close() !!}
 
                                     <a href="{{ route('webauthn.register') }}" class="btn btn-info">
-                                        Add WebAuthn token
+                                        Add WebAuthn
+                                    </a>
+
+                                    <a href="{{ route('2fa') }}" class="btn btn-info">
+                                        {{ $user->google2fa_enabled ? 'Manage' : 'Add' }} Authenticator
                                     </a>
 
                                     @if($user->webauthnKeys()->count() > 0)

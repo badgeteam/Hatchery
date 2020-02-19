@@ -19,7 +19,19 @@ Route::get('search', 'ProjectsController@index')->name('projects.search');
 
 Auth::routes();
 
-Route::middleware(['auth', 'webauthn'])->group(function () {
+Route::middleware(['auth'])->group(function () {
+    Route::get('2fa', 'Auth\TwoFAController@show2faForm')->name('2fa');
+    Route::post('generate2faSecret', 'Auth\TwoFAController@generate2faSecret')->name('generate2faSecret');
+    Route::post('2fa', 'Auth\TwoFAController@enable2fa')->name('enable2fa');
+    Route::post('disable2fa', 'Auth\TwoFAController@disable2fa')->name('disable2fa');
+    Route::post(
+        '2faVerify', function () {
+        return redirect(URL()->previous());
+    }
+    )->name('2faVerify')->middleware('2fa');
+});
+
+Route::middleware(['auth', 'webauthn', '2fa'])->group(function () {
     Route::get('home', 'HomeController@index')->name('home');
 
     Route::resource('projects', 'ProjectsController')->except('index');
