@@ -11,11 +11,22 @@
                         Contributors: {{$users}}
                         Eggs: {{$projects}}
                     </div>
-                    <div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Badge</th>
+                            <th>Eggs</th>
+                        </tr>
+                        </thead>
+                        <tbody>
                         @foreach(App\Models\Badge::all() as $badge)
-                            {{ $badge->name }}: {{ $badge->projects->count() }}
+                            <tr>
+                                <td>{{ $badge->name }}</td>
+                                <td>{{ $badge->projects->count() }}</td>
+                            </tr>
                         @endforeach
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
