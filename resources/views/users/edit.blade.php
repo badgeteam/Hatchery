@@ -190,6 +190,9 @@
             $.ajax({
               url: $form.attr('action'),
               type: 'DELETE',
+              data: {
+                '_token': window.Laravel.csrfToken
+              },
               success: function(result) {
                 location.reload()
               }
