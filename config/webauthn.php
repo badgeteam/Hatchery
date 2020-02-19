@@ -97,7 +97,7 @@ return [
         | If empty, send a json response to let the client side redirection.
         |
         */
-        'postSuccessRedirectRoute' => '/',
+        'postSuccessRedirectRoute' => '/profile',
     ],
 
     /*

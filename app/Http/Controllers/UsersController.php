@@ -6,6 +6,7 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -23,6 +24,15 @@ class UsersController extends Controller
     {
         $this->middleware('auth');
         $this->authorizeResource(User::class);
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function redirect(Request $request): RedirectResponse
+    {
+        return redirect()->route('users.edit', ['user' => $request->user()->getAuthIdentifier()]);
     }
 
     /**

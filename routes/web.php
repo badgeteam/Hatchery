@@ -31,6 +31,7 @@ Route::middleware(['auth', 'webauthn'])->group(function () {
     Route::get('create-icon', 'FilesController@createIcon')->name('files.create-icon');
     Route::get('download/{file}', 'FilesController@download')->name('files.download');
 
+    Route::get('profile', 'UsersController@redirect');
     Route::resource('users', 'UsersController', ['only' => ['edit', 'update', 'destroy']]);
 
     Route::resource('votes', 'VotesController', ['only' => ['store', 'destroy']]);
