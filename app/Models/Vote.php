@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Auth;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Project $project
  * @property-read \App\Models\User $user
- *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote newQuery()
@@ -38,7 +37,6 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Vote withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Vote withoutTrashed()
  * @mixin \Eloquent
- *
  * @author annejan@badge.team
  */
 class Vote extends Model

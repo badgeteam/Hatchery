@@ -72,8 +72,17 @@
                                     <button type="submit" class="btn btn-primary">
                                         Save
                                     </button>
+
+                                    <a href="{{ route('webauthn.register') }}" class="btn btn-info">
+                                        Add WebAuthn token
+                                    </a>
+
+                                    {{ $user->webauthnKeys()->count() }} tokens enabled
+
                                 </div>
                             </div>
+
+
                             <div class="form-group">
                                 <div class="col-md-12">
 				    <table class="table table-striped">
@@ -88,7 +97,7 @@
 					    </tr>
 					</thead>
 					<tbody>
-					@forelse($user->projects as $project)
+					@forelse($user->projects()->paginate() as $project)
 					<tr>
 					    <td>
 						@can('update', $project)
@@ -109,7 +118,7 @@
 				    	@endforelse
 				</tbody>
 			</table>
-						
+                    {{ $user->projects()->paginate()->render() }}
 
                         {!! Form::close() !!}
                     </div>

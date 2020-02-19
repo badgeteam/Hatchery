@@ -88,12 +88,6 @@
                                         <a href="{{ route('users.edit', Auth::user()->id) }}">Profile</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('webauthn.register') }}">WebAuthn</a>
-                                    </li>
-                                    <li>
-{{--                                        <a href="{{ route('2fa') }}">2FA</a>--}}
-                                    </li>
-                                    <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

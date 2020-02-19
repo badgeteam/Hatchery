@@ -13,7 +13,7 @@
 
 Route::get('/', 'PublicController@index')->name('splash');
 Route::get('badge/{badge}', 'PublicController@badge')->name('badge');
-Route::resource('projects', 'ProjectsController');
+Route::get('projects', 'ProjectsController@index');
 Route::post('search', 'ProjectsController@index')->name('projects.search');
 Route::get('search', 'ProjectsController@index')->name('projects.search');
 
