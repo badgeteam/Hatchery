@@ -77,8 +77,13 @@
                                         Add WebAuthn token
                                     </a>
 
-                                    {{ $user->webauthnKeys()->count() }} tokens enabled
-
+                                    @if($user->webauthnKeys()->count() > 0)
+                                        @foreach($user->webauthnKeys as $key)
+                                        {!! Form::open(['method' => 'delete', 'route' => ['webauthn.destroy', 'user' => $key->id]]) !!}
+                                            <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">Delete webauthn token from {{ $key->created_at->format('Y-m-d') }}</button>
+                                        {!! Form::close() !!}
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
 
