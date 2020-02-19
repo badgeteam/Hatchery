@@ -80,7 +80,7 @@
                                     @if($user->webauthnKeys()->count() > 0)
                                         @foreach($user->webauthnKeys as $key)
                                         {!! Form::open(['method' => 'delete', 'route' => ['webauthn.destroy', 'id' => $key->id]]) !!}
-                                            <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">Delete webauthn token from {{ $key->created_at->format('Y-m-d') }}</button>
+                                            <button class="btn btn-danger" name="delete-token" type="submit" value="delete">Delete WebaAthn token added {{ $key->created_at->format('Y-m-d') }}</button>
                                         {!! Form::close() !!}
                                         @endforeach
                                     @endif
@@ -145,6 +145,19 @@
             </div>
         </div>
     </div>
+    <div id="confirm-delete-token" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    Are you sure you want to delete this token?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-danger" id="delete">Delete</button>
+                    <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -165,6 +178,15 @@
             $('#confirm-delete').modal({ backdrop: 'static', keyboard: false }).one('click', '#delete', function (e) {
                 $form.trigger('submit')
             })
+        })
+
+        // Delete resource
+        $('button[name="delete-token"]').on('click', function (e) {
+          e.preventDefault()
+          var $form = $(this).closest('form')
+          $('#confirm-delete-token').modal({ backdrop: 'static', keyboard: false }).one('click', '#delete', function (e) {
+            $form.trigger('submit')
+          })
         })
     </script>
 @endsection
