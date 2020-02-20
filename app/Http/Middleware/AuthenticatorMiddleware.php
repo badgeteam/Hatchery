@@ -18,6 +18,7 @@ class AuthenticatorMiddleware
     /**
      * @param Request $request
      * @param Closure $next
+     *
      * @return JsonResponse|Response
      */
     public function handle($request, Closure $next)
