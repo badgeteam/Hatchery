@@ -24,11 +24,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('generate2faSecret', 'Auth\TwoFAController@generate2faSecret')->name('generate2faSecret');
     Route::post('2fa', 'Auth\TwoFAController@enable2fa')->name('enable2fa');
     Route::post('disable2fa', 'Auth\TwoFAController@disable2fa')->name('disable2fa');
-    Route::post(
-        '2faVerify', function () {
-        return redirect(URL()->previous());
-    }
-    )->name('2faVerify')->middleware('2fa');
+    Route::post('2faVerify', 'Auth\TwoFAController@verify')->name('2faVerify')->middleware('2fa');
 });
 
 Route::middleware(['auth', 'webauthn', '2fa'])->group(function () {

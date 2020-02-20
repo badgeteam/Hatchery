@@ -101,4 +101,12 @@ class TwoFAController extends Controller
 
         return redirect()->route('2fa')->with('success', '2FA is uitgeschakeld.');
     }
+
+    /**
+     * @return RedirectResponse
+     */
+    public function verify()
+    {
+        return redirect(URL()->previous());
+    }
 }
