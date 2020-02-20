@@ -21,20 +21,12 @@
 				<div class="spacer col-md-12 hidden-xs"></div>
 				<div class="links">
 					<a href="https://docs.badge.team/">Documentation</a>
-					<a href="https://wiki.badge.team/MicroPython">Wiki Coding Help</a>
 					<a href="https://github.com/badgeteam/">GitHub</a>
 					<a href="https://twitter.com/SHA2017Badge">Twitter</a>
 				</div>
 				<div>
 					Contributors: {{$users}}
 					Eggs: {{$projects}}
-				</div>
-				<div>
-					@foreach(App\Models\Badge::all() as $selectBadge)
-						@if ($selectBadge->projects->isNotEmpty())
-						{{ $selectBadge->name }}: {{ $selectBadge->projects->count() }}
-						@endif
-					@endforeach
 				</div>
 
 				<div class="spacer col-md-12 hidden-xs"></div>

@@ -30,7 +30,7 @@ class ProjectRenameRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:projects'
+            'name' => 'required|unique:projects',
         ];
     }
 }
