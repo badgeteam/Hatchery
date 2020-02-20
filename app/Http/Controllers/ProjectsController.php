@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectNotificationRequest;
+use App\Http\Requests\ProjectRenameRequest;
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
 use App\Mail\ProjectNotificationMail;
@@ -323,5 +324,42 @@ class ProjectsController extends Controller
         Mail::to('bugs@badge.team')->send($mail);
 
         return redirect()->route('projects.show', ['project' => $project])->withSuccesses(['Notification sent to badge.team']);
+    }
+
+    /**
+     * Show project rename form, public method ツ.
+     *
+     * @param Project $project
+     *
+     * @return View
+     */
+    public function renameForm(Project $project): View
+    {
+        return view('projects.rename')
+            ->with('project', $project);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param ProjectRenameRequest $request
+     * @param Project              $project
+     *
+     * @return RedirectResponse
+     */
+    public function rename(ProjectRenameRequest $request, Project $project): RedirectResponse
+    {
+        $slug = Str::slug($request->name);
+
+        if (Project::whereSlug($slug)->exists()) {
+            return redirect()->route('projects.rename',
+                ['project' => $project->slug])->withInput()->withErrors(['Name not unique']);
+        }
+
+        $project->name = $request->name;
+        $project->slug = $slug;
+        $project->save();
+
+        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' renamed']);
     }
 }

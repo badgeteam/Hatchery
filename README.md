@@ -15,11 +15,9 @@
 
 Simple micropython software repository for Badges.
 
-[Live Site](http://badge.team) | 
-[API Documentation](https://badge.team/api) |
+[Live Site](https://badge.team) | 
+[API Playground](https://badge.team/api) |
 [Documentation](https://docs.badge.team/hatchery/) |
-[Documentation (wiki)](https://wiki.badge.team/Hatchery) |
-[Project Wiki](https://wiki.badge.team) |
 [GitHub](https://github.com/badgeteam/)
 
 ## License
@@ -27,7 +25,6 @@ Simple micropython software repository for Badges.
 Hatchery is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
 
 The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
-
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery?ref=badge_large)
 

@@ -11,14 +11,17 @@
 
                 <div class="panel-heading">
                     <strong>{{ $project->name }}</strong>
-                    @can('delete', $project)
                     <div class="pull-right">
                         <a href="{{ route('projects.show', ['project' => $project]) }}" class="btn btn-default btn-xs">show</a>
+                        @can('rename', $project)
+                        <a href="{{ route('projects.rename', ['project' => $project]) }}" class="btn btn-info btn-xs">rename</a>
+                        @endcan
+                        @can('delete', $project)
                         {!! Form::open(['method' => 'delete', 'route' => ['projects.destroy', 'project' => $project->slug], 'class' => 'deleteform']) !!}
                         <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">delete</button>
                         {!! Form::close() !!}
+                        @endcan
                     </div>
-                    @endcan
                 </div>
 
                 <div class="panel-body">

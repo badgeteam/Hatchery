@@ -64,4 +64,18 @@ class ProjectPolicy
         // Normal users can only delete their own projects
         return  $user->admin || $user->id == $project->user->id;
     }
+
+    /**
+     * Determine whether the user can rename the project.
+     *
+     * @param User    $user
+     * @param Project $project
+     *
+     * @return mixed
+     */
+    public function rename(User $user, Project $project)
+    {
+        // Ony admin users can rename projects
+        return  $user->admin;
+    }
 }
