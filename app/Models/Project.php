@@ -128,7 +128,7 @@ class Project extends Model
         'os', 'uos', 'badge', 'esp32', 'ussl', 'time', 'utime', 'splash', 'launcher', 'installer', 'ota_update',
         'boot', 'appglue', 'database', 'dialogs', 'deepsleep', 'magic', 'ntp', 'rtcmem', 'machine', 'setup', 'version',
         'wifi', 'woezel', 'network', 'socket', 'uhashlib', 'hashlib', 'ugfx', 'btree', 'request', 'urequest', 'uzlib',
-        'zlib', 'ssl', 'create', 'delete'
+        'zlib', 'ssl', 'create', 'delete',
     ];
 
     /**
