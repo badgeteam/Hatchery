@@ -122,7 +122,7 @@ class Kernel extends HttpKernel
         'can'        => \Illuminate\Auth\Middleware\Authorize::class,
         'guest'      => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle'   => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        '2fa'        => \PragmaRX\Google2FALaravel\Middleware::class,
+        '2fa'        => \App\Http\Middleware\AuthenticatorMiddleware::class,
         'webauthn'   => \LaravelWebauthn\Http\Middleware\WebauthnMiddleware::class,
     ];
 }

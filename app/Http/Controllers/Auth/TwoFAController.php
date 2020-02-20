@@ -56,7 +56,7 @@ class TwoFAController extends Controller
         $user->google2fa_secret = $google2fa->generateSecretKey();
         $user->save();
 
-        return redirect()->route('2fa')->with('success', 'Geheime sleutel is gegenereerd, voer OTP in om 2FA te activeren.');
+        return redirect()->route('2fa')->with('success', 'Secret key has been generated, enter OTP to activate 2FA.');
     }
 
     /**
@@ -74,9 +74,9 @@ class TwoFAController extends Controller
             $user->google2fa_enabled = true;
             $user->save();
 
-            return redirect()->route('2fa')->with('success', '2FA is geactiveerd.');
+            return redirect()->route('2fa')->with('success', '2FA has been activated.');
         } else {
-            return redirect()->route('2fa')->with('error', 'OTP code verkeerd, probeer nogmaals.');
+            return redirect()->route('2fa')->with('error', 'OTP code wrong, please try again.');
         }
     }
 
@@ -90,14 +90,14 @@ class TwoFAController extends Controller
         if (!(Hash::check($request->get('current-password'), Auth::guard()->user()->password))) {
             // The passwords matches
             return redirect()->back()
-                ->with('error', 'Je wachtwoord klopt niet, probeer nogmaals.');
+                ->with('error', 'Your password is invalid, try again.');
         }
         /** @var User $user */
         $user = Auth::guard()->user();
         $user->google2fa_enabled = false;
         $user->save();
 
-        return redirect()->route('2fa')->with('success', '2FA is uitgeschakeld.');
+        return redirect()->route('2fa')->with('success', '2FA has been disabled.');
     }
 
     /**
