@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Disable2FaRequest;
 use App\Http\Requests\Enable2FaRequest;
 use App\Models\User;
@@ -10,12 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
-use App\Http\Controllers\Controller;
 
 /**
- * Class TwoFAController
- *
- * @package App\Http\Controllers\Admin
+ * Class TwoFAController.
  */
 class TwoFAController extends Controller
 {
@@ -24,7 +22,7 @@ class TwoFAController extends Controller
      */
     public function show2faForm(Request $request)
     {
-        /** @var User $user  */
+        /** @var User $user */
         $user = Auth::guard()->user();
 
         $google2fa_url = '';
@@ -50,7 +48,7 @@ class TwoFAController extends Controller
      */
     public function generate2faSecret()
     {
-        /** @var User $user  */
+        /** @var User $user */
         $user = Auth::guard()->user();
         // Initialise the 2FA class
         $google2fa = app('pragmarx.google2fa');
@@ -68,14 +66,14 @@ class TwoFAController extends Controller
      */
     public function enable2fa(Enable2FaRequest $request)
     {
-        /** @var User $user  */
+        /** @var User $user */
         $user = Auth::guard()->user();
         $google2fa = app('pragmarx.google2fa');
         $secret = $request->input('verify-code');
-        $valid = $google2fa->verifyKey($user->google2fa_secret, $secret);
-        if ($valid) {
+        if (!is_null($user->google2fa_secret) && $google2fa->verifyKey($user->google2fa_secret, $secret)) {
             $user->google2fa_enabled = true;
             $user->save();
+
             return redirect()->route('2fa')->with('success', '2FA is geactiveerd.');
         } else {
             return redirect()->route('2fa')->with('error', 'OTP code verkeerd, probeer nogmaals.');
@@ -94,7 +92,7 @@ class TwoFAController extends Controller
             return redirect()->back()
                 ->with('error', 'Je wachtwoord klopt niet, probeer nogmaals.');
         }
-        /** @var User $user  */
+        /** @var User $user */
         $user = Auth::guard()->user();
         $user->google2fa_enabled = false;
         $user->save();
