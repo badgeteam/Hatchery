@@ -7,7 +7,7 @@
     </tr>
     </thead>
     <tbody>
-    @forelse($project->versions->last()->files as $file)
+    @forelse($project->versions->last()->files()->paginate() as $file)
         <tr>
             <td>
                 @if($file->editable)
@@ -26,3 +26,4 @@
     @endforelse
     </tbody>
 </table>
+{{ $project->versions->last()->files()->paginate()->render() }}

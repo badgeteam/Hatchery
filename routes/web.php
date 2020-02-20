@@ -31,7 +31,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'webauthn', '2fa'])->group(function () {
     Route::get('home', 'HomeController@index')->name('home');
 
-    Route::resource('projects', 'ProjectsController')->except(['index', 'show']);
+    Route::resource('projects', 'ProjectsController')->except('index');
     Route::get('projects/{project}/rename', 'ProjectsController@renameForm')->name('projects.rename');
     Route::post('projects/{project}/rename', 'ProjectsController@rename')->name('projects.rename');
     Route::post('notify/{project}', 'ProjectsController@notify')->name('projects.notify');

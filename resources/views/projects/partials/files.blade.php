@@ -15,7 +15,7 @@
     @php
         $hasIcon = false;
     @endphp
-    @forelse($project->versions->last()->files as $file)
+    @forelse($project->versions->last()->files()->paginate() as $file)
         <tr>
             <td>
                 @if($file->editable && Auth::user()->can('update', $file))
@@ -46,6 +46,7 @@
     @endforelse
     </tbody>
 </table>
+{{ $project->versions->last()->files()->paginate()->render() }}
 @if (!$hasIcon)
     {!! Form::open(['method' => 'get', 'route' => 'files.create-icon']) !!}
     {{ Form::hidden('version', $project->versions->last()->id) }}
