@@ -111,6 +111,7 @@ class Project extends Model
         'versions',
         'states',
         'git',
+        'git_commit_id',
     ];
 
     /**

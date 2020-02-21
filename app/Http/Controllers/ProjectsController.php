@@ -421,27 +421,31 @@ class ProjectsController extends Controller
             $repo = GitRepository::cloneRepository($project->git, $tempFolder, ['-q', '--single-branch', '--depth', 1]);
             if ($project->git_commit_id === $repo->getLastCommitId()) {
                 Helpers::delTree($tempFolder);
+
                 return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withWarnings(['Project up to date with git repo.']);
             }
             $project->git_commit_id = $repo->getLastCommitId();
         } catch (GitException $e) {
             Helpers::delTree($tempFolder);
+
             return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors([$e->getMessage()]);
         }
 
         /** @var Version $version */
         $version = $project->versions()->unPublished()->first();
-        foreach($version->files as $file) {
+        foreach ($version->files as $file) {
             try {
                 $file->delete();
             } catch (\Exception $e) {
                 Helpers::delTree($tempFolder);
+
                 return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors([$e->getMessage()]);
             }
         }
 
         $this->addFiles($tempFolder, $version);
         Helpers::delTree($tempFolder);
+
         return $this->publish($project);
     }
 
