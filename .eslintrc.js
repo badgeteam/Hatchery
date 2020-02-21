@@ -24,8 +24,5 @@ module.exports = {
             "error",
             "always"
         ]
-    },
-    "globals": {
-        "require": true
     }
 };

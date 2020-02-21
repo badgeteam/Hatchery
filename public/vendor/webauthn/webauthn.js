@@ -16,10 +16,10 @@
  * @constructor
  */
 function WebAuthn(notifyCallback = null) {
-  if (notifyCallback) {
-    this.setNotify(notifyCallback);
-  }
-};
+	if (notifyCallback) {
+		this.setNotify(notifyCallback);
+	}
+}
 
 /**
  * Register a new key.
@@ -28,22 +28,22 @@ function WebAuthn(notifyCallback = null) {
  * @param {function(PublicKeyCredential)} callback  User callback
  */
 WebAuthn.prototype.register = function(publicKey, callback) {
-  let publicKeyCredential = Object.assign({}, publicKey);
-  publicKeyCredential.user.id = this._bufferDecode(publicKey.user.id);
-  publicKeyCredential.challenge = this._bufferDecode(this._base64Decode(publicKey.challenge));
-  if (publicKey.excludeCredentials) {
-    publicKeyCredential.excludeCredentials = this._credentialDecode(publicKey.excludeCredentials);
-  }
+	let publicKeyCredential = Object.assign({}, publicKey);
+	publicKeyCredential.user.id = this._bufferDecode(publicKey.user.id);
+	publicKeyCredential.challenge = this._bufferDecode(this._base64Decode(publicKey.challenge));
+	if (publicKey.excludeCredentials) {
+		publicKeyCredential.excludeCredentials = this._credentialDecode(publicKey.excludeCredentials);
+	}
 
-  var self = this;
-  navigator.credentials.create({
-    publicKey: publicKeyCredential
-  }).then((data) => {
-    self._registerCallback(data, callback);
-  }, (error) => {
-    self._notify(error.name, error.message, false);
-  });
-}
+	var self = this;
+	navigator.credentials.create({
+		publicKey: publicKeyCredential
+	}).then((data) => {
+		self._registerCallback(data, callback);
+	}, (error) => {
+		self._notify(error.name, error.message, false);
+	});
+};
 
 /**
  * Register callback on register key.
@@ -52,19 +52,19 @@ WebAuthn.prototype.register = function(publicKey, callback) {
  * @param {function(PublicKeyCredential)} callback  User callback
  */
 WebAuthn.prototype._registerCallback = function(publicKey, callback) {
-  let publicKeyCredential = {
-    id: publicKey.id,
-    type: publicKey.type,
-    rawId: this._bufferEncode(publicKey.rawId),
-    response: {
-      /** @see https://www.w3.org/TR/webauthn/#authenticatorattestationresponse */
-      clientDataJSON: this._bufferEncode(publicKey.response.clientDataJSON),
-      attestationObject: this._bufferEncode(publicKey.response.attestationObject)
-    }
-  };
+	let publicKeyCredential = {
+		id: publicKey.id,
+		type: publicKey.type,
+		rawId: this._bufferEncode(publicKey.rawId),
+		response: {
+			/** @see https://www.w3.org/TR/webauthn/#authenticatorattestationresponse */
+			clientDataJSON: this._bufferEncode(publicKey.response.clientDataJSON),
+			attestationObject: this._bufferEncode(publicKey.response.attestationObject)
+		}
+	};
 
-  callback(publicKeyCredential);
-}
+	callback(publicKeyCredential);
+};
 
 /**
  * Authenticate a user.
@@ -73,22 +73,22 @@ WebAuthn.prototype._registerCallback = function(publicKey, callback) {
  * @param {function(PublicKeyCredential)} callback  User callback
  */
 WebAuthn.prototype.sign = function(publicKey, callback) {
-  let publicKeyCredential = Object.assign({}, publicKey);
-  publicKeyCredential.challenge = this._bufferDecode(this._base64Decode(publicKey.challenge));
-  if (publicKey.allowCredentials) {
-    publicKeyCredential.allowCredentials = this._credentialDecode(publicKey.allowCredentials);
-  }
+	let publicKeyCredential = Object.assign({}, publicKey);
+	publicKeyCredential.challenge = this._bufferDecode(this._base64Decode(publicKey.challenge));
+	if (publicKey.allowCredentials) {
+		publicKeyCredential.allowCredentials = this._credentialDecode(publicKey.allowCredentials);
+	}
 
-  var self = this;
-  navigator.credentials.get({
-    publicKey: publicKeyCredential
-  }).then((data) => {
-    self._signCallback(data, callback);
-  }, (error) => {
-    self._notify(error.name, error.message, false);
-  }
-  );
-}
+	var self = this;
+	navigator.credentials.get({
+		publicKey: publicKeyCredential
+	}).then((data) => {
+		self._signCallback(data, callback);
+	}, (error) => {
+		self._notify(error.name, error.message, false);
+	}
+	);
+};
 
 /**
  * Sign callback on authenticate.
@@ -97,21 +97,21 @@ WebAuthn.prototype.sign = function(publicKey, callback) {
  * @param {function(PublicKeyCredential)} callback  User callback
  */
 WebAuthn.prototype._signCallback = function(publicKey, callback) {
-  let publicKeyCredential = {
-    id: publicKey.id,
-    type: publicKey.type,
-    rawId: this._bufferEncode(publicKey.rawId),
-    response: {
-      /** @see https://www.w3.org/TR/webauthn/#iface-authenticatorassertionresponse */
-      authenticatorData: this._bufferEncode(publicKey.response.authenticatorData),
-      clientDataJSON: this._bufferEncode(publicKey.response.clientDataJSON),
-      signature: this._bufferEncode(publicKey.response.signature),
-      userHandle: (publicKey.response.userHandle ? this._bufferEncode(publicKey.response.userHandle) : null),
-    }
-  };
+	let publicKeyCredential = {
+		id: publicKey.id,
+		type: publicKey.type,
+		rawId: this._bufferEncode(publicKey.rawId),
+		response: {
+			/** @see https://www.w3.org/TR/webauthn/#iface-authenticatorassertionresponse */
+			authenticatorData: this._bufferEncode(publicKey.response.authenticatorData),
+			clientDataJSON: this._bufferEncode(publicKey.response.clientDataJSON),
+			signature: this._bufferEncode(publicKey.response.signature),
+			userHandle: (publicKey.response.userHandle ? this._bufferEncode(publicKey.response.userHandle) : null),
+		}
+	};
 
-  callback(publicKeyCredential);
-}
+	callback(publicKeyCredential);
+};
 
 /**
  * Buffer encode.
@@ -120,8 +120,8 @@ WebAuthn.prototype._signCallback = function(publicKey, callback) {
  * @return {string}
  */
 WebAuthn.prototype._bufferEncode = function(value) {
-  return window.btoa(String.fromCharCode.apply(null, new Uint8Array(value)));
-}
+	return window.btoa(String.fromCharCode.apply(null, new Uint8Array(value)));
+};
 
 /**
  * Buffer decode.
@@ -130,9 +130,9 @@ WebAuthn.prototype._bufferEncode = function(value) {
  * @return {string}
  */
 WebAuthn.prototype._bufferDecode = function(value) {
-  var t = window.atob(value)
-  return Uint8Array.from(t, c => c.charCodeAt(0));
-}
+	var t = window.atob(value);
+	return Uint8Array.from(t, c => c.charCodeAt(0));
+};
 
 /**
  * Convert a base64url to a base64 string.
@@ -141,20 +141,20 @@ WebAuthn.prototype._bufferDecode = function(value) {
  * @return {string}
  */
 WebAuthn.prototype._base64Decode = function(input) {
-  // Replace non-url compatible chars with base64 standard chars
-  input = input.replace(/-/g, '+').replace(/_/g, '/');
+	// Replace non-url compatible chars with base64 standard chars
+	input = input.replace(/-/g, '+').replace(/_/g, '/');
 
-  // Pad out with standard base64 required padding characters
-  const pad = input.length % 4;
-  if (pad) {
-      if (pad === 1) {
-          throw new Error('InvalidLengthError: Input base64url string is the wrong length to determine padding');
-      }
-      input += new Array(5-pad).join('=');
-  }
+	// Pad out with standard base64 required padding characters
+	const pad = input.length % 4;
+	if (pad) {
+		if (pad === 1) {
+			throw new Error('InvalidLengthError: Input base64url string is the wrong length to determine padding');
+		}
+		input += new Array(5-pad).join('=');
+	}
 
-  return input;
-}
+	return input;
+};
 
 /**
  * Credential decode.
@@ -163,15 +163,15 @@ WebAuthn.prototype._base64Decode = function(input) {
  * @return {PublicKeyCredentialDescriptor}
  */
 WebAuthn.prototype._credentialDecode = function(credentials) {
-  var self = this;
-  return credentials.map(function(data) {
-    return {
-      id: self._bufferDecode(self._base64Decode(data.id)),
-      type: data.type,
-      transports: data.transports,
-    };
-  });
-}
+	var self = this;
+	return credentials.map(function(data) {
+		return {
+			id: self._bufferDecode(self._base64Decode(data.id)),
+			type: data.type,
+			transports: data.transports,
+		};
+	});
+};
 
 /**
  * Test is WebAuthn is supported by this navigator.
@@ -179,10 +179,10 @@ WebAuthn.prototype._credentialDecode = function(credentials) {
  * @return {bool}
  */
 WebAuthn.prototype.webAuthnSupport = function() {
-  return ! (window.PublicKeyCredential === undefined ||
+	return ! (window.PublicKeyCredential === undefined ||
     typeof window.PublicKeyCredential !== 'function' ||
     typeof window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable !== 'function');
-}
+};
 
 /**
  * Get the message in case WebAuthn is not supported.
@@ -190,11 +190,11 @@ WebAuthn.prototype.webAuthnSupport = function() {
  * @return {string}
  */
 WebAuthn.prototype.notSupportedMessage = function() {
-  if (! window.isSecureContext && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-    return 'not_secured';
-  }
-  return 'not_supported';
-}
+	if (! window.isSecureContext && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+		return 'not_secured';
+	}
+	return 'not_supported';
+};
 
 /**
  * Call the notify callback.
@@ -203,10 +203,10 @@ WebAuthn.prototype.notSupportedMessage = function() {
  * @param {bool} isError
  */
 WebAuthn.prototype._notify = function(message, isError) {
-  if (this._notifyCallback) {
-    this._notifyCallback(message, isError);
-  }
-}
+	if (this._notifyCallback) {
+		this._notifyCallback(message, isError);
+	}
+};
 
 /**
  * Set the notify callback.
@@ -214,7 +214,7 @@ WebAuthn.prototype._notify = function(message, isError) {
  * @param {function(name: string, message: string, isError: bool)} callback
  */
 WebAuthn.prototype.setNotify = function(callback) {
-  this._notifyCallback = callback;
-}
+	this._notifyCallback = callback;
+};
 
 module.exports = WebAuthn;

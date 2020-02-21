@@ -1,4 +1,4 @@
-const cacheName = 'hatchery::20200220';
+const cacheName = 'hatchery::20200221';
 
 self.addEventListener('install', e => {
 	e.waitUntil(
@@ -26,7 +26,8 @@ self.addEventListener('install', e => {
 				'/icons/blank.gif',
 				'/icons/back.gif',
 				'/icons/tar.gif',
-				'/icons/compressed.gif'
+				'/icons/compressed.gif',
+				'/vendor/webauthn/webauthn.js'
 			]).then(() => self.skipWaiting());
 		})
 	);
@@ -35,7 +36,7 @@ self.addEventListener('fetch', event => {
 	event.respondWith(
 		caches.open(cacheName).then(cache => {
 			return cache.match(event.request).then(res => {
-				return res || fetch(event.request)
+				return res || fetch(event.request);
 			});
 		})
 	);
