@@ -25,7 +25,7 @@
     "@type": "Offer",
     "price": "0.00",
     "priceCurrency": "EUR"
-  },
+  }
 }
 </script>
 <div class="container-fluid">
