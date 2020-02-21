@@ -109,7 +109,7 @@
 					    </tr>
 					</thead>
 					<tbody>
-					@forelse($user->projects()->paginate() as $project)
+					@forelse($projects as $project)
 					<tr>
 					    <td>
 						@can('update', $project)
@@ -130,7 +130,7 @@
 				    	@endforelse
 				</tbody>
 			</table>
-                    {{ $user->projects()->paginate()->render() }}
+                    {{ $projects }}
 
                     </div>
                 </div>
