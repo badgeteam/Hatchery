@@ -16,11 +16,13 @@
   "requirements" : "badge.team firmware",
   "softwareVersion" : "{{ $project->revision }}",
   "applicationCategory" : "{{ $project->category }}",
+@if($project->votes->count() > 0)
   "aggregateRating" : {
     "@type": "AggregateRating",
     "ratingValue": "{{ $project->score }}",
     "reviewCount": "{{ $project->votes->count() }}"
   },
+@endif
   "offers": {
     "@type": "Offer",
     "price": "0.00",
