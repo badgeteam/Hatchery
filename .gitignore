@@ -5,6 +5,7 @@
 /public/mix-manifest.json
 /public/css/app.css
 /public/js/app.js
+/public/sitemap.xml
 /storage/*.key
 /storage/framework/cache/*
 /vendor
