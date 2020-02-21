@@ -52,6 +52,8 @@ jobs:
         DB_USERNAME: root
         DB_PASSWORD: root
       run: php artisan migrate --force
+    - name: Generate sitemap
+      run: php artisan sitemap:generate
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DB_CONNECTION: mysql
