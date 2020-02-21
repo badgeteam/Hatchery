@@ -10,7 +10,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="csrfToken" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Hatchery') }}</title>
 
     <meta name="theme-color" content="#f00">
     <link rel="icon" type="image/x-icon" sizes="16x16" href="/favicon.ico">
@@ -52,7 +52,22 @@
     @include('partials.messages')
     <img class="logo" src="/img/bs.png" alt="Badge.r & smol snek" />
     @yield('content')
-
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "url": "https://badge.team",
+  "name": "Badge.Team",
+  "url": "https://badge.team",
+  "logo": "https://badge.team/img/bs.png",
+  "foundingDate": "2017",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "support",
+    "email": "help@badge.team"
+  }
+}
+    </script>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js', !App::environment(['local', 'testing'])) }}"></script>
 

@@ -10,7 +10,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="csrfToken" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Hatchery') }}</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css', !App::environment(['local', 'testing'])) }}" rel="stylesheet">
@@ -109,7 +109,22 @@
 
         @yield('content')
     </div>
-
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "url": "https://badge.team",
+  "name": "Badge.Team",
+  "url": "https://badge.team",
+  "logo": "https://badge.team/img/bs.png",
+  "foundingDate": "2017",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "support",
+    "email": "help@badge.team"
+  }
+}
+    </script>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js', !App::environment(['local', 'testing'])) }}"></script>
 

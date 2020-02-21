@@ -59,6 +59,7 @@ use Illuminate\Support\Str;
  * @property-read int|null $states_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
  * @property-read int|null $warnings_count
+ * @property-read float $score
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCreatedAt($value)
@@ -415,5 +416,22 @@ class Project extends Model
         }
 
         return $file->isValidIcon();
+    }
+
+    /**
+     * @return float
+     */
+    public function getScoreAttribute(): float
+    {
+        if ($this->votes->count() == 0) {
+            return 0;
+        }
+        $score = 0;
+        foreach ($this->votes as $vote) {
+            if ($vote->type !== 'pig') {
+                $score++;
+            }
+        }
+        return $score / $this->votes->count();
     }
 }
