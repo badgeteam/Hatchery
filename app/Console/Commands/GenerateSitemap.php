@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Project;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
@@ -43,10 +44,10 @@ class GenerateSitemap extends Command
         $sitemap = Sitemap::create()
             ->add(Url::create('/')
                 ->setPriority(1)
-                ->setLastModificationDate(Project::get()->last()->updated_at)
+                ->setLastModificationDate(Project::exists() ? Project::get()->last()->updated_at : Carbon::now())
             )
             ->add(Url::create('/projects')
-                ->setLastModificationDate(Project::get()->last()->updated_at)
+                ->setLastModificationDate(Project::exists() ? Project::get()->last()->updated_at : Carbon::now())
             );
 
         Project::all()->each(function (Project $project) use ($sitemap) {
