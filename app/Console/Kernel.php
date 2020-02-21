@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\GenerateSitemap;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 /**
@@ -11,4 +12,12 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
  */
 class Kernel extends ConsoleKernel
 {
+    /**
+     * The Artisan commands provided by your application.
+     *
+     * @var array
+     */
+    protected $commands = [
+        GenerateSitemap::class
+    ];
 }
