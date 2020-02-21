@@ -45,8 +45,8 @@ use Illuminate\Support\Str;
  * @property string|null $slug
  * @property string|null $description
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
  * @property int $download_counter
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $published_at
