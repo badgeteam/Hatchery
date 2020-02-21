@@ -27,7 +27,7 @@ class TwoFAController extends Controller
 
         $google2fa_url = '';
 
-        if (!is_null($user->google2fa_secret)) {
+        if ($user->google2fa_secret !== null) {
             $google2fa = app('pragmarx.google2fa');
             $google2fa_url = $google2fa->getQRCodeInline(
                 'Hatchery '.$request->getHost(),
@@ -70,7 +70,7 @@ class TwoFAController extends Controller
         $user = Auth::guard()->user();
         $google2fa = app('pragmarx.google2fa');
         $secret = $request->input('verify-code');
-        if (!is_null($user->google2fa_secret) && $google2fa->verifyKey($user->google2fa_secret, $secret)) {
+        if ($user->google2fa_secret !== null && $google2fa->verifyKey($user->google2fa_secret, $secret)) {
             $user->google2fa_enabled = true;
             $user->save();
 

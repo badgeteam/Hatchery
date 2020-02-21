@@ -247,7 +247,7 @@ class ProjectTest extends TestCase
         /** @var Version $version */
         $version = $versions->last();
 
-        $zip = strval($version->zip);
+        $zip = (string)$version->zip;
         $this->assertFileExists(public_path($zip));
         $this->assertFileNotExists(public_path(str_replace('.gz', '', $zip)));
 
@@ -257,15 +257,15 @@ class ProjectTest extends TestCase
         exec('tar xf '.public_path($zip).' -C '.sys_get_temp_dir());
 
         $path = sys_get_temp_dir().'/'.$project->slug;
-        $json = strval(file_get_contents($path.'/metadata.json'));
+        $json = (string)file_get_contents($path.'/metadata.json');
 
-        $this->assertJsonStringEqualsJsonString(strval(json_encode([
+        $this->assertJsonStringEqualsJsonString((string)json_encode([
             'name'        => $project->name,
             'description' => null,
             'category'    => $project->category,
             'author'      => $project->user->name,
             'revision'    => 1,
-        ])), $json);
+        ]), $json);
 
         $dep = file_get_contents($path.'/'.$project->slug.'.egg-info/requires.txt');
         $this->assertEquals($projectDep->slug."\n", $dep);
@@ -325,19 +325,19 @@ class ProjectTest extends TestCase
         $versions = Version::published()->where('project_id', $project->id)->get();
         /** @var Version $version */
         $version = $versions->last();
-        $zip = strval($version->zip);
+        $zip = (string)$version->zip;
         exec('tar xf '.public_path($zip).' -C '.sys_get_temp_dir());
         $path = sys_get_temp_dir().'/'.$project->slug;
-        $json = strval(file_get_contents($path.'/metadata.json'));
+        $json = (string)file_get_contents($path.'/metadata.json');
 
-        $this->assertJsonStringEqualsJsonString(strval(json_encode([
+        $this->assertJsonStringEqualsJsonString((string)json_encode([
             'name'        => $project->name,
             'description' => null,
             'category'    => $project->category,
             'author'      => $project->user->name,
             'revision'    => 1,
             'icon'        => 'icon.png',
-        ])), $json);
+        ]), $json);
 
         unlink(public_path($zip));
         Helpers::delTree($path);

@@ -17,7 +17,7 @@
                         @if (session('success'))
                             <div class="alert alert-success">{{ session('success') }}</div>
                         @endif
-                        @if(is_null($data['user']->google2fa_secret))
+                        @if($data['user']->google2fa_secret === null)
                             <p>If you want to enable two-factor authentication for your account, complete the following steps</p>
                             <strong>
                                 <ol>

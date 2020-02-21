@@ -30,9 +30,9 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## Installation
 
-* Requires PHP 7.2 or later
-* Requires Python 3.6 or later
-* Requires Git 2.8 or later
+  * Requires PHP 7.2 or later
+  * Requires Python 3.6 or later
+  * Requires Git 2.8 or later
 
 For deployment on a server.
 
@@ -71,7 +71,7 @@ make
 sudo make install
 ```
 
-### Running the development server locally.
+### Running the development server locally
 
 After going through the steps
 
@@ -87,7 +87,7 @@ docker exec -it hatchery_laravel_1 php artisan migrate --seed
 docker exec -it hatchery_laravel_1 yarn watch
 ```
 
-Enjoy your Hatchery at http://localhost:8000
+Enjoy your Hatchery at [http://localhost:8000](http://localhost:8000)
 
 ## API
 

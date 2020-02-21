@@ -49,9 +49,16 @@ use Illuminate\Support\Str;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $download_counter
  * @property string $status
+ * @property \Illuminate\Support\Carbon|null $published_at
+ * @property string|null $git
+ *
  * @property-read string|null $description_html
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
  * @property-read int|null $votes_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
+ * @property-read int|null $states_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
+ * @property-read int|null $warnings_count
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCreatedAt($value)
@@ -64,14 +71,8 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUserId($value)
- *
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
- * @property-read int|null $states_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
- * @property-read int|null $warnings_count
- * @property \Illuminate\Support\Carbon|null $published_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project wherePublishedAt($value)
+ + @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereGit($value)
  *
  * @author annejan@badge.team
  */
@@ -234,7 +235,7 @@ class Project extends Model
     {
         $version = $this->versions()->published()->get()->last();
 
-        return is_null($version) ? null : (string) $version->revision;
+        return $version  === null ? null : (string) $version->revision;
     }
 
     /**
@@ -270,7 +271,7 @@ class Project extends Model
     {
         $version = $this->versions()->published()->get()->last();
 
-        return is_null($version) ? null : (int) $version->size_of_zip;
+        return $version === null ? null : (int) $version->size_of_zip;
     }
 
     /**
@@ -279,7 +280,7 @@ class Project extends Model
     public function getSizeOfContentAttribute(): ?int
     {
         $version = $this->versions()->published()->get()->last();
-        if (is_null($version)) {
+        if ($version === null) {
             $version = $this->versions->last();
         }
         /** @var Version $version */
@@ -306,7 +307,7 @@ class Project extends Model
      */
     public function getCategoryAttribute(): ?string
     {
-        if (is_null($this->category()->first())) {
+        if ($this->category()->first() === null) {
             return 'uncategorised';
         }
 
@@ -358,7 +359,7 @@ class Project extends Model
     public function userVoted(): ?bool
     {
         $user = Auth::guard()->user();
-        if (is_null($user)) {
+        if ($user === null) {
             return null;
         }
 
@@ -406,7 +407,7 @@ class Project extends Model
         $version = $this->versions->last();
         /** @var File|null $file */
         $file = $version->files()->where('name', 'icon.png')->get()->last();
-        if (is_null($file)) {
+        if ($file === null) {
             return false;
         }
 
