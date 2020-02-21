@@ -11,7 +11,9 @@
     "@type" : "Person",
     "name" : "{{ $project->user->name }}"
   },
+@if($project->versions()->published()->exists())
   "downloadUrl" : "{{ url($project->versions()->published()->get()->last()->zip) }}",
+@endif
   "operatingSystem" : "MicroPython",
   "requirements" : "badge.team firmware",
   "softwareVersion" : "{{ $project->revision }}",
