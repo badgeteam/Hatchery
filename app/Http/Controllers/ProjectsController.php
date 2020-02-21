@@ -399,8 +399,10 @@ class ProjectsController extends Controller
      * @param string  $dir
      * @param Version $version
      * @param string  $prefix
+     *
+     * @return void
      */
-    private function addFiles(string $dir, Version $version, $prefix = '')
+    private function addFiles(string $dir, Version $version, $prefix = ''): void
     {
         $objects = scandir($dir);
         if (!$objects) {
