@@ -147,7 +147,6 @@ class ProjectsController extends Controller
                 $project->git = $request->git;
                 $this->addFiles($tempFolder, $version);
             }
-
         } catch (\Exception $e) {
             if (isset($tempFolder)) {
                 Helpers::delTree($tempFolder);
@@ -266,7 +265,7 @@ class ProjectsController extends Controller
             $data['icon'] = 'icon.png';
         }
 
-        $zip[$project->slug.'/metadata.json'] = (string)json_encode($data);
+        $zip[$project->slug.'/metadata.json'] = (string) json_encode($data);
 
         if (!$project->dependencies->isEmpty()) {
             $dep = '';

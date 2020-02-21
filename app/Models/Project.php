@@ -51,7 +51,6 @@ use Illuminate\Support\Str;
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $published_at
  * @property string|null $git
- *
  * @property-read string|null $description_html
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
  * @property-read int|null $votes_count
@@ -72,7 +71,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project wherePublishedAt($value)
- + @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereGit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereGit($value)
  *
  * @author annejan@badge.team
  */
@@ -235,7 +234,7 @@ class Project extends Model
     {
         $version = $this->versions()->published()->get()->last();
 
-        return $version  === null ? null : (string) $version->revision;
+        return $version === null ? null : (string) $version->revision;
     }
 
     /**

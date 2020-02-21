@@ -159,7 +159,7 @@ class File extends Model
     {
         $parts = explode('.', $this->name);
 
-        return (string)end($parts);
+        return (string) end($parts);
     }
 
     /**

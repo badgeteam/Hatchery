@@ -247,7 +247,7 @@ class ProjectTest extends TestCase
         /** @var Version $version */
         $version = $versions->last();
 
-        $zip = (string)$version->zip;
+        $zip = (string) $version->zip;
         $this->assertFileExists(public_path($zip));
         $this->assertFileNotExists(public_path(str_replace('.gz', '', $zip)));
 
@@ -257,9 +257,9 @@ class ProjectTest extends TestCase
         exec('tar xf '.public_path($zip).' -C '.sys_get_temp_dir());
 
         $path = sys_get_temp_dir().'/'.$project->slug;
-        $json = (string)file_get_contents($path.'/metadata.json');
+        $json = (string) file_get_contents($path.'/metadata.json');
 
-        $this->assertJsonStringEqualsJsonString((string)json_encode([
+        $this->assertJsonStringEqualsJsonString((string) json_encode([
             'name'        => $project->name,
             'description' => null,
             'category'    => $project->category,
@@ -325,12 +325,12 @@ class ProjectTest extends TestCase
         $versions = Version::published()->where('project_id', $project->id)->get();
         /** @var Version $version */
         $version = $versions->last();
-        $zip = (string)$version->zip;
+        $zip = (string) $version->zip;
         exec('tar xf '.public_path($zip).' -C '.sys_get_temp_dir());
         $path = sys_get_temp_dir().'/'.$project->slug;
-        $json = (string)file_get_contents($path.'/metadata.json');
+        $json = (string) file_get_contents($path.'/metadata.json');
 
-        $this->assertJsonStringEqualsJsonString((string)json_encode([
+        $this->assertJsonStringEqualsJsonString((string) json_encode([
             'name'        => $project->name,
             'description' => null,
             'category'    => $project->category,
