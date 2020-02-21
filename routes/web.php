@@ -36,14 +36,14 @@ Route::middleware(['auth', 'webauthn', '2fa'])->group(function () {
     Route::post('upload/{version}', 'FilesController@upload')->name('files.upload');
     Route::post('release/{project}', 'ProjectsController@publish')->name('project.publish');
 
-    Route::resource('files', 'FilesController');
+    Route::resource('files', 'FilesController', ['except' => 'show']);
     Route::get('create-icon', 'FilesController@createIcon')->name('files.create-icon');
-    Route::get('download/{file}', 'FilesController@download')->name('files.download');
 
     Route::get('profile', 'UsersController@redirect');
     Route::resource('users', 'UsersController', ['only' => ['edit', 'update', 'destroy']]);
-
     Route::resource('votes', 'VotesController', ['only' => ['store', 'destroy']]);
 });
 
 Route::resource('projects', 'ProjectsController', ['only' => ['index', 'show']]);
+Route::resource('files', 'FilesController', ['only' => 'show']);
+Route::get('download/{file}', 'FilesController@download')->name('files.download');

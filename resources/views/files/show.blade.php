@@ -10,11 +10,12 @@
 
                 <div class="panel-heading">
                     <strong>{{ $file->name }}</strong>
+                    <div class="pull-right">
                     @can('update', $file)
-                        <div class="pull-right">
-                            <a class="btn btn-primary btn-xs" href="{{ route('files.edit', ['file' => $file->id])  }}">edit</a>
-                        </div>
+                        <a class="btn btn-primary btn-xs" href="{{ route('files.edit', ['file' => $file->id])  }}">edit</a>
                     @endcan
+                        <a class="btn btn-info btn-xs" href="{{ route('files.download', ['file' => $file->id])  }}">raw</a>
+                    </div>
                 </div>
 
                 <div class="panel-body">

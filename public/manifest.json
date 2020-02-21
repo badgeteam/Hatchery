@@ -18,5 +18,8 @@
    "type": "image\/png",
    "density": "2.0"
   }
+ ],
+ "permissions": [
+  "serial"
  ]
 }
