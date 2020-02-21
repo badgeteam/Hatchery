@@ -423,7 +423,7 @@ class Project extends Model
      */
     public function getScoreAttribute(): float
     {
-        if ($this->votes->count() == 0) {
+        if ($this->votes === null || $this->votes->count() == 0) {
             return 0;
         }
         $score = 0;
