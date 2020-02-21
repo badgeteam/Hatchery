@@ -83,7 +83,7 @@
                                         {{ $user->google2fa_enabled ? 'Manage' : 'Add' }} Authenticator
                                     </a>
 
-                                    @if($user->webauthnKeys()->count() > 0)
+                                    @if($user->webauthnKeys()->exists())
                                     <hr>
                                         @foreach($user->webauthnKeys as $key)
                                         {!! Form::open(['method' => 'delete', 'route' => ['webauthn.destroy', 'id' => $key->id]]) !!}
@@ -117,11 +117,11 @@
 						@else
 							<a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
 						@endcan
-					    <td>{{ $project->versions()->published()->count() > 0 ? $project->versions()->published()->get()->last()->revision : 'unreleased' }}</td>
+					    <td>{{ $project->versions()->published()->exists() ? $project->versions()->published()->get()->last()->revision : 'unreleased' }}</td>
 					    <td>{{ $project->size_of_zip }}</td>
 					    <td>{{ $project->size_of_content }}</td>
 					    <td>{{ $project->category }}</td>
-					    <td>{{ $project->versions()->published()->count() > 0 ? $project->versions()->published()->get()->last()->updated_at : '-' }}</td>
+					    <td>{{ $project->versions()->published()->exists() ? $project->versions()->published()->get()->last()->updated_at : '-' }}</td>
 					</tr>
 				    	@empty
 					<tr>
