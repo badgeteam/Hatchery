@@ -30,7 +30,9 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## Installation
 
-Requires PHP 7.2 or later!
+* Requires PHP 7.2 or later
+* Requires Python 3.6 or later
+* Requires Git 2.8 or later
 
 For deployment on a server.
 

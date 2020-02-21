@@ -17,7 +17,8 @@
                         {{ Form::text('search', $search, ['placeholder' => 'Search']) }}
                     {{ Form::close() }}
                     <div class="pull-right">
-                        <a href="{{ route('projects.create') }}" class="btn btn-success btn-xs">Add</a>
+                        <a href="{{ route('projects.create', ['type' => 'import']) }}" class="btn btn-default btn-xs">import</a>
+                        <a href="{{ route('projects.create') }}" class="btn btn-success btn-xs">add</a>
                     </div>
                 </div>
 
@@ -65,9 +66,6 @@
                         </tbody>
                     </table>
 
-                    <div class="pull-right">
-                        <a href="{{ route('projects.create') }}" class="btn btn-default">Add</a>
-                    </div>
                     @if ($badge && $category && $search)
                         {{ $projects->appends(['badge' => $badge, 'category' => $category, 'search' => $search])->links() }}
                     @elseif ($badge && $category)

@@ -14,6 +14,9 @@ use App\Models\File;
 use App\Models\Project;
 use App\Models\Version;
 use App\Models\Warning;
+use App\Support\Helpers;
+use Cz\Git\GitException;
+use Cz\Git\GitRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -83,11 +86,14 @@ class ProjectsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param Request $request
+     *
      * @return View
      */
-    public function create(): View
+    public function create(Request $request): View
     {
-        return view('projects.create');
+        return view('projects.create')
+            ->with('type', $request->type);
     }
 
     /**
@@ -107,31 +113,49 @@ class ProjectsController extends Controller
             return redirect()->route('projects.create')->withInput()->withErrors(['reserved name']);
         }
 
+        if ($request->has('git')) {
+            $tempFolder = sys_get_temp_dir() . '/' . Str::slug($request->name);
+            try {
+                GitRepository::cloneRepository($request->git, $tempFolder, ['-q', '--single-branch', '--depth', 1]);
+            } catch (GitException $e) {
+                return redirect()->route('projects.create', ['type' => 'import'])->withInput()->withErrors([$e->getMessage()]);
+            }
+        }
+
         $project = new Project();
 
         try {
             $project->name = $request->name;
             $project->category_id = $request->category_id;
             $project->save();
+            /** @var Version $version */
+            $version = $project->versions->last();
 
             if ($request->badge_ids) {
                 $badges = Badge::find($request->badge_ids);
                 $project->badges()->attach($badges);
             }
             if ($request->description) {
-                /** @var Version $version */
-                $version = $project->versions->last();
                 $file = new File();
                 $file->name = 'README.md';
                 $file->content = $request->description;
                 $file->version()->associate($version);
                 $file->save();
             }
+            if (isset($tempFolder)) {
+                $this->addFiles($tempFolder, $version);
+            }
         } catch (\Exception $e) {
+            if (isset($tempFolder)) {
+                Helpers::delTree($tempFolder);
+            }
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' saved']);
+        if (isset($tempFolder)) {
+            Helpers::delTree($tempFolder);
+        }
+        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' created!']);
     }
 
     /**
@@ -285,7 +309,11 @@ class ProjectsController extends Controller
      */
     public function destroy(Project $project): RedirectResponse
     {
+        $name = $project->name;
         try {
+            $project->name = 'Deleted ' . rand() . ' ' . $name;
+            $project->slug = Str::slug($project->name);
+            $project->save();
             $project->delete();
         } catch (\Exception $e) {
             return redirect()->route('projects.edit', ['project' => $project->slug])
@@ -293,7 +321,7 @@ class ProjectsController extends Controller
                 ->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.index')->withSuccesses([$project->name.' deleted']);
+        return redirect()->route('projects.index')->withSuccesses([$name.' deleted']);
     }
 
     /**
@@ -361,5 +389,30 @@ class ProjectsController extends Controller
         $project->save();
 
         return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' renamed']);
+    }
+
+    /**
+     * @param string $dir
+     * @param Version $version
+     * @param string $prefix
+     */
+    private function addFiles(string $dir, Version $version, $prefix = '')
+    {
+        $objects = scandir($dir);
+        if (!$objects) {
+            return;
+        }
+        $objects = array_diff($objects, ['.git', '.', '..']);
+        foreach ($objects as $object) {
+            if (is_dir("$dir/$object")) {
+                $this->addFiles("$dir/$object" , $version, "$prefix$object/");
+            } else {
+                $file = new File();
+                $file->name = "$prefix$object";
+                $file->content = file_get_contents("$dir/$object");
+                $file->version()->associate($version);
+                $file->save();
+            }
+        }
     }
 }

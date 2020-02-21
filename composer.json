@@ -24,6 +24,7 @@
         "asbiin/laravel-webauthn": "^0.7.0",
         "bacon/bacon-qr-code": "^2.0",
         "bepsvpt/secure-headers": "^5.5",
+        "czproject/git-php": "^3.17",
         "darkaonline/l5-swagger": "dev-master",
         "intervention/image": "^2.5",
         "laravel/framework": "6.*",

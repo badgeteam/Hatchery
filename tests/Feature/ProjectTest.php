@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Version;
 use App\Models\Vote;
 use App\Models\Warning;
+use App\Support\Helpers;
 use Faker\Factory;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Collection;
@@ -270,7 +271,7 @@ class ProjectTest extends TestCase
         $this->assertEquals($projectDep->slug."\n", $dep);
 
         unlink(public_path($zip));
-        $this->delTree($path);
+        Helpers::delTree($path);
         /** @var Project $project */
         $project = Project::find($project->id);
         $this->assertNotNull($project->published_at);
@@ -339,7 +340,7 @@ class ProjectTest extends TestCase
         ])), $json);
 
         unlink(public_path($zip));
-        $this->delTree($path);
+        Helpers::delTree($path);
     }
 
     /**
@@ -531,24 +532,5 @@ class ProjectTest extends TestCase
             ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'awesome']);
         $response->assertRedirect('')->assertSessionHas('errors');
         $this->assertEmpty(Vote::all());
-    }
-
-    /**
-     * @param string $dir
-     *
-     * @return bool
-     */
-    private function delTree(string $dir): bool
-    {
-        $files = scandir($dir);
-        if (!$files) {
-            return false;
-        }
-        $files = array_diff($files, ['.', '..']);
-        foreach ($files as $file) {
-            (is_dir("$dir/$file")) ? $this->delTree("$dir/$file") : unlink("$dir/$file");
-        }
-
-        return rmdir($dir);
     }
 }
