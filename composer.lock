@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11d6521cd86e74d1666d41d479d72ec7",
+    "content-hash": "2c937d28b351b295000c22ec0047decd",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -6313,6 +6313,60 @@
             "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
             "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
             "time": "2019-10-24T08:53:34+00:00"
+        },
+        {
+            "name": "verschuur/laravel-robotstxt",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/verschuur/laravel-robotstxt.git",
+                "reference": "bf3851e290b744130943dd6db72dfc14add7e05e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/verschuur/laravel-robotstxt/zipball/bf3851e290b744130943dd6db72dfc14add7e05e",
+                "reference": "bf3851e290b744130943dd6db72dfc14add7e05e",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^5.6|^6.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^4",
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "^8.3",
+                "sempro/phpunit-pretty-print": "^1.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Verschuur\\Laravel\\RobotsTxt\\Providers\\RobotsTxtProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Verschuur\\Laravel\\RobotsTxt\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Govert Verschuur",
+                    "email": "govert.verschuur@gmail.com"
+                }
+            ],
+            "description": "Set the robots.txt content dynamically based on the Laravel app environment.",
+            "keywords": [
+                "laravel",
+                "php",
+                "robots.txt"
+            ],
+            "time": "2020-01-02T21:52:55+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
