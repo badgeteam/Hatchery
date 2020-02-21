@@ -32,6 +32,7 @@ Route::middleware(['auth', 'webauthn', '2fa'])->group(function () {
     Route::resource('projects', 'ProjectsController', ['except' => ['index', 'show']]);
     Route::get('projects/{project}/rename', 'ProjectsController@renameForm')->name('projects.rename');
     Route::post('projects/{project}/rename', 'ProjectsController@rename')->name('projects.rename');
+    Route::get('projects/{project}/pull', 'ProjectsController@pull')->name('projects.pull');
     Route::post('notify/{project}', 'ProjectsController@notify')->name('projects.notify');
     Route::post('upload/{version}', 'FilesController@upload')->name('files.upload');
     Route::post('release/{project}', 'ProjectsController@publish')->name('project.publish');

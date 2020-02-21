@@ -18,6 +18,10 @@
     @endforelse
     </tbody>
 </table>
+@if($project->git === null)
 {!! Form::open(['method' => 'post', 'route' => ['project.publish', 'project' => $project->slug]]) !!}
 <button class="btn btn-info" name="publish-resource" type="submit" value="publish">Publish</button>
 {!! Form::close() !!}
+@else
+<a href="{{ route('projects.pull', ['project' => $project]) }}" class="btn btn-success">Update</a>
+@endif

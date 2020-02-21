@@ -78,4 +78,21 @@ class ProjectPolicy
         // Ony admin users can rename projects
         return  $user->admin;
     }
+
+    /**
+     * Determine whether the user can `git pull` update the project.
+     *
+     * @param User    $user
+     * @param Project $project
+     *
+     * @return mixed
+     */
+    public function pull(User $user, Project $project)
+    {
+        if ($project->git === null) {
+            return false;   // No git, no pull
+        }
+        // Normal users can only delete their own projects
+        return  $user->admin || $user->id == $project->user->id;
+    }
 }

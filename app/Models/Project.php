@@ -51,6 +51,7 @@ use Illuminate\Support\Str;
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $published_at
  * @property string|null $git
+ * @property string|null $git_commit_id
  * @property-read string|null $description_html
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
  * @property-read int|null $votes_count
@@ -72,6 +73,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project wherePublishedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereGit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereGitCommitId($value)
  *
  * @author annejan@badge.team
  */

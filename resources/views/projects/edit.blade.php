@@ -16,6 +16,9 @@
                         @can('rename', $project)
                         <a href="{{ route('projects.rename', ['project' => $project]) }}" class="btn btn-info btn-xs">rename</a>
                         @endcan
+                        @can('pull', $project)
+                        <a href="{{ route('projects.pull', ['project' => $project]) }}" class="btn btn-success btn-xs">update</a>
+                        @endcan
                         @can('delete', $project)
                         {!! Form::open(['method' => 'delete', 'route' => ['projects.destroy', 'project' => $project->slug], 'class' => 'deleteform']) !!}
                         <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">delete</button>

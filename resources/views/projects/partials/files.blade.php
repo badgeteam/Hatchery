@@ -4,10 +4,13 @@
         <th>File</th>
         <th>Last edited</th>
         <th>Size in bytes</th>
-        <th>{!! Form::open(['method' => 'get', 'route' => 'files.create']) !!}
+        <th>
+        @if(Auth::user()->can('update', $project->versions->last()->files()->first()))
+            {!! Form::open(['method' => 'get', 'route' => 'files.create']) !!}
             {{ Form::hidden('version', $project->versions->last()->id) }}
             <button class="btn btn-success btn-xs" type="submit" value="add" style="width: 48px;">add</button>
             {!! Form::close() !!}
+        @endif
         </th>
     </tr>
     </thead>
@@ -47,6 +50,7 @@
     </tbody>
 </table>
 {{ $project->versions->last()->files()->paginate()->render() }}
+@if(Auth::user()->can('update', $project->versions->last()->files()->first()))
 @if (!$hasIcon)
     {!! Form::open(['method' => 'get', 'route' => 'files.create-icon']) !!}
     {{ Form::hidden('version', $project->versions->last()->id) }}
@@ -60,7 +64,7 @@
         <input type="submit" />
     </div>
 {!! Form::close() !!}
-
+@endif
 <div id="confirm-delete" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

@@ -117,7 +117,7 @@ class ProjectsController extends Controller
             $tempFolder = sys_get_temp_dir().'/'.Str::slug($request->name);
 
             try {
-                GitRepository::cloneRepository($request->git, $tempFolder, ['-q', '--single-branch', '--depth', 1]);
+                $repo = GitRepository::cloneRepository($request->git, $tempFolder, ['-q', '--single-branch', '--depth', 1]);
             } catch (GitException $e) {
                 return redirect()->route('projects.create', ['type' => 'import'])->withInput()->withErrors([$e->getMessage()]);
             }
@@ -143,8 +143,13 @@ class ProjectsController extends Controller
                 $file->version()->associate($version);
                 $file->save();
             }
-            if ($request->has('git') && isset($tempFolder)) {
+            if ($request->has('git')) {
                 $project->git = $request->git;
+            }
+            if (isset($repo)) {
+                $project->git = $repo->getLastCommitId();
+            }
+            if (isset($tempFolder)) {
                 $this->addFiles($tempFolder, $version);
             }
         } catch (\Exception $e) {
@@ -157,6 +162,8 @@ class ProjectsController extends Controller
 
         if (isset($tempFolder)) {
             Helpers::delTree($tempFolder);
+            // Publish freshly imported project ¯\_(ツ)_/¯
+            return $this->publish($project);
         }
 
         return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' created!']);
@@ -394,6 +401,48 @@ class ProjectsController extends Controller
         $project->save();
 
         return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' renamed']);
+    }
+
+    /**
+     * Update the specified resource from git when applicable.
+     *
+     * @param Project $project
+     *
+     * @return RedirectResponse
+     */
+    public function pull(Project $project): RedirectResponse
+    {
+        if ($project->git === null) {
+            return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors(['No git repo for project.']);
+        }
+        $tempFolder = sys_get_temp_dir().'/'.$project->slug;
+
+        try {
+            $repo = GitRepository::cloneRepository($project->git, $tempFolder, ['-q', '--single-branch', '--depth', 1]);
+            if ($project->git_commit_id === $repo->getLastCommitId()) {
+                Helpers::delTree($tempFolder);
+                return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withWarnings(['Project up to date with git repo.']);
+            }
+            $project->git_commit_id = $repo->getLastCommitId();
+        } catch (GitException $e) {
+            Helpers::delTree($tempFolder);
+            return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors([$e->getMessage()]);
+        }
+
+        /** @var Version $version */
+        $version = $project->versions()->unPublished()->first();
+        foreach($version->files as $file) {
+            try {
+                $file->delete();
+            } catch (\Exception $e) {
+                Helpers::delTree($tempFolder);
+                return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors([$e->getMessage()]);
+            }
+        }
+
+        $this->addFiles($tempFolder, $version);
+        Helpers::delTree($tempFolder);
+        return $this->publish($project);
     }
 
     /**
