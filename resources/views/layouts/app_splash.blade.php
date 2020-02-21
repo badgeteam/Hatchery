@@ -58,7 +58,6 @@
   "@type": "Organization",
   "url": "https://badge.team",
   "name": "Badge.Team",
-  "url": "https://badge.team",
   "logo": "https://badge.team/img/bs.png",
   "foundingDate": "2017",
   "contactPoint": {
