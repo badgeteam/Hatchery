@@ -377,12 +377,12 @@ class PublicController extends Controller
                 'versions', function ($query) {
                     $query->whereNotNull('zip');
                 }
-            )->count();
-            if ($eggs > 0) {
+            );
+            if ($eggs->exists()) {
                 $data[] = [
                     'name' => $category->name,
                     'slug' => $category->slug,
-                    'eggs' => $eggs,
+                    'eggs' => $eggs->count(),
                 ];
             }
         }

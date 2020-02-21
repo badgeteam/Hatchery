@@ -432,6 +432,7 @@ class Project extends Model
                 $score++;
             }
         }
+
         return $score / $this->votes->count();
     }
 }
