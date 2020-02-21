@@ -1,6 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
+<script type="application/ld+json">
+{
+  "@context" : "https://schema.org",
+  "@type" : "SoftwareApplication",
+  "name" : "{{ $project->name }}",
+  "url" : "{{ route('projects.show', ['project' => $project->slug]) }}",
+  "author" : {
+    "@type" : "Person",
+    "name" : "{{ $project->user->name }}"
+  },
+  "downloadUrl" : "{{ url($project->versions()->published()->get()->last()->zip) }}",
+  "operatingSystem" : "MicroPython",
+  "requirements" : "badge.team firmware",
+  "softwareVersion" : "{{ $project->revision }}",
+  "applicationCategory" : "{{ $project->category }}",
+  "aggregateRating" : {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ $project->score }}",
+    "reviewCount": "{{ $project->votes->count() }}"
+  }
+}
+</script>
 <div class="container-fluid">
 
     <div class="row">
