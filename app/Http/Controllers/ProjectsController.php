@@ -114,7 +114,8 @@ class ProjectsController extends Controller
         }
 
         if ($request->has('git')) {
-            $tempFolder = sys_get_temp_dir() . '/' . Str::slug($request->name);
+            $tempFolder = sys_get_temp_dir().'/'.Str::slug($request->name);
+
             try {
                 GitRepository::cloneRepository($request->git, $tempFolder, ['-q', '--single-branch', '--depth', 1]);
             } catch (GitException $e) {
@@ -149,12 +150,14 @@ class ProjectsController extends Controller
             if (isset($tempFolder)) {
                 Helpers::delTree($tempFolder);
             }
+
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
         }
 
         if (isset($tempFolder)) {
             Helpers::delTree($tempFolder);
         }
+
         return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' created!']);
     }
 
@@ -310,8 +313,9 @@ class ProjectsController extends Controller
     public function destroy(Project $project): RedirectResponse
     {
         $name = $project->name;
+
         try {
-            $project->name = 'Deleted ' . rand() . ' ' . $name;
+            $project->name = 'Deleted '.rand().' '.$name;
             $project->slug = Str::slug($project->name);
             $project->save();
             $project->delete();
@@ -392,9 +396,9 @@ class ProjectsController extends Controller
     }
 
     /**
-     * @param string $dir
+     * @param string  $dir
      * @param Version $version
-     * @param string $prefix
+     * @param string  $prefix
      */
     private function addFiles(string $dir, Version $version, $prefix = '')
     {
@@ -405,7 +409,7 @@ class ProjectsController extends Controller
         $objects = array_diff($objects, ['.git', '.', '..']);
         foreach ($objects as $object) {
             if (is_dir("$dir/$object")) {
-                $this->addFiles("$dir/$object" , $version, "$prefix$object/");
+                $this->addFiles("$dir/$object", $version, "$prefix$object/");
             } else {
                 $file = new File();
                 $file->name = "$prefix$object";
