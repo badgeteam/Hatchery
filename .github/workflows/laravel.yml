@@ -53,6 +53,13 @@ jobs:
         DB_PASSWORD: root
       run: php artisan migrate --force
     - name: Generate sitemap
+      env:
+        DB_CONNECTION: mysql
+        DB_HOST: 127.0.0.1
+        DB_PORT: 33306
+        DB_DATABASE: badge
+        DB_USERNAME: root
+        DB_PASSWORD: root
       run: php artisan sitemap:generate
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
