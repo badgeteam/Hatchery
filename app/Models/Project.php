@@ -108,6 +108,7 @@ class Project extends Model
         'pivot',
         'versions',
         'states',
+        'git',
     ];
 
     /**
