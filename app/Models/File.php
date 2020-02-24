@@ -187,10 +187,9 @@ class File extends Model
      */
     public function getMimeAttribute(): string
     {
-        $name = collect(explode('.', $this->name));
-
-        if (array_key_exists($name->last(), self::$mimes)) {
-            return self::$mimes[$name->last()];
+        $ext = ltrim(strstr($this->name, '.'), '.');
+        if (array_key_exists($ext, self::$mimes)) {
+            return self::$mimes[$ext];
         }
 
         return 'application/octet-stream';
@@ -212,5 +211,15 @@ class File extends Model
         }
 
         return $icon->width() == 32 && $icon->height() == 32;
+    }
+
+    /**
+     * @param string $fileName
+     * @return bool
+     */
+    public static function valid(string $fileName): bool
+    {
+        $ext = ltrim(strstr($fileName, '.'), '.');
+        return in_array($ext, self::$extensions);
     }
 }

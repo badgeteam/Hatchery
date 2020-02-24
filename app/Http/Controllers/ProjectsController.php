@@ -471,11 +471,13 @@ class ProjectsController extends Controller
             if (is_dir("$dir/$object")) {
                 $this->addFiles("$dir/$object", $version, "$prefix$object/");
             } else {
-                $file = new File();
-                $file->name = "$prefix$object";
-                $file->content = file_get_contents("$dir/$object");
-                $file->version()->associate($version);
-                $file->save();
+                if (File::valid($object)) {
+                    $file = new File();
+                    $file->name = "$prefix$object";
+                    $file->content = file_get_contents("$dir/$object");
+                    $file->version()->associate($version);
+                    $file->save();
+                }
             }
         }
     }
