@@ -50,7 +50,7 @@
                                 <input name="status" type="hidden" value="3" />
 
                                 <div class="pull-right">
-                                    <button type="submit" class="btn btn-default">Save</button>
+                                    <button type="submit" class="btn btn-default">{{ $type === 'import' ? 'Import' : 'Save' }}</button>
                                 </div>
 
                             {!! Form::close() !!}

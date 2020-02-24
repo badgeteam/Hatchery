@@ -147,9 +147,13 @@ class ProjectsController extends Controller
                 $project->git = $request->git;
             }
             if (isset($repo)) {
-                $project->git = $repo->getLastCommitId();
+                $project->git_commit_id = $repo->getLastCommitId();
             }
             if (isset($tempFolder)) {
+                foreach ($version->files as $file) {
+                    // magical empty __init__.py
+                    $file->delete();
+                }
                 $this->addFiles($tempFolder, $version);
             }
         } catch (\Exception $e) {
@@ -426,7 +430,7 @@ class ProjectsController extends Controller
             }
             $project->git_commit_id = $repo->getLastCommitId();
         } catch (GitException $e) {
-            Helpers::delTree($tempFolder);
+//            Helpers::delTree($tempFolder);
 
             return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors([$e->getMessage()]);
         }
