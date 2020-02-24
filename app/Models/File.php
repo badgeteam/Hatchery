@@ -187,7 +187,7 @@ class File extends Model
      */
     public function getMimeAttribute(): string
     {
-        $ext = ltrim(strstr($this->name, '.'), '.');
+        $ext = ltrim((string)strstr($this->name, '.'), '.');
         if (array_key_exists($ext, self::$mimes)) {
             return self::$mimes[$ext];
         }
@@ -215,11 +215,17 @@ class File extends Model
 
     /**
      * @param string $fileName
+     *
      * @return bool
      */
     public static function valid(string $fileName): bool
     {
-        $ext = ltrim(strstr($fileName, '.'), '.');
+        $str = strstr($fileName, '.');
+        if (!$str) {
+            return false;
+        }
+        $ext = ltrim($str, '.');
+
         return in_array($ext, self::$extensions);
     }
 }
