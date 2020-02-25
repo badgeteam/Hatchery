@@ -6,7 +6,6 @@ use App\Http\Requests\ProjectNotificationRequest;
 use App\Http\Requests\ProjectRenameRequest;
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
-use App\Jobs\ImportProject;
 use App\Jobs\PublishProject;
 use App\Jobs\UpdateProject;
 use App\Mail\ProjectNotificationMail;
@@ -145,8 +144,11 @@ class ProjectsController extends Controller
             $project->git = $request->git;
             if (isset($repo) && isset($tempFolder)) {
                 $project->save();
-                ImportProject::dispatch($project, Auth::user(), $repo, $tempFolder);
-
+                foreach ($version->files as $file) {
+                    // Clean out magical empty __init__.py
+                    $file->delete();
+                }
+                UpdateProject::dispatch($project, Auth::user());
                 return redirect()->route('projects.edit',
                     ['project' => $project->slug])->withSuccesses([$project->name.' being imported!']);
             }
