@@ -42,7 +42,7 @@ class UpdateProject implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Project $project, User $user, GitRepository $repo = null, string $tempFolder = null)
+    public function __construct(Project $project, User $user, $repo = null, $tempFolder = null)
     {
         if ($tempFolder === null) {
             $tempFolder = sys_get_temp_dir().'/'.$project->slug;
