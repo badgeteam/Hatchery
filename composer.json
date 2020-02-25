@@ -28,6 +28,7 @@
         "darkaonline/l5-swagger": "dev-master",
         "intervention/image": "^2.5",
         "laravel/framework": "6.*",
+        "laravel/horizon": "^3.7",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^6",
         "pragmarx/google2fa-laravel": "^1.3",

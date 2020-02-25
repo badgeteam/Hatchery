@@ -1,4 +1,4 @@
-const cacheName = 'hatchery::20200221';
+const cacheName = 'hatchery::20200225';
 
 self.addEventListener('install', e => {
 	e.waitUntil(
@@ -27,7 +27,14 @@ self.addEventListener('install', e => {
 				'/icons/back.gif',
 				'/icons/tar.gif',
 				'/icons/compressed.gif',
-				'/vendor/webauthn/webauthn.js'
+				'/vendor/webauthn/webauthn.js',
+				'/vendor/horizon/app.css',
+				'/vendor/horizon/img/horizon.svg',
+				'/vendor/horizon/img/favicon.png',
+				'/vendor/horizon/img/sprite.svg',
+				'/vendor/horizon/app-dark.css',
+				'/vendor/horizon/mix-manifest.json',
+				'/vendor/horizon/app.js'
 			]).then(() => self.skipWaiting());
 		})
 	);
