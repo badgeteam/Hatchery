@@ -187,7 +187,7 @@ class File extends Model
      */
     public function getMimeAttribute(): string
     {
-        $ext = ltrim((string)strstr($this->name, '.'), '.');
+        $ext = ltrim((string) strstr($this->name, '.'), '.');
         if (array_key_exists($ext, self::$mimes)) {
             return self::$mimes[$ext];
         }
