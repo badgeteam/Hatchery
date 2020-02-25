@@ -17,8 +17,10 @@ use Illuminate\Queue\SerializesModels;
 
 class UpdateProject implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
     /** @var Project */
     private $project;
     /** @var User */
@@ -31,13 +33,14 @@ class UpdateProject implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param Project $project
-     * @param User $user
+     * @param Project            $project
+     * @param User               $user
      * @param GitRepository|null $repo
-     * @param string|null $tempFolder
+     * @param string|null        $tempFolder
+     *
+     * @throws GitException
      *
      * @return void
-     * @throws GitException
      */
     public function __construct(Project $project, User $user, GitRepository $repo = null, string $tempFolder = null)
     {
@@ -57,13 +60,15 @@ class UpdateProject implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @return void
      * @throws GitException
+     *
+     * @return void
      */
     public function handle()
     {
         if ($this->project->git_commit_id === $this->repo->getLastCommitId()) {
             Helpers::delTree($this->tempFolder);
+
             return;
         }
         $this->project->git_commit_id = $this->repo->getLastCommitId();

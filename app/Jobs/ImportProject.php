@@ -14,8 +14,10 @@ use Illuminate\Queue\SerializesModels;
 
 class ImportProject implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
     /** @var Project */
     private $project;
     /** @var User */
@@ -28,10 +30,10 @@ class ImportProject implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param Project $project
-     * @param User $user
+     * @param Project       $project
+     * @param User          $user
      * @param GitRepository $repo
-     * @param string $tempFolder
+     * @param string        $tempFolder
      *
      * @return void
      */
@@ -46,8 +48,9 @@ class ImportProject implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @return void
      * @throws \Exception
+     *
+     * @return void
      */
     public function handle()
     {

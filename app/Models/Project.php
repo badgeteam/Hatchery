@@ -454,6 +454,7 @@ class Project extends Model
             $version->project()->associate($this);
             $version->save();
         }
+
         return $version;
     }
 }

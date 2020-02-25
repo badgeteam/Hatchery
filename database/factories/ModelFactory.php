@@ -32,7 +32,7 @@ $factory->define(
 $factory->define(
     App\Models\Project::class, function (Faker\Generator $faker) {
         return [
-            'name'    => $faker->name,
+            'name'        => $faker->name,
             'category_id' => function () {
                 return factory(App\Models\Category::class)->create()->id;
             },

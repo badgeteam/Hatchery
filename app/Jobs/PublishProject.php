@@ -16,8 +16,10 @@ use PharData;
 
 class PublishProject implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
     /** @var Project */
     private $project;
     /** @var User */
@@ -27,7 +29,7 @@ class PublishProject implements ShouldQueue
      * Create a new job instance.
      *
      * @param Project $project
-     * @param User $user
+     * @param User    $user
      *
      * @return void
      */

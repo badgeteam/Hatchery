@@ -115,6 +115,7 @@ class ProjectsController extends Controller
         }
         if ($request->has('git')) {
             $tempFolder = sys_get_temp_dir().'/'.Str::slug($request->name);
+
             try {
                 $repo = GitRepository::cloneRepository($request->git, $tempFolder, ['-q', '--single-branch', '--depth', 1]);
             } catch (GitException $e) {
@@ -122,6 +123,7 @@ class ProjectsController extends Controller
             }
         }
         $project = new Project();
+
         try {
             $project->name = $request->name;
             $project->category_id = $request->category_id;
@@ -144,15 +146,18 @@ class ProjectsController extends Controller
             if (isset($repo) && isset($tempFolder)) {
                 $project->save();
                 ImportProject::dispatch($project, Auth::user(), $repo, $tempFolder);
+
                 return redirect()->route('projects.edit',
-                    ['project' => $project->slug])->withSuccesses([$project->name . ' being imported!']);
+                    ['project' => $project->slug])->withSuccesses([$project->name.' being imported!']);
             }
         } catch (\Exception $e) {
             if (isset($tempFolder)) {
                 Helpers::delTree($tempFolder);
             }
+
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
         }
+
         return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' created!']);
     }
 
@@ -237,6 +242,7 @@ class ProjectsController extends Controller
     public function publish(Project $project): RedirectResponse
     {
         PublishProject::dispatch($project, Auth::user());
+
         return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' is being published.']);
     }
 
