@@ -6,6 +6,9 @@ use App\Http\Requests\ProjectNotificationRequest;
 use App\Http\Requests\ProjectRenameRequest;
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
+use App\Jobs\ImportProject;
+use App\Jobs\PublishProject;
+use App\Jobs\UpdateProject;
 use App\Mail\ProjectNotificationMail;
 use App\Models\Badge;
 use App\Models\BadgeProject;
@@ -20,11 +23,10 @@ use Cz\Git\GitRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
-use Phar;
-use PharData;
 
 /**
  * Class ProjectsController.
@@ -108,23 +110,18 @@ class ProjectsController extends Controller
         if (Project::where('slug', Str::slug($request->name, '_'))->exists()) {
             return redirect()->route('projects.create')->withInput()->withErrors(['slug already exists :(']);
         }
-
         if (Project::isForbidden(Str::slug($request->name, '_'))) {
             return redirect()->route('projects.create')->withInput()->withErrors(['reserved name']);
         }
-
         if ($request->has('git')) {
             $tempFolder = sys_get_temp_dir().'/'.Str::slug($request->name);
-
             try {
                 $repo = GitRepository::cloneRepository($request->git, $tempFolder, ['-q', '--single-branch', '--depth', 1]);
             } catch (GitException $e) {
                 return redirect()->route('projects.create', ['type' => 'import'])->withInput()->withErrors([$e->getMessage()]);
             }
         }
-
         $project = new Project();
-
         try {
             $project->name = $request->name;
             $project->category_id = $request->category_id;
@@ -143,33 +140,19 @@ class ProjectsController extends Controller
                 $file->version()->associate($version);
                 $file->save();
             }
-            if ($request->has('git')) {
-                $project->git = $request->git;
-            }
-            if (isset($repo)) {
-                $project->git_commit_id = $repo->getLastCommitId();
-            }
-            if (isset($tempFolder)) {
-                foreach ($version->files as $file) {
-                    // magical empty __init__.py
-                    $file->delete();
-                }
-                $this->addFiles($tempFolder, $version);
+            $project->git = $request->git;
+            if (isset($repo) && isset($tempFolder)) {
+                $project->save();
+                ImportProject::dispatch($project, Auth::user(), $repo, $tempFolder);
+                return redirect()->route('projects.edit',
+                    ['project' => $project->slug])->withSuccesses([$project->name . ' being imported!']);
             }
         } catch (\Exception $e) {
             if (isset($tempFolder)) {
                 Helpers::delTree($tempFolder);
             }
-
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
         }
-
-        if (isset($tempFolder)) {
-            Helpers::delTree($tempFolder);
-            // Publish freshly imported project ¯\_(ツ)_/¯
-            return $this->publish($project);
-        }
-
         return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' created!']);
     }
 
@@ -253,66 +236,8 @@ class ProjectsController extends Controller
      */
     public function publish(Project $project): RedirectResponse
     {
-        /** @var Version $version */
-        $version = $project->versions()->unPublished()->first();
-
-        $filename = 'eggs/'.uniqid($project->slug.'_').'.tar';
-
-        $zip = new PharData(public_path($filename));
-
-        foreach ($version->files as $file) {
-            $zip[$project->slug.'/'.$file->name] = $file->content;
-        }
-
-        $data = [
-            'name'        => $project->name,
-            'description' => $project->description,
-            'category'    => $project->category,
-            'author'      => $project->user->name,
-            'revision'    => $version->revision,
-        ];
-
-        if ($project->hasValidIcon()) {
-            $data['icon'] = 'icon.png';
-        }
-
-        $zip[$project->slug.'/metadata.json'] = (string) json_encode($data);
-
-        if (!$project->dependencies->isEmpty()) {
-            $dep = '';
-            foreach ($project->dependencies as $dependency) {
-                $dep .= $dependency->slug."\n";
-            }
-            $zip[$project->slug.'/'.$project->slug.'.egg-info/requires.txt'] = $dep;
-        }
-
-        if (empty(exec('which minigzip'))) {
-            $zip->compress(Phar::GZ);
-        } else {
-            system('minigzip < '.public_path($filename).' > '.public_path($filename.'.gz'));
-        }
-        unlink(public_path($filename));
-
-        $version->zip = $filename.'.gz';
-        $version->size_of_zip = intval(filesize(public_path($version->zip)));
-        $version->save();
-
-        $newVersion = new Version();
-        $newVersion->revision = $version->revision + 1;
-        $newVersion->project()->associate($project);
-        $newVersion->save();
-        foreach ($version->files as $file) {
-            $newFile = new File();
-            $newFile->name = $file->name;
-            $newFile->content = $file->content;
-            $newFile->version()->associate($newVersion);
-            $newFile->save();
-        }
-
-        $project->published_at = now();
-        $project->save();
-
-        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' published']);
+        PublishProject::dispatch($project, Auth::user());
+        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' is being published.']);
     }
 
     /**
@@ -419,66 +344,9 @@ class ProjectsController extends Controller
         if ($project->git === null) {
             return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors(['No git repo for project.']);
         }
-        $tempFolder = sys_get_temp_dir().'/'.$project->slug;
 
-        try {
-            $repo = GitRepository::cloneRepository($project->git, $tempFolder, ['-q', '--single-branch', '--depth', 1]);
-            if ($project->git_commit_id === $repo->getLastCommitId()) {
-                Helpers::delTree($tempFolder);
+        UpdateProject::dispatch($project, Auth::user());
 
-                return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withWarnings(['Project up to date with git repo.']);
-            }
-            $project->git_commit_id = $repo->getLastCommitId();
-        } catch (GitException $e) {
-//            Helpers::delTree($tempFolder);
-
-            return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors([$e->getMessage()]);
-        }
-
-        /** @var Version $version */
-        $version = $project->versions()->unPublished()->first();
-        foreach ($version->files as $file) {
-            try {
-                $file->delete();
-            } catch (\Exception $e) {
-                Helpers::delTree($tempFolder);
-
-                return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors([$e->getMessage()]);
-            }
-        }
-
-        $this->addFiles($tempFolder, $version);
-        Helpers::delTree($tempFolder);
-
-        return $this->publish($project);
-    }
-
-    /**
-     * @param string  $dir
-     * @param Version $version
-     * @param string  $prefix
-     *
-     * @return void
-     */
-    private function addFiles(string $dir, Version $version, $prefix = ''): void
-    {
-        $objects = scandir($dir);
-        if (!$objects) {
-            return;
-        }
-        $objects = array_diff($objects, ['.git', '.', '..']);
-        foreach ($objects as $object) {
-            if (is_dir("$dir/$object")) {
-                $this->addFiles("$dir/$object", $version, "$prefix$object/");
-            } else {
-                if (File::valid($object)) {
-                    $file = new File();
-                    $file->name = "$prefix$object";
-                    $file->content = file_get_contents("$dir/$object");
-                    $file->version()->associate($version);
-                    $file->save();
-                }
-            }
-        }
+        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' is being updated.']);
     }
 }

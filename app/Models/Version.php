@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\Auth;
  * @property int $revision
  * @property string|null $zip
  * @property int|null $size_of_zip
+ * @property string|null $git_commit_id
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -49,6 +50,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereZip($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereGitCommitId($value)
  *
  * @author annejan@badge.team
  */
@@ -64,6 +66,13 @@ class Version extends Model
     protected $appends = ['published'];
 
     /**
+     * Hidden data.
+     *
+     * @var array<string>
+     */
+    protected $hidden = ['git_commit_id'];
+
+    /**
      * Make sure a user is assigned.
      */
     public static function boot(): void
@@ -72,8 +81,10 @@ class Version extends Model
 
         static::creating(
             function ($version) {
-                $user = Auth::guard()->user();
-                $version->user()->associate($user);
+                if ($version->user_id === null) {
+                    $user = Auth::guard()->user();
+                    $version->user()->associate($user);
+                }
             }
         );
     }

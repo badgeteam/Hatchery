@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Jobs;
+
+use App\Models\Project;
+use App\Models\User;
+use App\Models\Version;
+use Cz\Git\GitRepository;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+
+class ImportProject implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    /** @var Project */
+    private $project;
+    /** @var User */
+    private $user;
+    /** @var GitRepository */
+    private $repo;
+    /** @var string */
+    private $tempFolder;
+
+    /**
+     * Create a new job instance.
+     *
+     * @param Project $project
+     * @param User $user
+     * @param GitRepository $repo
+     * @param string $tempFolder
+     *
+     * @return void
+     */
+    public function __construct(Project $project, User $user, GitRepository $repo, string $tempFolder)
+    {
+        $this->project = $project;
+        $this->user = $user;
+        $this->repo = $repo;
+        $this->tempFolder = $tempFolder;
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function handle()
+    {
+        /** @var Version $version */
+        $version = $this->project->versions->last();
+        foreach ($version->files as $file) {
+            // Clean out magical empty __init__.py
+            $file->delete();
+        }
+        UpdateProject::dispatch($this->project, $this->user, $this->repo, $this->tempFolder);
+    }
+}

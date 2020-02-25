@@ -13,7 +13,8 @@
     "prod": "yarn production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "lint": "./node_modules/.bin/eslint --ext .js resources/assets/js",
-    "build": "yarn production"
+    "build": "yarn production",
+    "test": "vendor/bin/phpstan analyse"
   },
   "devDependencies": {
     "@hapi/hoek": "^9.0.2",
@@ -31,6 +32,7 @@
     "lodash": "^4.17.5",
     "mem": "^6.0.1",
     "popper.js": "^1.16",
+    "pre-commit": "^1.2.2",
     "resolve-url-loader": "3.1.1",
     "sass": "^1.24.4",
     "sass-loader": "8.0.0",
@@ -39,8 +41,5 @@
     "vue": "^2.6.11",
     "vue-template-compiler": "^2.6.11",
     "webpack": "^4.41.5"
-  },
-  "dependencies": {
-    "webusb-serial": "^2.0.1"
   }
 }

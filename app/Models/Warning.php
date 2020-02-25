@@ -60,9 +60,11 @@ class Warning extends Model
         parent::boot();
 
         static::creating(
-            function ($vote) {
-                $user = Auth::guard()->user();
-                $vote->user()->associate($user);
+            function ($warning) {
+                if ($warning->user_id === null) {
+                    $user = Auth::guard()->user();
+                    $warning->user()->associate($user);
+                }
             }
         );
     }

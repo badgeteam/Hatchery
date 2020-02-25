@@ -126,8 +126,10 @@ class File extends Model
 
         static::creating(
             function ($file) {
-                $user = Auth::guard()->user();
-                $file->user()->associate($user);
+                if ($file->user_id === null) {
+                    $user = Auth::guard()->user();
+                    $file->user()->associate($user);
+                }
             }
         );
     }

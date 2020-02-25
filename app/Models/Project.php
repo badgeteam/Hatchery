@@ -145,8 +145,10 @@ class Project extends Model
 
         static::creating(
             function ($project) {
-                $user = Auth::guard()->user();
-                $project->user()->associate($user);
+                if ($project->user_id === null) {
+                    $user = Auth::guard()->user();
+                    $project->user()->associate($user);
+                }
             }
         );
 
@@ -434,5 +436,24 @@ class Project extends Model
         }
 
         return $score / $this->votes->count();
+    }
+
+    /**
+     * @return Version
+     */
+    public function getUnpublishedVersion(): Version
+    {
+        $version = $this->versions()->unPublished()->first();
+        if ($version === null) {
+            /** @var Version $previousVersion */
+            $previousVersion = $this->versions->last();
+            $revision = $previousVersion->revision + 1;
+            $version = new Version();
+            $version->user_id = $this->user_id;
+            $version->revision = $revision;
+            $version->project()->associate($this);
+            $version->save();
+        }
+        return $version;
     }
 }
