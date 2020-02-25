@@ -25,42 +25,21 @@ class UpdateProject implements ShouldQueue
     private $project;
     /** @var User */
     private $user;
-    /** @var GitRepository */
-    private $repo;
-    /** @var string */
-    private $tempFolder;
 
     /**
      * Create a new job instance.
      *
      * @param Project            $project
      * @param User               $user
-     * @param GitRepository|null $repo
-     * @param string|null        $tempFolder
      *
      * @throws GitException
      *
      * @return void
      */
-    public function __construct(Project $project, User $user, $repo = null, $tempFolder = null)
+    public function __construct(Project $project, User $user)
     {
-        if ($tempFolder === null) {
-            $tempFolder = sys_get_temp_dir().'/'.$project->slug;
-        }
-        if ($repo === null) {
-            try {
-                $repo = GitRepository::cloneRepository($project->git, $tempFolder,
-                    ['-q', '--single-branch', '--depth', 1]);
-            } catch (GitException $e) {
-                Helpers::delTree($tempFolder);
-                $repo = GitRepository::cloneRepository($project->git, $tempFolder,
-                    ['-q', '--single-branch', '--depth', 1]);
-            }
-        }
         $this->project = $project;
         $this->user = $user;
-        $this->repo = $repo;
-        $this->tempFolder = $tempFolder;
     }
 
     /**
@@ -72,45 +51,19 @@ class UpdateProject implements ShouldQueue
      */
     public function handle()
     {
-        if ($this->project->git_commit_id === $this->repo->getLastCommitId()) {
-            Helpers::delTree($this->tempFolder);
+        $tempFolder = sys_get_temp_dir().'/'.$this->project->slug;
+        $repo = GitRepository::cloneRepository($this->project->git, $tempFolder,
+            ['-q', '--single-branch', '--depth', 1]);
+        if ($this->project->git_commit_id === $repo->getLastCommitId()) {
+            Helpers::delTree($tempFolder);
+
             return;
         }
-        $this->project->git_commit_id = $this->repo->getLastCommitId();
+        $this->project->git_commit_id = $repo->getLastCommitId();
         $this->project->save();
         $version = $this->project->getUnpublishedVersion();
-        $this->addFiles($this->tempFolder, $version);
-        Helpers::delTree($this->tempFolder);
+        Helpers::addFiles($tempFolder, $version);
+        Helpers::delTree($tempFolder);
         PublishProject::dispatch($this->project, $this->user);
-    }
-
-    /**
-     * @param string  $dir
-     * @param Version $version
-     * @param string  $prefix
-     *
-     * @return void
-     */
-    private function addFiles(string $dir, Version $version, $prefix = ''): void
-    {
-        $objects = scandir($dir);
-        if (!$objects) {
-            return;
-        }
-        $objects = array_diff($objects, ['.git', '.', '..']);
-        foreach ($objects as $object) {
-            if (is_dir("$dir/$object")) {
-                $this->addFiles("$dir/$object", $version, "$prefix$object/");
-            } else {
-                if (File::valid($object)) {
-                    $file = new File();
-                    $file->user_id = $this->user->id;
-                    $file->name = "$prefix$object";
-                    $file->content = file_get_contents("$dir/$object");
-                    $file->version()->associate($version);
-                    $file->save();
-                }
-            }
-        }
     }
 }

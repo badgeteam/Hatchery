@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
+use App\Support\Helpers;
 use Cz\Git\GitRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -60,6 +61,8 @@ class ImportProject implements ShouldQueue
             // Clean out magical empty __init__.py
             $file->delete();
         }
-        UpdateProject::dispatch($this->project, $this->user, $this->repo, $this->tempFolder);
+        Helpers::addFiles($this->tempFolder, $version);
+        Helpers::delTree($this->tempFolder);
+        PublishProject::dispatch($this->project, $this->user);
     }
 }
