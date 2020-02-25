@@ -48,8 +48,14 @@ class UpdateProject implements ShouldQueue
             $tempFolder = sys_get_temp_dir().'/'.$project->slug;
         }
         if ($repo === null) {
-            $repo = GitRepository::cloneRepository($project->git, $tempFolder,
-                ['-q', '--single-branch', '--depth', 1]);
+            try {
+                $repo = GitRepository::cloneRepository($project->git, $tempFolder,
+                    ['-q', '--single-branch', '--depth', 1]);
+            } catch (GitException $e) {
+                Helpers::delTree($tempFolder);
+                $repo = GitRepository::cloneRepository($project->git, $tempFolder,
+                    ['-q', '--single-branch', '--depth', 1]);
+            }
         }
         $this->project = $project;
         $this->user = $user;
@@ -68,7 +74,6 @@ class UpdateProject implements ShouldQueue
     {
         if ($this->project->git_commit_id === $this->repo->getLastCommitId()) {
             Helpers::delTree($this->tempFolder);
-
             return;
         }
         $this->project->git_commit_id = $this->repo->getLastCommitId();
