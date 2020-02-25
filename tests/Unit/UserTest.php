@@ -7,8 +7,7 @@ use App\Models\User;
 use App\Models\Vote;
 use App\Models\Warning;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -18,8 +17,7 @@ use Tests\TestCase;
  */
 class UserTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /**
      * Assert the User has a relation with zero or more Project(s).

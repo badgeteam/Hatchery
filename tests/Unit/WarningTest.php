@@ -5,8 +5,7 @@ namespace Tests\Unit;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Warning;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -16,8 +15,7 @@ use Tests\TestCase;
  */
 class WarningTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /**
      * Assert the Warning is cast by a User.

@@ -77,9 +77,11 @@ class PublishProject implements ShouldQueue
         }
 
         if (empty(exec('which minigzip'))) {
+            // @codeCoverageIgnoreStart
             $zip->compress(Phar::GZ);
         } else {
             system('minigzip < '.public_path($filename).' > '.public_path($filename.'.gz'));
+            // @codeCoverageIgnoreEnd
         }
         unlink(public_path($filename));
 

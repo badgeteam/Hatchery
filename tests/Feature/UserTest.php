@@ -6,8 +6,7 @@ use App\Models\Project;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Auth\Notifications\ResetPassword;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
@@ -18,8 +17,7 @@ use Tests\TestCase;
  */
 class UserTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /**
      * login failed get redirected.
@@ -265,5 +263,27 @@ class UserTest extends TestCase
                 'editor' => 'vim',
             ]);
         $response->assertStatus(403);
+    }
+
+    /**
+     * Check if random user can not view Horizon page.
+     */
+    public function testUserViewHorizon(): void
+    {
+        $user = factory(User::class)->create();
+        $response = $this->actingAs($user)->get('/horizon');
+        $response->assertStatus(403);
+    }
+
+    /**
+     * Check if random user can not view Horizon page.
+     */
+    public function testAdminUserViewHorizon(): void
+    {
+        $user = factory(User::class)->create();
+        $user->admin = true;
+        $user->save();
+        $response = $this->actingAs($user)->get('/horizon');
+        $response->assertStatus(200);
     }
 }

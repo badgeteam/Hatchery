@@ -24,7 +24,9 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         if (!App::environment(['local', 'testing'])) {
+            // @codeCoverageIgnoreStart
             URL::forceScheme('https');
+            // @codeCoverageIgnoreEnd
         }
     }
 

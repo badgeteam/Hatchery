@@ -6,8 +6,7 @@ use App\Models\Badge;
 use App\Models\BadgeProject;
 use App\Models\Project;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
 
@@ -18,8 +17,7 @@ use Tests\TestCase;
  */
 class BadgeProjectTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /**
      * Assert the Badge has a collection of BadgeProjects.

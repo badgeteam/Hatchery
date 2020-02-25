@@ -20,10 +20,7 @@ class Helpers
     public static function delTree(string $dir): bool
     {
         $files = scandir($dir);
-        if (!$files) {
-            return false;
-        }
-        $files = array_diff($files, ['.', '..']);
+        $files = $files ? array_diff($files, ['.', '..']) : [];
         foreach ($files as $file) {
             (is_dir("$dir/$file")) ? self::delTree("$dir/$file") : unlink("$dir/$file");
         }
@@ -41,10 +38,7 @@ class Helpers
     public static function addFiles(string $dir, Version $version, $prefix = ''): void
     {
         $objects = scandir($dir);
-        if (!$objects) {
-            return;
-        }
-        $objects = array_diff($objects, ['.git', '.', '..']);
+        $objects = $objects ? array_diff($objects, ['.git', '.', '..']) : [];
         foreach ($objects as $object) {
             if (is_dir("$dir/$object")) {
                 self::addFiles("$dir/$object", $version, "$prefix$object/");

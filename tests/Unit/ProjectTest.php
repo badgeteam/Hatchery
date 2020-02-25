@@ -11,8 +11,7 @@ use App\Models\User;
 use App\Models\Version;
 use App\Models\Vote;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -22,8 +21,7 @@ use Tests\TestCase;
  */
 class ProjectTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /**
      * Assert the Project has a relation with a single User.
