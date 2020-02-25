@@ -241,7 +241,7 @@ class ProjectTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('post', '/release/'.$project->slug);
-        $response->assertRedirect('/projects/'.$project->slug.'/edit')->assertSessionHas('successes');
+        $response->assertRedirect('/projects')->assertSessionHas('successes');
         /** @var Collection $versions */
         $versions = Version::published()->where('project_id', $project->id)->get();
         /** @var Version $version */

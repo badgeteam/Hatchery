@@ -149,8 +149,8 @@ class ProjectsController extends Controller
                     $file->delete();
                 }
                 UpdateProject::dispatch($project, Auth::user());
-                return redirect()->route('projects.edit',
-                    ['project' => $project->slug])->withSuccesses([$project->name.' being imported!']);
+
+                return redirect()->route('projects.index')->withSuccesses([$project->name.' being imported!']);
             }
         } catch (\Exception $e) {
             if (isset($tempFolder)) {
@@ -245,7 +245,7 @@ class ProjectsController extends Controller
     {
         PublishProject::dispatch($project, Auth::user());
 
-        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' is being published.']);
+        return redirect()->route('projects.index')->withSuccesses([$project->name.' is being published.']);
     }
 
     /**
@@ -355,6 +355,6 @@ class ProjectsController extends Controller
 
         UpdateProject::dispatch($project, Auth::user());
 
-        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' is being updated.']);
+        return redirect()->route('projects.index')->withSuccesses([$project->name.' is being updated.']);
     }
 }

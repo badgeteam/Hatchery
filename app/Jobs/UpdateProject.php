@@ -5,7 +5,6 @@ namespace App\Jobs;
 use App\Models\Project;
 use App\Models\User;
 use App\Support\Helpers;
-use Composer\Util\Git;
 use Cz\Git\GitException;
 use Cz\Git\GitRepository;
 use Illuminate\Bus\Queueable;
@@ -59,7 +58,6 @@ class UpdateProject implements ShouldQueue
         }
 
         if ($this->project->git_commit_id === $repo->getLastCommitId()) {
-
             return;
         }
         $this->project->git_commit_id = $repo->getLastCommitId();
