@@ -4,9 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Project;
 use App\Models\User;
-use Faker\Factory;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
@@ -17,7 +17,7 @@ use Tests\TestCase;
  */
 class UserTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, WithFaker;
 
     /**
      * login failed get redirected.
@@ -45,8 +45,7 @@ class UserTest extends TestCase
      */
     public function testLogin(): void
     {
-        $faker = Factory::create();
-        $password = $faker->password;
+        $password = $this->faker->password;
         $user = factory(User::class)->create(['password' => bcrypt($password)]);
         $response = $this
             ->withSession(['_token'=>'test'])
@@ -120,8 +119,7 @@ class UserTest extends TestCase
         $response = $this->get('/password/reset/'.$token);
         $response->assertStatus(200);
 
-        $faker = Factory::create();
-        $password = $faker->password(8, 20);
+        $password = $this->faker->password(8, 20);
 
         $response = $this
             ->withSession(['_token'=>'test'])
@@ -149,13 +147,12 @@ class UserTest extends TestCase
      */
     public function testRegister(): void
     {
-        $faker = Factory::create();
-        $password = $faker->password(8, 20);
-        $email = $faker->email;
+        $password = $this->faker->password(8, 20);
+        $email = $this->faker->email;
         $response = $this
             ->withSession(['_token'=>'test'])
             ->post('/register', [
-                'name'                  => $faker->name,
+                'name'                  => $this->faker->name,
                 'email'                 => $email,
                 'editor'                => 'default',
                 'password'              => $password,

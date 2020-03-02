@@ -9,6 +9,7 @@ use PragmaRX\Google2FALaravel\Support\Authenticator as PragmaRXAuthenticator;
 /**
  * Class Authenticator.
  *
+ * @package App\Support
  * @author annejan@badge.team
  */
 class Authenticator extends PragmaRXAuthenticator

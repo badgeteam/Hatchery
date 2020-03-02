@@ -30,6 +30,8 @@ Route::middleware(['auth', 'webauthn', '2fa'])->group(function () {
     Route::get('home', 'HomeController@index')->name('home');
 
     Route::resource('projects', 'ProjectsController', ['except' => ['index', 'show']]);
+    Route::get('import', 'ProjectsController@create')->name('projects.import');
+    Route::post('import', 'ProjectsController@import')->name('projects.import');
     Route::get('projects/{project}/rename', 'ProjectsController@renameForm')->name('projects.rename');
     Route::post('projects/{project}/rename', 'ProjectsController@rename')->name('projects.rename');
     Route::get('projects/{project}/pull', 'ProjectsController@pull')->name('projects.pull');

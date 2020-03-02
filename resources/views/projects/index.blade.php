@@ -17,7 +17,7 @@
                         {{ Form::text('search', $search, ['placeholder' => 'Search']) }}
                     {{ Form::close() }}
                     <div class="pull-right">
-                        <a href="{{ route('projects.create', ['type' => 'import']) }}" class="btn btn-default btn-xs">import</a>
+                        <a href="{{ route('projects.import') }}" class="btn btn-default btn-xs">import</a>
                         <a href="{{ route('projects.create') }}" class="btn btn-success btn-xs">add</a>
                     </div>
                 </div>

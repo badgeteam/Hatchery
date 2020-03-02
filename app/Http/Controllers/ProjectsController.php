@@ -18,7 +18,7 @@ use App\Models\Version;
 use App\Models\Warning;
 use App\Support\Helpers;
 use Cz\Git\GitException;
-use Cz\Git\GitRepository;
+use App\Support\GitRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -94,7 +94,7 @@ class ProjectsController extends Controller
     public function create(Request $request): View
     {
         return view('projects.create')
-            ->with('type', $request->type);
+            ->with('type', $request->routeIs('projects.import') ? 'import' : 'create');
     }
 
     /**
@@ -112,51 +112,10 @@ class ProjectsController extends Controller
         if (Project::isForbidden(Str::slug($request->name, '_'))) {
             return redirect()->route('projects.create')->withInput()->withErrors(['reserved name']);
         }
-        if ($request->has('git')) {
-            $tempFolder = sys_get_temp_dir().'/'.Str::slug($request->name);
-
-            try {
-                $repo = GitRepository::cloneRepository($request->git, $tempFolder, ['-q', '--single-branch', '--depth', 1]);
-            } catch (GitException $e) {
-                return redirect()->route('projects.create', ['type' => 'import'])->withInput()->withErrors([$e->getMessage()]);
-            }
-        }
-        $project = new Project();
 
         try {
-            $project->name = $request->name;
-            $project->category_id = $request->category_id;
-            $project->save();
-            /** @var Version $version */
-            $version = $project->versions->last();
-
-            if ($request->badge_ids) {
-                $badges = Badge::find($request->badge_ids);
-                $project->badges()->attach($badges);
-            }
-            if ($request->description) {
-                $file = new File();
-                $file->name = 'README.md';
-                $file->content = $request->description;
-                $file->version()->associate($version);
-                $file->save();
-            }
-            $project->git = $request->git;
-            if (isset($repo) && isset($tempFolder)) {
-                $project->save();
-                foreach ($version->files as $file) {
-                    // Clean out magical empty __init__.py
-                    $file->delete();
-                }
-                UpdateProject::dispatch($project, Auth::user());
-
-                return redirect()->route('projects.index')->withSuccesses([$project->name.' being imported!']);
-            }
+            $project = $this->storeProjectInfo($request);
         } catch (\Exception $e) {
-            if (isset($tempFolder)) {
-                Helpers::delTree($tempFolder);
-            }
-
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
         }
 
@@ -356,5 +315,72 @@ class ProjectsController extends Controller
         UpdateProject::dispatch($project, Auth::user());
 
         return redirect()->route('projects.index')->withSuccesses([$project->name.' is being updated.']);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param ProjectStoreRequest $request
+     * @param GitRepository       $repo
+     *
+     * @return RedirectResponse
+     */
+    public function import(ProjectStoreRequest $request, GitRepository $repo): RedirectResponse
+    {
+        if (Project::where('slug', Str::slug($request->name, '_'))->exists()) {
+            return redirect()->route('projects.create')->withInput()->withErrors(['slug already exists :(']);
+        }
+        if (Project::isForbidden(Str::slug($request->name, '_'))) {
+            return redirect()->route('projects.create')->withInput()->withErrors(['reserved name']);
+        }
+
+        $tempFolder = sys_get_temp_dir().'/'.Str::slug($request->name);
+
+        try {
+            $repo->cloneRepository($request->git, $tempFolder, ['-q', '--single-branch', '--depth', 1]);
+        } catch (GitException $e) {
+            return redirect()->route('projects.import')->withInput()->withErrors([$e->getMessage()]);
+        }
+
+        try {
+            $project = $this->storeProjectInfo($request);
+            $project->git = $request->git;
+            $project->save();
+            UpdateProject::dispatch($project, Auth::user());
+        } catch (\Exception $e) {
+            Helpers::delTree($tempFolder);
+
+            return redirect()->route('projects.import')->withInput()->withErrors([$e->getMessage()]);
+        }
+
+        return redirect()->route('projects.index')->withSuccesses([$project->name.' being imported!']);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Project
+     */
+    private function storeProjectInfo(Request $request): Project
+    {
+        $project = Project::create([
+            'name' => $request->name,
+            'category_id' => $request->category_id
+        ]);
+
+        if ($request->badge_ids) {
+            $badges = Badge::find($request->badge_ids);
+            $project->badges()->attach($badges);
+        }
+        if ($request->description) {
+            /** @var Version $version */
+            $version = $project->versions->last();
+            $file = new File();
+            $file->name = 'README.md';
+            $file->content = $request->description;
+            $file->version()->associate($version);
+            $file->save();
+        }
+        return $project;
     }
 }

@@ -83,6 +83,16 @@ class Project extends Model
     use SoftDeletes;
 
     /**
+     * Create with these.
+     *
+     * @var array<string>
+     */
+    protected $fillable = [
+        'name',
+        'category_id',
+    ];
+
+    /**
      * Appended magic data.
      *
      * @var array<string>
@@ -158,12 +168,14 @@ class Project extends Model
                 $version->revision = 1;
                 $version->project()->associate($project);
                 $version->save();
-                // add first empty python file :)
-                $file = new File();
-                $file->name = '__init__.py';
-                $file->content = '';
-                $file->version()->associate($version);
-                $file->save();
+                if ($project->git === null) {
+                    // add first empty python file :)
+                    $file = new File();
+                    $file->name = '__init__.py';
+                    $file->content = '';
+                    $file->version()->associate($version);
+                    $file->save();
+                }
             }
         );
 
@@ -480,6 +492,7 @@ class Project extends Model
     /**
      * @param int $bytes
      * @param int $precision
+     *
      * @return string
      */
     private function formatBytes(int $bytes, int $precision = 2): string
@@ -489,6 +502,7 @@ class Project extends Model
         $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
         $pow = min($pow, count($units) - 1);
         $bytes /= (1 << (10 * $pow));
-        return round($bytes, $precision) . ' ' . $units[$pow];
+
+        return round($bytes, $precision).' '.$units[$pow];
     }
 }

@@ -6,8 +6,8 @@ use App\Models\File;
 use App\Models\User;
 use App\Models\Version;
 use App\Support\Helpers;
-use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 /**
@@ -17,16 +17,15 @@ use Tests\TestCase;
  */
 class HelpersTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, WithFaker;
 
     /**
      * Assert the Warning is cast on a non existing folder.
      */
     public function testDelTreeOnNonExistingFolder(): void
     {
-        $faker = Factory::create();
         $this->expectException(\ErrorException::class);
-        $this->assertFalse(Helpers::delTree(sys_get_temp_dir().'/'.$faker->firstName));
+        $this->assertFalse(Helpers::delTree(sys_get_temp_dir().'/'.$this->faker->firstName));
     }
 
     /**
@@ -34,8 +33,7 @@ class HelpersTest extends TestCase
      */
     public function testDelTreeOnEmptyFolder(): void
     {
-        $faker = Factory::create();
-        $folder = sys_get_temp_dir().'/'.$faker->firstName;
+        $folder = sys_get_temp_dir().'/'.$this->faker->firstName;
         mkdir($folder);
         $this->assertFileExists($folder);
         $this->assertTrue(Helpers::delTree($folder));
@@ -47,10 +45,9 @@ class HelpersTest extends TestCase
      */
     public function testDelTreeOnNestedFolder(): void
     {
-        $faker = Factory::create();
-        $folder = sys_get_temp_dir().'/'.$faker->firstName;
+        $folder = sys_get_temp_dir().'/'.$this->faker->firstName;
         mkdir($folder);
-        $secondFolder = $folder.'/'.$faker->firstName;
+        $secondFolder = $folder.'/'.$this->faker->firstName;
         mkdir($secondFolder);
         $this->assertFileExists($folder);
         $this->assertFileExists($secondFolder);
@@ -64,10 +61,9 @@ class HelpersTest extends TestCase
      */
     public function testDelTreeOnNestedFile(): void
     {
-        $faker = Factory::create();
-        $folder = sys_get_temp_dir().'/'.$faker->firstName;
+        $folder = sys_get_temp_dir().'/'.$this->faker->firstName;
         mkdir($folder);
-        $file = $folder.'/'.$faker->firstName;
+        $file = $folder.'/'.$this->faker->firstName;
         touch($file);
         $this->assertFileExists($folder);
         $this->assertFileExists($file);
@@ -81,8 +77,7 @@ class HelpersTest extends TestCase
      */
     public function testAddFilesEmptyFolder(): void
     {
-        $faker = Factory::create();
-        $folder = sys_get_temp_dir().'/'.$faker->firstName;
+        $folder = sys_get_temp_dir().'/'.$this->faker->firstName;
         mkdir($folder);
         $user = factory(User::class)->create();
         $this->be($user);
@@ -99,10 +94,9 @@ class HelpersTest extends TestCase
      */
     public function testAddFilesIgnoresFile(): void
     {
-        $faker = Factory::create();
-        $folder = sys_get_temp_dir().'/'.$faker->firstName;
+        $folder = sys_get_temp_dir().'/'.$this->faker->firstName;
         mkdir($folder);
-        $file = $folder.'/'.$faker->firstName;
+        $file = $folder.'/'.$this->faker->firstName;
         touch($file);
         $user = factory(User::class)->create();
         $this->be($user);
@@ -119,10 +113,9 @@ class HelpersTest extends TestCase
      */
     public function testAddFilesSingleFile(): void
     {
-        $faker = Factory::create();
-        $folder = sys_get_temp_dir().'/'.$faker->firstName;
+        $folder = sys_get_temp_dir().'/'.$this->faker->firstName;
         mkdir($folder);
-        $file = $folder.'/'.$faker->firstName.'.py';
+        $file = $folder.'/'.$this->faker->firstName.'.py';
         touch($file);
         $user = factory(User::class)->create();
         $this->be($user);
@@ -142,12 +135,11 @@ class HelpersTest extends TestCase
      */
     public function testAddFilesNestedFile(): void
     {
-        $faker = Factory::create();
-        $folder = sys_get_temp_dir().'/'.$faker->firstName;
+        $folder = sys_get_temp_dir().'/'.$this->faker->firstName;
         mkdir($folder);
-        $secondFolder = $folder.'/'.$faker->firstName;
+        $secondFolder = $folder.'/'.$this->faker->firstName;
         mkdir($secondFolder);
-        $file = $secondFolder.'/'.$faker->firstName.'.py';
+        $file = $secondFolder.'/'.$this->faker->firstName.'.py';
         touch($file);
         $user = factory(User::class)->create();
         $this->be($user);

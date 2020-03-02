@@ -6,7 +6,7 @@ use App\Models\Project;
 use App\Models\User;
 use App\Support\Helpers;
 use Cz\Git\GitException;
-use Cz\Git\GitRepository;
+use App\Support\GitRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -27,10 +27,8 @@ class UpdateProject implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param Project $project
-     * @param User    $user
-     *
-     * @throws GitException
+     * @param Project       $project
+     * @param User          $user
      *
      * @return void
      */
@@ -43,18 +41,21 @@ class UpdateProject implements ShouldQueue
     /**
      * Execute the job.
      *
+     * @param GitRepository $git
+     *
      * @throws GitException
      *
      * @return void
      */
-    public function handle()
+    public function handle(GitRepository $git)
     {
         $tempFolder = sys_get_temp_dir().'/'.$this->project->slug;
         if (!file_exists($tempFolder.'/.git/HEAD')) {
-            $repo = GitRepository::cloneRepository($this->project->git, $tempFolder,
+            $repo = $git->cloneRepository($this->project->git, $tempFolder,
                 ['-q', '--single-branch', '--depth', 1]);
         } else {
             $repo = new GitRepository($tempFolder);
+            $repo->pull();
         }
 
         if ($this->project->git_commit_id === $repo->getLastCommitId()) {
