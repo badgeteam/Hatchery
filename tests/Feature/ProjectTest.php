@@ -531,4 +531,37 @@ class ProjectTest extends TestCase
         $response->assertRedirect('')->assertSessionHas('errors');
         $this->assertEmpty(Vote::all());
     }
+
+    /**
+     * Check that Project Score is correct.
+     */
+    public function testProjectScore(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        $this->assertEquals(0, $project->score);
+        $this
+            ->actingAs($user)
+            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertEquals(0, $project->score);
+        $this
+            ->actingAs(factory(User::class)->create())
+            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'up']);
+        $project = Project::find($project->id);
+        /** @var Project $project */
+        $this->assertEquals(0.5, $project->score);
+        $this
+            ->actingAs(factory(User::class)->create())
+            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'down']);
+        $this
+            ->actingAs(factory(User::class)->create())
+            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'down']);
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertEquals(-.25, $project->score);
+    }
 }

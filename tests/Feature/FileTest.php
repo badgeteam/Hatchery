@@ -50,7 +50,7 @@ class FileTest extends TestCase
 //    public function testUploadIllegalFile(): void
 //    {
 //        $stub = __DIR__.'/empty.zip';
-//        $name = str_random(8).'.zip';
+//        $name = Str::random(8).'.zip';
 //        $path = sys_get_temp_dir().'/'.$name;
 //        copy($stub, $path);
 //        $file = new UploadedFile($path, $name, 'applications/zip', null, true);

@@ -86,7 +86,7 @@ class PublishProject implements ShouldQueue
         unlink(public_path($filename));
 
         $version->zip = $filename.'.gz';
-        $version->size_of_zip = intval(filesize(public_path($version->zip)));
+        $version->size_of_zip = (int)filesize(public_path($version->zip));
         $version->git_commit_id = $this->project->git_commit_id;
         $version->save();
 

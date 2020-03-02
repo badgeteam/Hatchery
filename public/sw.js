@@ -1,4 +1,4 @@
-const cacheName = 'hatchery::20200225';
+const cacheName = 'hatchery::20200302';
 
 self.addEventListener('install', e => {
 	e.waitUntil(
@@ -34,7 +34,8 @@ self.addEventListener('install', e => {
 				'/vendor/horizon/img/sprite.svg',
 				'/vendor/horizon/app-dark.css',
 				'/vendor/horizon/mix-manifest.json',
-				'/vendor/horizon/app.js'
+				'/vendor/horizon/app.js',
+				'/img/git.png'
 			]).then(() => self.skipWaiting());
 		})
 	);

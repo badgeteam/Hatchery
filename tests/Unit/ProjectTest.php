@@ -10,6 +10,7 @@ use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
 use App\Models\Vote;
+use Faker\Factory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -252,5 +253,32 @@ class ProjectTest extends TestCase
             'name' => 'icon.png',
         ]);
         $this->assertTrue($file->version->project->hasValidIcon());
+    }
+
+    /**
+     * Check the size of content helper.
+     */
+    public function testFileSizeOfContentFormattedAttribute(): void
+    {
+        $faker = Factory::create();
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create(['content' => '']);
+        $this->assertEquals('0 B', $file->version->project->size_of_content_formatted);
+        $file = factory(File::class)->create(['content' => '321']);
+        $this->assertEquals('3 B', $file->version->project->size_of_content_formatted);
+        $file = factory(File::class)->create(['content' => $faker->regexify('[A-Za-z0-9]{1024}')]);
+        $this->assertEquals('1 KiB', $file->version->project->size_of_content_formatted);
+    }
+
+    /**
+     * Check the size of zip helper.
+     */
+    public function testFileSizeOfZipFormattedAttribute(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $this->assertEquals('0 B', $project->size_of_zip_formatted);
     }
 }

@@ -123,6 +123,17 @@ class FileTest extends TestCase
     /**
      * Assert png icon.
      */
+    public function testFileIsInvalidIcon(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create(['name' => 'test.bin']);
+        $this->assertFalse($file->isValidIcon());
+    }
+
+    /**
+     * Assert png icon.
+     */
     public function testFileIsValidIcon(): void
     {
         $user = factory(User::class)->create();

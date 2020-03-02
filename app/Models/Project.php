@@ -299,6 +299,22 @@ class Project extends Model
     }
 
     /**
+     * @return string
+     */
+    public function getSizeOfContentFormattedAttribute(): string
+    {
+        return $this->formatBytes((int) $this->getSizeOfContentAttribute());
+    }
+
+    /**
+     * @return string
+     */
+    public function getSizeOfZipFormattedAttribute(): string
+    {
+        return $this->formatBytes((int) $this->getSizeOfZipAttribute());
+    }
+
+    /**
      * Get the route key for the model.
      *
      * @return string
@@ -425,13 +441,16 @@ class Project extends Model
      */
     public function getScoreAttribute(): float
     {
-        if ($this->votes === null || $this->votes->count() == 0) {
+        if ($this->votes === null || $this->votes->count() === 0) {
             return 0;
         }
         $score = 0;
         foreach ($this->votes as $vote) {
-            if ($vote->type !== 'pig') {
+            if ($vote->type === 'up') {
                 $score++;
+            }
+            if ($vote->type === 'down') {
+                $score--;
             }
         }
 
@@ -456,5 +475,20 @@ class Project extends Model
         }
 
         return $version;
+    }
+
+    /**
+     * @param int $bytes
+     * @param int $precision
+     * @return string
+     */
+    private function formatBytes(int $bytes, int $precision = 2): string
+    {
+        $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB'];
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+        $bytes /= (1 << (10 * $pow));
+        return round($bytes, $precision) . ' ' . $units[$pow];
     }
 }
