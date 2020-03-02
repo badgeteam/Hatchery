@@ -21,7 +21,7 @@ class SitemapTest extends TestCase
     {
         parent::setUp();
         if (file_exists(public_path('sitemap.xml'))) {
-            rename(public_path('sitemap.xml'), sys_get_temp_dir() . '/hatchery_sitemap.tmp');
+            rename(public_path('sitemap.xml'), sys_get_temp_dir().'/hatchery_sitemap.tmp');
         }
     }
 
@@ -30,8 +30,8 @@ class SitemapTest extends TestCase
      */
     protected function tearDown(): void
     {
-        if (file_exists(sys_get_temp_dir() . '/hatchery_sitemap.tmp')) {
-            rename(sys_get_temp_dir() . '/hatchery_sitemap.tmp', public_path('sitemap.xml'));
+        if (file_exists(sys_get_temp_dir().'/hatchery_sitemap.tmp')) {
+            rename(sys_get_temp_dir().'/hatchery_sitemap.tmp', public_path('sitemap.xml'));
         }
         parent::tearDown();
     }
@@ -44,7 +44,7 @@ class SitemapTest extends TestCase
         Artisan::call('sitemap:generate');
         $response = Artisan::output();
         $this->assertEquals('', $response);
-        $dom = new \DOMDocument;
+        $dom = new \DOMDocument();
         $dom->load(public_path('sitemap.xml'));
         $this->assertCount(2, $dom->getElementsByTagName('url'));
     }
@@ -58,7 +58,7 @@ class SitemapTest extends TestCase
         $this->be($user);
         factory(Project::class)->create();
         Artisan::call('sitemap:generate');
-        $dom = new \DOMDocument;
+        $dom = new \DOMDocument();
         $dom->load(public_path('sitemap.xml'));
         $this->assertCount(3, $dom->getElementsByTagName('url'));
     }
