@@ -17,8 +17,8 @@ use Tests\TestCase;
  */
 class HelpersTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
-
+    use RefreshDatabase;
+    use WithFaker;
     /**
      * Assert the Warning is cast on a non existing folder.
      */

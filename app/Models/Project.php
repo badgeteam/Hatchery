@@ -401,35 +401,16 @@ class Project extends Model
     }
 
     /**
-     * Ugly hack for now . .
-     *
      * @return string
      */
     public function getStatusAttribute(): string
     {
-        $status = 'unknown';
-        foreach ($this->states as $state) {
-            if ($status === 'unknown') {
-                $status = $state->status;
-            }
-            if ($status === 'broken') {
-                if ($state->status !== 'unknown') {
-                    $status = $state->status;
-                }
-            }
-            if ($status === 'in_progress') {
-                if ($state->status !== 'broken' && $state->status !== 'unknown') {
-                    $status = $state->status;
-                }
-            }
-            if ($status === 'working') {
-                if ($state->status !== 'broken' && $state->status !== 'unknown' && $state->status !== 'in_progress') {
-                    $status = $state->status;
-                }
-            }
+        foreach (['working', 'in_progress', 'broken'] as $status)
+        if ($this->states()->where('status', $status)->exists()) {
+            return $status;
         }
 
-        return $status;
+        return 'unknown';
     }
 
     /**

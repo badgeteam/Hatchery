@@ -7,13 +7,13 @@ use Cz\Git\GitException;
 /**
  * Class GitRepository.
  *
- * @package App\Support
  * @author annejan@badge.team
  */
 class GitRepository extends \Cz\Git\GitRepository
 {
     /**
-     * @param  string $repository
+     * @param string $repository
+     *
      * @throws GitException
      * @codeCoverageIgnore
      */

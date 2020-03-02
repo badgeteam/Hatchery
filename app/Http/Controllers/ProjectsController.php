@@ -16,9 +16,9 @@ use App\Models\File;
 use App\Models\Project;
 use App\Models\Version;
 use App\Models\Warning;
+use App\Support\GitRepository;
 use App\Support\Helpers;
 use Cz\Git\GitException;
-use App\Support\GitRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -364,8 +364,8 @@ class ProjectsController extends Controller
     private function storeProjectInfo(Request $request): Project
     {
         $project = Project::create([
-            'name' => $request->name,
-            'category_id' => $request->category_id
+            'name'        => $request->name,
+            'category_id' => $request->category_id,
         ]);
 
         if ($request->badge_ids) {
@@ -381,6 +381,7 @@ class ProjectsController extends Controller
             $file->version()->associate($version);
             $file->save();
         }
+
         return $project;
     }
 }

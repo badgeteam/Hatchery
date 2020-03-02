@@ -11,8 +11,8 @@ use App\Models\User;
 use App\Models\Version;
 use App\Models\Vote;
 use App\Models\Warning;
-use App\Support\Helpers;
 use App\Support\GitRepository;
+use App\Support\Helpers;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,8 +28,8 @@ use Tests\TestCase;
  */
 class ProjectTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
-
+    use RefreshDatabase;
+    use WithFaker;
     /**
      * Unit test setup use Mail faker.
      */
@@ -612,7 +612,7 @@ class ProjectTest extends TestCase
         /** @var Project $project */
         $project = factory(Project::class)->create([
             'git_commit_id' => $this->faker->sha256,
-            'git' => $this->faker->url,
+            'git'           => $this->faker->url,
         ]);
         /** @var Version $version */
         $version = $project->versions->first();
@@ -649,7 +649,7 @@ class ProjectTest extends TestCase
         /** @var Project $project */
         $project = factory(Project::class)->create([
             'git_commit_id' => $this->faker->sha256,
-            'git' => $this->faker->url,
+            'git'           => $this->faker->url,
         ]);
         /** @var Version $version */
         $version = $project->versions->first();

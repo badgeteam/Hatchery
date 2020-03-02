@@ -8,7 +8,6 @@ use App\Models\Version;
 /**
  * Class Helpers.
  *
- * @package App\Support
  * @author annejan@badge.team
  */
 class Helpers

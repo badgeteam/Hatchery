@@ -4,9 +4,9 @@ namespace App\Jobs;
 
 use App\Models\Project;
 use App\Models\User;
+use App\Support\GitRepository;
 use App\Support\Helpers;
 use Cz\Git\GitException;
-use App\Support\GitRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -27,8 +27,8 @@ class UpdateProject implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param Project       $project
-     * @param User          $user
+     * @param Project $project
+     * @param User    $user
      *
      * @return void
      */
