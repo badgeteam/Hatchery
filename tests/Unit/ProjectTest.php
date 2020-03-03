@@ -24,6 +24,7 @@ class ProjectTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
+
     /**
      * Assert the Project has a relation with a single User.
      */

@@ -19,6 +19,7 @@ class UserTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
+
     /**
      * login failed get redirected.
      */
