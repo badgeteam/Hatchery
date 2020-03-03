@@ -6,11 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Class VoteRequest.
+ * Class VoteStoreRequest.
  *
  * @author annejan@badge.team
  */
-class VoteRequest extends FormRequest
+class VoteStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

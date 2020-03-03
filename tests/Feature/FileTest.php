@@ -93,6 +93,25 @@ class FileTest extends TestCase
         $response->assertStatus(403);
     }
 
+
+    /**
+     * Check the files edit page doesn't work for git projects.
+     */
+    public function testFilesEditGit(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create();
+        $file->version->project->git = 'some.uri';
+        $file->version->project->save();
+        $response = $this
+            ->actingAs($user)
+            ->get('/files/'.$file->id.'/edit');
+        $response->assertStatus(403);
+    }
+
+
     /**
      * Check the files can be stored.
      */
@@ -131,6 +150,26 @@ time.localtime()';
     }
 
     /**
+     * Check the files can't be updated when project uses git.
+     */
+    public function testFilesUpdateGit(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create();
+        $file->version->project->git = 'some.uri';
+        $file->version->project->save();
+        $data = 'import time
+time.localtime()';
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/files/'.$file->id, ['file_content' => $data]);
+        $response->assertStatus(403);
+    }
+
+
+    /**
      * Check the files can be deleted.
      */
     public function testFilesDestroy(): void
@@ -142,6 +181,23 @@ time.localtime()';
             ->actingAs($user)
             ->call('delete', '/files/'.$file->id);
         $response->assertRedirect('/projects/'.$file->version->project->slug.'/edit')->assertSessionHas('successes');
+    }
+
+    /**
+     * Check the files can't be deleted from git managed project.
+     */
+    public function testFilesDestroyGit(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create();
+        $file->version->project->git = 'some.uri';
+        $file->version->project->save();
+        $response = $this
+            ->actingAs($user)
+            ->call('delete', '/files/'.$file->id);
+        $response->assertStatus(403);
     }
 
     /**

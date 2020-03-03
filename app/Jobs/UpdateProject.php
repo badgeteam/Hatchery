@@ -54,7 +54,7 @@ class UpdateProject implements ShouldQueue
             $repo = $git->cloneRepository($this->project->git, $tempFolder,
                 ['-q', '--single-branch', '--depth', 1]);
         } else {
-            $repo = new GitRepository($tempFolder);
+            $repo = $git->open($tempFolder);
             $repo->pull();
         }
 

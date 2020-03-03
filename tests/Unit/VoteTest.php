@@ -85,16 +85,4 @@ class VoteTest extends TestCase
         $vote = Vote::find($vote->id);
         $this->assertEquals('down', $vote->type);
     }
-
-//    /**
-//     * Assert the Vote type is sane.
-//     */
-//    public function testVoteTypeEnumIllegal(): void
-//    {
-//        $this->expectException(QueryException::class);
-//        $user = factory(User::class)->create();
-//        $this->be($user);
-//        $project = factory(Project::class)->create();
-//        factory(Vote::class)->create(['project_id' => $project->id, 'type' => 'broken']);
-//    }
 }

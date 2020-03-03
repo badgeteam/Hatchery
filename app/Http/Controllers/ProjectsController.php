@@ -146,19 +146,16 @@ class ProjectsController extends Controller
     public function update(ProjectUpdateRequest $request, Project $project): RedirectResponse
     {
         $project->category_id = $request->category_id;
-
         try {
-            $project = $this->manageDependencies($project, $request);
-            $project = $this->manageBadges($project, $request);
             $project->save();
-
-            if (isset($request->publish)) {
-                return $this->publish($project);
-            }
+            $this->manageDependencies($project, $request);
+            $this->manageBadges($project, $request);
         } catch (\Exception $e) {
             return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors([$e->getMessage()]);
         }
-
+        if (isset($request->publish)) {
+            return $this->publish($project);
+        }
         return redirect()->route('projects.index')->withSuccesses([$project->name.' saved']);
     }
 
@@ -358,11 +355,12 @@ class ProjectsController extends Controller
      * @param Project $project
      * @param Request $request
      *
-     * @return Project
+     * @return void
      */
-    private function manageDependencies(Project $project, Request $request): Project
+    private function manageDependencies(Project $project, Request $request): void
     {
         if ($request->has('dependencies')) {
+            /** @var array<string> $dependencies */
             $dependencies = $request->get('dependencies');
             foreach ($project->dependencies as $dependency) {
                 if (!in_array($dependency->id, $dependencies)) {
@@ -376,21 +374,21 @@ class ProjectsController extends Controller
                     $project->dependencies()->save($dep);
                 }
             }
-        } else {
-            foreach ($project->dependencies as $dependency) {
-                $dependency->pivot->delete();
-            }
+            return;
         }
-        return $project;
+
+        foreach ($project->dependencies as $dependency) {
+            $dependency->pivot->delete();
+        }
     }
 
     /**
      * @param Project $project
      * @param Request $request
      *
-     * @return Project
+     * @return void
      */
-    private function manageBadges(Project $project, Request $request): Project
+    private function manageBadges(Project $project, Request $request): void
     {
         if ($request->has('badge_ids')) {
             $project->badges()->detach();
@@ -407,7 +405,6 @@ class ProjectsController extends Controller
                 }
             }
         }
-        return $project;
     }
 
     /**
@@ -415,13 +412,14 @@ class ProjectsController extends Controller
      *
      * @return Badge|null
      */
-    private function getBadge(Request $request):? Badge
+    private function getBadge(Request $request): ?Badge
     {
         $badge = null;
         if ($request->has('badge') && $request->get('badge')) {
             /** @var Badge|null $badge */
             $badge = Badge::where('slug', $request->get('badge'))->firstOrFail();
         }
+
         return $badge;
     }
 
@@ -430,13 +428,14 @@ class ProjectsController extends Controller
      *
      * @return Category|null
      */
-    private function getCategory(Request $request):? Category
+    private function getCategory(Request $request): ?Category
     {
         $category = null;
         if ($request->has('category') && $request->get('category')) {
             /** @var Category|null $category */
             $category = Category::where('slug', $request->get('category'))->firstOrFail();
         }
+
         return $category;
     }
 
@@ -445,12 +444,13 @@ class ProjectsController extends Controller
      *
      * @return string|null
      */
-    private function getSearch(Request $request):? string
+    private function getSearch(Request $request): ?string
     {
         $search = null;
         if ($request->has('search')) {
             $search = $request->get('search');
         }
+
         return $search;
     }
 }

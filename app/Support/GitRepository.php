@@ -15,7 +15,6 @@ class GitRepository extends \Cz\Git\GitRepository
      * @param string $repository
      *
      * @throws GitException
-     * @codeCoverageIgnore
      */
     public function __construct($repository = '')
     {
@@ -24,5 +23,22 @@ class GitRepository extends \Cz\Git\GitRepository
         }
 
         parent::__construct($repository);
+    }
+
+    /**
+     * @param string $repository
+     *
+     * @return GitRepository
+     */
+    public function open(string $repository): self
+    {
+        if(basename($repository) === '.git')
+        {
+            $repository = dirname($repository);
+        }
+
+        $this->repository = (string) realpath($repository);
+
+        return $this;
     }
 }

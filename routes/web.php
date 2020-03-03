@@ -44,7 +44,7 @@ Route::middleware(['auth', 'webauthn', '2fa'])->group(function () {
 
     Route::get('profile', 'UsersController@redirect');
     Route::resource('users', 'UsersController', ['only' => ['edit', 'update', 'destroy']]);
-    Route::resource('votes', 'VotesController', ['only' => ['store', 'destroy']]);
+    Route::resource('votes', 'VotesController', ['only' => ['store', 'update', 'destroy']]);
 });
 
 Route::resource('projects', 'ProjectsController', ['only' => ['index', 'show']]);

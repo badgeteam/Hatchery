@@ -22,5 +22,6 @@ parameters:
         - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::twice\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::andReturnSelf\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::andReturns\(\).#'
+        - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::andReturn\(\).#'
     excludes_analyse:
             - tests/_support/*

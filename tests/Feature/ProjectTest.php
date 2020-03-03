@@ -144,6 +144,20 @@ class ProjectTest extends TestCase
     }
 
     /**
+     * Check the projects edit page functions.
+     */
+    public function testProjectsEditGit(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create(['git' => $this->faker->url]);
+        $response = $this
+            ->actingAs($user)
+            ->get('/projects/'.$project->slug.'/edit');
+        $response->assertStatus(200);
+    }
+
+    /**
      * Check the projects edit page functions for other users.
      */
     public function testProjectsEditOtherUser(): void
@@ -540,6 +554,92 @@ class ProjectTest extends TestCase
     }
 
     /**
+     * Check that a user can delete Vote.
+     */
+    public function testProjectsVoteDelete(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $vote = factory(Vote::class)->create([
+            'project_id' => $project->id,
+            'type'       => 'pig'
+        ]);
+        $response = $this
+            ->actingAs($user)
+            ->call('delete', '/votes/'.$vote->id);
+        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
+        $this->assertEmpty(Vote::all());
+    }
+
+    /**
+     * Check that a user can delete other persons Vote.
+     */
+    public function testProjectsVoteDeleteOtherUser(): void
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $vote = factory(Vote::class)->create([
+            'project_id' => $project->id,
+            'type'       => 'pig'
+        ]);
+        $response = $this
+            ->actingAs($otherUser)
+            ->call('delete', '/votes/'.$vote->id);
+        $response->assertStatus(403);
+        $this->assertCount(1, Vote::all());
+    }
+
+    /**
+     * Check that a user can update his/her Vote.
+     */
+    public function testProjectsVoteUpdates(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $vote = factory(Vote::class)->create([
+            'project_id' => $project->id,
+            'type'       => 'pig'
+        ]);
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/votes/'.$vote->id, [
+                'type' => 'up'
+            ]);
+        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
+        /** @var Vote $vote */
+        $vote = Vote::find($vote->id);
+        $this->assertEquals('up', $vote->type);
+    }
+
+    /**
+     * Check that a user can't update other persons Vote.
+     */
+    public function testProjectsVoteUpdatesOther(): void
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $vote = factory(Vote::class)->create([
+            'project_id' => $project->id,
+            'type'       => 'pig'
+        ]);
+        $response = $this
+            ->actingAs($otherUser)
+            ->call('put', '/votes/'.$vote->id, [
+                'type' => 'up'
+            ]);
+        $response->assertStatus(403);
+        /** @var Vote $vote */
+        $vote = Vote::find($vote->id);
+        $this->assertEquals('pig', $vote->type);
+    }
+
+    /**
      * Check that Project Score is correct.
      */
     public function testProjectScore(): void
@@ -623,7 +723,7 @@ class ProjectTest extends TestCase
         mkdir($folder);
 
         $hash = $project->git_commit_id;
-        $mock = $this->mock(GitRepository::class); // twice since folder is not real git repo
+        $mock = $this->mock(GitRepository::class);
         $mock->expects('cloneRepository')->andReturnSelf();
         $mock->expects('getLastCommitId')->andReturns($hash);
         $this->app->instance(GitRepository::class, $mock);
@@ -642,7 +742,7 @@ class ProjectTest extends TestCase
     /**
      * Check the projects can be pulled.
      */
-    public function testProjectsPull(): void
+    public function testProjectsPullClean(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -660,8 +760,48 @@ class ProjectTest extends TestCase
         mkdir($folder);
 
         $hash = $this->faker->sha256;
-        $mock = $this->mock(GitRepository::class); // twice since folder is not real git repo
+        $mock = $this->mock(GitRepository::class);
         $mock->expects('cloneRepository')->andReturnSelf();
+        $mock->expects('getLastCommitId')->twice()->andReturns($hash);
+        $this->app->instance(GitRepository::class, $mock);
+
+        $response = $this
+            ->actingAs($user)
+            ->call('get', '/projects/'.$project->slug.'/pull');
+        $response->assertRedirect('/projects/')->assertSessionHas('successes');
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertEquals($hash, $project->git_commit_id);
+        $this->assertEquals(2, $project->revision);
+        Helpers::delTree($folder);
+    }
+
+    /**
+     * Check the projects can be pulled cheaply.
+     */
+    public function testProjectsPullRecycleFolder(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create([
+            'git_commit_id' => $this->faker->sha256,
+            'git'           => $this->faker->url,
+        ]);
+        /** @var Version $version */
+        $version = $project->versions->first();
+        $version->zip = 'test';
+        $version->save();
+
+        $folder = sys_get_temp_dir().'/'.$project->slug;
+        mkdir($folder);
+        mkdir($folder.'/.git');
+        touch($folder.'/.git/HEAD');
+
+        $hash = $this->faker->sha256;
+        $mock = $this->mock(GitRepository::class);
+        $mock->expects('open')->andReturnSelf();
+        $mock->expects('pull')->andReturn();
         $mock->expects('getLastCommitId')->twice()->andReturns($hash);
         $this->app->instance(GitRepository::class, $mock);
 
