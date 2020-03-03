@@ -32,8 +32,7 @@ class GitRepository extends \Cz\Git\GitRepository
      */
     public function open(string $repository): self
     {
-        if(basename($repository) === '.git')
-        {
+        if (basename($repository) === '.git') {
             $repository = dirname($repository);
         }
 

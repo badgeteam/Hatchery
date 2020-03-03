@@ -30,6 +30,7 @@ class ProjectTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
+
     /**
      * Unit test setup use Mail faker.
      */
@@ -563,7 +564,7 @@ class ProjectTest extends TestCase
         $project = factory(Project::class)->create();
         $vote = factory(Vote::class)->create([
             'project_id' => $project->id,
-            'type'       => 'pig'
+            'type'       => 'pig',
         ]);
         $response = $this
             ->actingAs($user)
@@ -583,7 +584,7 @@ class ProjectTest extends TestCase
         $project = factory(Project::class)->create();
         $vote = factory(Vote::class)->create([
             'project_id' => $project->id,
-            'type'       => 'pig'
+            'type'       => 'pig',
         ]);
         $response = $this
             ->actingAs($otherUser)
@@ -602,12 +603,12 @@ class ProjectTest extends TestCase
         $project = factory(Project::class)->create();
         $vote = factory(Vote::class)->create([
             'project_id' => $project->id,
-            'type'       => 'pig'
+            'type'       => 'pig',
         ]);
         $response = $this
             ->actingAs($user)
             ->call('put', '/votes/'.$vote->id, [
-                'type' => 'up'
+                'type' => 'up',
             ]);
         $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
         /** @var Vote $vote */
@@ -626,12 +627,12 @@ class ProjectTest extends TestCase
         $project = factory(Project::class)->create();
         $vote = factory(Vote::class)->create([
             'project_id' => $project->id,
-            'type'       => 'pig'
+            'type'       => 'pig',
         ]);
         $response = $this
             ->actingAs($otherUser)
             ->call('put', '/votes/'.$vote->id, [
-                'type' => 'up'
+                'type' => 'up',
             ]);
         $response->assertStatus(403);
         /** @var Vote $vote */
@@ -814,5 +815,85 @@ class ProjectTest extends TestCase
         $this->assertEquals($hash, $project->git_commit_id);
         $this->assertEquals(2, $project->revision);
         Helpers::delTree($folder);
+    }
+
+    /**
+     * Check the projects can't be renamed.
+     */
+    public function testProjectsRename(): void
+    {
+        $name = $this->faker->name;
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        $this->assertNotEquals($name, $project->name);
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/projects/'.$project->slug.'/rename', [
+                'name' => $name,
+            ]);
+        $response->assertStatus(403);
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertNotEquals($name, $project->name);
+        $this->assertNotEquals(Str::slug($name, '_'), $project->slug);
+    }
+
+    /**
+     * Check admin can rename project.
+     */
+    public function testProjectsRenameAdminUser(): void
+    {
+        $name = $this->faker->name;
+        $user = factory(User::class)->create([
+            'admin' => true,
+        ]);
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        $this->assertNotEquals($name, $project->name);
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/projects/'.$project->slug.'/rename', [
+                'name' => $name,
+            ]);
+        $response->assertRedirect('/projects/'.Str::slug($name, '_').'/edit')->assertSessionHas('successes');
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertEquals($name, $project->name);
+        $this->assertEquals(Str::slug($name, '_'), $project->slug);
+    }
+
+    /**
+     * Check the projects can't be renamed.
+     */
+    public function testProjectsRenameForm(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('get', '/projects/'.$project->slug.'/rename');
+        $response->assertStatus(403);
+    }
+
+    /**
+     * Check admin can rename project.
+     */
+    public function testProjectsRenameFormAdminUser(): void
+    {
+        $user = factory(User::class)->create([
+            'admin' => true,
+        ]);
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('get', '/projects/'.$project->slug.'/rename');
+        $response->assertStatus(200);
     }
 }

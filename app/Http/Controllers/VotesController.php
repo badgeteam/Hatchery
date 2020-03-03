@@ -61,7 +61,7 @@ class VotesController extends Controller
     }
 
     /**
-     * @param Vote $vote
+     * @param Vote              $vote
      * @param VoteUpdateRequest $request
      *
      * @return RedirectResponse
@@ -75,6 +75,7 @@ class VotesController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('projects.show', ['project' => $vote->project->slug])->withInput()->withErrors([$e->getMessage()]);
         }
+
         return redirect()->route('projects.show', ['project' => $vote->project->slug])->withSuccesses(['Vote updated']);
     }
 

@@ -93,7 +93,6 @@ class FileTest extends TestCase
         $response->assertStatus(403);
     }
 
-
     /**
      * Check the files edit page doesn't work for git projects.
      */
@@ -110,7 +109,6 @@ class FileTest extends TestCase
             ->get('/files/'.$file->id.'/edit');
         $response->assertStatus(403);
     }
-
 
     /**
      * Check the files can be stored.
@@ -167,7 +165,6 @@ time.localtime()';
             ->call('put', '/files/'.$file->id, ['file_content' => $data]);
         $response->assertStatus(403);
     }
-
 
     /**
      * Check the files can be deleted.

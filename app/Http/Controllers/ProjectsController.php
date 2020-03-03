@@ -146,6 +146,7 @@ class ProjectsController extends Controller
     public function update(ProjectUpdateRequest $request, Project $project): RedirectResponse
     {
         $project->category_id = $request->category_id;
+
         try {
             $project->save();
             $this->manageDependencies($project, $request);
@@ -156,6 +157,7 @@ class ProjectsController extends Controller
         if (isset($request->publish)) {
             return $this->publish($project);
         }
+
         return redirect()->route('projects.index')->withSuccesses([$project->name.' saved']);
     }
 
@@ -237,6 +239,8 @@ class ProjectsController extends Controller
      */
     public function renameForm(Project $project): View
     {
+        $this->authorize('rename', $project);
+
         return view('projects.rename')
             ->with('project', $project);
     }
@@ -251,6 +255,8 @@ class ProjectsController extends Controller
      */
     public function rename(ProjectRenameRequest $request, Project $project): RedirectResponse
     {
+        $this->authorize('rename', $project);
+
         $slug = Str::slug($request->name);
 
         if (Project::whereSlug($slug)->exists()) {
@@ -374,6 +380,7 @@ class ProjectsController extends Controller
                     $project->dependencies()->save($dep);
                 }
             }
+
             return;
         }
 
