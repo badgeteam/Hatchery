@@ -45,9 +45,10 @@ class TwoFAController extends Controller
     }
 
     /**
-     * @return RedirectResponse
      * @throws \PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException
      * @throws \PragmaRX\Google2FA\Exceptions\InvalidCharactersException
+     *
+     * @return RedirectResponse
      */
     public function generate2faSecret()
     {

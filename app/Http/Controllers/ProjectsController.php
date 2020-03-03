@@ -52,23 +52,23 @@ class ProjectsController extends Controller
      */
     public function index(Request $request): View
     {
-        $badge = $category = $search = '';
-        if ($request->has('badge')) {
-            $badge = Badge::where('slug', $request->get('badge'))->first();
-        }
-        if ($badge === '' || !$badge) {
-            $projects = Project::orderBy('id', 'DESC');
-        } else {
+        $badge = $this->getBadge($request);
+        $category = $this->getCategory($request);
+        $search = $this->getSearch($request);
+
+        if ($badge) {
             $projects = $badge->projects()->orderBy('id', 'DESC');
             $badge = $badge->slug;
+        } else {
+            $projects = Project::orderBy('id', 'DESC');
         }
-        if ($request->has('category') && $request->get('category')) {
-            $category = Category::where('slug', $request->get('category'))->firstOrFail();
+
+        if ($category) {
             $projects = $projects->where('category_id', $category->id);
             $category = $category->slug;
         }
-        if ($request->has('search')) {
-            $search = $request->get('search');
+
+        if ($search) {
             $projects = $projects->where(
                 function (Builder $query) use ($search) {
                     $query->where('name', 'like', '%'.$search.'%');
@@ -145,42 +145,11 @@ class ProjectsController extends Controller
      */
     public function update(ProjectUpdateRequest $request, Project $project): RedirectResponse
     {
+        $project->category_id = $request->category_id;
+
         try {
-            $project->category_id = $request->category_id;
-            if ($request->has('dependencies')) {
-                $dependencies = $request->get('dependencies');
-                foreach ($project->dependencies as $dependency) {
-                    if (!in_array($dependency->id, $dependencies)) {
-                        $dependency->pivot->delete();
-                    }
-                }
-                foreach ($dependencies as $dependency) {
-                    if (!$project->dependencies->contains($dependency)) {
-                        /** @var Project $dep */
-                        $dep = Project::find($dependency);
-                        $project->dependencies()->save($dep);
-                    }
-                }
-            } else {
-                foreach ($project->dependencies as $dependency) {
-                    $dependency->pivot->delete();
-                }
-            }
-
-            if ($request->badge_ids) {
-                $project->badges()->detach();
-                $badges = Badge::find($request->badge_ids);
-                $project->badges()->attach($badges);
-
-                foreach ($request->badge_ids as $badge_id) {
-                    if (array_key_exists($badge_id, $request->badge_status)) {
-                        /** @var BadgeProject $state */
-                        $state = BadgeProject::where('badge_id', $badge_id)->where('project_id', $project->id)->first();
-                        $state->status = $request->badge_status[$badge_id];
-                        $state->save();
-                    }
-                }
-            }
+            $project = $this->manageDependencies($project, $request);
+            $project = $this->manageBadges($project, $request);
             $project->save();
 
             if (isset($request->publish)) {
@@ -383,5 +352,105 @@ class ProjectsController extends Controller
         }
 
         return $project;
+    }
+
+    /**
+     * @param Project $project
+     * @param Request $request
+     *
+     * @return Project
+     */
+    private function manageDependencies(Project $project, Request $request): Project
+    {
+        if ($request->has('dependencies')) {
+            $dependencies = $request->get('dependencies');
+            foreach ($project->dependencies as $dependency) {
+                if (!in_array($dependency->id, $dependencies)) {
+                    $dependency->pivot->delete();
+                }
+            }
+            foreach ($dependencies as $dependency) {
+                if (!$project->dependencies->contains($dependency)) {
+                    /** @var Project $dep */
+                    $dep = Project::find($dependency);
+                    $project->dependencies()->save($dep);
+                }
+            }
+        } else {
+            foreach ($project->dependencies as $dependency) {
+                $dependency->pivot->delete();
+            }
+        }
+        return $project;
+    }
+
+    /**
+     * @param Project $project
+     * @param Request $request
+     *
+     * @return Project
+     */
+    private function manageBadges(Project $project, Request $request): Project
+    {
+        if ($request->has('badge_ids')) {
+            $project->badges()->detach();
+            $badges = Badge::find($request->get('badge_ids'));
+            $project->badges()->attach($badges);
+            $status = $request->get('badge_status');
+
+            foreach ($request->get('badge_ids') as $badge_id) {
+                if (array_key_exists($badge_id, $status)) {
+                    /** @var BadgeProject $state */
+                    $state = BadgeProject::where('badge_id', $badge_id)->where('project_id', $project->id)->first();
+                    $state->status = $status[$badge_id];
+                    $state->save();
+                }
+            }
+        }
+        return $project;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Badge|null
+     */
+    private function getBadge(Request $request):? Badge
+    {
+        $badge = null;
+        if ($request->has('badge') && $request->get('badge')) {
+            /** @var Badge|null $badge */
+            $badge = Badge::where('slug', $request->get('badge'))->firstOrFail();
+        }
+        return $badge;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Category|null
+     */
+    private function getCategory(Request $request):? Category
+    {
+        $category = null;
+        if ($request->has('category') && $request->get('category')) {
+            /** @var Category|null $category */
+            $category = Category::where('slug', $request->get('category'))->firstOrFail();
+        }
+        return $category;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return string|null
+     */
+    private function getSearch(Request $request):? string
+    {
+        $search = null;
+        if ($request->has('search')) {
+            $search = $request->get('search');
+        }
+        return $search;
     }
 }

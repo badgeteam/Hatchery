@@ -405,9 +405,10 @@ class Project extends Model
      */
     public function getStatusAttribute(): string
     {
-        foreach (['working', 'in_progress', 'broken'] as $status)
-        if ($this->states()->where('status', $status)->exists()) {
-            return $status;
+        foreach (['working', 'in_progress', 'broken'] as $status) {
+            if ($this->states()->where('status', $status)->exists()) {
+                return $status;
+            }
         }
 
         return 'unknown';
