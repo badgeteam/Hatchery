@@ -12,7 +12,13 @@
 Dependants
 <ul>
 @forelse($project->dependants as $dependant)
-    <li><a href="{{ route('projects.edit', ['project' => $dependant->id]) }}">{{ $dependant->name }}</a></li>
+    <li>
+        @can('update', $dependant)
+        <a href="{{ route('projects.edit', ['project' => $dependant->slug]) }}">{{ $dependant->name }}</a>
+        @else
+        <a href="{{ route('projects.show', ['project' => $dependant->slug]) }}">{{ $dependant->name }}</a>
+        @endcan
+    </li>
 @empty
     <li>No dependants found</li>
 @endforelse
