@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * Class Badge.
  *
  * @author annejan@badge.team
+ *
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read int|null $projects_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
  * @property-read int|null $states_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge query()

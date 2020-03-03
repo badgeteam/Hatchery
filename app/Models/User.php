@@ -12,6 +12,7 @@ use LaravelWebauthn\Models\WebauthnKey;
  * Class User.
  *
  * @author annejan@badge.team
+ *
  * @property int $id
  * @property bool $admin
  * @property string $name
@@ -34,6 +35,7 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @property-read int|null $warnings_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\LaravelWebauthn\Models\WebauthnKey[] $webauthnKeys
  * @property-read int|null $webauthn_keys_count
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()

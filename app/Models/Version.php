@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
  * Class Version.
  *
  * @author annejan@badge.team
+ *
  * @property int $id
  * @property int $user_id
  * @property int $project_id
@@ -28,6 +29,7 @@ use Illuminate\Support\Facades\Auth;
  * @property-read bool $published
  * @property-read \App\Models\Project $project
  * @property-read \App\Models\User $user
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version newQuery()

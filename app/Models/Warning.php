@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
  * Class Warning.
  *
  * @author annejan@badge.team
+ *
  * @property int $id
  * @property int $user_id
  * @property int $project_id
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Project $project
  * @property-read \App\Models\User $user
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning newQuery()

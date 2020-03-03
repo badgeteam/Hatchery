@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
  * Class Category.
  *
  * @author annejan@badge.team
+ *
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -21,6 +22,7 @@ use Illuminate\Support\Str;
  * @property-read int $eggs
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
  * @property-read int|null $projects_count
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newQuery()

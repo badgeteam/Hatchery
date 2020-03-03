@@ -13,6 +13,7 @@ use Intervention\Image\Facades\Image;
  * Class File.
  *
  * @author annejan@badge.team
+ *
  * @property int $id
  * @property int $user_id
  * @property int $version_id
@@ -28,6 +29,7 @@ use Intervention\Image\Facades\Image;
  * @property-read string|null $viewable
  * @property-read \App\Models\User $user
  * @property-read \App\Models\Version $version
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newQuery()
@@ -212,6 +214,7 @@ class File extends Model
         if (array_key_exists($this->extension, self::$viewables)) {
             return self::$viewables[$this->extension];
         }
+
         return null;
     }
 

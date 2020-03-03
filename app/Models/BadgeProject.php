@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Class BadgeProject.
  *
  * @author annejan@badge.team
+ *
  * @property int $id
  * @property int $badge_id
  * @property int $project_id
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Badge $badge
  * @property-read \App\Models\Project $project
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject query()

@@ -16,6 +16,7 @@ use Illuminate\Support\Str;
  * Class Project.
  *
  * @author annejan@badge.team
+ *
  * @property int $id
  * @property int $category_id
  * @property int $user_id
@@ -53,6 +54,7 @@ use Illuminate\Support\Str;
  * @property-read int|null $votes_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
  * @property-read int|null $warnings_count
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()
