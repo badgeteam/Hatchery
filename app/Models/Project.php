@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Helpers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -14,69 +15,65 @@ use Illuminate\Support\Str;
 /**
  * Class Project.
  *
+ * @author annejan@badge.team
+ * @property int $id
+ * @property int $category_id
+ * @property int $user_id
+ * @property string $name
+ * @property string $slug
+ * @property string|null $git
+ * @property string|null $git_commit_id
+ * @property \Illuminate\Support\Carbon|null $published_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property int $download_counter
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Badge[] $badges
+ * @property-read int|null $badges_count
  * @property-read string $category
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $dependants
+ * @property-read int|null $dependants_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $dependencies
+ * @property-read int|null $dependencies_count
+ * @property-read string|null $description
+ * @property-read string|null $description_html
  * @property-read string $revision
+ * @property-read float $score
  * @property-read int $size_of_content
+ * @property-read string $size_of_content_formatted
  * @property-read int $size_of_zip
+ * @property-read string $size_of_zip_formatted
+ * @property-read string $status
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
+ * @property-read int|null $states_count
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Version[] $versions
- *
+ * @property-read int|null $versions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
+ * @property-read int|null $votes_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
+ * @property-read int|null $warnings_count
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Project onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project query()
  * @method static bool|null restore()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withoutTrashed()
- * @mixin \Eloquent
- *
- * @property-read int|null $badges_count
- * @property-read int|null $dependants_count
- * @property-read int|null $dependencies_count
- * @property-read int|null $versions_count
- * @property int $id
- * @property int $category_id
- * @property int $user_id
- * @property string $name
- * @property string|null $slug
- * @property string|null $description
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
- * @property int $download_counter
- * @property string $status
- * @property \Illuminate\Support\Carbon|null $published_at
- * @property string|null $git
- * @property string|null $git_commit_id
- * @property-read string|null $description_html
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
- * @property-read int|null $votes_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
- * @property-read int|null $states_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
- * @property-read int|null $warnings_count
- * @property-read float $score
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereDownloadCounter($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project wherePublishedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereGit($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereGitCommitId($value)
- *
- * @author annejan@badge.team
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project wherePublishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withoutTrashed()
+ * @mixin \Eloquent
  */
 class Project extends Model
 {
@@ -315,7 +312,7 @@ class Project extends Model
      */
     public function getSizeOfContentFormattedAttribute(): string
     {
-        return $this->formatBytes((int) $this->getSizeOfContentAttribute());
+        return Helpers::formatBytes((int) $this->getSizeOfContentAttribute());
     }
 
     /**
@@ -323,7 +320,7 @@ class Project extends Model
      */
     public function getSizeOfZipFormattedAttribute(): string
     {
-        return $this->formatBytes((int) $this->getSizeOfZipAttribute());
+        return Helpers::formatBytes((int) $this->getSizeOfZipAttribute());
     }
 
     /**
@@ -469,22 +466,5 @@ class Project extends Model
         }
 
         return $version;
-    }
-
-    /**
-     * @param int $bytes
-     * @param int $precision
-     *
-     * @return string
-     */
-    private function formatBytes(int $bytes, int $precision = 2): string
-    {
-        $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB'];
-        $bytes = max($bytes, 0);
-        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
-        $pow = min($pow, count($units) - 1);
-        $bytes /= (1 << (10 * $pow));
-
-        return round($bytes, $precision).' '.$units[$pow];
     }
 }

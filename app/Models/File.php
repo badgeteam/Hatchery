@@ -12,31 +12,28 @@ use Intervention\Image\Facades\Image;
 /**
  * Class File.
  *
- * @property-read bool $editable
- * @property-read string $extension
- * @property-read int $size_of_content
- * @property-read \App\Models\User $user
- * @property-read \App\Models\Version $version
- *
- * @method static bool|null forceDelete()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newQuery()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\File onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File query()
- * @method static bool|null restore()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\File withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\File withoutTrashed()
- * @mixin \Eloquent
- *
+ * @author annejan@badge.team
  * @property int $id
- * @property int|null $user_id
+ * @property int $user_id
  * @property int $version_id
  * @property string $name
  * @property mixed|null $content
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
+ * @property-read bool $editable
+ * @property-read string $extension
+ * @property-read string $mime
+ * @property-read int $size_of_content
+ * @property-read string|null $viewable
+ * @property-read \App\Models\User $user
+ * @property-read \App\Models\Version $version
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\File onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File query()
+ * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereDeletedAt($value)
@@ -45,10 +42,9 @@ use Intervention\Image\Facades\Image;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereVersionId($value)
- *
- * @property-read string $mime
- *
- * @author annejan@badge.team
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\File withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\File withoutTrashed()
+ * @mixin \Eloquent
  */
 class File extends Model
 {
@@ -71,7 +67,7 @@ class File extends Model
     /**
      * Mime types for supported extensions.
      *
-     * @var array<string>
+     * @var array<string,string>
      */
     public static $mimes = [
         'py'   => 'application/x-python-code',
@@ -89,6 +85,20 @@ class File extends Model
         'mod'  => 'audio/mod',
         'xm'   => 'audio/module-xm',
         's3m'  => 'audio/s3m',
+    ];
+
+    /**
+     * File extensions viewable by Hatchery.
+     *
+     * @var array<string,string>
+     */
+    public static $viewables = [
+        'png'  => 'image',
+        'bmp'  => 'image',
+        'jpg'  => 'image',
+        'mp3'  => 'audio',
+        'wav'  => 'audio',
+        'ogg'  => 'audio',
     ];
 
     /**
@@ -159,9 +169,7 @@ class File extends Model
      */
     public function getExtensionAttribute(): string
     {
-        $parts = explode('.', $this->name);
-
-        return (string) end($parts);
+        return ltrim((string) strstr($this->name, '.'), '.');
     }
 
     /**
@@ -189,12 +197,22 @@ class File extends Model
      */
     public function getMimeAttribute(): string
     {
-        $ext = ltrim((string) strstr($this->name, '.'), '.');
-        if (array_key_exists($ext, self::$mimes)) {
-            return self::$mimes[$ext];
+        if (array_key_exists($this->extension, self::$mimes)) {
+            return self::$mimes[$this->extension];
         }
 
         return 'application/octet-stream';
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getViewableAttribute(): ?string
+    {
+        if (array_key_exists($this->extension, self::$viewables)) {
+            return self::$viewables[$this->extension];
+        }
+        return null;
     }
 
     /**

@@ -11,10 +11,12 @@
                 <div class="panel-heading">
                     <strong>{{ $file->name }}</strong>
                     <div class="pull-right">
-                    @can('update', $file)
-                        <a class="btn btn-primary btn-xs" href="{{ route('files.edit', ['file' => $file->id])  }}">edit</a>
-                    @endcan
-                        <a class="btn btn-info btn-xs" href="{{ route('files.download', ['file' => $file->id])  }}">raw</a>
+                        @if($file->editable)
+                        @can('update', $file)
+                        <a class="btn btn-primary btn-xs" href="{{ route('files.edit', $file)  }}">edit</a>
+                        @endcan
+                        @endif
+                        <a class="btn btn-info btn-xs" href="{{ route('files.download', $file)  }}">raw</a>
                     </div>
                 </div>
 
@@ -22,12 +24,45 @@
                     <div class="row">
 
                         <div class="col-md-12 clearfix">
-
+                            @if($file->editable)
                             <div class="form-group">
                                 {{ Form::label('file_content', 'Content', ['class' => 'control-label']) }}
                                 {{ Form::textarea('file_content', $file->content, ['class' => 'form-control', 'id' => 'content-readonly']) }}
                                 {{ Form::hidden('extension', $file->extension, ['id' => 'extension']) }}
                             </div>
+                            @elseif($file->viewable)
+                                @if ($file->viewable === 'image')
+                                    <img src="{{ route('files.download', $file) }}" alt="{{ $file->name }}" />
+                                @elseif ($file->viewable === 'audio')
+                                    <audio controls>
+                                        <source src="{{ route('files.download', $file) }}" type="{{ $file->mime }}">
+                                    </audio>
+                                @else
+                                    This type needs a player!!
+                                @endif
+                            @else
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>This file is unfortunately not viewable.</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>File size:</td>
+                                            <td>{{ \App\Support\Helpers::formatBytes($file->size_of_content) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Mime:</td>
+                                            <td>{{ $file->mime }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Download:</td>
+                                            <td> <a class="btn btn-success" href="{{ route('files.download', $file)  }}">{{ $file->name }}</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            @endif
                         </div>
 
                     </div>

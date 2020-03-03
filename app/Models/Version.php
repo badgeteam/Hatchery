@@ -12,26 +12,9 @@ use Illuminate\Support\Facades\Auth;
 /**
  * Class Version.
  *
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\File[] $files
- * @property-read bool $published
- * @property-read \App\Models\Project $project
- * @property-read \App\Models\User $user
- *
- * @method static bool|null forceDelete()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version newQuery()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Version onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version published()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version query()
- * @method static bool|null restore()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version unPublished()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Version withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Version withoutTrashed()
- * @mixin \Eloquent
- *
- * @property-read int|null $files_count
+ * @author annejan@badge.team
  * @property int $id
- * @property int|null $user_id
+ * @property int $user_id
  * @property int $project_id
  * @property int $revision
  * @property string|null $zip
@@ -40,9 +23,22 @@ use Illuminate\Support\Facades\Auth;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\File[] $files
+ * @property-read int|null $files_count
+ * @property-read bool $published
+ * @property-read \App\Models\Project $project
+ * @property-read \App\Models\User $user
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Version onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version published()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version unPublished()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereGitCommitId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereProjectId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereRevision($value)
@@ -50,9 +46,9 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereZip($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereGitCommitId($value)
- *
- * @author annejan@badge.team
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Version withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Version withoutTrashed()
+ * @mixin \Eloquent
  */
 class Version extends Model
 {

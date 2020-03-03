@@ -9,32 +9,27 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * Class Badge.
  *
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
- *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge query()
- * @mixin \Eloquent
- *
- * @property-read int|null $projects_count
+ * @author annejan@badge.team
  * @property int $id
  * @property string $name
  * @property string $slug
  * @property string|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
+ * @property-read int|null $projects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
+ * @property-read int|null $states_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereUpdatedAt($value)
- *
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
- * @property-read int|null $states_count
- *
- * @author annejan@badge.team
+ * @mixin \Eloquent
  */
 class Badge extends Model
 {

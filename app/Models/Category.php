@@ -10,20 +10,7 @@ use Illuminate\Support\Str;
 /**
  * Class Category.
  *
- * @property-read int $eggs
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
- *
- * @method static bool|null forceDelete()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newQuery()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Category onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category query()
- * @method static bool|null restore()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withoutTrashed()
- * @mixin \Eloquent
- *
- * @property-read int|null $projects_count
+ * @author annejan@badge.team
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -31,7 +18,15 @@ use Illuminate\Support\Str;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $hidden
- *
+ * @property-read int $eggs
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
+ * @property-read int|null $projects_count
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Category onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category query()
+ * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereHidden($value)
@@ -39,8 +34,9 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereUpdatedAt($value)
- *
- * @author annejan@badge.team
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withoutTrashed()
+ * @mixin \Eloquent
  */
 class Category extends Model
 {

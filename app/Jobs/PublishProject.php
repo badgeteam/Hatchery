@@ -47,6 +47,7 @@ class PublishProject implements ShouldQueue
     public function handle()
     {
         $version = $this->project->getUnpublishedVersion();
+
         $filename = 'eggs/'.uniqid($this->project->slug.'_').'.tar';
         $zip = new PharData(public_path($filename));
 

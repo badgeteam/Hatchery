@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 /**
  * Class Warning.
  *
+ * @author annejan@badge.team
  * @property int $id
  * @property int $user_id
  * @property int $project_id
@@ -19,7 +20,6 @@ use Illuminate\Support\Facades\Auth;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Project $project
  * @property-read \App\Models\User $user
- *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning newQuery()
@@ -36,8 +36,6 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Warning withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Warning withoutTrashed()
  * @mixin \Eloquent
- *
- * @author annejan@badge.team
  */
 class Warning extends Model
 {
