@@ -4,10 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Project;
 use App\Models\User;
-use Faker\Factory;
 use Illuminate\Auth\Notifications\ResetPassword;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
@@ -18,9 +17,8 @@ use Tests\TestCase;
  */
 class UserTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
-
+    use RefreshDatabase;
+    use WithFaker;
     /**
      * login failed get redirected.
      */
@@ -47,8 +45,7 @@ class UserTest extends TestCase
      */
     public function testLogin(): void
     {
-        $faker = Factory::create();
-        $password = $faker->password;
+        $password = $this->faker->password;
         $user = factory(User::class)->create(['password' => bcrypt($password)]);
         $response = $this
             ->withSession(['_token'=>'test'])
@@ -122,8 +119,7 @@ class UserTest extends TestCase
         $response = $this->get('/password/reset/'.$token);
         $response->assertStatus(200);
 
-        $faker = Factory::create();
-        $password = $faker->password(8, 20);
+        $password = $this->faker->password(8, 20);
 
         $response = $this
             ->withSession(['_token'=>'test'])
@@ -151,13 +147,12 @@ class UserTest extends TestCase
      */
     public function testRegister(): void
     {
-        $faker = Factory::create();
-        $password = $faker->password(8, 20);
-        $email = $faker->email;
+        $password = $this->faker->password(8, 20);
+        $email = $this->faker->email;
         $response = $this
             ->withSession(['_token'=>'test'])
             ->post('/register', [
-                'name'                  => $faker->name,
+                'name'                  => $this->faker->name,
                 'email'                 => $email,
                 'editor'                => 'default',
                 'password'              => $password,
@@ -265,5 +260,27 @@ class UserTest extends TestCase
                 'editor' => 'vim',
             ]);
         $response->assertStatus(403);
+    }
+
+    /**
+     * Check if random user can not view Horizon page.
+     */
+    public function testUserViewHorizon(): void
+    {
+        $user = factory(User::class)->create();
+        $response = $this->actingAs($user)->get('/horizon');
+        $response->assertStatus(403);
+    }
+
+    /**
+     * Check if random user can not view Horizon page.
+     */
+    public function testAdminUserViewHorizon(): void
+    {
+        $user = factory(User::class)->create();
+        $user->admin = true;
+        $user->save();
+        $response = $this->actingAs($user)->get('/horizon');
+        $response->assertStatus(200);
     }
 }

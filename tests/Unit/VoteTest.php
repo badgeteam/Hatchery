@@ -5,8 +5,7 @@ namespace Tests\Unit;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Vote;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -16,8 +15,7 @@ use Tests\TestCase;
  */
 class VoteTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /**
      * Assert the Vote is cast by a User.
@@ -87,16 +85,4 @@ class VoteTest extends TestCase
         $vote = Vote::find($vote->id);
         $this->assertEquals('down', $vote->type);
     }
-
-//    /**
-//     * Assert the Vote type is sane.
-//     */
-//    public function testVoteTypeEnumIllegal(): void
-//    {
-//        $this->expectException(QueryException::class);
-//        $user = factory(User::class)->create();
-//        $this->be($user);
-//        $project = factory(Project::class)->create();
-//        factory(Vote::class)->create(['project_id' => $project->id, 'type' => 'broken']);
-//    }
 }

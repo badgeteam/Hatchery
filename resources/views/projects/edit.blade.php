@@ -10,11 +10,17 @@
             <div class="panel panel-default">
 
                 <div class="panel-heading">
+                    @if($project->git)
+                    <img src="{{ asset('img/git.png') }}" alt="Git revision: {{ $project->git_commit_id}}" />
+                    @endif
                     <strong>{{ $project->name }}</strong>
                     <div class="pull-right">
                         <a href="{{ route('projects.show', ['project' => $project]) }}" class="btn btn-default btn-xs">show</a>
                         @can('rename', $project)
                         <a href="{{ route('projects.rename', ['project' => $project]) }}" class="btn btn-info btn-xs">rename</a>
+                        @endcan
+                        @can('pull', $project)
+                        <a href="{{ route('projects.pull', ['project' => $project]) }}" class="btn btn-success btn-xs">update</a>
                         @endcan
                         @can('delete', $project)
                         {!! Form::open(['method' => 'delete', 'route' => ['projects.destroy', 'project' => $project->slug], 'class' => 'deleteform']) !!}

@@ -40,6 +40,9 @@
             <div class="panel panel-default">
 
                 <div class="panel-heading">
+                    @if($project->git)
+                        <img src="{{ asset('img/git.png') }}" alt="Git revision: {{ $project->git_commit_id}}" />
+                    @endif
                     <strong>{{ $project->name }}</strong> rev. {{ $project->revision }} (by {{ $project->user->name }})
                     @can('update', $project)
                     <div class="pull-right">

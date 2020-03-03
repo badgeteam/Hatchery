@@ -29,20 +29,28 @@
                                 </div>
 
                                 <div class="form-group @if($errors->has('name')) has-error @endif">
-                                    {{ Form::label('name', 'Name', ['class' => 'control-label']) }}
+                                    {{ Form::label('name', 'Name', ['class' => 'control-label']) }} (unique)
                                     {{ Form::text('name', null, ['class' => 'form-control', 'id' => 'name']) }}
                                 </div>
 
+                                @if ($type === 'import')
+                                <div class="form-group @if($errors->has('git')) has-error @endif">
+                                    {{ Form::label('git', 'Git repository', ['class' => 'control-label']) }} (url)
+                                    {{ Form::text('git', null, ['class' => 'form-control', 'id' => 'git']) }}
+                                </div>
+                                @else
+
                                 <div class="form-group @if($errors->has('description')) has-error @endif">
-                                    {{ Form::label('description', 'Description', ['class' => 'control-label']) }}
+                                    {{ Form::label('description', 'Description', ['class' => 'control-label']) }} (markdown)
                                     {{ Form::textarea('description', null, ['class' => 'form-control', 'id' => 'content']) }}
                                     {{ Form::hidden('extension', 'md', ['id' => 'extension']) }}
                                 </div>
+                                @endif
 
                                 <input name="status" type="hidden" value="3" />
 
                                 <div class="pull-right">
-                                    <button type="submit" class="btn btn-default">Save</button>
+                                    <button type="submit" class="btn btn-default">{{ $type === 'import' ? 'Import' : 'Save' }}</button>
                                 </div>
 
                             {!! Form::close() !!}

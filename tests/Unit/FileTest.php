@@ -6,8 +6,7 @@ use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -17,8 +16,7 @@ use Tests\TestCase;
  */
 class FileTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /**
      * Assert the File has a relation with a single Project Version.
@@ -120,6 +118,17 @@ class FileTest extends TestCase
         $this->be($user);
         $file = factory(File::class)->create(['name' => 'test.bin']);
         $this->assertEquals('application/octet-stream', $file->mime);
+    }
+
+    /**
+     * Assert png icon.
+     */
+    public function testFileIsInvalidIcon(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create(['name' => 'test.bin']);
+        $this->assertFalse($file->isValidIcon());
     }
 
     /**

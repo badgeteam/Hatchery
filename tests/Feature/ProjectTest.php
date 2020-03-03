@@ -11,13 +11,14 @@ use App\Models\User;
 use App\Models\Version;
 use App\Models\Vote;
 use App\Models\Warning;
-use Faker\Factory;
+use App\Support\GitRepository;
+use App\Support\Helpers;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 /**
@@ -27,8 +28,7 @@ use Tests\TestCase;
  */
 class ProjectTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
+    use RefreshDatabase;
     use WithFaker;
 
     /**
@@ -74,17 +74,29 @@ class ProjectTest extends TestCase
     }
 
     /**
+     * Check the projects creation page exists.
+     */
+    public function testProjectsImport(): void
+    {
+        $user = factory(User::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->get('/import');
+        $response->assertStatus(200);
+        $response->assertViewHas('type', 'import');
+    }
+
+    /**
      * Check the projects can be stored.
      */
     public function testProjectsStore(): void
     {
         $user = factory(User::class)->create();
-        $faker = Factory::create();
         $this->assertEmpty(Project::all());
         $category = factory(Category::class)->create();
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $faker->name, 'description' => $faker->paragraph, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call('post', '/projects', ['name' => $this->faker->name, 'description' => $this->faker->paragraph, 'category_id' => $category->id, 'status' => 'unknown']);
         $this->assertNotNull(Project::get()->last());
         $response->assertRedirect('/projects/'.Project::get()->last()->slug.'/edit')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
@@ -96,26 +108,25 @@ class ProjectTest extends TestCase
     public function testProjectsStoreUnique(): void
     {
         $user = factory(User::class)->create();
-        $faker = Factory::create();
         $this->assertEmpty(Project::all());
         $category = factory(Category::class)->create();
-        $name = $faker->name;
+        $name = $this->faker->name;
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $name, 'description' => $faker->paragraph, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call('post', '/projects', ['name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id, 'status' => 'unknown']);
         $this->assertNotNull(Project::get()->last());
         $response->assertRedirect('/projects/'.Project::get()->last()->slug.'/edit')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $name, 'description' => $faker->paragraph, 'category_id' => $category->id]);
+            ->call('post', '/projects', ['name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id]);
         $response->assertRedirect('')->assertSessionHas('errors');
 
         $name .= '+'; // issue found by fox name is unique, slug is identical
         $this->assertCount(1, Project::all());
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $name, 'description' => $faker->paragraph, 'category_id' => $category->id]);
+            ->call('post', '/projects', ['name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id]);
         $response->assertRedirect('/projects/create')->assertSessionHas('errors');
     }
 
@@ -127,6 +138,20 @@ class ProjectTest extends TestCase
         $user = factory(User::class)->create();
         $this->be($user);
         $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->get('/projects/'.$project->slug.'/edit');
+        $response->assertStatus(200);
+    }
+
+    /**
+     * Check the projects edit page functions.
+     */
+    public function testProjectsEditGit(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create(['git' => $this->faker->url]);
         $response = $this
             ->actingAs($user)
             ->get('/projects/'.$project->slug.'/edit');
@@ -159,11 +184,10 @@ class ProjectTest extends TestCase
         $projectDep->versions()->first()->zip = 'test';
         $projectDep->versions()->first()->save();
         $project = factory(Project::class)->create();
-        $faker = Factory::create();
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
-                'description'  => $faker->paragraph,
+                'description'  => $this->faker->paragraph,
                 'dependencies' => [$projectDep->id],
                 'category_id'  => $project->category_id,
                 'status'       => 'unknown',
@@ -173,7 +197,7 @@ class ProjectTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
-                'description' => $faker->paragraph,
+                'description' => $this->faker->paragraph,
                 'category_id' => $project->category_id,
                 'status'      => 'unknown',
             ]);
@@ -193,11 +217,10 @@ class ProjectTest extends TestCase
         $projectDep->versions()->first()->zip = 'test';
         $projectDep->versions()->first()->save();
         $project = factory(Project::class)->create();
-        $faker = Factory::create();
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
-                'description'  => $faker->paragraph,
+                'description'  => $this->faker->paragraph,
                 'dependencies' => [$projectDep->id],
                 'category_id'  => $project->category_id,
                 'status'       => 'unknown',
@@ -207,7 +230,7 @@ class ProjectTest extends TestCase
         $response = $this
             ->actingAs($otherUser)
             ->call('put', '/projects/'.$project->slug, [
-                'description' => $faker->paragraph,
+                'description' => $this->faker->paragraph,
                 'category_id' => $project->category_id,
                 'status'      => 'unknown',
             ]);
@@ -240,13 +263,13 @@ class ProjectTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('post', '/release/'.$project->slug);
-        $response->assertRedirect('/projects/'.$project->slug.'/edit')->assertSessionHas('successes');
+        $response->assertRedirect('/projects')->assertSessionHas('successes');
         /** @var Collection $versions */
         $versions = Version::published()->where('project_id', $project->id)->get();
         /** @var Version $version */
         $version = $versions->last();
 
-        $zip = strval($version->zip);
+        $zip = (string) $version->zip;
         $this->assertFileExists(public_path($zip));
         $this->assertFileNotExists(public_path(str_replace('.gz', '', $zip)));
 
@@ -256,21 +279,21 @@ class ProjectTest extends TestCase
         exec('tar xf '.public_path($zip).' -C '.sys_get_temp_dir());
 
         $path = sys_get_temp_dir().'/'.$project->slug;
-        $json = strval(file_get_contents($path.'/metadata.json'));
+        $json = (string) file_get_contents($path.'/metadata.json');
 
-        $this->assertJsonStringEqualsJsonString(strval(json_encode([
+        $this->assertJsonStringEqualsJsonString((string) json_encode([
             'name'        => $project->name,
             'description' => null,
             'category'    => $project->category,
             'author'      => $project->user->name,
             'revision'    => 1,
-        ])), $json);
+        ]), $json);
 
         $dep = file_get_contents($path.'/'.$project->slug.'.egg-info/requires.txt');
         $this->assertEquals($projectDep->slug."\n", $dep);
 
         unlink(public_path($zip));
-        $this->delTree($path);
+        Helpers::delTree($path);
         /** @var Project $project */
         $project = Project::find($project->id);
         $this->assertNotNull($project->published_at);
@@ -324,22 +347,22 @@ class ProjectTest extends TestCase
         $versions = Version::published()->where('project_id', $project->id)->get();
         /** @var Version $version */
         $version = $versions->last();
-        $zip = strval($version->zip);
+        $zip = (string) $version->zip;
         exec('tar xf '.public_path($zip).' -C '.sys_get_temp_dir());
         $path = sys_get_temp_dir().'/'.$project->slug;
-        $json = strval(file_get_contents($path.'/metadata.json'));
+        $json = (string) file_get_contents($path.'/metadata.json');
 
-        $this->assertJsonStringEqualsJsonString(strval(json_encode([
+        $this->assertJsonStringEqualsJsonString((string) json_encode([
             'name'        => $project->name,
             'description' => null,
             'category'    => $project->category,
             'author'      => $project->user->name,
             'revision'    => 1,
             'icon'        => 'icon.png',
-        ])), $json);
+        ]), $json);
 
         unlink(public_path($zip));
-        $this->delTree($path);
+        Helpers::delTree($path);
     }
 
     /**
@@ -405,15 +428,14 @@ class ProjectTest extends TestCase
     public function testProjectsStoreBadge(): void
     {
         $user = factory(User::class)->create();
-        $faker = Factory::create();
         $this->assertEmpty(Project::all());
         $category = factory(Category::class)->create();
         $badge = factory(Badge::class)->create();
         $response = $this
             ->actingAs($user)
             ->call('post', '/projects', [
-                'name'        => $faker->name,
-                'description' => $faker->paragraph,
+                'name'        => $this->faker->name,
+                'description' => $this->faker->paragraph,
                 'category_id' => $category->id,
                 'badge_ids'   => [$badge->id],
                 'status'      => 'unknown', ]);
@@ -431,13 +453,12 @@ class ProjectTest extends TestCase
         $this->be($user);
         /** @var Project $project */
         $project = factory(Project::class)->create();
-        $faker = Factory::create();
         $badge = factory(Badge::class)->create();
         $this->assertEquals('unknown', $project->status);
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
-                'description'  => $faker->paragraph,
+                'description'  => $this->faker->paragraph,
                 'category_id'  => $project->category_id,
                 'badge_ids'    => [$badge->id],
                 'badge_status' => [$badge->id => 'working'],
@@ -534,21 +555,345 @@ class ProjectTest extends TestCase
     }
 
     /**
-     * @param string $dir
-     *
-     * @return bool
+     * Check that a user can delete Vote.
      */
-    private function delTree(string $dir): bool
+    public function testProjectsVoteDelete(): void
     {
-        $files = scandir($dir);
-        if (!$files) {
-            return false;
-        }
-        $files = array_diff($files, ['.', '..']);
-        foreach ($files as $file) {
-            (is_dir("$dir/$file")) ? $this->delTree("$dir/$file") : unlink("$dir/$file");
-        }
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $vote = factory(Vote::class)->create([
+            'project_id' => $project->id,
+            'type'       => 'pig',
+        ]);
+        $response = $this
+            ->actingAs($user)
+            ->call('delete', '/votes/'.$vote->id);
+        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
+        $this->assertEmpty(Vote::all());
+    }
 
-        return rmdir($dir);
+    /**
+     * Check that a user can delete other persons Vote.
+     */
+    public function testProjectsVoteDeleteOtherUser(): void
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $vote = factory(Vote::class)->create([
+            'project_id' => $project->id,
+            'type'       => 'pig',
+        ]);
+        $response = $this
+            ->actingAs($otherUser)
+            ->call('delete', '/votes/'.$vote->id);
+        $response->assertStatus(403);
+        $this->assertCount(1, Vote::all());
+    }
+
+    /**
+     * Check that a user can update his/her Vote.
+     */
+    public function testProjectsVoteUpdates(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $vote = factory(Vote::class)->create([
+            'project_id' => $project->id,
+            'type'       => 'pig',
+        ]);
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/votes/'.$vote->id, [
+                'type' => 'up',
+            ]);
+        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
+        /** @var Vote $vote */
+        $vote = Vote::find($vote->id);
+        $this->assertEquals('up', $vote->type);
+    }
+
+    /**
+     * Check that a user can't update other persons Vote.
+     */
+    public function testProjectsVoteUpdatesOther(): void
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $vote = factory(Vote::class)->create([
+            'project_id' => $project->id,
+            'type'       => 'pig',
+        ]);
+        $response = $this
+            ->actingAs($otherUser)
+            ->call('put', '/votes/'.$vote->id, [
+                'type' => 'up',
+            ]);
+        $response->assertStatus(403);
+        /** @var Vote $vote */
+        $vote = Vote::find($vote->id);
+        $this->assertEquals('pig', $vote->type);
+    }
+
+    /**
+     * Check that Project Score is correct.
+     */
+    public function testProjectScore(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        $this->assertEquals(0, $project->score);
+        $this
+            ->actingAs($user)
+            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertEquals(0, $project->score);
+        $this
+            ->actingAs(factory(User::class)->create())
+            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'up']);
+        $project = Project::find($project->id);
+        /** @var Project $project */
+        $this->assertEquals(0.5, $project->score);
+        $this
+            ->actingAs(factory(User::class)->create())
+            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'down']);
+        $this
+            ->actingAs(factory(User::class)->create())
+            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'down']);
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertEquals(-.25, $project->score);
+    }
+
+    /**
+     * Check the projects can be stored.
+     */
+    public function testProjectsStoreGit(): void
+    {
+        $name = $this->faker->name;
+        $folder = sys_get_temp_dir().'/'.Str::slug($name, '_');
+        mkdir($folder);
+
+        $hash = $this->faker->sha256;
+        $mock = $this->mock(GitRepository::class); // twice since folder is not real git repo
+        $mock->expects('cloneRepository')->twice()->andReturnSelf();
+        $mock->expects('getLastCommitId')->twice()->andReturns($hash);
+        $this->app->instance(GitRepository::class, $mock);
+
+        $user = factory(User::class)->create();
+        $this->assertEmpty(Project::all());
+        $category = factory(Category::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/import', ['name' => $name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
+        $this->assertNotNull(Project::get()->last());
+        $response->assertRedirect('/projects/')->assertSessionHas('successes');
+        $this->assertCount(1, Project::all());
+        /** @var Project $project */
+        $project = Project::get()->last();
+        $this->assertEquals($hash, $project->git_commit_id);
+        Helpers::delTree($folder);
+    }
+
+    /**
+     * Check the projects can be pulled.
+     */
+    public function testProjectsPullNothingToUpdate(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create([
+            'git_commit_id' => $this->faker->sha256,
+            'git'           => $this->faker->url,
+        ]);
+        /** @var Version $version */
+        $version = $project->versions->first();
+        $version->zip = 'test';
+        $version->save();
+
+        $folder = sys_get_temp_dir().'/'.$project->slug;
+        mkdir($folder);
+
+        $hash = $project->git_commit_id;
+        $mock = $this->mock(GitRepository::class);
+        $mock->expects('cloneRepository')->andReturnSelf();
+        $mock->expects('getLastCommitId')->andReturns($hash);
+        $this->app->instance(GitRepository::class, $mock);
+
+        $response = $this
+            ->actingAs($user)
+            ->call('get', '/projects/'.$project->slug.'/pull');
+        $response->assertRedirect('/projects/')->assertSessionHas('successes');
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertEquals($hash, $project->git_commit_id);
+        $this->assertEquals(1, $project->revision);
+        Helpers::delTree($folder);
+    }
+
+    /**
+     * Check the projects can be pulled.
+     */
+    public function testProjectsPullClean(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create([
+            'git_commit_id' => $this->faker->sha256,
+            'git'           => $this->faker->url,
+        ]);
+        /** @var Version $version */
+        $version = $project->versions->first();
+        $version->zip = 'test';
+        $version->save();
+
+        $folder = sys_get_temp_dir().'/'.$project->slug;
+        mkdir($folder);
+
+        $hash = $this->faker->sha256;
+        $mock = $this->mock(GitRepository::class);
+        $mock->expects('cloneRepository')->andReturnSelf();
+        $mock->expects('getLastCommitId')->twice()->andReturns($hash);
+        $this->app->instance(GitRepository::class, $mock);
+
+        $response = $this
+            ->actingAs($user)
+            ->call('get', '/projects/'.$project->slug.'/pull');
+        $response->assertRedirect('/projects/')->assertSessionHas('successes');
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertEquals($hash, $project->git_commit_id);
+        $this->assertEquals(2, $project->revision);
+        Helpers::delTree($folder);
+    }
+
+    /**
+     * Check the projects can be pulled cheaply.
+     */
+    public function testProjectsPullRecycleFolder(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create([
+            'git_commit_id' => $this->faker->sha256,
+            'git'           => $this->faker->url,
+        ]);
+        /** @var Version $version */
+        $version = $project->versions->first();
+        $version->zip = 'test';
+        $version->save();
+
+        $folder = sys_get_temp_dir().'/'.$project->slug;
+        mkdir($folder);
+        mkdir($folder.'/.git');
+        touch($folder.'/.git/HEAD');
+
+        $hash = $this->faker->sha256;
+        $mock = $this->mock(GitRepository::class);
+        $mock->expects('open')->andReturnSelf();
+        $mock->expects('pull')->andReturn();
+        $mock->expects('getLastCommitId')->twice()->andReturns($hash);
+        $this->app->instance(GitRepository::class, $mock);
+
+        $response = $this
+            ->actingAs($user)
+            ->call('get', '/projects/'.$project->slug.'/pull');
+        $response->assertRedirect('/projects/')->assertSessionHas('successes');
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertEquals($hash, $project->git_commit_id);
+        $this->assertEquals(2, $project->revision);
+        Helpers::delTree($folder);
+    }
+
+    /**
+     * Check the projects can't be renamed.
+     */
+    public function testProjectsRename(): void
+    {
+        $name = $this->faker->name;
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        $this->assertNotEquals($name, $project->name);
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/projects/'.$project->slug.'/rename', [
+                'name' => $name,
+            ]);
+        $response->assertStatus(403);
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertNotEquals($name, $project->name);
+        $this->assertNotEquals(Str::slug($name, '_'), $project->slug);
+    }
+
+    /**
+     * Check admin can rename project.
+     */
+    public function testProjectsRenameAdminUser(): void
+    {
+        $name = $this->faker->name;
+        $user = factory(User::class)->create([
+            'admin' => true,
+        ]);
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        $this->assertNotEquals($name, $project->name);
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/projects/'.$project->slug.'/rename', [
+                'name' => $name,
+            ]);
+        $response->assertRedirect('/projects/'.Str::slug($name, '_').'/edit')->assertSessionHas('successes');
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertEquals($name, $project->name);
+        $this->assertEquals(Str::slug($name, '_'), $project->slug);
+    }
+
+    /**
+     * Check the projects can't be renamed.
+     */
+    public function testProjectsRenameForm(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('get', '/projects/'.$project->slug.'/rename');
+        $response->assertStatus(403);
+    }
+
+    /**
+     * Check admin can rename project.
+     */
+    public function testProjectsRenameFormAdminUser(): void
+    {
+        $user = factory(User::class)->create([
+            'admin' => true,
+        ]);
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('get', '/projects/'.$project->slug.'/rename');
+        $response->assertStatus(200);
     }
 }

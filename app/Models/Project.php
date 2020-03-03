@@ -49,9 +49,16 @@ use Illuminate\Support\Str;
  * @property \Illuminate\Support\Carbon $updated_at
  * @property int $download_counter
  * @property string $status
+ * @property \Illuminate\Support\Carbon|null $published_at
+ * @property string|null $git
+ * @property string|null $git_commit_id
  * @property-read string|null $description_html
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
  * @property-read int|null $votes_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
+ * @property-read int|null $states_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
+ * @property-read int|null $warnings_count
  * @property-read float $score
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCategoryId($value)
@@ -65,20 +72,25 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUserId($value)
- *
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
- * @property-read int|null $states_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
- * @property-read int|null $warnings_count
- * @property \Illuminate\Support\Carbon|null $published_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project wherePublishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereGit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereGitCommitId($value)
  *
  * @author annejan@badge.team
  */
 class Project extends Model
 {
     use SoftDeletes;
+
+    /**
+     * Create with these.
+     *
+     * @var array<string>
+     */
+    protected $fillable = [
+        'name',
+        'category_id',
+    ];
 
     /**
      * Appended magic data.
@@ -109,6 +121,8 @@ class Project extends Model
         'pivot',
         'versions',
         'states',
+        'git',
+        'git_commit_id',
     ];
 
     /**
@@ -141,8 +155,10 @@ class Project extends Model
 
         static::creating(
             function ($project) {
-                $user = Auth::guard()->user();
-                $project->user()->associate($user);
+                if ($project->user_id === null) {
+                    $user = Auth::guard()->user();
+                    $project->user()->associate($user);
+                }
             }
         );
 
@@ -152,12 +168,14 @@ class Project extends Model
                 $version->revision = 1;
                 $version->project()->associate($project);
                 $version->save();
-                // add first empty python file :)
-                $file = new File();
-                $file->name = '__init__.py';
-                $file->content = '';
-                $file->version()->associate($version);
-                $file->save();
+                if ($project->git === null) {
+                    // add first empty python file :)
+                    $file = new File();
+                    $file->name = '__init__.py';
+                    $file->content = '';
+                    $file->version()->associate($version);
+                    $file->save();
+                }
             }
         );
 
@@ -235,7 +253,7 @@ class Project extends Model
     {
         $version = $this->versions()->published()->get()->last();
 
-        return is_null($version) ? null : (string) $version->revision;
+        return $version === null ? null : (string) $version->revision;
     }
 
     /**
@@ -271,7 +289,7 @@ class Project extends Model
     {
         $version = $this->versions()->published()->get()->last();
 
-        return is_null($version) ? null : (int) $version->size_of_zip;
+        return $version === null ? null : (int) $version->size_of_zip;
     }
 
     /**
@@ -280,7 +298,7 @@ class Project extends Model
     public function getSizeOfContentAttribute(): ?int
     {
         $version = $this->versions()->published()->get()->last();
-        if (is_null($version)) {
+        if ($version === null) {
             $version = $this->versions->last();
         }
         /** @var Version $version */
@@ -290,6 +308,22 @@ class Project extends Model
         }
 
         return $size;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSizeOfContentFormattedAttribute(): string
+    {
+        return $this->formatBytes((int) $this->getSizeOfContentAttribute());
+    }
+
+    /**
+     * @return string
+     */
+    public function getSizeOfZipFormattedAttribute(): string
+    {
+        return $this->formatBytes((int) $this->getSizeOfZipAttribute());
     }
 
     /**
@@ -307,7 +341,7 @@ class Project extends Model
      */
     public function getCategoryAttribute(): ?string
     {
-        if (is_null($this->category()->first())) {
+        if ($this->category()->first() === null) {
             return 'uncategorised';
         }
 
@@ -359,7 +393,7 @@ class Project extends Model
     public function userVoted(): ?bool
     {
         $user = Auth::guard()->user();
-        if (is_null($user)) {
+        if ($user === null) {
             return null;
         }
 
@@ -367,35 +401,17 @@ class Project extends Model
     }
 
     /**
-     * Ugly hack for now . .
-     *
      * @return string
      */
     public function getStatusAttribute(): string
     {
-        $status = 'unknown';
-        foreach ($this->states as $state) {
-            if ($status === 'unknown') {
-                $status = $state->status;
-            }
-            if ($status === 'broken') {
-                if ($state->status !== 'unknown') {
-                    $status = $state->status;
-                }
-            }
-            if ($status === 'in_progress') {
-                if ($state->status !== 'broken' && $state->status !== 'unknown') {
-                    $status = $state->status;
-                }
-            }
-            if ($status === 'working') {
-                if ($state->status !== 'broken' && $state->status !== 'unknown' && $state->status !== 'in_progress') {
-                    $status = $state->status;
-                }
+        foreach (['working', 'in_progress', 'broken'] as $status) {
+            if ($this->states()->where('status', $status)->exists()) {
+                return $status;
             }
         }
 
-        return $status;
+        return 'unknown';
     }
 
     /**
@@ -407,7 +423,7 @@ class Project extends Model
         $version = $this->versions->last();
         /** @var File|null $file */
         $file = $version->files()->where('name', 'icon.png')->get()->last();
-        if (is_null($file)) {
+        if ($file === null) {
             return false;
         }
 
@@ -419,16 +435,56 @@ class Project extends Model
      */
     public function getScoreAttribute(): float
     {
-        if ($this->votes === null || $this->votes->count() == 0) {
+        if ($this->votes === null || $this->votes->count() === 0) {
             return 0;
         }
         $score = 0;
         foreach ($this->votes as $vote) {
-            if ($vote->type !== 'pig') {
+            if ($vote->type === 'up') {
                 $score++;
+            }
+            if ($vote->type === 'down') {
+                $score--;
             }
         }
 
         return $score / $this->votes->count();
+    }
+
+    /**
+     * @return Version
+     */
+    public function getUnpublishedVersion(): Version
+    {
+        $version = $this->versions()->unPublished()->first();
+        if ($version === null) {
+            /** @var Version $previousVersion */
+            $previousVersion = $this->versions->last();
+            $revision = $previousVersion->revision + 1;
+            $version = new Version();
+            $version->user_id = $this->user_id;
+            $version->revision = $revision;
+            $version->project()->associate($this);
+            $version->save();
+        }
+
+        return $version;
+    }
+
+    /**
+     * @param int $bytes
+     * @param int $precision
+     *
+     * @return string
+     */
+    private function formatBytes(int $bytes, int $precision = 2): string
+    {
+        $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB'];
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+        $bytes /= (1 << (10 * $pow));
+
+        return round($bytes, $precision).' '.$units[$pow];
     }
 }

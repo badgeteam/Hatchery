@@ -18,7 +18,9 @@ class ProjectPolicy
     /**
      * Determine whether the user can list projects.
      *
-     * @return mixed
+     * @codeCoverageIgnore
+     *
+     * @return bool
      */
     public function index()
     {
@@ -29,7 +31,7 @@ class ProjectPolicy
     /**
      * Determine whether the user can create projects.
      *
-     * @return mixed
+     * @return bool
      */
     public function create()
     {
@@ -43,7 +45,7 @@ class ProjectPolicy
      * @param User    $user
      * @param Project $project
      *
-     * @return mixed
+     * @return bool
      */
     public function update(User $user, Project $project)
     {
@@ -57,7 +59,7 @@ class ProjectPolicy
      * @param User    $user
      * @param Project $project
      *
-     * @return mixed
+     * @return bool
      */
     public function delete(User $user, Project $project)
     {
@@ -71,11 +73,28 @@ class ProjectPolicy
      * @param User    $user
      * @param Project $project
      *
-     * @return mixed
+     * @return bool
      */
     public function rename(User $user, Project $project)
     {
         // Ony admin users can rename projects
         return  $user->admin;
+    }
+
+    /**
+     * Determine whether the user can `git pull` update the project.
+     *
+     * @param User    $user
+     * @param Project $project
+     *
+     * @return bool
+     */
+    public function pull(User $user, Project $project)
+    {
+        if ($project->git === null) {
+            return false;   // No git, no pull
+        }
+        // Normal users can only delete their own projects
+        return  $user->admin || $user->id == $project->user->id;
     }
 }

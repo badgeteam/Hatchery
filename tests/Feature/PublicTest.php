@@ -8,8 +8,7 @@ use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -19,8 +18,7 @@ use Tests\TestCase;
  */
 class PublicTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /**
      * A basic test example.
@@ -540,5 +538,15 @@ class PublicTest extends TestCase
                     'published_at'     => null,
                 ],
             ]);
+    }
+
+    /**
+     * Check redirect to /login when going to the /horizon page.
+     */
+    public function testHorizonRedirect(): void
+    {
+        $response = $this->get('/horizon');
+        $response->assertStatus(302)
+            ->assertRedirect('/login');
     }
 }

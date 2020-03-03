@@ -46,7 +46,8 @@ class UsersController extends Controller
     public function edit(User $user): View
     {
         return view('users.edit')
-            ->with('user', $user);
+            ->with('user', $user)
+            ->with('projects', $user->projects()->orderByDesc('updated_at')->paginate());
     }
 
     /**

@@ -17,9 +17,9 @@ jobs:
       - run: cp .env.testing .env
 
       - run: sudo apt update
-      - run: sudo apt-get install -y libpng-dev libgmp-dev
+      - run: sudo apt-get install -y libpng-dev libgmp-dev git
       - run: sudo docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd
-      - run: sudo docker-php-ext-install zip pdo_mysql gd gmp exif
+      - run: sudo docker-php-ext-install zip pdo_mysql gd gmp exif pcntl
       - run: sudo apt-get install mariadb-client pyflakes
 
       # Download and cache dependencies
@@ -50,7 +50,7 @@ jobs:
       # prepare the database
       - run: mysqladmin create badgeware_test --user="root" --host="127.0.0.1"
       - run: php artisan key:generate --env=testing
-      - run: php artisan migrate --env=testing --database=testing --force --seed
+      - run: php artisan migrate --env=testing --force --seed
       - run: php artisan config:cache --env=testing
 
       # run tests with codecept

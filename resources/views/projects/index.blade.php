@@ -17,7 +17,8 @@
                         {{ Form::text('search', $search, ['placeholder' => 'Search']) }}
                     {{ Form::close() }}
                     <div class="pull-right">
-                        <a href="{{ route('projects.create') }}" class="btn btn-success btn-xs">Add</a>
+                        <a href="{{ route('projects.import') }}" class="btn btn-default btn-xs">import</a>
+                        <a href="{{ route('projects.create') }}" class="btn btn-success btn-xs">add</a>
                     </div>
                 </div>
 
@@ -27,10 +28,11 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Revision</th>
-                                <th>Size of egg</th>
-                                <th>Size of content</th>
-                                <th>Category</th>
+                                <th>Rev</th>
+                                <th>Egg</th>
+                                <th>Content</th>
+                                <th>Cat</th>
+                                <th>Colab</th>
                                 <th><img src="{{ asset('img/rulez.gif') }}" alt="up" /></th>
                                 <th><img src="{{ asset('img/isok.gif') }}" alt="pig" /></th>
                                 <th><img src="{{ asset('img/sucks.gif') }}" alt="down" /></th>
@@ -48,9 +50,14 @@
 						<a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
 					@endcan
                                     <td>{{ $project->versions()->published()->count() > 0 ? $project->versions()->published()->get()->last()->revision : 'unreleased' }}</td>
-                                    <td>{{ $project->size_of_zip }}</td>
-                                    <td>{{ $project->size_of_content }}</td>
+                                    <td>{{ $project->size_of_zip_formatted }}</td>
+                                    <td>{{ $project->size_of_content_formatted }}</td>
                                     <td>{{ $project->category }}</td>
+                                    <td>
+                                        @if($project->git)
+                                            <img src="{{ asset('img/git.png') }}" alt="Git revision: {{ $project->git_commit_id}}" />
+                                        @endif
+                                    </td>
                                     <td>{{ $project->votes->where('type', 'up')->count() }}</td>
                                     <td>{{ $project->votes->where('type', 'pig')->count() }}</td>
                                     <td>{{ $project->votes->where('type', 'down')->count() }}</td>
@@ -65,9 +72,6 @@
                         </tbody>
                     </table>
 
-                    <div class="pull-right">
-                        <a href="{{ route('projects.create') }}" class="btn btn-default">Add</a>
-                    </div>
                     @if ($badge && $category && $search)
                         {{ $projects->appends(['badge' => $badge, 'category' => $category, 'search' => $search])->links() }}
                     @elseif ($badge && $category)

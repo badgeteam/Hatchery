@@ -31,7 +31,8 @@ class ProjectStoreRequest extends FormRequest
     {
         return [
             'name'        => 'required|unique:projects',
-            'description' => 'required',
+            'description' => 'required|sometimes',
+            'git'         => 'required|sometimes',
             'category_id' => 'required|exists:categories,id',
         ];
     }

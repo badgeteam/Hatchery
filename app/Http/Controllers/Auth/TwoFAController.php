@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
+use PragmaRX\Google2FA\Google2FA;
 
 /**
  * Class TwoFAController.
@@ -27,7 +28,7 @@ class TwoFAController extends Controller
 
         $google2fa_url = '';
 
-        if (!is_null($user->google2fa_secret)) {
+        if ($user->google2fa_secret !== null) {
             $google2fa = app('pragmarx.google2fa');
             $google2fa_url = $google2fa->getQRCodeInline(
                 'Hatchery '.$request->getHost(),
@@ -44,19 +45,22 @@ class TwoFAController extends Controller
     }
 
     /**
+     * @throws \PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException
+     * @throws \PragmaRX\Google2FA\Exceptions\InvalidCharactersException
+     *
      * @return RedirectResponse
      */
     public function generate2faSecret()
     {
         /** @var User $user */
         $user = Auth::guard()->user();
-        // Initialise the 2FA class
+        /** @var Google2FA $google2fa */
         $google2fa = app('pragmarx.google2fa');
 
         $user->google2fa_secret = $google2fa->generateSecretKey();
         $user->save();
 
-        return redirect()->route('2fa')->with('success', 'Secret key has been generated, enter OTP to activate 2FA.');
+        return redirect()->route('2fa')->with('success', 'Secret key has been §rated, enter OTP to activate 2FA.');
     }
 
     /**
@@ -68,9 +72,10 @@ class TwoFAController extends Controller
     {
         /** @var User $user */
         $user = Auth::guard()->user();
+        /** @var Google2FA $google2fa */
         $google2fa = app('pragmarx.google2fa');
         $secret = $request->input('verify-code');
-        if (!is_null($user->google2fa_secret) && $google2fa->verifyKey($user->google2fa_secret, $secret)) {
+        if ($user->google2fa_secret !== null && $google2fa->verifyKey($user->google2fa_secret, $secret)) {
             $user->google2fa_enabled = true;
             $user->save();
 

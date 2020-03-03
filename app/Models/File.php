@@ -126,8 +126,10 @@ class File extends Model
 
         static::creating(
             function ($file) {
-                $user = Auth::guard()->user();
-                $file->user()->associate($user);
+                if ($file->user_id === null) {
+                    $user = Auth::guard()->user();
+                    $file->user()->associate($user);
+                }
             }
         );
     }
@@ -159,7 +161,7 @@ class File extends Model
     {
         $parts = explode('.', $this->name);
 
-        return strval(end($parts));
+        return (string) end($parts);
     }
 
     /**
@@ -187,10 +189,9 @@ class File extends Model
      */
     public function getMimeAttribute(): string
     {
-        $name = collect(explode('.', $this->name));
-
-        if (array_key_exists($name->last(), self::$mimes)) {
-            return self::$mimes[$name->last()];
+        $ext = ltrim((string) strstr($this->name, '.'), '.');
+        if (array_key_exists($ext, self::$mimes)) {
+            return self::$mimes[$ext];
         }
 
         return 'application/octet-stream';
@@ -212,5 +213,21 @@ class File extends Model
         }
 
         return $icon->width() == 32 && $icon->height() == 32;
+    }
+
+    /**
+     * @param string $fileName
+     *
+     * @return bool
+     */
+    public static function valid(string $fileName): bool
+    {
+        $str = strstr($fileName, '.');
+        if (!$str) {
+            return false;
+        }
+        $ext = ltrim($str, '.');
+
+        return in_array($ext, self::$extensions);
     }
 }

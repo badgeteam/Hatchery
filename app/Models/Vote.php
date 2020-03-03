@@ -63,8 +63,10 @@ class Vote extends Model
 
         static::creating(
             function ($vote) {
-                $user = Auth::guard()->user();
-                $vote->user()->associate($user);
+                if ($vote->user_id === null) {
+                    $user = Auth::guard()->user();
+                    $vote->user()->associate($user);
+                }
             }
         );
     }

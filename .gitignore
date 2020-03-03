@@ -32,3 +32,4 @@ _ide_helper.php
 .env
 /.php_cs.cache
 /storage/api-docs/
+/database/mariadb

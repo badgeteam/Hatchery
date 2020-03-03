@@ -11,12 +11,17 @@ parameters:
     level: 8
     inferPrivatePropertyTypeFromConstructor: true
     ignoreErrors:
-        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\BelongsTo::withTrashed().#'
-        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::unPublished().#'
-        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::published().#'
-        - '#Method App\\Models\\Version::scopePublished()#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\BelongsTo::withTrashed\(\).#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::unPublished\(\).#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::published\(\).#'
+        - '#Method App\\Models\\Version::scopePublished\(\)#'
         - '#Access to an undefined property App\\Models\\Project::\$pivot.#'
         - '#Function factory invoked with 1 parameter, 0 required.#'
         - '#Function factory invoked with 2 parameters, 0 required.#'
+        - '#Method Mockery\\ExpectationInterface::andReturns\(\) invoked with 1 parameter, 0 required.#'
+        - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::twice\(\).#'
+        - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::andReturnSelf\(\).#'
+        - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::andReturns\(\).#'
+        - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::andReturn\(\).#'
     excludes_analyse:
             - tests/_support/*

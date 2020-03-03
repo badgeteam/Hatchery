@@ -11,6 +11,7 @@
     <meta name="csrfToken" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Hatchery') }}</title>
+    <meta name="description" content="A platform to publish and develop software for several badges.">
 
     <meta name="theme-color" content="#f00">
     <link rel="icon" type="image/x-icon" sizes="16x16" href="/favicon.ico">

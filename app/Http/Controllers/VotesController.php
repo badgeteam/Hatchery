@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\VoteRequest;
+use App\Http\Requests\VoteStoreRequest;
+use App\Http\Requests\VoteUpdateRequest;
 use App\Models\Project;
 use App\Models\Vote;
 use Illuminate\Http\RedirectResponse;
@@ -27,11 +28,11 @@ class VotesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param VoteRequest $request
+     * @param VoteStoreRequest $request
      *
      * @return RedirectResponse
      */
-    public function store(VoteRequest $request): RedirectResponse
+    public function store(VoteStoreRequest $request): RedirectResponse
     {
         $user = Auth::guard()->user();
 
@@ -57,6 +58,25 @@ class VotesController extends Controller
         }
 
         return redirect()->route('projects.show', ['project' => $vote->project->slug])->withSuccesses(['Vote saved']);
+    }
+
+    /**
+     * @param Vote              $vote
+     * @param VoteUpdateRequest $request
+     *
+     * @return RedirectResponse
+     */
+    public function update(Vote $vote, VoteUpdateRequest $request): RedirectResponse
+    {
+        try {
+            $vote->type = $request->type;
+            $vote->comment = $request->comment;
+            $vote->save();
+        } catch (\Exception $e) {
+            return redirect()->route('projects.show', ['project' => $vote->project->slug])->withInput()->withErrors([$e->getMessage()]);
+        }
+
+        return redirect()->route('projects.show', ['project' => $vote->project->slug])->withSuccesses(['Vote updated']);
     }
 
     /**

@@ -11,8 +11,8 @@ use App\Models\User;
 use App\Models\Version;
 use App\Models\Vote;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 /**
@@ -22,9 +22,8 @@ use Tests\TestCase;
  */
 class ProjectTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
-
+    use RefreshDatabase;
+    use WithFaker;
     /**
      * Assert the Project has a relation with a single User.
      */
@@ -254,5 +253,62 @@ class ProjectTest extends TestCase
             'name' => 'icon.png',
         ]);
         $this->assertTrue($file->version->project->hasValidIcon());
+    }
+
+    /**
+     * Check the size of content helper.
+     */
+    public function testFileSizeOfContentFormattedAttribute(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create(['content' => '']);
+        $this->assertEquals('0 B', $file->version->project->size_of_content_formatted);
+        $file = factory(File::class)->create(['content' => '321']);
+        $this->assertEquals('3 B', $file->version->project->size_of_content_formatted);
+        $file = factory(File::class)->create(['content' => $this->faker->regexify('[A-Za-z0-9]{1024}')]);
+        $this->assertEquals('1 KiB', $file->version->project->size_of_content_formatted);
+    }
+
+    /**
+     * Check the size of zip helper.
+     */
+    public function testFileSizeOfZipFormattedAttribute(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $this->assertEquals('0 B', $project->size_of_zip_formatted);
+    }
+
+    /**
+     * Check that a Vote has existing type.
+     */
+    public function testProjectsVersionFilesUnderscoreUnderscoreInitUnderscoreUnderscoreDotPy(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        /** @var Version $version */
+        $version = $project->versions->last();
+        $this->assertCount(1, $version->files);
+        /** @var File $file */
+        $file = $version->files->last();
+        $this->assertEquals('__init__.py', $file->name);
+    }
+
+    /**
+     * Check that a Vote has existing type.
+     */
+    public function testProjectsGitEmptyVersionFiles(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create(['git' => 'https://github.com/badgeteam/Hatchery']);
+        /** @var Version $version */
+        $version = $project->versions->last();
+        $this->assertEmpty($version->files);
     }
 }

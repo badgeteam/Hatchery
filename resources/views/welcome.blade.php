@@ -30,9 +30,12 @@
 				</div>
 
 				<div class="spacer col-md-12 hidden-xs"></div>
+					{{ Form::label('badge', 'Badge', ['class' => 'control-label']) }}
 					{{ Form::select('badge_id', \App\Models\Badge::pluck('name', 'slug')->reverse()->prepend('Choose a badge model', ''), $badge, ['id' => 'badge']) }}
+					{{ Form::label('category', 'Category', ['class' => 'control-label']) }}
 					{{ Form::select('category_id', \App\Models\Category::where('hidden', false)->pluck('name', 'slug')->reverse()->prepend('Choose a category', ''), $category, ['id' => 'category']) }}
 					{{ Form::open(['method' => 'post', 'route' => ['projects.search', 'badge' => $badge, 'category' => $category], 'class' => 'searchform'])  }}
+						{{ Form::label('search', 'Search', ['class' => 'control-label']) }}
 						{{ Form::text('search', null, ['placeholder' => 'Search']) }}
 					{{ Form::close() }}
 					<table class="table table-condensed">
@@ -46,10 +49,11 @@
 										@endif
 									</a>
 								</th>
-								<th>Revision</th>
-								<th>Size of zip</th>
-								<th>Size of content</th>
-								<th>Category</th>
+								<th>Rev</th>
+								<th>Egg</th>
+								<th>Content</th>
+								<th>Cat</th>
+								<th>Colab</th>
 								<th><img src="{{ asset('img/rulez.gif') }}" alt="up" /></th>
 								<th><img src="{{ asset('img/isok.gif') }}" alt="pig" /></th>
 								<th><img src="{{ asset('img/sucks.gif') }}" alt="down" /></th>
@@ -69,9 +73,14 @@
 							<tr>
 								<td><a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
 								<td>{{ $project->revision }}</td>
-								<td>{{ $project->size_of_zip }}</td>
-								<td>{{ $project->size_of_content }}</td>
+								<td>{{ $project->size_of_zip_formatted }}</td>
+								<td>{{ $project->size_of_content_formatted }}</td>
 								<td>{{ $project->category }}</td>
+								<td>
+									@if($project->git)
+										<img src="{{ asset('img/git.png') }}" alt="Git revision: {{ $project->git_commit_id}}" />
+									@endif
+								</td>
 								<td>{{ $project->votes->where('type', 'up')->count() }}</td>
 								<td>{{ $project->votes->where('type', 'pig')->count() }}</td>
 								<td>{{ $project->votes->where('type', 'down')->count() }}</td>

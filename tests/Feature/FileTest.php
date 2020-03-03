@@ -6,8 +6,7 @@ use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
@@ -20,8 +19,7 @@ use Tests\TestCase;
  */
 class FileTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
+    use RefreshDatabase;
     use WithFaker;
 
     public function testUploadFile(): void
@@ -52,7 +50,7 @@ class FileTest extends TestCase
 //    public function testUploadIllegalFile(): void
 //    {
 //        $stub = __DIR__.'/empty.zip';
-//        $name = str_random(8).'.zip';
+//        $name = Str::random(8).'.zip';
 //        $path = sys_get_temp_dir().'/'.$name;
 //        copy($stub, $path);
 //        $file = new UploadedFile($path, $name, 'applications/zip', null, true);
@@ -96,6 +94,23 @@ class FileTest extends TestCase
     }
 
     /**
+     * Check the files edit page doesn't work for git projects.
+     */
+    public function testFilesEditGit(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create();
+        $file->version->project->git = 'some.uri';
+        $file->version->project->save();
+        $response = $this
+            ->actingAs($user)
+            ->get('/files/'.$file->id.'/edit');
+        $response->assertStatus(403);
+    }
+
+    /**
      * Check the files can be stored.
      */
     public function testFilesUpdate(): void
@@ -133,6 +148,25 @@ time.localtime()';
     }
 
     /**
+     * Check the files can't be updated when project uses git.
+     */
+    public function testFilesUpdateGit(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create();
+        $file->version->project->git = 'some.uri';
+        $file->version->project->save();
+        $data = 'import time
+time.localtime()';
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/files/'.$file->id, ['file_content' => $data]);
+        $response->assertStatus(403);
+    }
+
+    /**
      * Check the files can be deleted.
      */
     public function testFilesDestroy(): void
@@ -144,6 +178,23 @@ time.localtime()';
             ->actingAs($user)
             ->call('delete', '/files/'.$file->id);
         $response->assertRedirect('/projects/'.$file->version->project->slug.'/edit')->assertSessionHas('successes');
+    }
+
+    /**
+     * Check the files can't be deleted from git managed project.
+     */
+    public function testFilesDestroyGit(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create();
+        $file->version->project->git = 'some.uri';
+        $file->version->project->save();
+        $response = $this
+            ->actingAs($user)
+            ->call('delete', '/files/'.$file->id);
+        $response->assertStatus(403);
     }
 
     /**

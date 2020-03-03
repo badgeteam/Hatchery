@@ -36,6 +36,9 @@ class FilePolicy
      */
     public function update(User $user, File $file): bool
     {
+        if ($file->version->project->git !== null) {
+            return false;   // No manual fucking with git managed project
+        }
         // Normal users can only change files in their own project
         return $user->admin || $user->id == $file->version->project->user->id;
     }
@@ -50,6 +53,9 @@ class FilePolicy
      */
     public function delete(User $user, File $file): bool
     {
+        if ($file->version->project->git !== null) {
+            return false;   // No manual fucking with git managed project
+        }
         // Normal users can only delete  files in their own project
         return $user->admin || $user->id == $file->version->project->user->id;
     }

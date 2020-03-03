@@ -6,8 +6,7 @@ use App\Models\Badge;
 use App\Models\BadgeProject;
 use App\Models\Project;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
 
@@ -18,8 +17,7 @@ use Tests\TestCase;
  */
 class BadgeProjectTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /**
      * Assert the Badge has a collection of BadgeProjects.
@@ -55,16 +53,9 @@ class BadgeProjectTest extends TestCase
         /** @var Project $project */
         $project = factory(Project::class)->create();
         $project->badges()->attach($badge);
-        /** @var Project $project */
-        $project = Project::find($project->id);
-        $this->assertInstanceOf(Collection::class, $project->badges);
-        $this->assertInstanceOf(Badge::class, $project->badges->first());
-        $this->assertInstanceOf(Collection::class, $project->states);
-        $this->assertInstanceOf(BadgeProject::class, $project->states->first());
-        $this->assertCount(1, $project->states);
         /** @var BadgeProject $state */
         $state = $badge->states->first();
-        $this->assertInstanceOf(Badge::class, $state->badge);
-        $this->assertEquals($badge->id, $state->badge->id);
+        $this->assertInstanceOf(Project::class, $state->project);
+        $this->assertEquals($project->id, $state->project->id);
     }
 }
