@@ -43,7 +43,7 @@ Route::middleware(['auth', 'webauthn', '2fa'])->group(function () {
     Route::get('create-icon', 'FilesController@createIcon')->name('files.create-icon');
 
     Route::get('profile', 'UsersController@redirect');
-    Route::resource('users', 'UsersController', ['only' => ['edit', 'update', 'destroy']]);
+    Route::resource('users', 'UsersController');
     Route::resource('votes', 'VotesController', ['only' => ['store', 'update', 'destroy']]);
 });
 

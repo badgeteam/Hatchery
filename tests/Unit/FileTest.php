@@ -174,4 +174,22 @@ class FileTest extends TestCase
             'AAAASUVORK5CYII=');    // file too low resolution :)
         $this->assertFalse($file->isValidIcon());
     }
+
+    /**
+     * Check if file can be viewed in page.
+     */
+    public function testFileIsViewable(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.bin']);
+        $this->assertNull($file->viewable);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.mp3']);
+        $this->assertEquals('audio', $file->viewable);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.png']);
+        $this->assertEquals('image', $file->viewable);
+    }
 }

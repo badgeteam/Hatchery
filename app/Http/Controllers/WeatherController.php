@@ -30,7 +30,7 @@ class WeatherController extends Controller
      * @OA\Get(
      *   path="/weather",
      *   tags={"External"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
+     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
      *
      * @return JsonResponse
@@ -54,14 +54,18 @@ class WeatherController extends Controller
      *
      * @OA\Get(
      *   path="/weather/{location}",
-     * @OA\Parameter(
+     *   @OA\Parameter(
      *     name="location",
      *     in="path",
      *     required=true,
-     * @OA\Schema(type="string",                                                  format="geolocation", example="52.2822616,5.5218715")
+     *     @OA\Schema(
+     *       type="string",
+     *       format="geolocation",
+     *       example="52.2822616,5.5218715"
+     *     )
      *   ),
      *   tags={"External"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
+     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
      *
      * @param string $location

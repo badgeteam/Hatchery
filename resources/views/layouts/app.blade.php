@@ -70,6 +70,7 @@
                                 <a href="{{ route('projects.index') }}">Eggs</a>
                             </li>
                         @endif
+                            <li><a href="{{ route('users.index') }}">Users</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

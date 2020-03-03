@@ -20,6 +20,7 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @property string $password
  * @property string|null $remember_token
  * @property string $editor
+ * @property bool $public
  * @property bool $google2fa_enabled
  * @property string|null $google2fa_secret
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -54,6 +55,7 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePublic($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withoutTrashed()
  * @mixin \Eloquent

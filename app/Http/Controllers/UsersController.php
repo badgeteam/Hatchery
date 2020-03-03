@@ -23,7 +23,34 @@ class UsersController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->authorizeResource(User::class);
+        $this->authorizeResource(User::class, null, ['except' => ['show', 'index']]);
+    }
+
+
+
+    /**
+     * Show public user profiles.
+     *
+     * @return View
+     */
+    public function index(): View
+    {
+        return view('users.index')
+            ->with('users', User::where('public', true)->paginate());
+    }
+
+    /**
+     * Show user profile, public method ツ.
+     *
+     * @param User $user
+     *
+     * @return View
+     */
+    public function show(User $user): View
+    {
+        return view('users.show')
+            ->with('user', $user)
+            ->with('projects', $user->projects()->orderByDesc('updated_at')->paginate());
     }
 
     /**
@@ -33,7 +60,7 @@ class UsersController extends Controller
      */
     public function redirect(Request $request): RedirectResponse
     {
-        return redirect()->route('users.edit', ['user' => $request->user()->getAuthIdentifier()]);
+        return redirect()->route('users.show', ['user' => $request->user()->getAuthIdentifier()]);
     }
 
     /**
@@ -64,6 +91,7 @@ class UsersController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->editor = $request->editor;
+            $user->public = (bool) $request->public;
             $user->save();
         } catch (\Exception $e) {
             return redirect()->route('users.edit', ['user' => $user->id])->withInput()->withErrors([$e->getMessage()]);

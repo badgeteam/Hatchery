@@ -39,6 +39,6 @@ class UserPolicy
     public function delete(User $user, User $target)
     {
         // Normal users can only delete their own info
-        return  $user->admin || $user->id == $target->id;
+        return $user->admin || $user->id == $target->id;
     }
 }
