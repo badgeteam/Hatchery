@@ -137,13 +137,14 @@ class UsersController extends Controller
 
     /**
      * @param User $user
+     *
      * @return LengthAwarePaginator
      */
     private function getProjects(User $user): LengthAwarePaginator
     {
-        return Project::where(function($query) use ($user){
+        return Project::where(function ($query) use ($user) {
             $query->where('user_id', $user->id);
-            $query->orWhereHas('collaborators', function($q) use($user) {
+            $query->orWhereHas('collaborators', function ($q) use ($user) {
                 $q->where('user_id', $user->id);
             });
         })->orderByDesc('updated_at')->paginate();

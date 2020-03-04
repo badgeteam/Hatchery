@@ -61,12 +61,14 @@
                             {!! $project->descriptionHtml !!}
                         </div>
                         <div class="col-md-4 clearfix">
-                            Category: {{ $project->category }}
+                            <strong>Category: {{ $project->category }}</strong>
                             <hr>
-                            Status: {{ $project->status }}
+                            <strong>Status: {{ $project->status }}</strong>
+                            <hr>
                             @include('projects.partials.vote-and-notify')
                             @include('projects.partials.show-compatibility')
                             @include('projects.partials.show-dependencies')
+                            @include('projects.partials.collaborators')
                         </div>
                         @if($project->versions()->published()->count() > 0)
                         <div class="col-md-12 clearfix">

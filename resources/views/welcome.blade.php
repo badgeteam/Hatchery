@@ -20,15 +20,14 @@
 				</div>
 				<div class="spacer col-md-12 hidden-xs"></div>
 				<div class="links">
-					<a href="https://docs.badge.team/">Documentation</a>
-					<a href="https://github.com/badgeteam/">GitHub</a>
-					<a href="https://twitter.com/SHA2017Badge">Twitter</a>
+					<a class="btn btn-success" href="https://docs.badge.team/">Documentation</a>
+					<a class="btn btn-danger" href="https://github.com/badgeteam/">GitHub</a>
+					<a class="btn btn-primary" href="https://twitter.com/SHA2017Badge">Twitter</a>
 				</div>
 				<div>
 					Contributors: {{$users}}
 					Eggs: {{$projects}}
 				</div>
-
 				<div class="spacer col-md-12 hidden-xs"></div>
 					{{ Form::label('badge', 'Badge', ['class' => 'control-label']) }}
 					{{ Form::select('badge_id', \App\Models\Badge::pluck('name', 'slug')->reverse()->prepend('Choose a badge model', ''), $badge, ['id' => 'badge']) }}
@@ -38,6 +37,7 @@
 						{{ Form::label('search', 'Search', ['class' => 'control-label']) }}
 						{{ Form::text('search', null, ['placeholder' => 'Search']) }}
 					{{ Form::close() }}
+					<hr>
 					<table class="table table-condensed">
 						<thead>
 							<tr>

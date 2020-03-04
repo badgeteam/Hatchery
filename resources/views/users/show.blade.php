@@ -6,7 +6,8 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong>{{ $user->name }}</strong> {!! !$user->google2fa_enabled ? '<span class="u2f">2FA</span>' : ''  !!} {!! !$user->webauthnKeys->isEmpty() ? '' : '<span class="u2f">U2F</span>' !!}                        <div class="pull-right">
+                        <strong class="spacer">{{ $user->name }}</strong> {!! $user->google2fa_enabled ? '<span class="u2f">2FA</span>' : ''  !!} {!! $user->webauthnKeys->isEmpty() ? '' : '<span class="u2f">U2F</span>' !!}
+                        <div class="pull-right">
                             @can('update', $user)
                             <a class="btn btn-primary btn-xs" href="{{ route('users.edit', ['user' => $user->id])  }}">edit</a>
                             @endcan

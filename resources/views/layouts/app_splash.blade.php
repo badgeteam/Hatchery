@@ -26,11 +26,10 @@
 		background-color: white;
 	}
 	.links > a {
-		color: #636b6f;
-		padding: 0 25px;
 		letter-spacing: .1rem;
-		text-transform: uppercase;
-	}	
+        margin: 10px;
+        width: 142px;
+	}
 
 	h1.hatcher {
 		font-size: 76px;

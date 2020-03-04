@@ -30,7 +30,7 @@
                                     <td><a href="{{ route('users.show', $user) }}">{{ $user->name }}</a></td>
                                     <td>{{ $user->projects()->count() }}</td>
                                     <td>{{ $user->editor }}</td>
-                                    <td>{{ $user->google2fa_enabled ? '2FA' : '' }} {{ $user->webauthnKeys->isEmpty() ? '' : 'U2F' }}</td>
+                                    <td>{!! $user->google2fa_enabled ? '<span class="u2f">2FA</span>' : ''  !!} {!! $user->webauthnKeys->isEmpty() ? '' : '<span class="u2f">U2F</span>' !!}</td>
                                     <td>{{ $user->projects()->count() > 0 ? $user->projects->last()->updated_at : '-' }}</td>
                                 </tr>
                             @empty
