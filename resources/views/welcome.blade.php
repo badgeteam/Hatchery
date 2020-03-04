@@ -53,7 +53,7 @@
 								<th>Egg</th>
 								<th>Content</th>
 								<th>Cat</th>
-								<th>Colab</th>
+								<th>Collab</th>
 								<th><img src="{{ asset('img/rulez.gif') }}" alt="up" /></th>
 								<th><img src="{{ asset('img/isok.gif') }}" alt="pig" /></th>
 								<th><img src="{{ asset('img/sucks.gif') }}" alt="down" /></th>

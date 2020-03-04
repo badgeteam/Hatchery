@@ -8,7 +8,7 @@
                 <th>Egg</th>
                 <th>Content</th>
                 <th>Cat</th>
-                <th>Colab</th>
+                <th>Collab</th>
                 <th>Last release</th>
             </tr>
             </thead>

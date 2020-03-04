@@ -60,6 +60,7 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withoutTrashed()
  * @mixin \Eloquent
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $collaborations
  * @property-read int|null $collaborations_count
  */
@@ -124,7 +125,7 @@ class User extends Authenticatable
      */
     public function collaborations(): BelongsToMany
     {
-        return $this->belongsToMany(Project::class);
+        return $this->belongsToMany(Project::class)->withTimestamps();
     }
 
     /**
