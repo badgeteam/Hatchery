@@ -68,7 +68,7 @@
                             @include('projects.partials.vote-and-notify')
                             @include('projects.partials.show-compatibility')
                             @include('projects.partials.show-dependencies')
-                            @include('projects.partials.collaborators')
+                            @include('projects.partials.show-collaborators')
                         </div>
                         @if($project->versions()->published()->count() > 0)
                         <div class="col-md-12 clearfix">

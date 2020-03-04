@@ -41,6 +41,7 @@
                                 <div class="form-group">
                                     {!! $project->descriptionHtml !!}
                                 </div>
+                                <a class="btn btn-success btn-xs" href="{{ route('files.edit', $project->versions->last()->files()->where('name', 'README.md')->first()) }}">Edit README.md</a>
                         </div>
                         <div class="col-md-4 clearfix">
                             <div class="form-group @if($errors->has('category_id')) has-error @endif">
@@ -49,8 +50,9 @@
                             </div>
 
                             @include('projects.partials.compatibility')
-
                             @include('projects.partials.dependencies')
+                            @include('projects.partials.collaborators')
+
                         </div>
                         <div class="col-md-12 clearfix">
 

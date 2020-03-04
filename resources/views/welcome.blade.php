@@ -8,6 +8,7 @@
 			<div class="pull-right links">
 			    @if (Auth::check())
 				<a href="{{ url('/projects') }}">Eggs</a>
+				<a href="{{ url('/users') }}">Users</a>
 			    @else
 				<a href="{{ url('/login') }}">Login</a>
 				<a href="{{ url('/register') }}">Register</a>

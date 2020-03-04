@@ -14,6 +14,7 @@ use App\Models\BadgeProject;
 use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
+use App\Models\User;
 use App\Models\Version;
 use App\Models\Warning;
 use App\Support\GitRepository;
@@ -52,9 +53,9 @@ class ProjectsController extends Controller
      */
     public function index(Request $request): View
     {
-        $badge = $this->getBadge($request);
+        $badge    = $this->getBadge($request);
         $category = $this->getCategory($request);
-        $search = $this->getSearch($request);
+        $search   = $this->getSearch($request);
 
         if ($badge) {
             $projects = $badge->projects()->orderBy('id', 'DESC');
@@ -151,6 +152,7 @@ class ProjectsController extends Controller
             $project->save();
             $this->manageDependencies($project, $request);
             $this->manageBadges($project, $request);
+            $this->manageCollaborators($project, $request);
         } catch (\Exception $e) {
             return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors([$e->getMessage()]);
         }
@@ -411,6 +413,21 @@ class ProjectsController extends Controller
                     $state->save();
                 }
             }
+        }
+    }
+
+    /**
+     * @param Project $project
+     * @param Request $request
+     *
+     * @return void
+     */
+    private function manageCollaborators(Project $project, Request $request): void
+    {
+        if ($request->has('collaborators')) {
+            $project->collaborators()->detach();
+            $collaborators = User::find($request->get('collaborators'));
+            $project->collaborators()->attach($collaborators);
         }
     }
 
