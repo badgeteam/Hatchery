@@ -62,7 +62,7 @@
 
                                 <div class="pull-right">
                                     {{ Form::label('publish', 'Publish', ['class' => 'control-label']) }}
-                                    {{ Form::checkbox('publish', 1, 1, ['id' => 'publish']) }}
+                                    {{ Form::checkbox('publish', 1, null, ['id' => 'publish']) }}
                                     <button type="submit" class="btn btn-default">Save</button>
                                 </div>
 
