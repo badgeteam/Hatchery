@@ -26,8 +26,6 @@ class UsersController extends Controller
         $this->authorizeResource(User::class, null, ['except' => ['show', 'index']]);
     }
 
-
-
     /**
      * Show public user profiles.
      *

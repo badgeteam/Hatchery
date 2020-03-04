@@ -43,20 +43,21 @@
                         <tbody>
                             @forelse($projects as $project)
                                 <tr>
-				    <td>
-					@can('update', $project)
-						<a href="{{ route('projects.edit', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
-					@else
-						<a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
-					@endcan
+                                    <td>
+                                    @can('update', $project)
+                                        <a href="{{ route('projects.edit', ['project' => $project->slug]) }}">{{ $project->name }}</a>
+                                    @else
+                                        <a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a>
+                                    @endcan
+                                    </td>
                                     <td>{{ $project->versions()->published()->count() > 0 ? $project->versions()->published()->get()->last()->revision : 'unreleased' }}</td>
                                     <td>{{ $project->size_of_zip_formatted }}</td>
                                     <td>{{ $project->size_of_content_formatted }}</td>
                                     <td>{{ $project->category }}</td>
                                     <td>
-                                        @if($project->git)
-                                            <img src="{{ asset('img/git.png') }}" alt="Git revision: {{ $project->git_commit_id}}" />
-                                        @endif
+                                    @if($project->git)
+                                        <img src="{{ asset('img/git.png') }}" alt="Git revision: {{ $project->git_commit_id}}" />
+                                    @endif
                                     </td>
                                     <td>{{ $project->votes->where('type', 'up')->count() }}</td>
                                     <td>{{ $project->votes->where('type', 'pig')->count() }}</td>

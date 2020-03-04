@@ -54,6 +54,8 @@ use Illuminate\Support\Str;
  * @property-read int|null $votes_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
  * @property-read int|null $warnings_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $collaborators
+ * @property-read int|null $collaborators_count
  *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
@@ -230,6 +232,8 @@ class Project extends Model
 
     /**
      * Get the Warnings for the Project.
+     *
+     * @return HasMany
      */
     public function warnings(): HasMany
     {
@@ -239,10 +243,22 @@ class Project extends Model
     /**
      * Get the BadgeProjects for the Project.
      * This contains support state per badge.
+     *
+     * @return HasMany
      */
     public function states(): HasMany
     {
         return $this->hasMany(BadgeProject::class);
+    }
+
+    /**
+     * Collaborators.
+     *
+     * @return BelongsToMany
+     */
+    public function collaborators(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
     }
 
     /**

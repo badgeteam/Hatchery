@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -59,6 +60,8 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $collaborations
+ * @property-read int|null $collaborations_count
  */
 class User extends Authenticatable
 {
@@ -112,6 +115,16 @@ class User extends Authenticatable
     public function webauthnKeys(): HasMany
     {
         return $this->hasMany(WebauthnKey::class);
+    }
+
+    /**
+     * Collaborations.
+     *
+     * @return BelongsToMany
+     */
+    public function collaborations(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class);
     }
 
     /**

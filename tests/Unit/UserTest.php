@@ -22,7 +22,7 @@ class UserTest extends TestCase
     /**
      * Assert the User has a relation with zero or more Project(s).
      */
-    public function testUserProjectsRelationship(): void
+    public function testUserProjectRelationship(): void
     {
         /** @var User $user */
         $user = factory(User::class)->create();
@@ -90,5 +90,31 @@ class UserTest extends TestCase
         /** @var User $user */
         $user = User::find($user->id);
         $this->assertCount(2, $user->warnings);
+    }
+
+    /**
+     * Assert the User has a collaborator relation with Projects.
+     */
+    public function testUserProjectsRelationship(): void
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $this->assertEmpty($otherUser->collaborations);
+        $project->collaborators()->attach($otherUser);
+        /** @var User $otherUser */
+        $otherUser = User::find($otherUser->id);
+        $this->assertInstanceOf(Collection::class, $otherUser->collaborations);
+        $this->assertInstanceOf(Project::class, $otherUser->collaborations->first());
+        /** @var Project $collaboration */
+        $collaboration = $otherUser->collaborations->first();
+        $this->assertEquals($project->id, $collaboration->id);
+        $this->assertCount(1, $otherUser->collaborations);
+        $otherProject = factory(Project::class)->create();
+        $otherProject->collaborators()->attach($otherUser);
+        /** @var User $otherUser */
+        $otherUser = User::find($otherUser->id);
+        $this->assertCount(2, $otherUser->collaborations);
     }
 }

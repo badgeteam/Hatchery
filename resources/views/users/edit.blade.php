@@ -7,13 +7,14 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Profile
-                        @can('delete', $user)
                         <div class="pull-right">
-                            {!! Form::open(['method' => 'delete', 'route' => ['users.destroy', 'user' => $user->id]]) !!}
+                            <a class="btn btn-default btn-xs" href="{{ route('users.show', ['user' => $user->id])  }}">show</a>
+                            @can('delete', $user)
+                            {!! Form::open(['method' => 'delete', 'route' => ['users.destroy', 'user' => $user->id], 'class' => 'deleteform']) !!}
                             <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">delete</button>
                             {!! Form::close() !!}
+                            @endcan
                         </div>
-                        @endcan
                     </div>
                     <div class="panel-body">
                         {!! Form::open(['method' => 'put', 'route' => ['users.update', 'user' => $user->id], 'class' => "form-horizontal"]) !!}

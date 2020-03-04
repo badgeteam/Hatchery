@@ -311,4 +311,30 @@ class ProjectTest extends TestCase
         $version = $project->versions->last();
         $this->assertEmpty($version->files);
     }
+
+    /**
+     * Assert the Project has a relation with a collaborator Users.
+     */
+    public function testProjectUsersRelationship(): void
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $this->assertEmpty($project->collaborators);
+        $project->collaborators()->attach($otherUser);
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertInstanceOf(Collection::class, $project->collaborators);
+        $this->assertInstanceOf(User::class, $project->collaborators->first());
+        /** @var User $collaborator */
+        $collaborator = $project->collaborators->first();
+        $this->assertEquals($otherUser->id, $collaborator->id);
+        $this->assertCount(1, $project->collaborators);
+        $anotherUser = factory(User::class)->create();
+        $project->collaborators()->attach($anotherUser);
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertCount(2, $project->collaborators);
+    }
 }
