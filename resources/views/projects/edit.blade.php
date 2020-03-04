@@ -14,7 +14,7 @@
                         <img src="{{ asset('img/git.svg') }}" alt="Git revision: {{ $project->git_commit_id}}" class="collab-icon" />
                     @endif
                     @if(!$project->collaborators->isEmpty())
-                        <img src="{{ asset('img/collab.svg') }}" alt="{{ $project->collaborators()->count()}} collaborateur(s) lol" class="collab-icon" />
+                        <img src="{{ asset('img/collab.svg') }}" alt="{{ $project->collaborators()->count() . ' ' . \Illuminate\Support\Str::plural('collaborator', $project->collaborators()->count()) }}" class="collab-icon" />
                     @endif
                     <strong>{{ $project->name }}</strong>
                     <div class="pull-right">
@@ -38,10 +38,14 @@
                         {!! Form::open(['method' => 'put', 'route' => ['projects.update', 'project' => $project->slug]]) !!}
 
                         <div class="col-md-8 clearfix">
-                                <div class="form-group">
-                                    {!! $project->descriptionHtml !!}
-                                </div>
-                                <a class="btn btn-success btn-xs" href="{{ route('files.edit', $project->versions->last()->files()->where('name', 'README.md')->first()) }}">Edit README.md</a>
+                            <div class="form-group">
+                                {!! $project->descriptionHtml !!}
+                            </div>
+                            @if($project->versions->last()->files()->where('name', 'README.md')->exists())
+                            <a class="btn btn-success btn-xs" href="{{ route('files.edit', $project->versions->last()->files()->where('name', 'README.md')->first()) }}">Edit README.md</a>
+                            @else
+                            <a class="btn btn-success btn-xs" href="{{ route('files.create', ['version' => $project->versions->last()->id, 'name' => 'README.md']) }}">Create README.md</a>
+                            @endif
                         </div>
                         <div class="col-md-4 clearfix">
                             <div class="form-group @if($errors->has('category_id')) has-error @endif">

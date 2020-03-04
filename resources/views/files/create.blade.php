@@ -19,10 +19,13 @@
                             {!! Form::open(['method' => 'post', 'route' => 'files.store', 'id' => 'content_form']) !!}
 
                             {{ Form::hidden('version_id', $version->id) }}
+                            @if ($name)
+                            {{ Form::hidden('extension', ltrim((string) strstr($name, '.'), '.'), ['id' => 'extension']) }}
+                            @endif
 
                             <div class="form-group @if($errors->has('name')) has-error @endif">
                                 {{ Form::label('name', 'File name', ['class' => 'control-label']) }}
-                                {{ Form::text('name', null, ['class' => 'form-control', 'id' => 'name']) }}
+                                {{ Form::text('name', $name, ['class' => 'form-control', 'id' => 'name']) }}
                             </div>
 
                             <div class="form-group @if($errors->has('file_content')) has-error @endif">

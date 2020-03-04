@@ -53,9 +53,9 @@ class ProjectsController extends Controller
      */
     public function index(Request $request): View
     {
-        $badge    = $this->getBadge($request);
+        $badge = $this->getBadge($request);
         $category = $this->getCategory($request);
-        $search   = $this->getSearch($request);
+        $search = $this->getSearch($request);
 
         if ($badge) {
             $projects = $badge->projects()->orderBy('id', 'DESC');
