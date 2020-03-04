@@ -121,7 +121,7 @@ class FilesController extends Controller
     public function createIcon(Request $request): RedirectResponse
     {
         $version = Version::where('id', $request->get('version'))->firstOrFail();
-        $file = new File;
+        $file = new File();
         $pixels = [];
         for ($p = 0; $p < 64; $p++) {
             $pixels[] = '0x00000000';

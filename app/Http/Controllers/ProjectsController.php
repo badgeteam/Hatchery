@@ -238,6 +238,7 @@ class ProjectsController extends Controller
      * @param Project $project
      *
      * @return View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function renameForm(Project $project): View
     {
@@ -251,9 +252,10 @@ class ProjectsController extends Controller
      * Update the specified resource in storage.
      *
      * @param ProjectRenameRequest $request
-     * @param Project              $project
+     * @param Project $project
      *
      * @return RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function rename(ProjectRenameRequest $request, Project $project): RedirectResponse
     {
@@ -424,8 +426,8 @@ class ProjectsController extends Controller
      */
     private function manageCollaborators(Project $project, Request $request): void
     {
+        $project->collaborators()->detach();
         if ($request->has('collaborators')) {
-            $project->collaborators()->detach();
             $collaborators = User::find($request->get('collaborators'));
             $project->collaborators()->attach($collaborators);
         }
