@@ -60,6 +60,9 @@ class WeatherTest extends TestCase
      */
     public function testWeatherFetching404(): void
     {
+        Cache::shouldReceive('has')
+            ->once()
+            ->andReturn(false);
         $mock = $this->mock(Darksky::class);
         $mock->expects('get')->once()->andReturns(false);
         $this->app->instance(Darksky::class, $mock);
