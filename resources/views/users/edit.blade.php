@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Profile
@@ -68,16 +68,28 @@
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('public') ? ' has-error' : '' }}">
+                            <div class="form-group{{ $errors->has('public') ? ' has-error' : '' }}{{ $errors->has('show_projects') ? ' has-error' : '' }}">
                                 <label for="public" class="col-md-4 control-label">Public profile</label>
 
-                                <div class="col-md-6">
+                                <div class="col-md-1">
                                     <input id="public" type="checkbox" class="form-control" name="public" value="1" {{ $user->public ? 'checked=checked' : '' }}>
 
                                     @if ($errors->has('public'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('public') }}</strong>
                                         </span>
+                                    @endif
+                                </div>
+
+                                <label for="show_projects" class="col-md-4 control-label">Show Projects</label>
+
+                                <div class="col-md-1">
+                                    <input id="show_projects" type="checkbox" class="form-control" name="show_projects" value="1" {{ $user->show_projects ? 'checked=checked' : '' }}>
+
+                                    @if ($errors->has('show_projects'))
+                                        <span class="help-block">
+                                                <strong>{{ $errors->first('show_projects') }}</strong>
+                                            </span>
                                     @endif
                                 </div>
                             </div>

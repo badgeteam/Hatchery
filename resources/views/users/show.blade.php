@@ -6,8 +6,7 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Profile
-                        <div class="pull-right">
+                        <strong>{{ $user->name }}</strong> {!! !$user->google2fa_enabled ? '<span class="u2f">2FA</span>' : ''  !!} {!! !$user->webauthnKeys->isEmpty() ? '' : '<span class="u2f">U2F</span>' !!}                        <div class="pull-right">
                             @can('update', $user)
                             <a class="btn btn-primary btn-xs" href="{{ route('users.edit', ['user' => $user->id])  }}">edit</a>
                             @endcan
@@ -23,24 +22,24 @@
                         <table class="table table-striped">
                             <tbody>
                                 <tr>
-                                    <td>Name:</td>
-                                    <td>{{ $user->name }}</td>
+                                    <td>Member since:</td>
+                                    <td>{{ $user->created_at }}</td>
                                 </tr>
                                 <tr>
                                     <td>Editor:</td>
                                     <td>{{ $user->editor }}</td>
                                 </tr>
                                 <tr>
-                                    <td>2FA/U2F:</td>
-                                    <td>{{ $user->google2fa_enabled ? '2FA' : '' }} {{ $user->webauthnKeys->isEmpty() ? '' : 'U2F' }}</td>
+                                    <td>Eggs:</td>
+                                    <td>{{ $projects->total() }}</td>
                                 </tr>
                                 <tr>
                                     <td>Last active:</td>
-                                    <td>{{ $user->projects()->count() > 0 ? $user->projects->last()->updated_at : '-' }}</td>
+                                    <td>{{ $user->projects()->count() > 0 ? $user->projects->last()->updated_at->diffForHumans() : '-' }}</td>
                                 </tr>
                             </tbody>
                         </table>
-                        @if($user->projects()->count() > 0)
+                        @if($user->show_projects && $projects->total() > 0)
                         <h3>Projects:</h3>
                         @include('users.partials.projects')
                         @endif

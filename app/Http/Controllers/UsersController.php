@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserUpdateRequest;
+use App\Models\Project;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +50,7 @@ class UsersController extends Controller
     {
         return view('users.show')
             ->with('user', $user)
-            ->with('projects', $user->projects()->orderByDesc('updated_at')->paginate());
+            ->with('projects', $this->getProjects($user));
     }
 
     /**
@@ -72,7 +74,7 @@ class UsersController extends Controller
     {
         return view('users.edit')
             ->with('user', $user)
-            ->with('projects', $user->projects()->orderByDesc('updated_at')->paginate());
+            ->with('projects', $this->getProjects($user));
     }
 
     /**
@@ -90,6 +92,7 @@ class UsersController extends Controller
             $user->email = $request->email;
             $user->editor = $request->editor;
             $user->public = (bool) $request->public;
+            $user->show_projects = (bool) $request->show_projects;
             $user->save();
         } catch (\Exception $e) {
             return redirect()->route('users.edit', ['user' => $user->id])->withInput()->withErrors([$e->getMessage()]);
@@ -130,5 +133,19 @@ class UsersController extends Controller
     protected function guard()
     {
         return Auth::guard();
+    }
+
+    /**
+     * @param User $user
+     * @return LengthAwarePaginator
+     */
+    private function getProjects(User $user): LengthAwarePaginator
+    {
+        return Project::where(function($query) use ($user){
+            $query->where('user_id', $user->id);
+            $query->orWhereHas('collaborators', function($q) use($user) {
+                $q->where('user_id', $user->id);
+            });
+        })->orderByDesc('updated_at')->paginate();
     }
 }

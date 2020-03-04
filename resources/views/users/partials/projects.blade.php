@@ -28,7 +28,10 @@
                     <td>{{ $project->category }}</td>
                     <td>
                     @if($project->git)
-                        <img src="{{ asset('img/git.png') }}" alt="Git revision: {{ $project->git_commit_id}}" />
+                        <img src="{{ asset('img/git.svg') }}" alt="Git revision: {{ $project->git_commit_id}}" class="collab-icon" />
+                    @endif
+                    @if(!$project->collaborators->isEmpty())
+                        <img src="{{ asset('img/collab.svg') }}" alt="{{ $project->collaborators()->count()}} collaborateur(s) lol" class="collab-icon" />
                     @endif
                     </td>
                     <td>{{ $project->versions()->published()->exists() ? $project->versions()->published()->get()->last()->updated_at : '-' }}</td>
