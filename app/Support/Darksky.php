@@ -6,8 +6,6 @@ use GuzzleHttp\Client;
 
 /**
  * Class Darksky.
- *
- * @package App\Support
  */
 class Darksky
 {
@@ -32,6 +30,7 @@ class Darksky
     public function get(string $url): string
     {
         $response = $this->client->request('GET', $url);
+
         return $response->getBody();
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Support\Darksky;
 use Carbon\Carbon;
-use GuzzleHttp\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use OpenApi\Annotations as OA;
