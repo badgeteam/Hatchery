@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\Darksky;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use OpenApi\Annotations as OA;
@@ -15,6 +17,7 @@ use stdClass;
  */
 class WeatherController extends Controller
 {
+    private $client;
     /**
      * @var int
      */
@@ -23,6 +26,16 @@ class WeatherController extends Controller
      * @var string
      */
     private $url = '';
+
+    /**
+     * WeatherController constructor.
+     *
+     * @param Darksky $darksky
+     */
+    public function __construct(Darksky $darksky)
+    {
+        $this->client = $darksky;
+    }
 
     /**
      * Show weather forecast for today.
@@ -37,8 +50,7 @@ class WeatherController extends Controller
      */
     public function show(): JsonResponse
     {
-        $this->url = 'https://api.darksky.net/forecast/'
-            .config('services.darksky.key')
+        $this->url = config('services.darksky.key')
             .'/'.config('services.darksky.location').'?units=ca&exclude=currently,alerts,flags,daily,minutely';
 
         return response()->json(
@@ -78,8 +90,7 @@ class WeatherController extends Controller
             abort(412, 'Location invalid');
         }
 
-        $this->url = 'https://api.darksky.net/forecast/'
-            .config('services.darksky.key')
+        $this->url = config('services.darksky.key')
             .'/'.$location.'?units=ca&exclude=currently,alerts,flags,daily,minutely';
 
         return response()->json(
@@ -99,8 +110,8 @@ class WeatherController extends Controller
         if (Cache::has($key)) {
             $json = Cache::get($key);
         } else {
-            $json = file_get_contents($this->url);
-            if ($json === false) {
+            $json = $this->client->get($this->url);
+            if ($json === '') {
                 abort(404, "Couldn't fetch the weather from: ".$this->url);
             }
             $expiresAt = Carbon::now()->addMinutes($this->minutes);

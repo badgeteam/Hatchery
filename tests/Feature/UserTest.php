@@ -431,8 +431,8 @@ class UserTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->post('/2faVerify',[
-                'one_time_password' => $g2fa->getCurrentOtp($user->google2fa_secret)
+            ->post('/2faVerify', [
+                'one_time_password' => $g2fa->getCurrentOtp($user->google2fa_secret),
             ]);
         $response->assertStatus(302);
     }
