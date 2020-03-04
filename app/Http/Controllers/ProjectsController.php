@@ -237,8 +237,9 @@ class ProjectsController extends Controller
      *
      * @param Project $project
      *
-     * @return View
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return View
      */
     public function renameForm(Project $project): View
     {
@@ -252,10 +253,11 @@ class ProjectsController extends Controller
      * Update the specified resource in storage.
      *
      * @param ProjectRenameRequest $request
-     * @param Project $project
+     * @param Project              $project
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return RedirectResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function rename(ProjectRenameRequest $request, Project $project): RedirectResponse
     {

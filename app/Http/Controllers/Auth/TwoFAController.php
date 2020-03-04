@@ -11,6 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
+use PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException;
+use PragmaRX\Google2FA\Exceptions\InvalidCharactersException;
+use PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException;
 use PragmaRX\Google2FA\Google2FA;
 
 /**
@@ -45,8 +48,8 @@ class TwoFAController extends Controller
     }
 
     /**
-     * @throws \PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException
-     * @throws \PragmaRX\Google2FA\Exceptions\InvalidCharactersException
+     * @throws IncompatibleWithGoogleAuthenticatorException
+     * @throws InvalidCharactersException
      *
      * @return RedirectResponse
      */
@@ -65,6 +68,10 @@ class TwoFAController extends Controller
 
     /**
      * @param Enable2FaRequest $request
+     *
+     * @throws IncompatibleWithGoogleAuthenticatorException
+     * @throws InvalidCharactersException
+     * @throws SecretKeyTooShortException
      *
      * @return RedirectResponse
      */
@@ -93,7 +100,6 @@ class TwoFAController extends Controller
     public function disable2fa(Disable2FaRequest $request)
     {
         if (!(Hash::check($request->get('current-password'), Auth::guard()->user()->password))) {
-            // The passwords matches
             return redirect()->back()
                 ->with('error', 'Your password is invalid, try again.');
         }

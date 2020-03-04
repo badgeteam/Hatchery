@@ -26,6 +26,6 @@ class Authenticator extends PragmaRXAuthenticator
         /** @var User $user */
         $user = $this->getUser();
 
-        return $secret === null && !empty($secret) && $user->google2fa_enabled;
+        return $secret !== null && !empty($secret) && $user->google2fa_enabled;
     }
 }
