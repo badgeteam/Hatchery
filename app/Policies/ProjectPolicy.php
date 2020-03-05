@@ -49,8 +49,9 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project)
     {
-        // Normal users can only change their own projects
-        return $user->admin || $user->id == $project->user->id;
+        // Normal users can only change projects they collaborate on
+        return $user->admin || $user->id == $project->user->id || $project->collaborators()
+                ->where('user_id', $user->id)->exists();
     }
 
     /**
@@ -94,7 +95,8 @@ class ProjectPolicy
         if ($project->git === null) {
             return false;   // No git, no pull
         }
-        // Normal users can only delete their own projects
-        return  $user->admin || $user->id == $project->user->id;
+        // Normal users can only pull their own projects or projects they collaborate on
+        return  $user->admin || $user->id == $project->user->id || $project->collaborators()
+                ->where('user_id', $user->id)->exists();
     }
 }
