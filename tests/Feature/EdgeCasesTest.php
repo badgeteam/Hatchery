@@ -32,7 +32,7 @@ class EdgeCasesTest extends TestCase
         $user = factory(User::class)->create();
         $this->be($user);
 
-        $user = $this->mock(User::class, function ($mock)  {
+        $user = $this->mock(User::class, function ($mock) {
             $mock->shouldReceive('delete')->once()->andThrow(new \Exception('b0rk'));
         })->makePartial();
 
@@ -70,7 +70,7 @@ class EdgeCasesTest extends TestCase
      */
     public function testProjectsDeleteRaceCondition(): void
     {
-        $project = $this->mock(Project::class, function ($mock)  {
+        $project = $this->mock(Project::class, function ($mock) {
             $mock->shouldReceive('save')->once();
             $mock->shouldReceive('delete')->once()->andThrow(new \Exception('b0rk'));
         })->makePartial();

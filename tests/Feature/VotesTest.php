@@ -207,8 +207,8 @@ class VotesTest extends TestCase
             ->actingAs($user)
             ->call('post', '/votes', [
                 'project_id' => $project->id,
-                'type' => 'pig',
-                'comment' => $this->faker->text(1024)
+                'type'       => 'pig',
+                'comment'    => $this->faker->text(1024),
             ]);
         $response->assertRedirect('/projects/'.$project->slug)->assertSessionHasErrors();
         $this->assertEmpty(Vote::all());
@@ -230,13 +230,12 @@ class VotesTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('put', '/votes/'.$vote->id, [
-                'type' => 'up',
-                'comment' => $this->faker->text(1024)
+                'type'    => 'up',
+                'comment' => $this->faker->text(1024),
             ]);
         $response->assertRedirect('/projects/'.$project->slug)->assertSessionHasErrors();
         /** @var Vote $vote */
         $vote = Vote::find($vote->id);
         $this->assertEquals('pig', $vote->type);
     }
-
 }

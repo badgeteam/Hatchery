@@ -481,6 +481,4 @@ class ProjectsController extends Controller
 
         return $search;
     }
-
-
 }

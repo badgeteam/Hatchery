@@ -539,8 +539,8 @@ class ProjectsTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->call('get', '/projects/' . $project->slug . '/pull');
-        $response->assertRedirect('/projects/' . $project->slug . '/edit')->assertSessionHasErrors();
+            ->call('get', '/projects/'.$project->slug.'/pull');
+        $response->assertRedirect('/projects/'.$project->slug.'/edit')->assertSessionHasErrors();
     }
 
     /**
@@ -749,6 +749,7 @@ class ProjectsTest extends TestCase
             ->assertViewHas('projects')
             ->assertViewHas('badge', $badge->slug);
     }
+
     /**
      * Check the projects list.
      */
@@ -784,7 +785,7 @@ class ProjectsTest extends TestCase
     {
         $response = $this
             ->post('/search', [
-                'search' => 'meaning'
+                'search' => 'meaning',
             ]);
         $response->assertStatus(200)
             ->assertViewHas('search', 'meaning')
@@ -824,8 +825,8 @@ class ProjectsTest extends TestCase
     }
 
     /**
-    * Check the projects can be published on update.
-    */
+     * Check the projects can be published on update.
+     */
     public function testProjectsUpdatePublish(): void
     {
         $user = factory(User::class)->create();
@@ -838,7 +839,7 @@ class ProjectsTest extends TestCase
                 'description' => $this->faker->paragraph,
                 'category_id' => $project->category_id,
                 'status'      => 'unknown',
-                'publish'     => 1
+                'publish'     => 1,
             ]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
         /** @var Project $project */
