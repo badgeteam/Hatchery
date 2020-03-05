@@ -58,10 +58,10 @@ class ProjectsController extends Controller
         $search = $this->getSearch($request);
 
         if ($badge) {
-            $projects = $badge->projects()->orderBy('id', 'DESC');
+            $projects = $badge->projects()->orderBy('id', 'desc');
             $badge = $badge->slug;
         } else {
-            $projects = Project::orderBy('id', 'DESC');
+            $projects = Project::orderBy('id', 'desc');
         }
 
         if ($category) {
@@ -194,7 +194,7 @@ class ProjectsController extends Controller
             $project->save();
             $project->delete();
         } catch (\Exception $e) {
-            return redirect()->route('projects.edit', ['project' => $project->slug])
+            return redirect(URL()->previous())
                 ->withInput()
                 ->withErrors([$e->getMessage()]);
         }
@@ -481,4 +481,6 @@ class ProjectsController extends Controller
 
         return $search;
     }
+
+
 }

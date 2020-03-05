@@ -9,7 +9,6 @@ use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
-use App\Models\Vote;
 use App\Models\Warning;
 use App\Support\GitRepository;
 use App\Support\Helpers;
@@ -22,11 +21,11 @@ use Illuminate\Support\Str;
 use Tests\TestCase;
 
 /**
- * Class ProjectTest.
+ * Class ProjectsTest.
  *
  * @author annejan@badge.team
  */
-class ProjectTest extends TestCase
+class ProjectsTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
@@ -120,14 +119,14 @@ class ProjectTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('post', '/projects', ['name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id]);
-        $response->assertRedirect('')->assertSessionHas('errors');
+        $response->assertRedirect('')->assertSessionHasErrors();
 
         $name .= '+'; // issue found by fox name is unique, slug is identical
         $this->assertCount(1, Project::all());
         $response = $this
             ->actingAs($user)
             ->call('post', '/projects', ['name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id]);
-        $response->assertRedirect('/projects/create')->assertSessionHas('errors');
+        $response->assertRedirect('/projects/create')->assertSessionHasErrors();
     }
 
     /**
@@ -499,181 +498,6 @@ class ProjectTest extends TestCase
     }
 
     /**
-     * Check that a User can Vote for a Project.
-     */
-    public function testProjectsVote(): void
-    {
-        $user = factory(User::class)->create();
-        $this->be($user);
-        /** @var Project $project */
-        $project = factory(Project::class)->create();
-        $response = $this
-            ->actingAs($user)
-            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
-        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
-        $this->assertCount(1, Vote::all());
-        /** @var Project $project */
-        $project = Project::find($project->id);
-        /** @var Vote $vote */
-        $vote = $project->votes()->first();
-        $this->assertEquals('pig', $vote->type);
-    }
-
-    /**
-     * Check that a User can Vote for a Project only once.
-     */
-    public function testProjectsVoteOnce(): void
-    {
-        $user = factory(User::class)->create();
-        $this->be($user);
-        $project = factory(Project::class)->create();
-        $response = $this
-            ->actingAs($user)
-            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
-        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
-        $this->assertCount(1, Vote::all());
-        $response = $this
-            ->actingAs($user)
-            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
-        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('errors');
-        $this->assertCount(1, Vote::all());
-    }
-
-    /**
-     * Check that a Vote has existing type.
-     */
-    public function testProjectsVoteTypeExists(): void
-    {
-        $user = factory(User::class)->create();
-        $this->be($user);
-        $project = factory(Project::class)->create();
-        $response = $this
-            ->actingAs($user)
-            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'awesome']);
-        $response->assertRedirect('')->assertSessionHas('errors');
-        $this->assertEmpty(Vote::all());
-    }
-
-    /**
-     * Check that a user can delete Vote.
-     */
-    public function testProjectsVoteDelete(): void
-    {
-        $user = factory(User::class)->create();
-        $this->be($user);
-        $project = factory(Project::class)->create();
-        $vote = factory(Vote::class)->create([
-            'project_id' => $project->id,
-            'type'       => 'pig',
-        ]);
-        $response = $this
-            ->actingAs($user)
-            ->call('delete', '/votes/'.$vote->id);
-        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
-        $this->assertEmpty(Vote::all());
-    }
-
-    /**
-     * Check that a user can delete other persons Vote.
-     */
-    public function testProjectsVoteDeleteOtherUser(): void
-    {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
-        $this->be($user);
-        $project = factory(Project::class)->create();
-        $vote = factory(Vote::class)->create([
-            'project_id' => $project->id,
-            'type'       => 'pig',
-        ]);
-        $response = $this
-            ->actingAs($otherUser)
-            ->call('delete', '/votes/'.$vote->id);
-        $response->assertStatus(403);
-        $this->assertCount(1, Vote::all());
-    }
-
-    /**
-     * Check that a user can update his/her Vote.
-     */
-    public function testProjectsVoteUpdates(): void
-    {
-        $user = factory(User::class)->create();
-        $this->be($user);
-        $project = factory(Project::class)->create();
-        $vote = factory(Vote::class)->create([
-            'project_id' => $project->id,
-            'type'       => 'pig',
-        ]);
-        $response = $this
-            ->actingAs($user)
-            ->call('put', '/votes/'.$vote->id, [
-                'type' => 'up',
-            ]);
-        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
-        /** @var Vote $vote */
-        $vote = Vote::find($vote->id);
-        $this->assertEquals('up', $vote->type);
-    }
-
-    /**
-     * Check that a user can't update other persons Vote.
-     */
-    public function testProjectsVoteUpdatesOther(): void
-    {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
-        $this->be($user);
-        $project = factory(Project::class)->create();
-        $vote = factory(Vote::class)->create([
-            'project_id' => $project->id,
-            'type'       => 'pig',
-        ]);
-        $response = $this
-            ->actingAs($otherUser)
-            ->call('put', '/votes/'.$vote->id, [
-                'type' => 'up',
-            ]);
-        $response->assertStatus(403);
-        /** @var Vote $vote */
-        $vote = Vote::find($vote->id);
-        $this->assertEquals('pig', $vote->type);
-    }
-
-    /**
-     * Check that Project Score is correct.
-     */
-    public function testProjectScore(): void
-    {
-        $user = factory(User::class)->create();
-        $this->be($user);
-        /** @var Project $project */
-        $project = factory(Project::class)->create();
-        $this->assertEquals(0, $project->score);
-        $this
-            ->actingAs($user)
-            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
-        /** @var Project $project */
-        $project = Project::find($project->id);
-        $this->assertEquals(0, $project->score);
-        $this
-            ->actingAs(factory(User::class)->create())
-            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'up']);
-        $project = Project::find($project->id);
-        /** @var Project $project */
-        $this->assertEquals(0.5, $project->score);
-        $this
-            ->actingAs(factory(User::class)->create())
-            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'down']);
-        $this
-            ->actingAs(factory(User::class)->create())
-            ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'down']);
-        /** @var Project $project */
-        $project = Project::find($project->id);
-        $this->assertEquals(-.25, $project->score);
-    }
-
-    /**
      * Check the projects can be stored.
      */
     public function testProjectsStoreGit(): void
@@ -701,6 +525,22 @@ class ProjectTest extends TestCase
         $project = Project::get()->last();
         $this->assertEquals($hash, $project->git_commit_id);
         Helpers::delTree($folder);
+    }
+
+    /**
+     * Check the projects can't be pulled.
+     */
+    public function testProjectsPullNoGit(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->call('get', '/projects/' . $project->slug . '/pull');
+        $response->assertRedirect('/projects/' . $project->slug . '/edit')->assertSessionHasErrors();
     }
 
     /**
@@ -895,5 +735,119 @@ class ProjectTest extends TestCase
             ->actingAs($user)
             ->call('get', '/projects/'.$project->slug.'/rename');
         $response->assertStatus(200);
+    }
+
+    /**
+     * Check the projects list.
+     */
+    public function testProjectsIndexBadge(): void
+    {
+        $badge = factory(Badge::class)->create();
+        $response = $this
+            ->get('/projects?badge='.$badge->slug);
+        $response->assertStatus(200)
+            ->assertViewHas('projects')
+            ->assertViewHas('badge', $badge->slug);
+    }
+    /**
+     * Check the projects list.
+     */
+    public function testProjectsIndexCategory(): void
+    {
+        $category = factory(Category::class)->create();
+        $response = $this
+            ->get('/projects?category='.$category->slug);
+        $response->assertStatus(200)
+            ->assertViewHas('category', $category->slug)
+            ->assertViewHas('projects');
+    }
+
+    /**
+     * Check the projects list.
+     */
+    public function testProjectsIndexCategoryBadge(): void
+    {
+        $badge = factory(Badge::class)->create();
+        $category = factory(Category::class)->create();
+        $response = $this
+            ->get('/projects?badge='.$badge->slug.'&category='.$category->slug);
+        $response->assertStatus(200)
+            ->assertViewHas('badge', $badge->slug)
+            ->assertViewHas('category', $category->slug)
+            ->assertViewHas('projects');
+    }
+
+    /**
+     * Search the projects list.
+     */
+    public function testProjectsIndexSearch(): void
+    {
+        $response = $this
+            ->post('/search', [
+                'search' => 'meaning'
+            ]);
+        $response->assertStatus(200)
+            ->assertViewHas('search', 'meaning')
+            ->assertViewHas('projects');
+    }
+
+    /**
+     * Check the projects can be stored.
+     */
+    public function testProjectsStoreForbiddenName(): void
+    {
+        $user = factory(User::class)->create();
+        $category = factory(Category::class)->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/projects', ['name' => 'woezel', 'description' => $this->faker->paragraph, 'category_id' => $category->id]);
+        $response->assertRedirect('/projects/create')->assertSessionHasErrors();
+
+        $this->assertEmpty(Project::all());
+    }
+
+    /**
+     * Check the projects can be stored.
+     */
+    public function testProjectsStoreNameTooLong(): void
+    {
+        $user = factory(User::class)->create();
+        $category = factory(Category::class)->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/projects', ['name' => $this->faker->text(1024), 'description' => $this->faker->paragraph, 'category_id' => $category->id]);
+        $response->assertRedirect('/projects/create')->assertSessionHasErrors();
+
+        $this->assertEmpty(Project::all());
+    }
+
+    /**
+    * Check the projects can be published on update.
+    */
+    public function testProjectsUpdatePublish(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/projects/'.$project->slug, [
+                'description' => $this->faker->paragraph,
+                'category_id' => $project->category_id,
+                'status'      => 'unknown',
+                'publish'     => 1
+            ]);
+        $response->assertRedirect('/projects')->assertSessionHas('successes');
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        /** @var Collection $versions */
+        $versions = Version::published()->where('project_id', $project->id)->get();
+        /** @var Version $version */
+        $version = $versions->last();
+        $zip = (string) $version->zip;
+        unlink(public_path($zip));
     }
 }

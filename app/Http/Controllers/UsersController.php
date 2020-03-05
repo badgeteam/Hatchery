@@ -115,7 +115,7 @@ class UsersController extends Controller
         try {
             $user->delete();
         } catch (\Exception $e) {
-            return redirect()->route('users.edit', ['user' => $user->id])
+            return redirect(URL()->previous())
                 ->withInput()
                 ->withErrors([$e->getMessage()]);
         }

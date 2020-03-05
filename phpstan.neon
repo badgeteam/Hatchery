@@ -27,3 +27,4 @@ parameters:
         - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::never\(\).#'
     excludes_analyse:
             - tests/_support/*
+            - tests/Feature/EdgeCases*

@@ -6,6 +6,8 @@ use GuzzleHttp\Client;
 
 /**
  * Class Darksky.
+ *
+ * Since this is just a convenient wrapper for Guzzle, no testing of our own should be needed.
  */
 class Darksky
 {
@@ -16,6 +18,8 @@ class Darksky
 
     /**
      * Darksky constructor.
+     *
+     * @codeCoverageIgnore
      */
     public function __construct()
     {
@@ -26,6 +30,8 @@ class Darksky
      * @param string $url
      *
      * @return string
+     *
+     * @codeCoverageIgnore
      */
     public function get(string $url): string
     {

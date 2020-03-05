@@ -13,11 +13,11 @@ use Illuminate\Support\Str;
 use Tests\TestCase;
 
 /**
- * Class FileTest.
+ * Class FilesTest.
  *
  * @author annejan@badge.team
  */
-class FileTest extends TestCase
+class FilesTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
@@ -257,7 +257,7 @@ time.localtime()';
         $response = $this
             ->actingAs($user)
             ->call('put', '/files/'.$file->id, ['file_content' => $data]);
-        $response->assertRedirect('/files/'.$file->id.'/edit')->assertSessionHas('errors');
+        $response->assertRedirect('/files/'.$file->id.'/edit')->assertSessionHasErrors();
     }
 
     /**

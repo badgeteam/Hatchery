@@ -176,7 +176,7 @@ class FilesController extends Controller
         try {
             $file->delete();
         } catch (\Exception $e) {
-            return redirect()->route('projects.edit', ['project' => $project->slug])
+            return redirect(URL()->previous())
                 ->withInput()
                 ->withErrors([$e->getMessage()]);
         }
