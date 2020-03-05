@@ -10,13 +10,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="csrfToken" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Hatchery') }}</title>
-    <meta name="description" content="A platform to publish and develop software for several badges.">
+    <title>{{ request()->getHost() }} {{ config('app.name', 'Hatchery') }}</title>
+    <meta name="description" content="A platform to publish and develop software for several electronic badges.">
 
-    <meta name="theme-color" content="#f00">
-    <link rel="icon" type="image/x-icon" sizes="16x16" href="/favicon.ico">
-    <link rel="icon" type="image/png" sizes="640x640" href="/img/bs.png">
-    <link rel="apple-touch-icon" sizes="640x640" href="/img/bs.png">
+    <meta name="theme-color" content="#F2DAC7">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="640x640" href="{{ asset('img/bs.png') }}">
+    <link rel="apple-touch-icon" sizes="640x640" href="{{ asset('img/bs.png') }}">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css', !App::environment(['local', 'testing'])) }}" rel="stylesheet">
