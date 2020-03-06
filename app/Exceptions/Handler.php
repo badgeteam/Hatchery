@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use Exception;
+use Throwable;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
@@ -36,13 +36,13 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param Exception $exception
+     * @param Throwable $exception
      *
-     * @throws Exception
+     * @throws Throwable
      *
      * @return void
      */
-    public function report(Exception $exception)
+    public function report(Throwable $exception)
     {
         if (app()->bound('sentry') && $this->shouldReport($exception)) {
             // @codeCoverageIgnoreStart
@@ -55,12 +55,14 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param Request   $request
-     * @param Exception $exception
+     * @param Request $request
+     * @param Throwable $exception
+     *
+     * @throws Throwable
      *
      * @return Response
      */
-    public function render($request, Exception $exception)
+    public function render($request, Throwable $exception)
     {
         return parent::render($request, $exception);
     }

@@ -306,7 +306,7 @@ class ProjectsTest extends TestCase
         $versions = $project->versions()->unPublished();
         /** @var Version $version */
         $version = $versions->first();
-        $file = factory(File::class, ['version_id' => $version->id])->create();
+        $file = factory(File::class)->create(['version_id' => $version->id]);
         $file->first()->version_id = $version->id; // yah ugly
         $file->first()->save(); // wut?
         $this->assertNull($project->published_at);
@@ -359,7 +359,7 @@ class ProjectsTest extends TestCase
         $user = factory(User::class)->create();
         $this->be($user);
         $project = factory(Project::class)->create();
-        $file = factory(File::class, ['version_id' => $project->versions()->unPublished()->first()->id])->create();
+        $file = factory(File::class)->create(['version_id' => $project->versions()->unPublished()->first()->id]);
         $file->first()->content = 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAF'.
                 'FElEQVRYw+1XfVDTZRxXj9oxN4a8bGMbG4ONTdBUEuVFQImjk5ISxBOQN3kJDSFAQgMRQh0ahLyj'.
                 'EBAblaF2cnqWRml1h1meCUmGQhmVvQioMC8RsM8ToxR/v59o/FF3/u6e+217vs/3+/m+fb7Ppkx5'.
