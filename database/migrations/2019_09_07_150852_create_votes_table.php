@@ -14,7 +14,8 @@ class CreateVotesTable extends Migration
     public function up()
     {
         Schema::create(
-            'votes', function (Blueprint $table) {
+            'votes',
+            function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->integer('user_id')->unsigned();
                 $table->integer('project_id')->unsigned();
@@ -36,7 +37,8 @@ class CreateVotesTable extends Migration
     public function down()
     {
         Schema::table(
-            'votes', function (Blueprint $table) {
+            'votes',
+            function (Blueprint $table) {
                 $table->dropForeign(['user_id']);
                 $table->dropForeign(['project_id']);
             }

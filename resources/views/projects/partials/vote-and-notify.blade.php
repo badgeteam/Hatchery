@@ -138,7 +138,7 @@
             margin-right: 20px;
         }
         [type=radio]:checked + img {
-            filter: drop-shadow(0 0 0.75rem crimson);
+            filter: drop-shadow(0 0 .75rem crimson) drop-shadow(0 0 .5rem red) drop-shadow(0 0 .25rem maroon);
         }
     </style>
 @endsection

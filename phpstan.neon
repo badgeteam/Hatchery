@@ -23,5 +23,8 @@ parameters:
         - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::andReturnSelf\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::andReturns\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::andReturn\(\).#'
+        - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::once\(\).#'
+        - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::never\(\).#'
     excludes_analyse:
             - tests/_support/*
+            - tests/Feature/EdgeCases*

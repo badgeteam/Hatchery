@@ -104,3 +104,28 @@
 .pagination {
   font-weight: bold;
 }
+
+.collab-icon {
+  height: 22px;
+}
+
+.u2f {
+  color: #51f033;
+  font-weight: bold;
+}
+
+.u2f:nth-of-type(2) {
+  color: #33f051;
+}
+
+.spacer {
+  margin-right: 10px;
+}
+
+.compact {
+  overflow: scroll;
+  max-height: 100px;
+  .form-control {
+    height: 22px;
+  }
+}

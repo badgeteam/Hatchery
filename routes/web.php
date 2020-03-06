@@ -23,7 +23,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('generate2faSecret', 'Auth\TwoFAController@generate2faSecret')->name('generate2faSecret');
     Route::post('2fa', 'Auth\TwoFAController@enable2fa')->name('enable2fa');
     Route::post('disable2fa', 'Auth\TwoFAController@disable2fa')->name('disable2fa');
-    Route::post('2faVerify', 'Auth\TwoFAController@verify')->name('2faVerify')->middleware('2fa');
+    Route::any('2faVerify', 'Auth\TwoFAController@verify')->name('2faVerify')->middleware('2fa');
 });
 
 Route::middleware(['auth', 'webauthn', '2fa'])->group(function () {
@@ -43,7 +43,7 @@ Route::middleware(['auth', 'webauthn', '2fa'])->group(function () {
     Route::get('create-icon', 'FilesController@createIcon')->name('files.create-icon');
 
     Route::get('profile', 'UsersController@redirect');
-    Route::resource('users', 'UsersController', ['only' => ['edit', 'update', 'destroy']]);
+    Route::resource('users', 'UsersController');
     Route::resource('votes', 'VotesController', ['only' => ['store', 'update', 'destroy']]);
 });
 

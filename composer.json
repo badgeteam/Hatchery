@@ -5,7 +5,7 @@
     "authors": [
         {
             "name": "Anne Jan Brouwer",
-            "email": "annejan@noprotocol.nl",
+            "email": "brouwer@annejan.com",
             "homepage": "https://annejan.com",
             "role": "Developer"
         }
@@ -25,7 +25,7 @@
         "bacon/bacon-qr-code": "^2.0",
         "bepsvpt/secure-headers": "^5.5",
         "czproject/git-php": "^3.17",
-        "darkaonline/l5-swagger": "dev-master",
+        "darkaonline/l5-swagger": "^6",
         "intervention/image": "^2.5",
         "laravel/framework": "6.*",
         "laravel/horizon": "^3.7",
@@ -36,7 +36,7 @@
         "predis/predis": "^1.1",
         "sentry/sentry-laravel": "^1.6.1",
         "spatie/laravel-sitemap": "^5.6",
-        "symfony/yaml": "^5.0",
+        "symfony/yaml": "^4",
         "verschuur/laravel-robotstxt": "^2.0"
     },
     "require-dev": {

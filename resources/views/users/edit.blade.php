@@ -3,17 +3,18 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Profile
-                        @can('delete', $user)
                         <div class="pull-right">
-                            {!! Form::open(['method' => 'delete', 'route' => ['users.destroy', 'user' => $user->id]]) !!}
+                            <a class="btn btn-default btn-xs" href="{{ route('users.show', ['user' => $user->id])  }}">show</a>
+                            @can('delete', $user)
+                            {!! Form::open(['method' => 'delete', 'route' => ['users.destroy', 'user' => $user->id], 'class' => 'deleteform']) !!}
                             <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">delete</button>
                             {!! Form::close() !!}
+                            @endcan
                         </div>
-                        @endcan
                     </div>
                     <div class="panel-body">
                         {!! Form::open(['method' => 'put', 'route' => ['users.update', 'user' => $user->id], 'class' => "form-horizontal"]) !!}
@@ -67,6 +68,32 @@
                                 </div>
                             </div>
 
+                            <div class="form-group{{ $errors->has('public') ? ' has-error' : '' }}{{ $errors->has('show_projects') ? ' has-error' : '' }}">
+                                <label for="public" class="col-md-4 control-label">Public profile</label>
+
+                                <div class="col-md-1">
+                                    <input id="public" type="checkbox" class="form-control" name="public" value="1" {{ $user->public ? 'checked=checked' : '' }}>
+
+                                    @if ($errors->has('public'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('public') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <label for="show_projects" class="col-md-4 control-label">Show Projects</label>
+
+                                <div class="col-md-1">
+                                    <input id="show_projects" type="checkbox" class="form-control" name="show_projects" value="1" {{ $user->show_projects ? 'checked=checked' : '' }}>
+
+                                    @if ($errors->has('show_projects'))
+                                        <span class="help-block">
+                                                <strong>{{ $errors->first('show_projects') }}</strong>
+                                            </span>
+                                    @endif
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <div class="col-md-7 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">
@@ -93,46 +120,7 @@
                                     @endif
                                 </div>
                             </div>
-
-
-                            <div class="form-group">
-                                <div class="col-md-12">
-				    <table class="table table-striped">
-					<thead>
-					    <tr>
-						<th>Name</th>
-						<th>Revision</th>
-						<th>Size of egg</th>
-						<th>Size of content</th>
-						<th>Category</th>
-						<th>Last release</th>
-					    </tr>
-					</thead>
-					<tbody>
-					@forelse($projects as $project)
-					<tr>
-					    <td>
-						@can('update', $project)
-							<a href="{{ route('projects.edit', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
-						@else
-							<a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
-						@endcan
-					    <td>{{ $project->versions()->published()->exists() ? $project->versions()->published()->get()->last()->revision : 'unreleased' }}</td>
-					    <td>{{ $project->size_of_zip }}</td>
-					    <td>{{ $project->size_of_content }}</td>
-					    <td>{{ $project->category }}</td>
-					    <td>{{ $project->versions()->published()->exists() ? $project->versions()->published()->get()->last()->updated_at : '-' }}</td>
-					</tr>
-				    	@empty
-					<tr>
-					    <td colspan="6">No Eggs published yet</td>
-					</tr>
-				    	@endforelse
-				</tbody>
-			</table>
-                    {{ $projects }}
-
-                    </div>
+                        @include('users.partials.projects')
                 </div>
             </div>
         </div>
@@ -168,15 +156,6 @@
 
 @section('script')
     <script type="text/javascript">
-        window.onload = function() {
-            var uploader = new window.Dropzone("#uploader",{
-                maxFilesize: 1,
-                acceptedFiles: ".{{ implode(',.', \App\Models\File::$extensions)  }}"
-            });
-            var d = document.getElementById("uploader");
-            d.className += " dropzone";
-        }
-
         // Delete resource
         $('button[name="delete-resource"]').on('click', function (e) {
             e.preventDefault()
@@ -186,7 +165,7 @@
             })
         })
 
-        // Delete resource
+        // Delete token
         $('button[name="delete-token"]').on('click', function (e) {
           e.preventDefault()
           var $form = $(this).closest('form')

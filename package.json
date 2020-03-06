@@ -1,9 +1,9 @@
 {
   "name": "hatchery",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "badge.team Hatchery",
-  "author": "Anne Jan Brouwer <annejan@noprotocol.nl>",
-  "private": true,
+  "author": "Anne Jan Brouwer <brouwer@annejan.com>",
+  "private": false,
   "scripts": {
     "dev": "yarn development",
     "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",

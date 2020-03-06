@@ -14,7 +14,8 @@ class AlterUsersAddAdminBoolean extends Migration
     public function up()
     {
         Schema::table(
-            'users', function (Blueprint $table) {
+            'users',
+            function (Blueprint $table) {
                 $table->boolean('admin')->default(false)->after('id');
             }
         );
@@ -28,7 +29,8 @@ class AlterUsersAddAdminBoolean extends Migration
     public function down()
     {
         Schema::table(
-            'users', function (Blueprint $table) {
+            'users',
+            function (Blueprint $table) {
                 $table->dropColumn('admin');
             }
         );

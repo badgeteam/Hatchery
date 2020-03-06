@@ -1,4 +1,4 @@
-Compatibility
+<strong>Compatibility</strong>
 <ul>
     @forelse($project->states as $state)
         <li>{{ $state->badge->name }}: {{ $state->status }}</li>

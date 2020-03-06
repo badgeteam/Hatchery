@@ -41,7 +41,10 @@
 
                 <div class="panel-heading">
                     @if($project->git)
-                        <img src="{{ asset('img/git.png') }}" alt="Git revision: {{ $project->git_commit_id}}" />
+                        <img src="{{ asset('img/git.svg') }}" alt="Git revision: {{ $project->git_commit_id}}" class="collab-icon" />
+                    @endif
+                    @if(!$project->collaborators->isEmpty())
+                        <img src="{{ asset('img/collab.svg') }}" alt="{{ $project->collaborators()->count() . ' ' . \Illuminate\Support\Str::plural('collaborator', $project->collaborators()->count()) }}" class="collab-icon" />
                     @endif
                     <strong>{{ $project->name }}</strong> rev. {{ $project->revision }} (by {{ $project->user->name }})
                     @can('update', $project)
@@ -58,12 +61,14 @@
                             {!! $project->descriptionHtml !!}
                         </div>
                         <div class="col-md-4 clearfix">
-                            Category: {{ $project->category }}
+                            <strong>Category: {{ $project->category }}</strong>
                             <hr>
-                            Status: {{ $project->status }}
+                            <strong>Status: {{ $project->status }}</strong>
+                            <hr>
                             @include('projects.partials.vote-and-notify')
                             @include('projects.partials.show-compatibility')
                             @include('projects.partials.show-dependencies')
+                            @include('projects.partials.show-collaborators')
                         </div>
                         @if($project->versions()->published()->count() > 0)
                         <div class="col-md-12 clearfix">

@@ -51,8 +51,11 @@ class UpdateProject implements ShouldQueue
     {
         $tempFolder = sys_get_temp_dir().'/'.$this->project->slug;
         if (!file_exists($tempFolder.'/.git/HEAD')) {
-            $repo = $git->cloneRepository($this->project->git, $tempFolder,
-                ['-q', '--single-branch', '--depth', 1]);
+            $repo = $git->cloneRepository(
+                $this->project->git,
+                $tempFolder,
+                ['-q', '--single-branch', '--depth', 1]
+            );
         } else {
             $repo = $git->open($tempFolder);
             $repo->pull();

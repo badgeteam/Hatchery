@@ -14,6 +14,7 @@ use App\Models\BadgeProject;
 use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
+use App\Models\User;
 use App\Models\Version;
 use App\Models\Warning;
 use App\Support\GitRepository;
@@ -57,10 +58,10 @@ class ProjectsController extends Controller
         $search = $this->getSearch($request);
 
         if ($badge) {
-            $projects = $badge->projects()->orderBy('id', 'DESC');
+            $projects = $badge->projects()->orderBy('id', 'desc');
             $badge = $badge->slug;
         } else {
-            $projects = Project::orderBy('id', 'DESC');
+            $projects = Project::orderBy('id', 'desc');
         }
 
         if ($category) {
@@ -151,6 +152,7 @@ class ProjectsController extends Controller
             $project->save();
             $this->manageDependencies($project, $request);
             $this->manageBadges($project, $request);
+            $this->manageCollaborators($project, $request);
         } catch (\Exception $e) {
             return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors([$e->getMessage()]);
         }
@@ -192,7 +194,7 @@ class ProjectsController extends Controller
             $project->save();
             $project->delete();
         } catch (\Exception $e) {
-            return redirect()->route('projects.edit', ['project' => $project->slug])
+            return redirect(URL()->previous())
                 ->withInput()
                 ->withErrors([$e->getMessage()]);
         }
@@ -235,6 +237,8 @@ class ProjectsController extends Controller
      *
      * @param Project $project
      *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
      * @return View
      */
     public function renameForm(Project $project): View
@@ -251,6 +255,8 @@ class ProjectsController extends Controller
      * @param ProjectRenameRequest $request
      * @param Project              $project
      *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
      * @return RedirectResponse
      */
     public function rename(ProjectRenameRequest $request, Project $project): RedirectResponse
@@ -260,8 +266,10 @@ class ProjectsController extends Controller
         $slug = Str::slug($request->name);
 
         if (Project::whereSlug($slug)->exists()) {
-            return redirect()->route('projects.rename',
-                ['project' => $project->slug])->withInput()->withErrors(['Name not unique']);
+            return redirect()->route(
+                'projects.rename',
+                ['project' => $project->slug]
+            )->withInput()->withErrors(['Name not unique']);
         }
 
         $project->name = $request->name;
@@ -411,6 +419,21 @@ class ProjectsController extends Controller
                     $state->save();
                 }
             }
+        }
+    }
+
+    /**
+     * @param Project $project
+     * @param Request $request
+     *
+     * @return void
+     */
+    private function manageCollaborators(Project $project, Request $request): void
+    {
+        $project->collaborators()->detach();
+        if ($request->has('collaborators')) {
+            $collaborators = User::find($request->get('collaborators'));
+            $project->collaborators()->attach($collaborators);
         }
     }
 

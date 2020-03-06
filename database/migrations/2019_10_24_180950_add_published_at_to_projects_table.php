@@ -15,12 +15,14 @@ class AddPublishedAtToProjectsTable extends Migration
     public function up()
     {
         Schema::table(
-            'projects', function (Blueprint $table) {
+            'projects',
+            function (Blueprint $table) {
                 $table->timestamp('published_at')->nullable()->after('slug');
             }
         );
         $projects = Project::whereHas(
-            'versions', function ($query) {
+            'versions',
+            function ($query) {
                 $query->published();
             }
         );
@@ -38,7 +40,8 @@ class AddPublishedAtToProjectsTable extends Migration
     public function down()
     {
         Schema::table(
-            'projects', function (Blueprint $table) {
+            'projects',
+            function (Blueprint $table) {
                 $table->dropColumn('published_at');
             }
         );

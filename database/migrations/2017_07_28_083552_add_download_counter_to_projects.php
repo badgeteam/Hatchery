@@ -14,7 +14,8 @@ class AddDownloadCounterToProjects extends Migration
     public function up()
     {
         Schema::table(
-            'projects', function (Blueprint $table) {
+            'projects',
+            function (Blueprint $table) {
                 $table->integer('download_counter', false, true)->default(0);
             }
         );
@@ -28,7 +29,8 @@ class AddDownloadCounterToProjects extends Migration
     public function down()
     {
         Schema::table(
-            'projects', function (Blueprint $table) {
+            'projects',
+            function (Blueprint $table) {
                 $table->dropColumn('download_counter');
             }
         );

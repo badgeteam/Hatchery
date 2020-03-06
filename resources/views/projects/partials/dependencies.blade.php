@@ -9,7 +9,7 @@
     @endforeach
 </select>
 
-Dependants
+<strong>Dependants</strong>
 <ul>
 @forelse($project->dependants as $dependant)
     <li>

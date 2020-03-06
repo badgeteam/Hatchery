@@ -155,7 +155,13 @@ vendor/bin/phpunit --coverage-html docs/coverage
 
 This will create the code coverage docs in `docs/coverage/index.html`
 
-Testing with Codeception
+Not: Clear caches before testing!
+
+```bash
+php artisan route:clear && php artisan config:clear
+```
+
+#### Testing with Codeception
 
 ```bash
 vendor/bin/codecept build

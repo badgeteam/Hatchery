@@ -14,7 +14,8 @@ class CreateWarningsTable extends Migration
     public function up()
     {
         Schema::create(
-            'warnings', function (Blueprint $table) {
+            'warnings',
+            function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->integer('user_id')->unsigned();
                 $table->integer('project_id')->unsigned();
@@ -35,7 +36,8 @@ class CreateWarningsTable extends Migration
     public function down()
     {
         Schema::table(
-            'warnings', function (Blueprint $table) {
+            'warnings',
+            function (Blueprint $table) {
                 $table->dropForeign(['user_id']);
                 $table->dropForeign(['project_id']);
             }

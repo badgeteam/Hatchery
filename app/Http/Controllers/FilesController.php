@@ -108,7 +108,9 @@ class FilesController extends Controller
     {
         $version = Version::where('id', $request->get('version'))->firstOrFail();
 
-        return view('files.create')->with('version', $version);
+        return view('files.create')
+            ->with('version', $version)
+            ->with('name', $request->name);
     }
 
     /**
@@ -174,7 +176,7 @@ class FilesController extends Controller
         try {
             $file->delete();
         } catch (\Exception $e) {
-            return redirect()->route('projects.edit', ['project' => $project->slug])
+            return redirect(URL()->previous())
                 ->withInput()
                 ->withErrors([$e->getMessage()]);
         }

@@ -48,6 +48,36 @@ class PublicTest extends TestCase
     }
 
     /**
+     * A basic test example with sorting.
+     */
+    public function testWelcomeOrder(): void
+    {
+        $response = $this->get('/?order=published_at');
+        $response->assertStatus(200)
+            ->assertViewHas('order', 'published_at')
+            ->assertViewHas('direction', 'desc')
+            ->assertViewHas('badge', '')
+            ->assertViewHas('category', '')
+            ->assertViewHas('users', User::count())
+            ->assertViewHas('projects', Project::count());
+    }
+
+    /**
+     * A basic test example with sorting direction.
+     */
+    public function testWelcomeOrderAsc(): void
+    {
+        $response = $this->get('/?order=name&direction=asc');
+        $response->assertStatus(200)
+            ->assertViewHas('order', 'name')
+            ->assertViewHas('direction', 'asc')
+            ->assertViewHas('badge', '')
+            ->assertViewHas('category', '')
+            ->assertViewHas('users', User::count())
+            ->assertViewHas('projects', Project::count());
+    }
+
+    /**
      * A basic test example with a Category.
      */
     public function testWelcomeCategory(): void

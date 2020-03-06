@@ -32,7 +32,7 @@
                                 <th>Egg</th>
                                 <th>Content</th>
                                 <th>Cat</th>
-                                <th>Colab</th>
+                                <th>Collab</th>
                                 <th><img src="{{ asset('img/rulez.gif') }}" alt="up" /></th>
                                 <th><img src="{{ asset('img/isok.gif') }}" alt="pig" /></th>
                                 <th><img src="{{ asset('img/sucks.gif') }}" alt="down" /></th>
@@ -43,20 +43,24 @@
                         <tbody>
                             @forelse($projects as $project)
                                 <tr>
-				    <td>
-					@can('update', $project)
-						<a href="{{ route('projects.edit', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
-					@else
-						<a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
-					@endcan
+                                    <td>
+                                    @can('update', $project)
+                                        <a href="{{ route('projects.edit', ['project' => $project->slug]) }}">{{ $project->name }}</a>
+                                    @else
+                                        <a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a>
+                                    @endcan
+                                    </td>
                                     <td>{{ $project->versions()->published()->count() > 0 ? $project->versions()->published()->get()->last()->revision : 'unreleased' }}</td>
                                     <td>{{ $project->size_of_zip_formatted }}</td>
                                     <td>{{ $project->size_of_content_formatted }}</td>
                                     <td>{{ $project->category }}</td>
                                     <td>
-                                        @if($project->git)
-                                            <img src="{{ asset('img/git.png') }}" alt="Git revision: {{ $project->git_commit_id}}" />
-                                        @endif
+                                    @if($project->git)
+                                        <img src="{{ asset('img/git.svg') }}" alt="Git revision: {{ $project->git_commit_id}}" class="collab-icon" />
+                                    @endif
+                                    @if(!$project->collaborators->isEmpty())
+                                        <img src="{{ asset('img/collab.svg') }}" alt="{{ $project->collaborators()->count() . ' ' . \Illuminate\Support\Str::plural('collaborator', $project->collaborators()->count()) }}" class="collab-icon" />
+                                    @endif
                                     </td>
                                     <td>{{ $project->votes->where('type', 'up')->count() }}</td>
                                     <td>{{ $project->votes->where('type', 'pig')->count() }}</td>

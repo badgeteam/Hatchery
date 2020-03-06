@@ -22,7 +22,7 @@ class VotesController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => 'show']);
-        $this->authorizeResource(Vote::class, null, ['except' => 'show']);
+        $this->authorizeResource(Vote::class);
     }
 
     /**
@@ -93,7 +93,7 @@ class VotesController extends Controller
         try {
             $vote->delete();
         } catch (\Exception $e) {
-            return redirect()->route('projects.show', ['project' => $project->slug])
+            return redirect(URL()->previous())
                 ->withInput()
                 ->withErrors([$e->getMessage()]);
         }

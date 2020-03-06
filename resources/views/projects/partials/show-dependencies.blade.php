@@ -1,4 +1,4 @@
-Dependencies
+<strong>Dependencies</strong>
 <ul>
     @forelse($project->dependencies as $dependency)
         <li><a href="{{ route('projects.show', ['project' => $dependency->slug]) }}">{{ $dependency->name }}</a></li>
@@ -6,7 +6,7 @@ Dependencies
         <li>No dependencies found</li>
     @endforelse
 </ul>
-Dependants
+<strong>Dependants</strong>
 <ul>
 @forelse($project->dependants as $dependant)
     <li><a href="{{ route('projects.show', ['project' => $dependant->slug]) }}">{{ $dependant->name }}</a></li>

@@ -14,7 +14,8 @@ class AlterWarningsMakeDescriptionLong extends Migration
     public function up()
     {
         Schema::table(
-            'warnings', function (Blueprint $table) {
+            'warnings',
+            function (Blueprint $table) {
                 $table->longText('description')->change();
             }
         );

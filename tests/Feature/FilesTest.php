@@ -13,11 +13,11 @@ use Illuminate\Support\Str;
 use Tests\TestCase;
 
 /**
- * Class FileTest.
+ * Class FilesTest.
  *
  * @author annejan@badge.team
  */
-class FileTest extends TestCase
+class FilesTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
@@ -94,6 +94,22 @@ class FileTest extends TestCase
     }
 
     /**
+     * Check the files edit page functions for other users.
+     */
+    public function testFilesEditCollaboratingUser(): void
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create();
+        $file->version->project->collaborators()->attach($otherUser);
+        $response = $this
+            ->actingAs($otherUser)
+            ->get('/files/'.$file->id.'/edit');
+        $response->assertStatus(200);
+    }
+
+    /**
      * Check the files edit page doesn't work for git projects.
      */
     public function testFilesEditGit(): void
@@ -145,6 +161,24 @@ time.localtime()';
             ->actingAs($otherUser)
             ->call('put', '/files/'.$file->id, ['file_content' => $data]);
         $response->assertStatus(403);
+    }
+
+    /**
+     * Check the files can't be stored by other users.
+     */
+    public function testFilesUpdateCollaboratingUser(): void
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create();
+        $file->version->project->collaborators()->attach($otherUser);
+        $data = 'import time
+time.localtime()';
+        $response = $this
+            ->actingAs($otherUser)
+            ->call('put', '/files/'.$file->id, ['file_content' => $data]);
+        $response->assertStatus(302);
     }
 
     /**
@@ -257,7 +291,7 @@ time.localtime()';
         $response = $this
             ->actingAs($user)
             ->call('put', '/files/'.$file->id, ['file_content' => $data]);
-        $response->assertRedirect('/files/'.$file->id.'/edit')->assertSessionHas('errors');
+        $response->assertRedirect('/files/'.$file->id.'/edit')->assertSessionHasErrors();
     }
 
     /**

@@ -8,14 +8,15 @@ use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Notification;
+use PragmaRX\Google2FA\Google2FA;
 use Tests\TestCase;
 
 /**
- * Class UserTest.
+ * Class UsersTest.
  *
  * @author annejan@badge.team
  */
-class UserTest extends TestCase
+class UsersTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
@@ -26,7 +27,7 @@ class UserTest extends TestCase
     public function testLoginFail(): void
     {
         $response = $this
-            ->withSession(['_token'=>'test'])
+            ->withSession(['_token' => 'test'])
             ->post('/login', [
                 'email'    => 'annejan@noprotocol.nl',
                 'password' => 'badPass',
@@ -34,10 +35,10 @@ class UserTest extends TestCase
             ]);
         $response->assertStatus(302)
             ->assertRedirect('')
-            ->assertSessionHas('errors')
+            ->assertSessionHasErrors()
             ->assertSessionHas('_old_input', [
-                'email'         => 'annejan@noprotocol.nl',
-                '_token'        => 'test',
+                'email'  => 'annejan@noprotocol.nl',
+                '_token' => 'test',
             ]);
     }
 
@@ -49,7 +50,7 @@ class UserTest extends TestCase
         $password = $this->faker->password;
         $user = factory(User::class)->create(['password' => bcrypt($password)]);
         $response = $this
-            ->withSession(['_token'=>'test'])
+            ->withSession(['_token' => 'test'])
             ->post('/login', [
                 'email'    => $user->email,
                 'password' => $password,
@@ -95,7 +96,7 @@ class UserTest extends TestCase
         $user = factory(User::class)->create();
 
         $response = $this
-            ->withSession(['_token'=>'test'])
+            ->withSession(['_token' => 'test'])
             ->post('password/email', [
                 'email'  => $user->email,
                 '_token' => 'test',
@@ -123,7 +124,7 @@ class UserTest extends TestCase
         $password = $this->faker->password(8, 20);
 
         $response = $this
-            ->withSession(['_token'=>'test'])
+            ->withSession(['_token' => 'test'])
             ->post('/password/reset', [
                 'email'                 => $user->email,
                 'token'                 => $token,
@@ -134,7 +135,7 @@ class UserTest extends TestCase
         $response->assertStatus(302)->assertRedirect('/projects');
 
         $response = $this
-            ->withSession(['_token'=>'test'])
+            ->withSession(['_token' => 'test'])
             ->post('/login', [
                 'email'    => $user->email,
                 'password' => $password,
@@ -151,7 +152,7 @@ class UserTest extends TestCase
         $password = $this->faker->password(8, 20);
         $email = $this->faker->email;
         $response = $this
-            ->withSession(['_token'=>'test'])
+            ->withSession(['_token' => 'test'])
             ->post('/register', [
                 'name'                  => $this->faker->name,
                 'email'                 => $email,
@@ -283,5 +284,210 @@ class UserTest extends TestCase
         $user->save();
         $response = $this->actingAs($user)->get('/horizon');
         $response->assertStatus(200);
+    }
+
+    /**
+     * Check the 2fa 'welcome' page.
+     */
+    public function testUser2faForm(): void
+    {
+        $user = factory(User::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->get('/2fa');
+        $response->assertStatus(200);
+    }
+
+    /**
+     * Check the 2fa secret generation.
+     */
+    public function testUser2faGenerateSecret(): void
+    {
+        $user = factory(User::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->post('/generate2faSecret');
+        $response->assertRedirect('/2fa')
+            ->assertSessionHas('success');
+        $this->assertEquals(16, strlen($user->google2fa_secret));
+    }
+
+    /**
+     * Check the 2fa registration form.
+     */
+    public function testUser2faFormEnabled(): void
+    {
+        $g2fa = new Google2FA();
+        $user = factory(User::class)->create([
+            'google2fa_secret' => $g2fa->generateSecretKey(),
+        ]);
+        $response = $this
+            ->actingAs($user)
+            ->get('/2fa');
+        $response->assertStatus(200);
+    }
+
+    /**
+     * Check the 2fa registration failure.
+     */
+    public function testUser2faEnableFail(): void
+    {
+        $g2fa = new Google2FA();
+        $user = factory(User::class)->create([
+            'google2fa_secret' => $g2fa->generateSecretKey(),
+        ]);
+        $response = $this
+            ->actingAs($user)
+            ->post('/2fa', [
+                'verify-code' => '123456',
+            ]);
+        $response->assertRedirect('/2fa')
+            ->assertSessionHas('error');
+        /** @var User $user */
+        $user = User::find($user->id);
+        $this->assertNotTrue($user->google2fa_enabled);
+    }
+
+    /**
+     * Check the 2fa registration success.
+     */
+    public function testUser2faEnableSuccess(): void
+    {
+        $g2fa = new Google2FA();
+        $user = factory(User::class)->create([
+            'google2fa_enabled' => false,
+            'google2fa_secret'  => $g2fa->generateSecretKey(),
+        ]);
+        $response = $this
+            ->actingAs($user)
+            ->post('/2fa', [
+                'verify-code' => $g2fa->getCurrentOtp($user->google2fa_secret),
+            ]);
+        $response->assertRedirect('/2fa')
+            ->assertSessionHas('success');
+        /** @var User $user */
+        $user = User::find($user->id);
+        $this->assertNotFalse($user->google2fa_enabled);
+    }
+
+    /**
+     * Check the 2fa disable failure.
+     */
+    public function testUser2faDisableFail(): void
+    {
+        $g2fa = new Google2FA();
+        $user = factory(User::class)->create([
+            'google2fa_secret'  => $g2fa->generateSecretKey(),
+            'google2fa_enabled' => true,
+        ]);
+        $response = $this
+            ->actingAs($user)
+            ->post('/disable2fa', [
+                'current-password' => '123456',
+            ]);
+        $response->assertRedirect('/')
+            ->assertSessionHas('error');
+        /** @var User $user */
+        $user = User::find($user->id);
+        $this->assertNotFalse($user->google2fa_enabled);
+    }
+
+    /**
+     * Check the 2fa disable success.
+     */
+    public function testUser2faDisableSuccess(): void
+    {
+        $g2fa = new Google2FA();
+        $user = factory(User::class)->create([
+            'google2fa_secret'  => $g2fa->generateSecretKey(),
+            'google2fa_enabled' => true,
+        ]);
+        $response = $this
+            ->actingAs($user)
+            ->post('/disable2fa', [
+                'current-password' => 'secret',
+            ]);
+        $response->assertRedirect('/2fa')
+            ->assertSessionHas('success');
+        /** @var User $user */
+        $user = User::find($user->id);
+        $this->assertNotTrue($user->google2fa_enabled);
+    }
+
+    /**
+     * Check the 2fa verify redirection.
+     */
+    public function testUser2faVerifyRedirect(): void
+    {
+        $g2fa = new Google2FA();
+        $user = factory(User::class)->create([
+            'google2fa_secret'  => $g2fa->generateSecretKey(),
+            'google2fa_enabled' => true,
+        ]);
+        $response = $this
+            ->actingAs($user)
+            ->post('/2faVerify');
+        $response->assertStatus(400);
+
+        $response = $this
+            ->actingAs($user)
+            ->post('/2faVerify', [
+                'one_time_password' => $g2fa->getCurrentOtp($user->google2fa_secret),
+            ]);
+        $response->assertStatus(302);
+    }
+
+    /**
+     * Check the public user listing.
+     */
+    public function testUsersIndex(): void
+    {
+        $user = factory(User::class)->create(['public' => true]);
+        $response = $this
+            ->actingAs($user)
+            ->get('/users');
+        $response->assertStatus(200)
+            ->assertViewHas('users');
+    }
+
+    /**
+     * Check a user page.
+     */
+    public function testUserShow(): void
+    {
+        $user = factory(User::class)->create(['public' => true]);
+        $response = $this
+            ->actingAs($user)
+            ->get('/users/'.$user->id);
+        $response->assertStatus(200)
+            ->assertViewHas('projects');
+    }
+
+    /**
+     * Go and edit your user page.
+     */
+    public function testProfile(): void
+    {
+        $user = factory(User::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->get('profile');
+        $response->assertRedirect('/users/'.$user->id);
+    }
+
+    /**
+     * Check the user can be stored.
+     */
+    public function testUserUpdateTooLarge(): void
+    {
+        $user = factory(User::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/users/'.$user->id, [
+                'name'   => $this->faker->text(1024),
+                'email'  => 'henk@annejan.com',
+                'editor' => 'vim',
+            ]);
+        $response->assertRedirect('/users/'.$user->id.'/edit')->assertSessionHasErrors();
     }
 }

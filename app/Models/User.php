@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,6 +21,8 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @property string $password
  * @property string|null $remember_token
  * @property string $editor
+ * @property bool $public
+ * @property bool $show_projects
  * @property bool $google2fa_enabled
  * @property string|null $google2fa_secret
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -35,6 +38,8 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @property-read int|null $warnings_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\LaravelWebauthn\Models\WebauthnKey[] $webauthnKeys
  * @property-read int|null $webauthn_keys_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $collaborations
+ * @property-read int|null $collaborations_count
  *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
@@ -54,6 +59,8 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePublic($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereShowProjects($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withoutTrashed()
  * @mixin \Eloquent
@@ -110,6 +117,16 @@ class User extends Authenticatable
     public function webauthnKeys(): HasMany
     {
         return $this->hasMany(WebauthnKey::class);
+    }
+
+    /**
+     * Collaborations.
+     *
+     * @return BelongsToMany
+     */
+    public function collaborations(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class)->withTimestamps();
     }
 
     /**

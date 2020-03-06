@@ -8,6 +8,7 @@
 			<div class="pull-right links">
 			    @if (Auth::check())
 				<a href="{{ url('/projects') }}">Eggs</a>
+				<a href="{{ url('/users') }}">Users</a>
 			    @else
 				<a href="{{ url('/login') }}">Login</a>
 				<a href="{{ url('/register') }}">Register</a>
@@ -16,19 +17,18 @@
 		    @endif
 		    <div class="content text-center">
 				<div class="title m-b-md">
-					<h1 class="hatcher"><span class="hidden-xs">Badge.team</span> {{ config('app.name', 'Laravel') }}</h1>
+					<h1 class="hatcher"><span class="hidden-xs">{{ request()->getHost() }}</span> {{ config('app.name', 'Laravel') }}</h1>
 				</div>
 				<div class="spacer col-md-12 hidden-xs"></div>
 				<div class="links">
-					<a href="https://docs.badge.team/">Documentation</a>
-					<a href="https://github.com/badgeteam/">GitHub</a>
-					<a href="https://twitter.com/SHA2017Badge">Twitter</a>
+					<a class="btn btn-success" href="https://docs.badge.team/">Documentation</a>
+					<a class="btn btn-danger" href="https://github.com/badgeteam/">GitHub</a>
+					<a class="btn btn-primary" href="https://twitter.com/SHA2017Badge">Twitter</a>
 				</div>
 				<div>
 					Contributors: {{$users}}
 					Eggs: {{$projects}}
 				</div>
-
 				<div class="spacer col-md-12 hidden-xs"></div>
 					{{ Form::label('badge', 'Badge', ['class' => 'control-label']) }}
 					{{ Form::select('badge_id', \App\Models\Badge::pluck('name', 'slug')->reverse()->prepend('Choose a badge model', ''), $badge, ['id' => 'badge']) }}
@@ -38,6 +38,7 @@
 						{{ Form::label('search', 'Search', ['class' => 'control-label']) }}
 						{{ Form::text('search', null, ['placeholder' => 'Search']) }}
 					{{ Form::close() }}
+					<hr>
 					<table class="table table-condensed">
 						<thead>
 							<tr>
@@ -53,7 +54,7 @@
 								<th>Egg</th>
 								<th>Content</th>
 								<th>Cat</th>
-								<th>Colab</th>
+								<th>Collab</th>
 								<th><img src="{{ asset('img/rulez.gif') }}" alt="up" /></th>
 								<th><img src="{{ asset('img/isok.gif') }}" alt="pig" /></th>
 								<th><img src="{{ asset('img/sucks.gif') }}" alt="down" /></th>
@@ -77,9 +78,12 @@
 								<td>{{ $project->size_of_content_formatted }}</td>
 								<td>{{ $project->category }}</td>
 								<td>
-									@if($project->git)
-										<img src="{{ asset('img/git.png') }}" alt="Git revision: {{ $project->git_commit_id}}" />
-									@endif
+								@if($project->git)
+									<img src="{{ asset('img/git.svg') }}" alt="Git revision: {{ $project->git_commit_id}}" class="collab-icon" />
+								@endif
+								@if(!$project->collaborators->isEmpty())
+									<img src="{{ asset('img/collab.svg') }}" alt="{{ $project->collaborators()->count() . ' ' . \Illuminate\Support\Str::plural('collaborator', $project->collaborators()->count()) }}" class="collab-icon" />
+								@endif
 								</td>
 								<td>{{ $project->votes->where('type', 'up')->count() }}</td>
 								<td>{{ $project->votes->where('type', 'pig')->count() }}</td>

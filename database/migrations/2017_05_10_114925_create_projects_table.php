@@ -14,7 +14,8 @@ class CreateProjectsTable extends Migration
     public function up()
     {
         Schema::create(
-            'projects', function (Blueprint $table) {
+            'projects',
+            function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('user_id')->unsigned();
                 $table->string('name')->unique();
@@ -33,7 +34,8 @@ class CreateProjectsTable extends Migration
     public function down()
     {
         Schema::table(
-            'projects', function (Blueprint $table) {
+            'projects',
+            function (Blueprint $table) {
                 $table->dropForeign(['user_id']);
             }
         );

@@ -11,7 +11,10 @@
 
                 <div class="panel-heading">
                     @if($project->git)
-                    <img src="{{ asset('img/git.png') }}" alt="Git revision: {{ $project->git_commit_id}}" />
+                        <img src="{{ asset('img/git.svg') }}" alt="Git revision: {{ $project->git_commit_id}}" class="collab-icon" />
+                    @endif
+                    @if(!$project->collaborators->isEmpty())
+                        <img src="{{ asset('img/collab.svg') }}" alt="{{ $project->collaborators()->count() . ' ' . \Illuminate\Support\Str::plural('collaborator', $project->collaborators()->count()) }}" class="collab-icon" />
                     @endif
                     <strong>{{ $project->name }}</strong>
                     <div class="pull-right">
@@ -35,9 +38,14 @@
                         {!! Form::open(['method' => 'put', 'route' => ['projects.update', 'project' => $project->slug]]) !!}
 
                         <div class="col-md-8 clearfix">
-                                <div class="form-group">
-                                    {!! $project->descriptionHtml !!}
-                                </div>
+                            <div class="form-group">
+                                {!! $project->descriptionHtml !!}
+                            </div>
+                            @if($project->versions->last()->files()->where('name', 'README.md')->exists())
+                            <a class="btn btn-success btn-xs" href="{{ route('files.edit', $project->versions->last()->files()->where('name', 'README.md')->first()) }}">Edit README.md</a>
+                            @else
+                            <a class="btn btn-success btn-xs" href="{{ route('files.create', ['version' => $project->versions->last()->id, 'name' => 'README.md']) }}">Create README.md</a>
+                            @endif
                         </div>
                         <div class="col-md-4 clearfix">
                             <div class="form-group @if($errors->has('category_id')) has-error @endif">
@@ -46,14 +54,15 @@
                             </div>
 
                             @include('projects.partials.compatibility')
-
                             @include('projects.partials.dependencies')
+                            @include('projects.partials.collaborators')
+
                         </div>
                         <div class="col-md-12 clearfix">
 
                                 <div class="pull-right">
                                     {{ Form::label('publish', 'Publish', ['class' => 'control-label']) }}
-                                    {{ Form::checkbox('publish', 1, 1, ['id' => 'publish']) }}
+                                    {{ Form::checkbox('publish', 1, null, ['id' => 'publish']) }}
                                     <button type="submit" class="btn btn-default">Save</button>
                                 </div>
 

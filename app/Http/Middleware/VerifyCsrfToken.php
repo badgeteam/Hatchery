@@ -37,7 +37,8 @@ class VerifyCsrfToken extends BaseVerifier
         if (App::environment(['local', 'testing'])) {
             return $this->addCookieToResponse($request, $next($request));
         }
-
+        // @codeCoverageIgnoreStart
         return parent::handle($request, $next);
+        // @codeCoverageIgnoreEnd
     }
 }
