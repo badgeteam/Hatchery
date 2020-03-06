@@ -362,7 +362,7 @@ class ProjectsTest extends TestCase
         $project = factory(Project::class)->create();
         $file = factory(File::class)->create([
             'version_id' => $project->versions()->unPublished()->first()->id,
-            'content' => 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAF'.
+            'content'    => 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAF'.
                 'FElEQVRYw+1XfVDTZRxXj9oxN4a8bGMbG4ONTdBUEuVFQImjk5ISxBOQN3kJDSFAQgMRQh0ahLyj'.
                 'EBAblaF2cnqWRml1h1meCUmGQhmVvQioMC8RsM8ToxR/v59o/FF3/u6e+217vs/3+/m+fb7Ppkx5'.
                 '9Pyfnp2r+a5n8+WaAa3q+IBO3Y339QGtulevVbX31Ni/eyRDunat7wz+pBs+sEESAGOtep3qZl+d'.
@@ -570,7 +570,7 @@ class ProjectsTest extends TestCase
         $category = factory(Category::class)->create();
         $response = $this
             ->actingAs($user)
-            ->call('post', '/import', ['name' => $name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call('post', '/import-git', ['name' => $name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
         $this->assertNotNull(Project::get()->last());
         $response->assertRedirect('/projects/')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
@@ -723,7 +723,7 @@ class ProjectsTest extends TestCase
         $this->assertNotEquals($name, $project->name);
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects/'.$project->slug.'/rename', [
+            ->call('post', '/projects/'.$project->slug.'/move', [
                 'name' => $name,
             ]);
         $response->assertStatus(403);
@@ -748,7 +748,7 @@ class ProjectsTest extends TestCase
         $this->assertNotEquals($name, $project->name);
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects/'.$project->slug.'/rename', [
+            ->call('post', '/projects/'.$project->slug.'/move', [
                 'name' => $name,
             ]);
         $response->assertRedirect('/projects/'.Str::slug($name, '_').'/edit')->assertSessionHas('successes');
