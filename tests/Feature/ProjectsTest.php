@@ -12,6 +12,7 @@ use App\Models\Version;
 use App\Models\Warning;
 use App\Support\GitRepository;
 use App\Support\Helpers;
+use Cz\Git\GitException;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -211,6 +212,9 @@ class ProjectsTest extends TestCase
             ]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
         // add deps
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertCount(1, $project->dependencies);
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
@@ -220,6 +224,65 @@ class ProjectsTest extends TestCase
             ]);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
         // remove deps
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertEmpty($project->dependencies);
+    }
+
+    /**
+     * Check the projects can be stored.
+     */
+    public function testProjectsUpdateBrokenBadge(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/projects/'.$project->slug, [
+                'description' => $this->faker->paragraph,
+                'category_id' => $project->category_id,
+                'badge_ids'   => [1],  // non-existing badge ;)
+                'status'      => 'unknown',
+            ]);
+        $response->assertRedirect('/projects/'.$project->slug.'/edit')->assertSessionHasErrors();
+    }
+
+
+    /**
+     * Check the projects can be stored.
+     */
+    public function testProjectsUpdateCollaborators(): void
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/projects/'.$project->slug, [
+                'description'   => $this->faker->paragraph,
+                'category_id'   => $project->category_id,
+                'collaborators' => [$otherUser->id],
+                'status'        => 'unknown',
+            ]);
+        $response->assertRedirect('/projects')->assertSessionHas('successes');
+        // add collaborator
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertCount(1, $project->collaborators);
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/projects/'.$project->slug, [
+                'description' => $this->faker->paragraph,
+                'category_id' => $project->category_id,
+                'status'      => 'unknown',
+            ]);
+        $response->assertRedirect('/projects')->assertSessionHas('successes');
+        // remove collaborator
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertEmpty($project->collaborators);
     }
 
     /**
@@ -566,8 +629,8 @@ class ProjectsTest extends TestCase
         $this->app->instance(GitRepository::class, $mock);
 
         $user = factory(User::class)->create();
-        $this->assertEmpty(Project::all());
         $category = factory(Category::class)->create();
+        $this->assertEmpty(Project::all());
         $response = $this
             ->actingAs($user)
             ->call('post', '/import-git', ['name' => $name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
@@ -578,6 +641,65 @@ class ProjectsTest extends TestCase
         $project = Project::get()->last();
         $this->assertEquals($hash, $project->git_commit_id);
         Helpers::delTree($folder);
+    }
+
+    public function testProjectsStoreGitTooLong(): void
+    {
+        $name = $this->faker->name;
+        $folder = sys_get_temp_dir().'/'.Str::slug($name, '_');
+        mkdir($folder);
+
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $category = factory(Category::class)->create();
+        $this->assertEmpty(Project::all());
+
+        $mock = $this->mock(GitRepository::class);
+        $mock->expects('cloneRepository')->once()->andReturnSelf();
+        $this->app->instance(GitRepository::class, $mock);
+
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/import-git', ['name' => $name, 'git' => $this->faker->text(1024), 'category_id' => $category->id, 'status' => 'unknown']);
+        $this->assertEmpty(Project::all());
+        $response->assertRedirect('/import')->assertSessionHasErrors();
+    }
+
+    /**
+     * Check the projects can be stored.
+     */
+    public function testProjectsStoreGitFailures(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $category = factory(Category::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/import-git', ['name' => $project->name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
+        $this->assertCount(1, Project::all());
+        $response->assertRedirect('')->assertSessionHasErrors();
+
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/import-git', ['name' => $project->name.'_', 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
+        $this->assertCount(1, Project::all());  // Unique name, same slug
+        $response->assertRedirect('/import')->assertSessionHasErrors();
+
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/import-git', ['name' => 'badge', 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
+        $this->assertCount(1, Project::all());  // Illegal name (badge)
+        $response->assertRedirect('/import')->assertSessionHasErrors();
+
+        $mock = $this->mock(GitRepository::class); // twice since folder is not real git repo
+        $mock->expects('cloneRepository')->once()->andThrowExceptions([new GitException()]);
+        $this->app->instance(GitRepository::class, $mock);
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/import-git', ['name' => $this->faker->name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
+        $this->assertCount(1, Project::all());
+        $response->assertRedirect('/import')->assertSessionHasErrors();
     }
 
     /**
@@ -756,6 +878,12 @@ class ProjectsTest extends TestCase
         $project = Project::find($project->id);
         $this->assertEquals($name, $project->name);
         $this->assertEquals(Str::slug($name, '_'), $project->slug);
+        $response = $this
+            ->actingAs($user)
+            ->call('post', '/projects/'.$project->slug.'/move', [
+                'name' => $name.'_',    // different name, same slug
+            ]);
+        $response->assertStatus(302)->assertSessionHasErrors();
     }
 
     /**
