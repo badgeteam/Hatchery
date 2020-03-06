@@ -14,7 +14,8 @@ class CreateCategoriesTableAlterProjectsAddCategory extends Migration
     public function up()
     {
         Schema::create(
-            'categories', function (Blueprint $table) {
+            'categories',
+            function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('name')->unique();
                 $table->string('slug');
@@ -23,7 +24,8 @@ class CreateCategoriesTableAlterProjectsAddCategory extends Migration
             }
         );
         Schema::table(
-            'projects', function (Blueprint $table) {
+            'projects',
+            function (Blueprint $table) {
                 $table->integer('category_id')->unsigned()->default(1)->after('id');
             }
         );
@@ -37,7 +39,8 @@ class CreateCategoriesTableAlterProjectsAddCategory extends Migration
     public function down()
     {
         Schema::table(
-            'projects', function (Blueprint $table) {
+            'projects',
+            function (Blueprint $table) {
                 $table->dropColumn('category_id');
             }
         );

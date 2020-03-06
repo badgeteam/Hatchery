@@ -100,7 +100,8 @@ class Category extends Model
     public function getEggsAttribute(): int
     {
         return $this->projects()->whereHas(
-            'versions', function ($query) {
+            'versions',
+            function ($query) {
                 $query->whereNotNull('zip');
             }
         )->count();

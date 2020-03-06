@@ -14,7 +14,8 @@ class CreateProjectDependenciesPivotTable extends Migration
     public function up()
     {
         Schema::create(
-            'dependencies', function (Blueprint $table) {
+            'dependencies',
+            function (Blueprint $table) {
                 $table->integer('project_id')->unsigned()->nullable();
                 $table->foreign('project_id')->references('id')
                     ->on('projects')->onDelete('cascade');
@@ -36,7 +37,8 @@ class CreateProjectDependenciesPivotTable extends Migration
     public function down()
     {
         Schema::table(
-            'dependencies', function (Blueprint $table) {
+            'dependencies',
+            function (Blueprint $table) {
                 $table->dropForeign(['project_id']);
                 $table->dropForeign(['depends_on_project_id']);
             }

@@ -266,8 +266,10 @@ class ProjectsController extends Controller
         $slug = Str::slug($request->name);
 
         if (Project::whereSlug($slug)->exists()) {
-            return redirect()->route('projects.rename',
-                ['project' => $project->slug])->withInput()->withErrors(['Name not unique']);
+            return redirect()->route(
+                'projects.rename',
+                ['project' => $project->slug]
+            )->withInput()->withErrors(['Name not unique']);
         }
 
         $project->name = $request->name;

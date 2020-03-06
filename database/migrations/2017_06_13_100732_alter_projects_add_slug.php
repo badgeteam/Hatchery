@@ -14,7 +14,8 @@ class AlterProjectsAddSlug extends Migration
     public function up()
     {
         Schema::table(
-            'projects', function (Blueprint $table) {
+            'projects',
+            function (Blueprint $table) {
                 $table->string('slug')->nullable()->after('name');
             }
         );
@@ -28,7 +29,8 @@ class AlterProjectsAddSlug extends Migration
     public function down()
     {
         Schema::table(
-            'projects', function (Blueprint $table) {
+            'projects',
+            function (Blueprint $table) {
                 $table->dropColumn('slug');
             }
         );

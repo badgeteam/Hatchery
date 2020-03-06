@@ -26,7 +26,8 @@ class AlterProjectsDropDescription extends Migration
             }
         }
         Schema::table(
-            'projects', function (Blueprint $table) {
+            'projects',
+            function (Blueprint $table) {
                 $table->dropColumn('description');
             }
         );
@@ -40,7 +41,8 @@ class AlterProjectsDropDescription extends Migration
     public function down()
     {
         Schema::table(
-            'projects', function (Blueprint $table) {
+            'projects',
+            function (Blueprint $table) {
                 $table->text('description')->nullable();
             }
         );

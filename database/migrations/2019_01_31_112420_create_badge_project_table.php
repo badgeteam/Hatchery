@@ -14,7 +14,8 @@ class CreateBadgeProjectTable extends Migration
     public function up()
     {
         Schema::create(
-            'badge_project', function (Blueprint $table) {
+            'badge_project',
+            function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('badge_id')->unsigned();
                 $table->integer('project_id')->unsigned();

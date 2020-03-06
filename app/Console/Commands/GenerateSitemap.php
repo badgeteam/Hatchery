@@ -42,16 +42,19 @@ class GenerateSitemap extends Command
     public function handle()
     {
         $sitemap = Sitemap::create()
-            ->add(Url::create('/')
+            ->add(
+                Url::create('/')
                 ->setPriority(1)
                 ->setLastModificationDate(Project::exists() ? Project::get()->last()->updated_at : Carbon::now())
             )
-            ->add(Url::create('/projects')
+            ->add(
+                Url::create('/projects')
                 ->setLastModificationDate(Project::exists() ? Project::get()->last()->updated_at : Carbon::now())
             );
 
         Project::all()->each(function (Project $project) use ($sitemap) {
-            $sitemap->add(Url::create("/projects/{$project->slug}")
+            $sitemap->add(
+                Url::create("/projects/{$project->slug}")
                 ->setLastModificationDate($project->updated_at)
                 ->setPriority(0.5)
             );

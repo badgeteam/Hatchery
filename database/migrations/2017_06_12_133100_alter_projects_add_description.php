@@ -14,7 +14,8 @@ class AlterProjectsAddDescription extends Migration
     public function up()
     {
         Schema::table(
-            'projects', function (Blueprint $table) {
+            'projects',
+            function (Blueprint $table) {
                 $table->text('description')->nullable()->after('name');
             }
         );
@@ -28,7 +29,8 @@ class AlterProjectsAddDescription extends Migration
     public function down()
     {
         Schema::table(
-            'projects', function (Blueprint $table) {
+            'projects',
+            function (Blueprint $table) {
                 $table->dropColumn('description');
             }
         );
