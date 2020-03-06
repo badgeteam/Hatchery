@@ -147,6 +147,25 @@ time.localtime()';
     }
 
     /**
+     * Check the files can be stored.
+     */
+    public function testFilesUpdateNonPy(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'README.md']);
+        $data = '# test';
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/files/'.$file->id, ['file_content' => $data]);
+        $response->assertRedirect('/projects/'.$file->version->project->slug.'/edit')->assertSessionHas('successes');
+        /** @var File $file */
+        $file = File::find($file->id);
+        $this->assertEquals($data, $file->content);
+    }
+
+    /**
      * Check the files can't be stored by other users.
      */
     public function testFilesUpdateOtherUser(): void
@@ -267,6 +286,21 @@ time.localtime()';
     /**
      * Check the files can be stored.
      */
+    public function testFilesStoreNameTooLarge(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->post('/files', ['name' => $this->faker->text(1024), 'file_content' => '# test', 'version_id' => $version->id]);
+        $response->assertRedirect('/files/create')
+            ->assertSessionHasErrors();
+    }
+
+    /**
+     * Check the files can be stored.
+     */
     public function testFilesUpdateLintWarning(): void
     {
         $user = factory(User::class)->create();
@@ -305,5 +339,33 @@ time.localtime()';
         $response = $this
             ->call('get', '/files/'.$file->id);
         $response->assertStatus(200)->assertViewHas(['file']);
+    }
+
+    /**
+     * Check the files can be downloaded (publicly).
+     */
+    public function testFilesDownload(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = factory(File::class)->create();
+        $response = $this
+            ->call('get', '/download/'.$file->id);
+        $response->assertStatus(200)->assertHeader('Content-Type', 'application/x-python-code');
+    }
+
+    /**
+     * Check the files create icon magic page functions.
+     */
+    public function testFilesCreateIcon(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->get('/create-icon?version='.$version->id);
+        $response->assertRedirect()
+            ->assertSessionHas('successes');
     }
 }

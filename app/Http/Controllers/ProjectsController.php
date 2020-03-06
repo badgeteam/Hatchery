@@ -300,7 +300,7 @@ class ProjectsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param ProjectStoreRequest $request
-     * @param GitRepository $repo
+     * @param GitRepository       $repo
      *
      * @throws Exception
      *
@@ -333,8 +333,10 @@ class ProjectsController extends Controller
             if (isset($project)) {
                 $project->delete();
             }
+
             return redirect()->route('projects.import')->withInput()->withErrors([$e->getMessage()]);
         }
+
         return redirect()->route('projects.index')->withSuccesses([$project->name.' being imported!']);
     }
 

@@ -32,7 +32,6 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "laravelcollective/html": "^6",
-        "mtolhuys/laravel-schematics": "^0.9.7",
         "pragmarx/google2fa-laravel": "^1.3",
         "pragmarx/recovery": "^0.1.0",
         "predis/predis": "^1",

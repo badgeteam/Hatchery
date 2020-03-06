@@ -248,7 +248,6 @@ class ProjectsTest extends TestCase
         $response->assertRedirect('/projects/'.$project->slug.'/edit')->assertSessionHasErrors();
     }
 
-
     /**
      * Check the projects can be stored.
      */

@@ -30,6 +30,7 @@ class Helpers
             return rmdir($dir);
         } catch (ErrorException $e) {
             report($e);
+
             return false;
         }
     }

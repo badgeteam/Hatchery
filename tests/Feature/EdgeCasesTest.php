@@ -2,14 +2,19 @@
 
 namespace Tests\Feature;
 
+use App\Http\Controllers\FilesController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\VotesController;
+use App\Http\Requests\FileUpdateRequest;
+use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
+use App\Models\Version;
 use App\Models\Vote;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\Request;
 use Tests\TestCase;
 
 /**
@@ -79,4 +84,63 @@ class EdgeCasesTest extends TestCase
         $redirectResponse = $projectsController->destroy($project);
         $this->assertEquals('[["b0rk"]]', (string) $redirectResponse->getSession()->get('errors'));
     }
+
+    /**
+     * Check that a user can delete File.
+     */
+    public function testFilesDeleteRaceCondition(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $file = $this->mock(File::class, function ($mock) use ($version) {
+            $mock->shouldReceive('delete')->once()->andThrow(new \Exception('b0rk'));
+            $mock->shouldReceive('getAttribute')->with('version')->once()->andReturn($version);
+        })->makePartial();
+
+        $filesController = new FilesController();
+        $redirectResponse = $filesController->destroy($file);
+        $this->assertEquals('[["b0rk"]]', (string) $redirectResponse->getSession()->get('errors'));
+    }
+
+    /**
+     * Check that a user can delete File.
+     */
+    public function testFilesUpdateRaceCondition(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $file = $this->mock(File::class, function ($mock) {
+            $mock->shouldReceive('save')->once()->andThrow(new \Exception('b0rk'));
+            $mock->shouldReceive('getAttribute')->with('id')->once()->andReturn(1);
+        })->makePartial();
+
+        $request = new FileUpdateRequest();
+        $filesController = new FilesController();
+        $redirectResponse = $filesController->update($request, $file);
+        $this->assertEquals('[["b0rk"]]', (string) $redirectResponse->getSession()->get('errors'));
+    }
+
+//    /**
+//     * Check the files create icon magic page functions.
+//     */
+//    public function testFilesCreateIconRaceCondition(): void
+//    {
+//        $user = factory(User::class)->create();
+//        $this->be($user);
+//        $version = factory(Version::class)->create();
+//
+//        $mock = $this->mock(File::class, function ($mock) {
+//            $mock->shouldReceive('save')->once()->andThrow(new \Exception('b0rk'));
+//        })->makePartial();
+//        $this->app->instance(File::class, $mock);
+//
+//        $request = $this->mock(Request::class, function ($mock) use ($version) {
+//            $mock->shouldReceive('get')->with('version')->andReturn($version->id);
+//        })->makePartial();
+//
+//        $filesController = new FilesController();
+//        $redirectResponse = $filesController->createIcon($request);
+//        $this->assertEquals('[["b0rk"]]', (string) $redirectResponse->getSession()->get('errors'));
+//    }
 }
