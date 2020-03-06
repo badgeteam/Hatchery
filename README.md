@@ -30,7 +30,7 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## Installation
 
--   Requires PHP 7.2 or later
+-   Requires PHP 7.2.5 or later
 -   Requires Python 3.6 or later
 -   Requires Git 2.8 or later
 
@@ -112,6 +112,14 @@ App specific
 /weather                      - weather of sha location proxied from darksky.net
 /weather/52.3451,5.4581       - weather of specified geolocation proxied
 ```
+
+### API Playground
+
+```uri
+/app
+```
+
+See: <https://badge.team/api>
 
 ## Running tests
 

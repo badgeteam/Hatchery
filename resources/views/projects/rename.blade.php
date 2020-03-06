@@ -26,7 +26,7 @@
 
                     <div class="panel-body">
                         <div class="row">
-                            {!! Form::open(['method' => 'post', 'route' => ['projects.rename', 'project' => $project->slug]]) !!}
+                            {!! Form::open(['method' => 'post', 'route' => ['projects.move', 'project' => $project->slug]]) !!}
 
                             <div class="col-md-12 clearfix">
                                 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">

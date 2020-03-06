@@ -21,11 +21,10 @@ class HelpersTest extends TestCase
     use WithFaker;
 
     /**
-     * Assert the Warning is cast on a non existing folder.
+     * Assert the return value is false on a non existing folder.
      */
     public function testDelTreeOnNonExistingFolder(): void
     {
-        $this->expectException(\ErrorException::class);
         $this->assertFalse(Helpers::delTree(sys_get_temp_dir().'/'.$this->faker->firstName));
     }
 

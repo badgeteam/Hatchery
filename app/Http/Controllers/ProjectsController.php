@@ -20,6 +20,7 @@ use App\Models\Warning;
 use App\Support\GitRepository;
 use App\Support\Helpers;
 use Cz\Git\GitException;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -116,7 +117,7 @@ class ProjectsController extends Controller
 
         try {
             $project = $this->storeProjectInfo($request);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
         }
 
@@ -153,7 +154,7 @@ class ProjectsController extends Controller
             $this->manageDependencies($project, $request);
             $this->manageBadges($project, $request);
             $this->manageCollaborators($project, $request);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors([$e->getMessage()]);
         }
         if (isset($request->publish)) {
@@ -193,7 +194,7 @@ class ProjectsController extends Controller
             $project->slug = Str::slug($project->name);
             $project->save();
             $project->delete();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect(URL()->previous())
                 ->withInput()
                 ->withErrors([$e->getMessage()]);
@@ -262,14 +263,12 @@ class ProjectsController extends Controller
     public function rename(ProjectRenameRequest $request, Project $project): RedirectResponse
     {
         $this->authorize('rename', $project);
-
-        $slug = Str::slug($request->name);
-
-        if (Project::whereSlug($slug)->exists()) {
+        $slug = Str::slug($request->name, '_');
+        if (Project::where('slug', $slug)->exists()) {
             return redirect()->route(
                 'projects.rename',
                 ['project' => $project->slug]
-            )->withInput()->withErrors(['Name not unique']);
+            )->withInput()->withErrors(['Name not unique enough ツ']);
         }
 
         $project->name = $request->name;
@@ -303,15 +302,17 @@ class ProjectsController extends Controller
      * @param ProjectStoreRequest $request
      * @param GitRepository       $repo
      *
+     * @throws Exception
+     *
      * @return RedirectResponse
      */
     public function import(ProjectStoreRequest $request, GitRepository $repo): RedirectResponse
     {
         if (Project::where('slug', Str::slug($request->name, '_'))->exists()) {
-            return redirect()->route('projects.create')->withInput()->withErrors(['slug already exists :(']);
+            return redirect()->route('projects.import')->withInput()->withErrors(['slug already exists :(']);
         }
         if (Project::isForbidden(Str::slug($request->name, '_'))) {
-            return redirect()->route('projects.create')->withInput()->withErrors(['reserved name']);
+            return redirect()->route('projects.import')->withInput()->withErrors(['reserved name']);
         }
 
         $tempFolder = sys_get_temp_dir().'/'.Str::slug($request->name);
@@ -327,8 +328,11 @@ class ProjectsController extends Controller
             $project->git = $request->git;
             $project->save();
             UpdateProject::dispatch($project, Auth::user());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Helpers::delTree($tempFolder);
+            if (isset($project)) {
+                $project->delete();
+            }
 
             return redirect()->route('projects.import')->withInput()->withErrors([$e->getMessage()]);
         }
@@ -373,27 +377,10 @@ class ProjectsController extends Controller
      */
     private function manageDependencies(Project $project, Request $request): void
     {
+        $project->dependencies()->detach();
         if ($request->has('dependencies')) {
-            /** @var array<string> $dependencies */
-            $dependencies = $request->get('dependencies');
-            foreach ($project->dependencies as $dependency) {
-                if (!in_array($dependency->id, $dependencies)) {
-                    $dependency->pivot->delete();
-                }
-            }
-            foreach ($dependencies as $dependency) {
-                if (!$project->dependencies->contains($dependency)) {
-                    /** @var Project $dep */
-                    $dep = Project::find($dependency);
-                    $project->dependencies()->save($dep);
-                }
-            }
-
-            return;
-        }
-
-        foreach ($project->dependencies as $dependency) {
-            $dependency->pivot->delete();
+            $dependencies = Project::find($request->get('dependencies'));
+            $project->dependencies()->attach($dependencies);
         }
     }
 

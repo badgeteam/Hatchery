@@ -17,7 +17,7 @@
                     <div class="row">
 
                         <div class="col-md-12 clearfix">
-                            {!! Form::open(['method' => 'post', 'route' => [$type === 'import' ? 'projects.import' : 'projects.store']]) !!}
+                            {!! Form::open(['method' => 'post', 'route' => [$type === 'import' ? 'projects.import.git' : 'projects.store']]) !!}
                                 <div class="form-group @if($errors->has('category_id')) has-error @endif">
                                     {{ Form::label('category_id', 'Category', ['class' => 'control-label']) }}
                                     {{ Form::select('category_id', \App\Models\Category::where('hidden', false)->pluck('name', 'id'), 0, ['class' => 'form-control', 'id' => 'category_id']) }}

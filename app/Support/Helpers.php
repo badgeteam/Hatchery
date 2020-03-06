@@ -4,6 +4,7 @@ namespace App\Support;
 
 use App\Models\File;
 use App\Models\Version;
+use ErrorException;
 
 /**
  * Class Helpers.
@@ -19,13 +20,19 @@ class Helpers
      */
     public static function delTree(string $dir): bool
     {
-        $files = scandir($dir);
-        $files = $files ? array_diff($files, ['.', '..']) : [];
-        foreach ($files as $file) {
-            (is_dir("$dir/$file")) ? self::delTree("$dir/$file") : unlink("$dir/$file");
-        }
+        try {
+            $files = scandir($dir);
+            $files = $files ? array_diff($files, ['.', '..']) : [];
+            foreach ($files as $file) {
+                (is_dir("$dir/$file")) ? self::delTree("$dir/$file") : unlink("$dir/$file");
+            }
 
-        return rmdir($dir);
+            return rmdir($dir);
+        } catch (ErrorException $e) {
+            report($e);
+
+            return false;
+        }
     }
 
     /**
