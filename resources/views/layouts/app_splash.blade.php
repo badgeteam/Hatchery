@@ -19,7 +19,7 @@
     <link rel="apple-touch-icon" sizes="640x640" href="{{ asset('img/bs.png') }}">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css', !App::environment(['local', 'testing'])) }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css', !App::environment(['local', 'testing'])) }}?v=1.0" rel="stylesheet">
 	
     <style>
 	html {
@@ -68,7 +68,7 @@
 }
     </script>
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js', !App::environment(['local', 'testing'])) }}"></script>
+    <script src="{{ asset('js/app.js', !App::environment(['local', 'testing'])) }}?v=1.0"></script>
 
     @yield('script')
 </body>

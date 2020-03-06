@@ -121,12 +121,13 @@ class ProjectsTest extends TestCase
             ->call('post', '/projects', ['name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id]);
         $response->assertRedirect('')->assertSessionHasErrors();
 
-        $name .= '+'; // issue found by fox name is unique, slug is identical
+        $name .= '_'; // issue found by fox name is unique, slug is identical (the + becomes plus now)
         $this->assertCount(1, Project::all());
         $response = $this
             ->actingAs($user)
             ->call('post', '/projects', ['name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id]);
         $response->assertRedirect('/projects/create')->assertSessionHasErrors();
+        $this->assertCount(1, Project::all());
     }
 
     /**
@@ -359,8 +360,9 @@ class ProjectsTest extends TestCase
         $user = factory(User::class)->create();
         $this->be($user);
         $project = factory(Project::class)->create();
-        $file = factory(File::class)->create(['version_id' => $project->versions()->unPublished()->first()->id]);
-        $file->first()->content = 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAF'.
+        $file = factory(File::class)->create([
+            'version_id' => $project->versions()->unPublished()->first()->id,
+            'content' => 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAF'.
                 'FElEQVRYw+1XfVDTZRxXj9oxN4a8bGMbG4ONTdBUEuVFQImjk5ISxBOQN3kJDSFAQgMRQh0ahLyj'.
                 'EBAblaF2cnqWRml1h1meCUmGQhmVvQioMC8RsM8ToxR/v59o/FF3/u6e+217vs/3+/m+fb7Ppkx5'.
                 '9Pyfnp2r+a5n8+WaAa3q+IBO3Y339QGtulevVbX31Ni/eyRDunat7wz+pBs+sEESAGOtep3qZl+d'.
@@ -384,10 +386,9 @@ class ProjectsTest extends TestCase
                 'K2fy25d58nzk/IYmxNKB6SzphtYC20xyWTmzU77hoe+FSxzZxl2ligqAuIW01OGe4FYcJbChjdyT'.
                 'HBa8DhntENXPIC2/SbmWvxbGXwjyOYI2Gobir3HHK8N8T6yOtwqrTxBFgWIzCQXD4z6k6Eprvm1u'.
                 'kKsJb9L/H8T7zpC9lyZJ+L5coQOQk6QNsdqQqmMIdWFZjHCZ75wJVvqj57/y/AkQ6a2eMiXbygAA'.
-                'AABJRU5ErkJggg==';
-        $file->first()->name = 'icon.png';
-        $file->first()->version_id = $project->versions()->unPublished()->first()->id; // yah ugly
-        $file->first()->save(); // wut?
+                'AABJRU5ErkJggg==',
+            'name' => 'icon.png',
+        ]);
         $this->assertNull($project->published_at);
 
         $response = $this
