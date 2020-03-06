@@ -173,6 +173,23 @@ class ProjectsTest extends TestCase
     }
 
     /**
+     * Check the projects edit page functions for other users.
+     */
+    public function testProjectsEditCollaboratingUser(): void
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        $project->collaborators()->attach($otherUser);
+        $response = $this
+            ->actingAs($otherUser)
+            ->get('/projects/'.$project->slug.'/edit');
+        $response->assertStatus(200);
+    }
+
+    /**
      * Check the projects can be stored.
      */
     public function testProjectsUpdate(): void
@@ -218,6 +235,41 @@ class ProjectsTest extends TestCase
         $project = factory(Project::class)->create();
         $response = $this
             ->actingAs($user)
+            ->call('put', '/projects/'.$project->slug, [
+                'description'  => $this->faker->paragraph,
+                'dependencies' => [$projectDep->id],
+                'category_id'  => $project->category_id,
+                'status'       => 'unknown',
+            ]);
+        $response->assertRedirect('/projects')->assertSessionHas('successes');
+        // add deps
+        $response = $this
+            ->actingAs($otherUser)
+            ->call('put', '/projects/'.$project->slug, [
+                'description' => $this->faker->paragraph,
+                'category_id' => $project->category_id,
+                'status'      => 'unknown',
+            ]);
+        $response->assertStatus(403);
+        // remove deps
+    }
+
+    /**
+     * Check the projects can be stored by collaborating users.
+     */
+    public function testProjectsUpdateCollaboratingUser(): void
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+        $this->be($user);
+        $projectDep = factory(Project::class)->create();
+        $projectDep->versions()->first()->zip = 'test';
+        $projectDep->versions()->first()->save();
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        $project->collaborators()->attach($otherUser);
+        $response = $this
+            ->actingAs($otherUser)
             ->call('put', '/projects/'.$project->slug, [
                 'description'  => $this->faker->paragraph,
                 'dependencies' => [$projectDep->id],
