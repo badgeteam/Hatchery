@@ -330,9 +330,6 @@ class ProjectsController extends Controller
             UpdateProject::dispatch($project, Auth::user());
         } catch (Exception $e) {
             Helpers::delTree($tempFolder);
-            if (isset($project)) {
-                $project->delete();
-            }
 
             return redirect()->route('projects.import')->withInput()->withErrors([$e->getMessage()]);
         }
