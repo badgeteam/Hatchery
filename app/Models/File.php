@@ -127,7 +127,7 @@ class File extends Model
      *
      * @var array<string>
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'version_id'];
 
     /**
      * Make sure a file is owned by a user.

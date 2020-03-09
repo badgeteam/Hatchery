@@ -14,6 +14,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css', !App::environment(['local', 'testing'])) }}?v=1.0" rel="stylesheet">
+    <livewire:styles>
+
     <meta name="theme-color" content="#F2DAC7">
     <link rel="icon" type="image/x-icon" sizes="16x16" href="{{ asset('favicon.ico') }}">
     <link rel="icon" type="image/png" sizes="640x640" href="{{ asset('img/bs.png') }}">
@@ -127,6 +129,7 @@
     </script>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js', !App::environment(['local', 'testing'])) }}?v=1.0"></script>
+    <livewire:scripts>
 
     @yield('script')
 </body>

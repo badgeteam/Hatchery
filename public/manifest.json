@@ -4,7 +4,7 @@
  "start_url": "/projects",
  "display": "standalone",
  "background_color": "#39c",
- "theme_color": "#fff",
+ "theme_color": "#320490",
  "default_locale": "en",
  "author": "badge.team",
  "icons": [
