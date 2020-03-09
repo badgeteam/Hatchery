@@ -87,7 +87,7 @@ class File extends Model
         'mod'  => 'audio/mod',
         'xm'   => 'audio/module-xm',
         's3m'  => 'audio/s3m',
-        'gif'  => 'image/gif'
+        'gif'  => 'image/gif',
     ];
 
     /**
