@@ -129,3 +129,21 @@
     height: 22px;
   }
 }
+
+@media screen and (prefers-color-scheme: dark) {
+  body, .navbar-default, .navbar-default .navbar-brand, .navbar-default .navbar-nav li a,
+  .panel-default .panel-heading, input, select, select option, .pagination > .disabled > span,
+  .pagination > li > a, .pagination > li > span, .form-control {
+    background-color: #222;
+    color: #fff;
+  }
+  .table-striped > tbody > tr:nth-of-type(odd), .dropdown-menu {
+    background-color: #0a1520;
+  }
+  a {
+    color: #98ccf7;
+  }
+  .navbar-default .navbar-brand:hover, .navbar-default .navbar-nav li a:hover, a:hover {
+    color: #2ab27b;
+  }
+}
