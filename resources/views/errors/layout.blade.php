@@ -43,6 +43,13 @@
                 font-size: 36px;
                 padding: 20px;
             }
+
+            @media screen and (prefers-color-scheme: dark) {
+                html, body {
+                    background-color: #222222;
+                    color: #fff;
+                }
+            }
         </style>
     </head>
     <body>

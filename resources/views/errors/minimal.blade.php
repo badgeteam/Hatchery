@@ -46,6 +46,12 @@
                 font-size: 18px;
                 text-align: center;
             }
+
+            @media screen and (prefers-color-scheme: dark) {
+                html, body {
+                    background-color: #222222;
+                }
+            }
         </style>
     </head>
     <body>
