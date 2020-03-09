@@ -85,7 +85,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-danger" id="vote">Vote</button>
-                <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
             </div>
         </div>
     </div>
@@ -104,7 +104,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-danger" id="notify">Notify</button>
-                <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
             </div>
         </div>
     </div>
