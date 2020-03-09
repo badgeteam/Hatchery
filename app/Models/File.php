@@ -63,7 +63,7 @@ class File extends Model
         'json', 'txt', 'md',
         'wav', 'mp3', 'ogg',
         'mod', 'xm', 's3m',
-        'elf', 'bin',
+        'elf', 'bin', 'gif',
     ];
 
     /**
@@ -87,6 +87,7 @@ class File extends Model
         'mod'  => 'audio/mod',
         'xm'   => 'audio/module-xm',
         's3m'  => 'audio/s3m',
+        'gif'  => 'image/gif'
     ];
 
     /**
@@ -101,6 +102,7 @@ class File extends Model
         'mp3'  => 'audio',
         'wav'  => 'audio',
         'ogg'  => 'audio',
+        'gif'  => 'image',
     ];
 
     /**
