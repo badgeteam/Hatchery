@@ -20,7 +20,6 @@
     <link rel="icon" type="image/x-icon" sizes="16x16" href="{{ asset('favicon.ico') }}">
     <link rel="icon" type="image/png" sizes="640x640" href="{{ asset('img/bs.png') }}">
     <link rel="apple-touch-icon" sizes="640x640" href="{{ asset('img/bs.png') }}">
-    <link rel="canonical" href="{{ url()->current() }}" />
 
     <!-- Scripts -->
     <script>
