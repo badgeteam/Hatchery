@@ -367,5 +367,31 @@ time.localtime()';
             ->get('/create-icon?version='.$version->id);
         $response->assertRedirect()
             ->assertSessionHas('successes');
+        $file = File::get()->last();
+        $this->assertEquals('icon.py', $file->name);
+        $this->assertEquals('icon = ([0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,'.
+            ' 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,'.
+            ' 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,'.
+            ' 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,'.
+            ' 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,'.
+            ' 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,'.
+            ' 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,'.
+            ' 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,'.
+            ' 0x00000000, 0x00000000], 1)', $file->content);
+    }
+
+    /**
+     * Check the files can be stored.
+     */
+    public function testFilesCreateIconNameTooLarge(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->post('/create-icon?version='.$version->id, ['name' => $this->faker->text(1024)]);
+        $response->assertRedirect('/projects/'.$version->project->slug.'/edit')
+            ->assertSessionHasErrors();
     }
 }

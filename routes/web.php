@@ -39,7 +39,7 @@ Route::middleware(['auth', 'webauthn', '2fa'])->group(function () {
     Route::post('release/{project}', 'ProjectsController@publish')->name('project.publish');
 
     Route::resource('files', 'FilesController', ['except' => 'show']);
-    Route::get('create-icon', 'FilesController@createIcon')->name('files.create-icon');
+    Route::any('create-icon', 'FilesController@createIcon')->name('files.create-icon');
 
     Route::get('profile', 'UsersController@redirect');
     Route::resource('users', 'UsersController');

@@ -660,7 +660,6 @@ class ProjectsTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('post', '/import-git', ['name' => $name, 'git' => $this->faker->text(1024), 'category_id' => $category->id, 'status' => 'unknown']);
-        $this->assertEmpty(Project::all());
         $response->assertRedirect('/import')->assertSessionHasErrors();
     }
 

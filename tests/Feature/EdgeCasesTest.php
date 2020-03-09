@@ -14,7 +14,6 @@ use App\Models\Version;
 use App\Models\Vote;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Http\Request;
 use Tests\TestCase;
 
 /**
@@ -120,27 +119,4 @@ class EdgeCasesTest extends TestCase
         $redirectResponse = $filesController->update($request, $file);
         $this->assertEquals('[["b0rk"]]', (string) $redirectResponse->getSession()->get('errors'));
     }
-
-//    /**
-//     * Check the files create icon magic page functions.
-//     */
-//    public function testFilesCreateIconRaceCondition(): void
-//    {
-//        $user = factory(User::class)->create();
-//        $this->be($user);
-//        $version = factory(Version::class)->create();
-//
-//        $mock = $this->mock(File::class, function ($mock) {
-//            $mock->shouldReceive('save')->once()->andThrow(new \Exception('b0rk'));
-//        })->makePartial();
-//        $this->app->instance(File::class, $mock);
-//
-//        $request = $this->mock(Request::class, function ($mock) use ($version) {
-//            $mock->shouldReceive('get')->with('version')->andReturn($version->id);
-//        })->makePartial();
-//
-//        $filesController = new FilesController();
-//        $redirectResponse = $filesController->createIcon($request);
-//        $this->assertEquals('[["b0rk"]]', (string) $redirectResponse->getSession()->get('errors'));
-//    }
 }

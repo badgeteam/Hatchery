@@ -32,6 +32,7 @@
 				<div class="spacer col-md-12 hidden-xs"></div>
 					{{ Form::label('badge', 'Badge', ['class' => 'control-label']) }}
 					{{ Form::select('badge_id', \App\Models\Badge::pluck('name', 'slug')->reverse()->prepend('Choose a badge model', ''), $badge, ['id' => 'badge']) }}
+					<br class="hidden-sm-up">
 					{{ Form::label('category', 'Category', ['class' => 'control-label']) }}
 					{{ Form::select('category_id', \App\Models\Category::where('hidden', false)->pluck('name', 'slug')->reverse()->prepend('Choose a category', ''), $category, ['id' => 'category']) }}
 					{{ Form::open(['method' => 'post', 'route' => ['projects.search', 'badge' => $badge, 'category' => $category], 'class' => 'searchform'])  }}
@@ -52,13 +53,13 @@
 								</th>
 								<th>Rev</th>
 								<th>Egg</th>
-								<th>Content</th>
-								<th>Cat</th>
+								<th class="hidden-xs">Content</th>
+								<th class="hidden-xs">Category</th>
 								<th>Collab</th>
-								<th><img src="{{ asset('img/rulez.gif') }}" alt="up" /></th>
-								<th><img src="{{ asset('img/isok.gif') }}" alt="pig" /></th>
-								<th><img src="{{ asset('img/sucks.gif') }}" alt="down" /></th>
-								<th><img src="{{ asset('img/alert.gif') }}" alt="alert" /></th>
+								<th class="hidden-xs"><img src="{{ asset('img/rulez.gif') }}" alt="up" /></th>
+								<th class="hidden-xs"><img src="{{ asset('img/isok.gif') }}" alt="pig" /></th>
+								<th class="hidden-xs"><img src="{{ asset('img/sucks.gif') }}" alt="down" /></th>
+								<th class="hidden-xs"><img src="{{ asset('img/alert.gif') }}" alt="alert" /></th>
 								<th>
 									<a href="{{ Request::fullUrlWithQuery(['order' => 'published_at', 'direction' => $direction === 'asc' ? 'desc' : 'asc']) }}">
 										Last release
@@ -75,8 +76,8 @@
 								<td><a href="{{ route('projects.show', ['project' => $project->slug]) }}">{{ $project->name }}</a></td>
 								<td>{{ $project->revision }}</td>
 								<td>{{ $project->size_of_zip_formatted }}</td>
-								<td>{{ $project->size_of_content_formatted }}</td>
-								<td>{{ $project->category }}</td>
+								<td class="hidden-xs">{{ $project->size_of_content_formatted }}</td>
+								<td class="hidden-xs">{{ $project->category }}</td>
 								<td>
 								@if($project->git)
 									<img src="{{ asset('img/git.svg') }}" alt="Git revision: {{ $project->git_commit_id}}" class="collab-icon" />
@@ -85,10 +86,10 @@
 									<img src="{{ asset('img/collab.svg') }}" alt="{{ $project->collaborators()->count() . ' ' . \Illuminate\Support\Str::plural('collaborator', $project->collaborators()->count()) }}" class="collab-icon" />
 								@endif
 								</td>
-								<td>{{ $project->votes->where('type', 'up')->count() }}</td>
-								<td>{{ $project->votes->where('type', 'pig')->count() }}</td>
-								<td>{{ $project->votes->where('type', 'down')->count() }}</td>
-								<td>{{ $project->warnings->count() }}</td>
+								<td class="hidden-xs">{{ $project->votes->where('type', 'up')->count() }}</td>
+								<td class="hidden-xs">{{ $project->votes->where('type', 'pig')->count() }}</td>
+								<td class="hidden-xs">{{ $project->votes->where('type', 'down')->count() }}</td>
+								<td class="hidden-xs">{{ $project->warnings->count() }}</td>
 								<td>{{ $project->published_at->diffForHumans() }}</td>
 							</tr>
 						@empty

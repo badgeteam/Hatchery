@@ -26,11 +26,11 @@ class WeatherTest extends TestCase
         $mock = $this->mock(Darksky::class);
         $mock->expects('get')->once()->andReturns(json_encode($data));
         $this->app->instance(Darksky::class, $mock);
-        $response = $this->get('/weather');
+        $response = $this->json('get', '/weather');
         $response->assertStatus(200);
         $this->assertEquals('{"test":"data"}', $response->getContent());
         // only called once for 2 calls
-        $response = $this->get('/weather');
+        $response = $this->json('get', '/weather');
         $response->assertStatus(200);
     }
 
@@ -50,7 +50,7 @@ class WeatherTest extends TestCase
         $mock = $this->mock(Darksky::class);
         $mock->expects('get')->never();
         $this->app->instance(Darksky::class, $mock);
-        $response = $this->get('/weather');
+        $response = $this->json('get', '/weather');
         $response->assertStatus(200);
         $this->assertEquals('{"cache":"test"}', $response->getContent());
     }
@@ -66,7 +66,7 @@ class WeatherTest extends TestCase
         $mock = $this->mock(Darksky::class);
         $mock->expects('get')->once()->andReturns(false);
         $this->app->instance(Darksky::class, $mock);
-        $response = $this->get('/weather');
+        $response = $this->json('get', '/weather');
         $response->assertStatus(404);
     }
 
@@ -80,9 +80,9 @@ class WeatherTest extends TestCase
         $mock = $this->mock(Darksky::class);
         $mock->expects('get')->once()->andReturns(json_encode($data));
         $this->app->instance(Darksky::class, $mock);
-        $response = $this->get('/weather/bla,bla');
+        $response = $this->json('get', '/weather/bla,bla');
         $response->assertStatus(412);
-        $response = $this->get('/weather/52.2822616,5.5218715');
+        $response = $this->json('get', '/weather/52.2822616,5.5218715');
         $response->assertStatus(200);
         $this->assertEquals('{"test":"data"}', $response->getContent());
     }

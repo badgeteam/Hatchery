@@ -30,13 +30,13 @@
                                 <th>Name</th>
                                 <th>Rev</th>
                                 <th>Egg</th>
-                                <th>Content</th>
-                                <th>Cat</th>
+                                <th class="hidden-xs">Content</th>
+                                <th class="hidden-xs">Category</th>
                                 <th>Collab</th>
-                                <th><img src="{{ asset('img/rulez.gif') }}" alt="up" /></th>
-                                <th><img src="{{ asset('img/isok.gif') }}" alt="pig" /></th>
-                                <th><img src="{{ asset('img/sucks.gif') }}" alt="down" /></th>
-                                <th><img src="{{ asset('img/alert.gif') }}" alt="alert" /></th>
+                                <th class="hidden-xs"><img src="{{ asset('img/rulez.gif') }}" alt="up" /></th>
+                                <th class="hidden-xs"><img src="{{ asset('img/isok.gif') }}" alt="pig" /></th>
+                                <th class="hidden-xs"><img src="{{ asset('img/sucks.gif') }}" alt="down" /></th>
+                                <th class="hidden-xs"><img src="{{ asset('img/alert.gif') }}" alt="alert" /></th>
                                 <th>Last release</th>
                             </tr>
                         </thead>
@@ -52,8 +52,8 @@
                                     </td>
                                     <td>{{ $project->versions()->published()->count() > 0 ? $project->versions()->published()->get()->last()->revision : 'unreleased' }}</td>
                                     <td>{{ $project->size_of_zip_formatted }}</td>
-                                    <td>{{ $project->size_of_content_formatted }}</td>
-                                    <td>{{ $project->category }}</td>
+                                    <td class="hidden-xs">{{ $project->size_of_content_formatted }}</td>
+                                    <td class="hidden-xs">{{ $project->category }}</td>
                                     <td>
                                     @if($project->git)
                                         <img src="{{ asset('img/git.svg') }}" alt="Git revision: {{ $project->git_commit_id}}" class="collab-icon" />
@@ -62,10 +62,10 @@
                                         <img src="{{ asset('img/collab.svg') }}" alt="{{ $project->collaborators()->count() . ' ' . \Illuminate\Support\Str::plural('collaborator', $project->collaborators()->count()) }}" class="collab-icon" />
                                     @endif
                                     </td>
-                                    <td>{{ $project->votes->where('type', 'up')->count() }}</td>
-                                    <td>{{ $project->votes->where('type', 'pig')->count() }}</td>
-                                    <td>{{ $project->votes->where('type', 'down')->count() }}</td>
-                                    <td>{{ $project->warnings->count() }}</td>
+                                    <td class="hidden-xs">{{ $project->votes->where('type', 'up')->count() }}</td>
+                                    <td class="hidden-xs">{{ $project->votes->where('type', 'pig')->count() }}</td>
+                                    <td class="hidden-xs">{{ $project->votes->where('type', 'down')->count() }}</td>
+                                    <td class="hidden-xs">{{ $project->warnings->count() }}</td>
                                     <td>{{ $project->versions()->published()->count() > 0 ? $project->versions()->published()->get()->last()->updated_at : '-' }}</td>
                                 </tr>
                             @empty
