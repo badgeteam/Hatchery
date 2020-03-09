@@ -23,7 +23,9 @@
 				<div class="links">
 					<a class="btn btn-success" href="https://docs.badge.team/">Documentation</a>
 					<a class="btn btn-danger" href="https://github.com/badgeteam/">GitHub</a>
-					<a class="btn btn-primary" href="https://twitter.com/SHA2017Badge">Twitter</a>
+					<a class="btn btn-info" href="https://twitter.com/SHA2017Badge">Twitter</a>
+					<a class="btn btn-warning" href="http://webchat.freenode.net/?channels=%23badgeteam%2C%23badgeteam-dev&uio=d4">IRC</a>
+					<a class="btn btn-primary" href="https://t.me/joinchat/AMG-ZhQQ9cE1KAAbQozy5Q">Telegram</a>
 				</div>
 				<div>
 					Contributors: {{$users}}

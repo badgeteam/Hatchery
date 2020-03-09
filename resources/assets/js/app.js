@@ -177,7 +177,8 @@ window.onload = function() {
 				showCursorWhenSelecting: true,
 				indentWithTabs: true,
 				keyMap: window.keymap,
-				json: true
+				json: true,
+				theme: (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'ambiance' : ''
 			});
 		});
 		// Enable navigation prompt
@@ -189,14 +190,17 @@ window.onload = function() {
 		});
 	}
 	if (document.getElementById('content-readonly')) {
-		window.CodeMirror = require(['../../../node_modules/codemirror/lib/codemirror',
+		window.CodeMirror = require([
+			'../../../node_modules/codemirror/lib/codemirror',
 			'../../../node_modules/codemirror/mode/python/python',
 			'../../../node_modules/codemirror/mode/javascript/javascript',
-			'../../../node_modules/codemirror/mode/markdown/markdown'], function (CodeMirror) {
+			'../../../node_modules/codemirror/mode/markdown/markdown'
+		], function (CodeMirror) {
 			CodeMirror.fromTextArea(document.getElementById('content-readonly'), {
 				lineNumbers: true,
 				mode: langmode,
-				readOnly: true
+				readOnly: true,
+				theme: (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'ambiance' : ''
 			});
 		});
 	}

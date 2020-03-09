@@ -9,7 +9,6 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="csrfToken" content="{{ csrf_token() }}">
-
     <title>{{ request()->getHost() }} {{ config('app.name', 'Hatchery') }}</title>
     <meta name="description" content="A platform to publish and develop software for several electronic badges.">
 
@@ -17,6 +16,7 @@
     <link rel="icon" type="image/x-icon" sizes="16x16" href="{{ asset('favicon.ico') }}">
     <link rel="icon" type="image/png" sizes="640x640" href="{{ asset('img/bs.png') }}">
     <link rel="apple-touch-icon" sizes="640x640" href="{{ asset('img/bs.png') }}">
+    <link rel="canonical" href="{{ url()->current() }}" />
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css', !App::environment(['local', 'testing'])) }}?v=1.0" rel="stylesheet">
