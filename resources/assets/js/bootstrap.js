@@ -15,7 +15,7 @@ try {
 	alert(e);
 }
 
-import Echo from "laravel-echo"
+import Echo from 'laravel-echo';
 
 window.io = require('socket.io-client');
 
