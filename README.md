@@ -33,6 +33,7 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 -   Requires PHP 7.2.5 or later
 -   Requires Python 3.6 or later
 -   Requires Git 2.8 or later
+-   Requires Redis 5.0 or later
 
 For deployment on a server.
 
@@ -59,6 +60,13 @@ yarn
 yarn production
 ```
 
+Installing the async websocket server.
+
+```bash
+yarn global add laravel-echo-server
+laravel-echo-server init
+```
+
 Compiling and installing the patched minigzip.
 
 ```bash
@@ -69,6 +77,15 @@ cd zlib-1.2.11
 echo -e "#define MAX_WBITS  13\n$(cat zconf.h)" > zconf.h
 make
 sudo make install
+```
+
+### Services
+
+You'll need a be running [Laravel Horizon](https://laravel.com/docs/7.x/horizon#deploying-horizon) service.
+
+For the websocket server.
+```bash
+laravel-echo-server start
 ```
 
 ### Running the development server locally

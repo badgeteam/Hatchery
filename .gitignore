@@ -21,7 +21,6 @@ npm-debug.log
 codeclimate.json
 /deploy_*
 /build/
-/docs/coverage
 /public/css/
 /public/js/
 /public/eggs/
@@ -34,3 +33,4 @@ _ide_helper.php
 /storage/api-docs/
 /database/mariadb
 /public/vendor/livewire
+laravel-echo-server.json

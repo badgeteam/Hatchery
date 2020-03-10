@@ -26,6 +26,7 @@ before_script:
   - nvm install stable
   - yarn
   - yarn production
+  - yarn global add laravel-echo-server
   - php artisan key:generate
   - php artisan config:clear
   - curl -s -o zlib-1.2.11.tar.gz http://zlib.net/zlib-1.2.11.tar.gz

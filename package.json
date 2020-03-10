@@ -41,5 +41,9 @@
     "vue": "^2.6.11",
     "vue-template-compiler": "^2.6.11",
     "webpack": "^4.42.0"
+  },
+  "dependencies": {
+    "laravel-echo": "^1.6.1",
+    "socket.io-client": "^2.3.0"
   }
 }
