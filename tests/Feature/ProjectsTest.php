@@ -764,6 +764,7 @@ class ProjectsTest extends TestCase
 
         Event::assertDispatched(ProjectUpdated::class, function ($e) {
             $this->assertEquals('info', $e->type);
+
             return true;
         });
     }
