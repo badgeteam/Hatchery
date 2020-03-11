@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Events\ProjectUpdated;
-use App\Jobs\PublishProject;
 use App\Models\Badge;
 use App\Models\BadgeProject;
 use App\Models\Category;
@@ -342,9 +341,9 @@ class ProjectTest extends TestCase
     }
 
     /**
-     * Let's catch an event :)
+     * Let's catch an event :).
      */
-    public function testProjectUpdateEventUser(): void 
+    public function testProjectUpdateEventUser(): void
     {
         $user = factory(User::class)->create();
         $this->be($user);
@@ -360,7 +359,7 @@ class ProjectTest extends TestCase
     }
 
     /**
-     * Let's catch some events :)
+     * Let's catch some events :).
      */
     public function testProjectUpdateEventCollaborator(): void
     {
@@ -380,7 +379,7 @@ class ProjectTest extends TestCase
     }
 
     /**
-     * Let's not catch some events :)
+     * Let's not catch some events :).
      */
     public function testProjectUpdateEventCollaboratorRecepients(): void
     {

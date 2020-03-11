@@ -198,7 +198,7 @@ return [
         ],
 
         'connect-src' => [
-            'allow' => [env('APP_URL', 'https://badge.team'). 'self'],
+            'allow' => [env('APP_URL', 'https://badge.team').'self'],
         ],
 
         'form-action' => [

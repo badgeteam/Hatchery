@@ -277,7 +277,7 @@ window.onload = function() {
 				const messages = document.getElementById('messages');
 				messages.innerHTML += '<div class="alert alert-' + data.type + ' alert-dismissible">\n' +
 					'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>\n' +
-					data.message +
+					'<p>' + data.message + '</p>\n' +
 					'</div>';
 			});
 	}

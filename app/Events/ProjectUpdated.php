@@ -12,14 +12,15 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Event;
 
 /**
- * Class ProjectUpdated
+ * Class ProjectUpdated.
  *
  * @author annejan@badge.team
  */
 class ProjectUpdated extends Event implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
-
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
     /**
      * @var Project
      */
@@ -38,9 +39,9 @@ class ProjectUpdated extends Event implements ShouldBroadcast
     /**
      * Create a new event instance.
      *
-     * @param Project $project
+     * @param Project     $project
      * @param string|null $message
-     * @param string $type
+     * @param string      $type
      */
     public function __construct(Project $project, string $message = null, string $type = 'success')
     {
