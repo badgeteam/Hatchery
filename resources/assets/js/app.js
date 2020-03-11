@@ -271,4 +271,14 @@ window.onload = function() {
 			}
 		}
 	}
+	if (window.UserId) {
+		window.Echo.private('App.User.' + window.UserId)
+			.listen('ProjectUpdated', (data) => {
+				const messages = document.getElementById('messages');
+				messages.innerHTML += '<div class="alert alert-' + data.type + ' alert-dismissible">\n' +
+					'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>\n' +
+					data.message +
+					'</div>';
+			});
+	}
 };

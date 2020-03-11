@@ -32,8 +32,9 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 -   Requires PHP 7.2.5 or later
 -   Requires Python 3.6 or later
+-   Requires Node.js 6.0 or later
+-   Requires Redis 3.2 or later
 -   Requires Git 2.8 or later
--   Requires Redis 5.0 or later
 
 For deployment on a server.
 
@@ -60,7 +61,7 @@ yarn
 yarn production
 ```
 
-Installing the async websocket server.
+Installing and configuring the async websocket server.
 
 ```bash
 yarn global add laravel-echo-server

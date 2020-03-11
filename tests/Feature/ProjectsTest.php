@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Events\ProjectUpdated;
 use App\Mail\ProjectNotificationMail;
 use App\Models\Badge;
 use App\Models\Category;
@@ -17,6 +18,7 @@ use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -374,6 +376,8 @@ class ProjectsTest extends TestCase
         $file->first()->save(); // wut?
         $this->assertNull($project->published_at);
 
+        Event::fake();
+
         $response = $this
             ->actingAs($user)
             ->call('post', '/release/'.$project->slug);
@@ -412,6 +416,10 @@ class ProjectsTest extends TestCase
         $project = Project::find($project->id);
         $this->assertNotNull($project->published_at);
         $this->assertTrue(now()->isSameDay($project->published_at));
+
+        Event::assertDispatched(ProjectUpdated::class, function ($e) use ($project) {
+            return $e->project->id === $project->id;
+        }, 1);
     }
 
     /**
