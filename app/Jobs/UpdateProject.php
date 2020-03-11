@@ -44,16 +44,15 @@ class UpdateProject implements ShouldQueue
      *
      * @param GitRepository $git
      *
-     * @throws GitException
-     *
      * @return void
      */
     public function handle(GitRepository $git)
     {
         $version = $this->project->getUnpublishedVersion();
+
         try {
-            $tempFolder = sys_get_temp_dir() . '/' . $this->project->slug;
-            if (!file_exists($tempFolder . '/.git/HEAD')) {
+            $tempFolder = sys_get_temp_dir().'/'.$this->project->slug;
+            if (!file_exists($tempFolder.'/.git/HEAD')) {
                 $repo = $git->cloneRepository(
                     $this->project->git,
                     $tempFolder,
@@ -71,8 +70,10 @@ class UpdateProject implements ShouldQueue
             $this->project->save();
             Helpers::addFiles($tempFolder, $version);
             PublishProject::dispatch($this->project, $this->user);
-            event(new ProjectUpdated($version->project,
-                'Project ' . $version->project->name . ' updated successfully!'));
+            event(new ProjectUpdated(
+                $version->project,
+                'Project '.$version->project->name.' updated successfully!'
+            ));
         } catch (\Throwable $exception) {
             event(new ProjectUpdated($version->project, $exception->getMessage(), 'danger'));
         }

@@ -155,7 +155,14 @@ class EdgeCasesTest extends TestCase
             $mock->shouldReceive('getUnpublishedVersion')->once()->andReturn($version);
         })->makePartial();
 
+        Event::fake();
+
         $publishProject = new UpdateProject($project, $user);
         $publishProject->handle(new GitRepository());
+
+        Event::assertDispatched(ProjectUpdated::class, function ($e) {
+            $this->assertEquals('danger', $e->type);
+            return true;
+        });
     }
 }
