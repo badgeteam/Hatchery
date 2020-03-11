@@ -750,6 +750,8 @@ class ProjectsTest extends TestCase
         $mock->expects('getLastCommitId')->andReturns($hash);
         $this->app->instance(GitRepository::class, $mock);
 
+        Event::fake();
+
         $response = $this
             ->actingAs($user)
             ->call('get', '/projects/'.$project->slug.'/pull');
@@ -759,6 +761,11 @@ class ProjectsTest extends TestCase
         $this->assertEquals($hash, $project->git_commit_id);
         $this->assertEquals(1, $project->revision);
         Helpers::delTree($folder);
+
+        Event::assertDispatched(ProjectUpdated::class, function ($e) {
+            $this->assertEquals('info', $e->type);
+            return true;
+        });
     }
 
     /**

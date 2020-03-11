@@ -162,6 +162,7 @@ class EdgeCasesTest extends TestCase
 
         Event::assertDispatched(ProjectUpdated::class, function ($e) {
             $this->assertEquals('danger', $e->type);
+
             return true;
         });
     }

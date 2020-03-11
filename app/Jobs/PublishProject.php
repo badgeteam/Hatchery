@@ -73,7 +73,7 @@ class PublishProject implements ShouldQueue
     }
 
     /**
-     * @param string $filename
+     * @param string  $filename
      * @param Version $version
      */
     private function makeZip(string $filename, Version $version): void

@@ -7,7 +7,6 @@ use App\Models\Project;
 use App\Models\User;
 use App\Support\GitRepository;
 use App\Support\Helpers;
-use Cz\Git\GitException;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -64,6 +63,7 @@ class UpdateProject implements ShouldQueue
             }
 
             if ($this->project->git_commit_id === $repo->getLastCommitId()) {
+                event(new ProjectUpdated($version->project, 'Project '.$version->project->name.' was already up to date!', 'info'));
                 return;
             }
             $this->project->git_commit_id = $repo->getLastCommitId();
