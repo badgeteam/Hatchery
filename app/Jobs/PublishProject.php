@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\ProjectUpdated;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
@@ -109,5 +110,6 @@ class PublishProject implements ShouldQueue
 
         $this->project->published_at = now();
         $this->project->save();
+        event(new ProjectUpdated($version->project, 'Project '.$version->project->name.' published successfully!'));
     }
 }

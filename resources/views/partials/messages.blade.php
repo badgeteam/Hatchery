@@ -1,3 +1,4 @@
+<div id="messages">
 @if(!$errors->isEmpty())
     @if(isset($file))
     <div class="combined-alerts">
@@ -46,3 +47,4 @@
         @endforeach
     </div>
 @endif
+</div>

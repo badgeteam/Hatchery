@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Events\ProjectUpdated;
 use App\Models\Badge;
 use App\Models\BadgeProject;
 use App\Models\Category;
@@ -13,6 +14,7 @@ use App\Models\Vote;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 /**
@@ -336,5 +338,61 @@ class ProjectTest extends TestCase
         /** @var Project $project */
         $project = Project::find($project->id);
         $this->assertCount(2, $project->collaborators);
+    }
+
+    /**
+     * Let's catch an event :).
+     */
+    public function testProjectUpdateEventUser(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+
+        Event::fake();
+
+        event(new ProjectUpdated($project, $this->faker->text));
+
+        Event::assertDispatched(ProjectUpdated::class, function ($e) use ($project) {
+            return $e->project->id === $project->id;
+        }, 1);
+    }
+
+    /**
+     * Let's catch some events :).
+     */
+    public function testProjectUpdateEventCollaborator(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $otherUser = factory(User::class)->create();
+        $project->collaborators()->attach($otherUser);
+
+        Event::fake();
+
+        event(new ProjectUpdated($project, $this->faker->text));
+
+        Event::assertDispatched(ProjectUpdated::class, function ($e) use ($project) {
+            return $e->project->id === $project->id;
+        }, 2);
+    }
+
+    /**
+     * Let's not catch some events :).
+     */
+    public function testProjectUpdateEventCollaboratorRecepients(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $otherUser = factory(User::class)->create();
+        $project->collaborators()->attach($otherUser);
+
+        $event = new ProjectUpdated($project, $this->faker->text);
+
+        $this->assertCount(2, $event->broadcastOn());
+        $this->assertEquals('private-App.User.'.$user->id, $event->broadcastOn()[0]->name);
+        $this->assertEquals('private-App.User.'.$otherUser->id, $event->broadcastOn()[1]->name);
     }
 }

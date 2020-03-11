@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\ProjectUpdated;
 use App\Models\Project;
 use App\Models\User;
 use App\Support\GitRepository;
@@ -69,5 +70,6 @@ class UpdateProject implements ShouldQueue
         $version = $this->project->getUnpublishedVersion();
         Helpers::addFiles($tempFolder, $version);
         PublishProject::dispatch($this->project, $this->user);
+        event(new ProjectUpdated($version->project, 'Project '.$version->project->name.' updated successfully!'));
     }
 }
