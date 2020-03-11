@@ -21,19 +21,12 @@ class ProjectUpdated extends Event implements ShouldBroadcast
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
-    /**
-     * @var Project
-     */
+
+    /** @var Project */
     public $project;
-
-    /**
-     * @var string|null
-     */
+    /** @var string|null */
     public $message;
-
-    /**
-     * @var string
-     */
+    /** @var string */
     public $type;
 
     /**

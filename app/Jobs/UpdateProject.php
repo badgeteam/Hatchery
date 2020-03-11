@@ -50,26 +50,31 @@ class UpdateProject implements ShouldQueue
      */
     public function handle(GitRepository $git)
     {
-        $tempFolder = sys_get_temp_dir().'/'.$this->project->slug;
-        if (!file_exists($tempFolder.'/.git/HEAD')) {
-            $repo = $git->cloneRepository(
-                $this->project->git,
-                $tempFolder,
-                ['-q', '--single-branch', '--depth', 1]
-            );
-        } else {
-            $repo = $git->open($tempFolder);
-            $repo->pull();
-        }
-
-        if ($this->project->git_commit_id === $repo->getLastCommitId()) {
-            return;
-        }
-        $this->project->git_commit_id = $repo->getLastCommitId();
-        $this->project->save();
         $version = $this->project->getUnpublishedVersion();
-        Helpers::addFiles($tempFolder, $version);
-        PublishProject::dispatch($this->project, $this->user);
-        event(new ProjectUpdated($version->project, 'Project '.$version->project->name.' updated successfully!'));
+        try {
+            $tempFolder = sys_get_temp_dir() . '/' . $this->project->slug;
+            if (!file_exists($tempFolder . '/.git/HEAD')) {
+                $repo = $git->cloneRepository(
+                    $this->project->git,
+                    $tempFolder,
+                    ['-q', '--single-branch', '--depth', 1]
+                );
+            } else {
+                $repo = $git->open($tempFolder);
+                $repo->pull();
+            }
+
+            if ($this->project->git_commit_id === $repo->getLastCommitId()) {
+                return;
+            }
+            $this->project->git_commit_id = $repo->getLastCommitId();
+            $this->project->save();
+            Helpers::addFiles($tempFolder, $version);
+            PublishProject::dispatch($this->project, $this->user);
+            event(new ProjectUpdated($version->project,
+                'Project ' . $version->project->name . ' updated successfully!'));
+        } catch (\Throwable $exception) {
+            event(new ProjectUpdated($version->project, $exception->getMessage(), 'danger'));
+        }
     }
 }

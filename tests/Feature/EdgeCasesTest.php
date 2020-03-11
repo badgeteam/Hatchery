@@ -2,18 +2,23 @@
 
 namespace Tests\Feature;
 
+use App\Events\ProjectUpdated;
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\VotesController;
 use App\Http\Requests\FileUpdateRequest;
+use App\Jobs\PublishProject;
+use App\Jobs\UpdateProject;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
 use App\Models\Vote;
+use App\Support\GitRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 /**
@@ -118,5 +123,39 @@ class EdgeCasesTest extends TestCase
         $filesController = new FilesController();
         $redirectResponse = $filesController->update($request, $file);
         $this->assertEquals('[["b0rk"]]', (string) $redirectResponse->getSession()->get('errors'));
+    }
+
+    /**
+     * Magical errors in async jobs.
+     */
+    public function testPublishProjectException(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+
+        $project = $this->mock(Project::class, function ($mock) use ($version) {
+            $mock->shouldReceive('getUnpublishedVersion')->once()->andReturn($version);
+        })->makePartial();
+
+        $publishProject = new PublishProject($project, $user);
+        $publishProject->handle();
+    }
+
+    /**
+     * Magical errors in async jobs.
+     */
+    public function testUpdateProjectException(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+
+        $project = $this->mock(Project::class, function ($mock) use ($version) {
+            $mock->shouldReceive('getUnpublishedVersion')->once()->andReturn($version);
+        })->makePartial();
+
+        $publishProject = new UpdateProject($project, $user);
+        $publishProject->handle(new GitRepository());
     }
 }
