@@ -83,6 +83,7 @@ class ProcessFile implements ShouldQueue
             }
 
             Helpers::delTree($this->tempFolder);
+
             return;
         }
 
@@ -117,6 +118,6 @@ class ProcessFile implements ShouldQueue
 
         // yosys -q -p "read_verilog -noautowire $^ ; check ; clean ; synth_ice40 -blif $@"
 
-        $this->file->version->files()->create(['name' => $badge->slug.'_'.$this->file->baseName.'.bin']);
+        $this->file->version->files()->create(['name' => $this->file->baseName.'_'.$badge->slug.'.bin']);
     }
 }
