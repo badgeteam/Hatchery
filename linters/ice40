@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+sed -n 'w /tmp/chip.v'
+
+iverilog -t null `yosys-config --datdir/ice40/cells_sim.v` /tmp/chip.v
+error=$?
+
+rm /tmp/chip.v
+
+exit $error

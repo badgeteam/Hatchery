@@ -54,6 +54,8 @@ Install and configure required items.
 
 ```bash
 pip install pyflakes
+yarn global add jsonlint
+yarn global add markdownlint-cli
 composer install
 php artisan key:generate
 php artisan migrate
@@ -79,6 +81,12 @@ echo -e "#define MAX_WBITS  13\n$(cat zconf.h)" > zconf.h
 make
 sudo make install
 ```
+
+If you would like to have Verilog support.
+
+Install [Icarus Verilog](https://iverilog.fandom.com/wiki/Installation_Guide) 0.9 or later.
+
+TODO more info ;)
 
 ### Services
 

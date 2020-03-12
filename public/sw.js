@@ -1,4 +1,4 @@
-const cacheName = 'hatchery::20200311';
+const cacheName = 'hatchery::20200312';
 
 self.addEventListener('install', e => {
 	e.waitUntil(
@@ -42,6 +42,7 @@ self.addEventListener('install', e => {
 		})
 	);
 });
+
 self.addEventListener('fetch', event => {
 	event.respondWith(
 		caches.open(cacheName).then(cache => {

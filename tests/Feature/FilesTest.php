@@ -154,12 +154,84 @@ time.localtime()';
         $user = factory(User::class)->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'README.md']);
-        $data = '# test';
+        $file = factory(File::class)->create(['name' => 'info.txt']);
+        $data = 'info';
         $response = $this
             ->actingAs($user)
             ->call('put', '/files/'.$file->id, ['file_content' => $data]);
         $response->assertRedirect('/projects/'.$file->version->project->slug.'/edit')->assertSessionHas('successes');
+        /** @var File $file */
+        $file = File::find($file->id);
+        $this->assertEquals($data, $file->content);
+    }
+
+    /**
+     * Check the files can be stored.
+     */
+    public function testFilesUpdateMarkdown(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'README.md']);
+        $data = '# test
+
+text';
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/files/'.$file->id, ['file_content' => $data]);
+        $response->assertRedirect('/projects/'.$file->version->project->slug.'/edit')
+            ->assertSessionHas('successes')
+            ->assertSessionHasNoErrors();
+        /** @var File $file */
+        $file = File::find($file->id);
+        $this->assertEquals($data, $file->content);
+    }
+
+    /**
+     * Check the files can be stored.
+     */
+    public function testFilesUpdateJson(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.json']);
+        $data = json_encode(['tests' => ['test1', 'test2']]);
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/files/'.$file->id, ['file_content' => $data]);
+        $response->assertRedirect('/projects/'.$file->version->project->slug.'/edit')
+            ->assertSessionHas('successes')
+            ->assertSessionHasNoErrors();
+        /** @var File $file */
+        $file = File::find($file->id);
+        $this->assertEquals($data, $file->content);
+    }
+
+    /**
+     * Check the files can be stored.
+     */
+    public function testFilesUpdateVerilog(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.v']);
+        $data = '`default_nettype none
+module chip (
+  output  O_LED_R
+  );
+  wire  w_led_r;
+  assign w_led_r = 1\'b0;
+  assign O_LED_R = w_led_r;
+endmodule';
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/files/'.$file->id, ['file_content' => $data]);
+        $response->assertRedirect('/projects/'.$file->version->project->slug.'/edit')
+            ->assertSessionHas('successes')
+            ->assertSessionHasNoErrors();
         /** @var File $file */
         $file = File::find($file->id);
         $this->assertEquals($data, $file->content);

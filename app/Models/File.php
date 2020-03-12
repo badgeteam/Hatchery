@@ -23,6 +23,7 @@ use Intervention\Image\Facades\Image;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read bool $editable
+ * @property-read bool $lintable
  * @property-read string $extension
  * @property-read string $mime
  * @property-read int $size_of_content
@@ -58,7 +59,7 @@ class File extends Model
      * @var array<string>
      */
     public static $extensions = [
-        'py', 'pyc',
+        'py', 'pyc', 'v',
         'png', 'bmp', 'jpg',
         'json', 'txt', 'md',
         'wav', 'mp3', 'ogg',
@@ -88,6 +89,7 @@ class File extends Model
         'xm'   => 'audio/module-xm',
         's3m'  => 'audio/s3m',
         'gif'  => 'image/gif',
+        'v'    => 'text/x-verilog',
     ];
 
     /**
@@ -115,6 +117,19 @@ class File extends Model
         'txt',
         'md',
         'json',
+        'v',
+    ];
+
+    /**
+     * File extensions editable by Hatchery.
+     *
+     * @var array<string>
+     */
+    protected $lintables = [
+        'py',
+        'md',
+        'json',
+        'v',
     ];
 
     /**
@@ -182,6 +197,14 @@ class File extends Model
     public function getEditableAttribute(): bool
     {
         return in_array($this->extension, $this->editables);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getLintableAttribute(): bool
+    {
+        return in_array($this->extension, $this->lintables);
     }
 
     /**

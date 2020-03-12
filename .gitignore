@@ -34,3 +34,4 @@ _ide_helper.php
 /database/mariadb
 /public/vendor/livewire
 laravel-echo-server.*
+/public/sw.js.LICENSE.txt

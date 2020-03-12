@@ -20,7 +20,7 @@ jobs:
       - run: sudo apt-get install -y libpng-dev libgmp-dev git
       - run: sudo docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd
       - run: sudo docker-php-ext-install zip pdo_mysql gd gmp exif pcntl
-      - run: sudo apt-get install mariadb-client pyflakes
+      - run: sudo apt-get install mariadb-client pyflakes iverilog
 
       # Download and cache dependencies
       - restore_cache:
@@ -44,6 +44,10 @@ jobs:
           paths:
             - node_modules
 
+      # Install some warez
+      - run: yarn global add jsonlint
+      - run: yarn global add markdownlint-cli
+        -
       # Build frontend
       - run: yarn build
 

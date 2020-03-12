@@ -75,21 +75,23 @@ class FilesController extends Controller
             return redirect()->route('files.edit', ['file' => $file->id])->withInput()->withErrors([$e->getMessage()]);
         }
 
-        if ($file->extension === 'py') {
-            $pyflakes = $this->lintContent($request->file_content);
-            if ($pyflakes['return_value'] == 0) {
+        if ($file->lintable) {
+            $data = $this->lint($file);
+            if ($data['return_value'] == 0) {
                 return redirect()
                     ->route('projects.edit', ['project' => $file->version->project->slug])
                     ->withSuccesses([$file->name.' saved']);
-            } elseif (!empty($pyflakes[0])) {
+            } elseif (!empty($data[0])) {
                 return redirect()->route('files.edit', ['file' => $file->id])
                     ->withInput()
-                    ->withWarnings(explode("\n", (string) $pyflakes[0]));
+                    ->withSuccesses([$file->name.' saved'])
+                    ->withWarnings(explode("\n", (string) $data[0]));
             }
 
             return redirect()->route('files.edit', ['file' => $file->id])
                 ->withInput()
-                ->withErrors(explode("\n", (string) $pyflakes[1]));
+                ->withSuccesses([$file->name.' saved'])
+                ->withErrors(explode("\n", (string) $data[1]));
         }
 
         return redirect()
@@ -185,39 +187,6 @@ class FilesController extends Controller
     }
 
     /**
-     * @param string $content
-     * @param string $command = "pyflakes"
-     *
-     * @return array<string|int, string|int|null>
-     */
-    public static function lintContent(string $content, string $command = 'pyflakes'): array
-    {
-        $stdOut = $stdErr = '';
-        $returnValue = 255;
-        $fds = [
-            0 => ['pipe', 'r'], // stdin is a pipe that the child will read from
-            1 => ['pipe', 'w'], // stdout is a pipe that the child will write to
-            2 => ['pipe', 'w'], // stderr is a pipe that the child will write to
-        ];
-        $process = proc_open($command, $fds, $pipes, null, null);
-        if (is_resource($process)) {
-            fwrite($pipes[0], $content);
-            fclose($pipes[0]);
-            $stdOut = (string) stream_get_contents($pipes[1]);
-            fclose($pipes[1]);
-            $stdErr = (string) stream_get_contents($pipes[2]);
-            fclose($pipes[2]);
-            $returnValue = proc_close($process);
-        }
-
-        return [
-            'return_value' => $returnValue,
-            0              => preg_replace('/<stdin>\:/', '', $stdOut),
-            1              => preg_replace('/<stdin>\:/', '', $stdErr),
-        ];
-    }
-
-    /**
      * Show file content, public method ツ.
      *
      * @param File $file
@@ -246,5 +215,56 @@ class FilesController extends Controller
             ->header('Content-length', (string) strlen($file->content))
             ->header('Content-Disposition', 'attachment; filename='.$file->name)
             ->header('Content-Transfer-Encoding', 'binary');
+    }
+
+    /**
+     * @param File $file
+     *
+     * @return array<string|int, string|int|null>
+     */
+    private function lint(File $file)
+    {
+        $command = 'pyflakes';
+        if ($file->extension === 'md') {
+            $command = 'markdownlint -s';
+        } elseif ($file->extension === 'v') {
+            $command =  base_path('linters/ice40');
+        } elseif ($file->extension === 'json') {
+            $command =  'jsonlint -q';
+        }
+        return $this->lintContent($file->content, $command);
+    }
+
+    /**
+     * @param string $content
+     * @param string $command = "pyflakes"
+     *
+     * @return array<string|int, string|int|null>
+     */
+    private function lintContent(string $content, string $command = 'pyflakes'): array
+    {
+        $stdOut = $stdErr = '';
+        $returnValue = 255;
+        $fds = [
+            0 => ['pipe', 'r'], // stdin is a pipe that the child will read from
+            1 => ['pipe', 'w'], // stdout is a pipe that the child will write to
+            2 => ['pipe', 'w'], // stderr is a pipe that the child will write to
+        ];
+        $process = proc_open($command, $fds, $pipes, null, null);
+        if (is_resource($process)) {
+            fwrite($pipes[0], $content."\n");   // insert trailing newline ;)
+            fclose($pipes[0]);
+            $stdOut = (string) stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+            $stdErr = (string) stream_get_contents($pipes[2]);
+            fclose($pipes[2]);
+            $returnValue = proc_close($process);
+        }
+
+        return [
+            'return_value' => $returnValue,
+            0              => preg_replace('/<?stdin>?\:/', '', $stdOut),
+            1              => preg_replace('/<?stdin>?\:/', '', $stdErr),
+        ];
     }
 }

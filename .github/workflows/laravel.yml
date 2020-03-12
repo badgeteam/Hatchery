@@ -21,7 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Install Linux packages
-      run: sudo apt update && sudo apt install -y --no-install-recommends pyflakes git
+      run: sudo apt update && sudo apt install -y --no-install-recommends pyflakes git iverilog
     - name: Install PHP
       uses: shivammathur/setup-php@master
       with:
@@ -37,6 +37,8 @@ jobs:
         composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
         yarn
         yarn build
+        yarn global add jsonlint
+        yarn global add markdownlint-cli
     - name: Generate key
       run: php artisan key:generate
     - name: LaraStan

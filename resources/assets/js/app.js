@@ -154,6 +154,8 @@ window.onload = function() {
 	if (ext) {
 		if (ext.getAttribute('value')  === 'json') {
 			langmode = 'javascript';
+		} else if (ext.getAttribute('value')  === 'v') {
+			langmode = 'verilog';
 		} else if (ext.getAttribute('value') === 'md' || ext.getAttribute('value') === 'txt') {
 			langmode = 'markdown';
 		}
@@ -165,6 +167,7 @@ window.onload = function() {
 			'../../../node_modules/codemirror/mode/python/python',
 			'../../../node_modules/codemirror/mode/javascript/javascript',
 			'../../../node_modules/codemirror/mode/markdown/markdown',
+			'../../../node_modules/codemirror/mode/verilog/verilog',
 			'../../../node_modules/codemirror/addon/dialog/dialog.js',
 			'../../../node_modules/codemirror/addon/search/searchcursor.js',
 			'../../../node_modules/codemirror/keymap/vim.js',
@@ -194,7 +197,8 @@ window.onload = function() {
 			'../../../node_modules/codemirror/lib/codemirror',
 			'../../../node_modules/codemirror/mode/python/python',
 			'../../../node_modules/codemirror/mode/javascript/javascript',
-			'../../../node_modules/codemirror/mode/markdown/markdown'
+			'../../../node_modules/codemirror/mode/markdown/markdown',
+			'../../../node_modules/codemirror/mode/verilog/verilog'
 		], function (CodeMirror) {
 			CodeMirror.fromTextArea(document.getElementById('content-readonly'), {
 				lineNumbers: true,
