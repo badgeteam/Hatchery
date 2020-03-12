@@ -17,7 +17,8 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property string $name
  * @property string $slug
- * @property string|null $deleted_at
+ * @property string|null $constraints
+ * @property Carbon|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection|Project[] $projects

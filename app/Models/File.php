@@ -26,7 +26,9 @@ use Intervention\Image\Facades\Image;
  * @property Carbon|null $updated_at
  * @property-read bool $editable
  * @property-read bool $lintable
+ * @property-read bool $processable
  * @property-read string $extension
+ * @property-read string $baseName
  * @property-read string $mime
  * @property-read int $size_of_content
  * @property-read string|null $viewable
@@ -123,7 +125,7 @@ class File extends Model
     ];
 
     /**
-     * File extensions editable by Hatchery.
+     * File extensions lintable by Hatchery.
      *
      * @var array<string>
      */
@@ -131,6 +133,15 @@ class File extends Model
         'py',
         'md',
         'json',
+        'v',
+    ];
+
+    /**
+     * File extensions processable by Hatchery.
+     *
+     * @var array<string>
+     */
+    protected $processables = [
         'v',
     ];
 
@@ -194,6 +205,14 @@ class File extends Model
     }
 
     /**
+     * @return string
+     */
+    public function getBaseNameAttribute(): string
+    {
+        return str_replace('.'.$this->extension, '', $this->name);
+    }
+
+    /**
      * @return bool
      */
     public function getEditableAttribute(): bool
@@ -207,6 +226,14 @@ class File extends Model
     public function getLintableAttribute(): bool
     {
         return in_array($this->extension, $this->lintables);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getProcessableAttribute(): bool
+    {
+        return in_array($this->extension, $this->processables);
     }
 
     /**

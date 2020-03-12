@@ -6,6 +6,7 @@ use App\Http\Requests\FileStoreRequest;
 use App\Http\Requests\FileUpdateRequest;
 use App\Http\Requests\FileUploadRequest;
 use App\Jobs\LintContent;
+use App\Jobs\ProcessFile;
 use App\Models\File;
 use App\Models\Version;
 use Illuminate\Http\JsonResponse;
@@ -232,6 +233,18 @@ class FilesController extends Controller
         LintContent::dispatch($file, $request->file_content);
 
         return response()->json(['linting' => 'started']);
+    }
+
+    /**
+     * @param File $file
+     *
+     * @return JsonResponse
+     */
+    public function process(File $file): JsonResponse
+    {
+        ProcessFile::dispatch($file);
+
+        return response()->json(['processing' => 'started']);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Events\ProjectUpdated;
+use App\Models\Badge;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
@@ -568,5 +569,102 @@ time.localtime()';
 
             return true;
         });
+    }
+
+    /**
+     * Check the files can't be processed.
+     */
+    public function testFilesProcessInfo(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.txt']);
+        Event::fake();
+        $response = $this
+            ->actingAs($user)
+            ->json('post', '/process-file/'.$file->id);
+        $response->assertStatus(200)->assertExactJson(['processing' => 'started']);
+        /** @var File $file */
+        $file = File::find($file->id);
+        Event::assertDispatched(ProjectUpdated::class, function ($e) use ($file) {
+            $this->assertEquals('info', $e->type);
+            $this->assertEquals('File '.$file->name.' currently not processable.', $e->message);
+
+            return true;
+        });
+    }
+
+    /**
+     * Check the files can't be processed.
+     */
+    public function testFilesProcessNoConstraints(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.v', 'content' => '`default_nettype none
+module chip (
+  output  O_LED_R
+  );
+  wire  w_led_r;
+  assign w_led_r = 1\'b0;
+  assign O_LED_R = w_led_r;
+endmodule']);
+        $files = File::count();
+        Event::fake();
+        $response = $this
+            ->actingAs($user)
+            ->json('post', '/process-file/'.$file->id);
+        $response->assertStatus(200)->assertExactJson(['processing' => 'started']);
+        /** @var File $file */
+        $file = File::find($file->id);
+        Event::assertDispatched(ProjectUpdated::class, function ($e) use ($file) {
+            $this->assertEquals('danger', $e->type);
+            $this->assertEquals('No badges with workable constraints for project: '.$file->version->project->name, $e->message);
+
+            return true;
+        });
+        $this->assertCount($files, File::all());
+    }
+
+    /**
+     * Check the files can be processed.
+     */
+    public function testFilesProcessSuccess(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.v', 'content' => '`default_nettype none
+module chip (
+  output  O_LED_R
+  );
+  wire  w_led_r;
+  assign w_led_r = 1\'b0;
+  assign O_LED_R = w_led_r;
+endmodule']);
+        /** @var Badge $badge */
+        $badge = factory(Badge::class)->create(['constraints' => 'set_io O_LED_R	39
+set_io O_LED_G	40
+set_io O_LED_B	41
+set_io I_INPUT_1 42']);
+        $file->version->project->badges()->attach($badge);
+        $files = File::count();
+        Event::fake();
+        $response = $this
+            ->actingAs($user)
+            ->json('post', '/process-file/'.$file->id);
+        $response->assertStatus(200)->assertExactJson(['processing' => 'started']);
+        /** @var File $file */
+        $file = File::find($file->id);
+        Event::assertDispatched(ProjectUpdated::class, function ($e) use ($file) {
+            $this->assertEquals('success', $e->type);
+            $this->assertEquals('File '.$file->name.' processed successfully.', $e->message);
+
+            return true;
+        });
+        $this->assertCount($files + 1, File::all());
+        $this->assertEquals($file->baseName.'_'.$badge->slug.'.bin', File::get()->last()->name);
     }
 }
