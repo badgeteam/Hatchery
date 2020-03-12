@@ -47,7 +47,7 @@ jobs:
       # Install some warez
       - run: yarn global add jsonlint
       - run: yarn global add markdownlint-cli
-        -
+
       # Build frontend
       - run: yarn build
 

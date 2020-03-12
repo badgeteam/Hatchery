@@ -228,10 +228,11 @@ class FilesController extends Controller
         if ($file->extension === 'md') {
             $command = 'markdownlint -s';
         } elseif ($file->extension === 'v') {
-            $command =  base_path('linters/ice40');
+            $command = base_path('linters/ice40');
         } elseif ($file->extension === 'json') {
-            $command =  'jsonlint -q';
+            $command = 'jsonlint -q';
         }
+
         return $this->lintContent($file->content, $command);
     }
 
