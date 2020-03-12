@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FileStoreRequest;
 use App\Http\Requests\FileUpdateRequest;
 use App\Http\Requests\FileUploadRequest;
+use App\Jobs\LintContent;
 use App\Models\File;
 use App\Models\Version;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -43,6 +45,7 @@ class FilesController extends Controller
         $file = $version->files()->firstOrNew(['name' => $upload->getClientOriginalName()]);
         $file->content = file_get_contents($upload->path());
         $file->save();
+        LintContent::dispatch($file);
     }
 
     /**
@@ -76,7 +79,7 @@ class FilesController extends Controller
         }
 
         if ($file->lintable) {
-            $data = $this->lint($file);
+            $data = $this->lintFile($file);
             if ($data['return_value'] == 0) {
                 return redirect()
                     ->route('projects.edit', ['project' => $file->version->project->slug])
@@ -157,6 +160,7 @@ class FilesController extends Controller
             $file->name = $request->name;
             $file->content = $request->file_content;
             $file->save();
+            LintContent::dispatch($file);
         } catch (\Exception $e) {
             return redirect()->route('files.create')->withInput()->withErrors([$e->getMessage()]);
         }
@@ -218,11 +222,25 @@ class FilesController extends Controller
     }
 
     /**
+     * @param FileUpdateRequest $request
      * @param File $file
+     *
+     * @return JsonResponse
+     */
+    public function lint(FileUpdateRequest $request, File $file): JsonResponse
+    {
+        LintContent::dispatch($file, $request->file_content);
+
+        return response()->json(['success' => true]);
+    }
+
+    /**
+     * @param File        $file
+     * @param string|null $content
      *
      * @return array<string|int, string|int|null>
      */
-    private function lint(File $file)
+    public static function lintFile(File $file, $content = null)
     {
         $command = 'pyflakes';
         if ($file->extension === 'md') {
@@ -233,7 +251,11 @@ class FilesController extends Controller
             $command = 'jsonlint -q';
         }
 
-        return $this->lintContent($file->content, $command);
+        if ($content === null) {
+            $content = $file->content;
+        }
+
+        return self::lintContent($content, $command);
     }
 
     /**
@@ -242,7 +264,7 @@ class FilesController extends Controller
      *
      * @return array<string|int, string|int|null>
      */
-    private function lintContent(string $content, string $command = 'pyflakes'): array
+    public static function lintContent(string $content, string $command = 'pyflakes'): array
     {
         $stdOut = $stdErr = '';
         $returnValue = 255;

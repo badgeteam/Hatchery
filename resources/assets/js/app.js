@@ -148,6 +148,14 @@ window.pixelToHexA = function(rgba) {
 	return ('0x' + r + g + b + a);
 };
 
+window.lintFile = function() {
+	const form = document.getElementById('content_form');
+	const lintApi = form.getAttribute('action').replace('files', 'lint-content');
+	window.$.post(lintApi, {
+		file_content: editor.getValue()
+	});
+};
+
 window.onload = function() {
 	const ext = document.getElementById('extension');
 	let langmode = 'python';
@@ -275,6 +283,16 @@ window.onload = function() {
 			}
 		}
 	}
+
+	const lintButtons = document.getElementsByClassName('lint-button');
+	for(let z = 0; z < lintButtons.length; z++) {
+		const elem = lintButtons[z];
+		elem.onclick = function() {
+			window.lintFile();
+			return false;
+		};
+	}
+
 	if (window.UserId) {
 		window.Echo.private('App.User.' + window.UserId)
 			.listen('ProjectUpdated', (data) => {

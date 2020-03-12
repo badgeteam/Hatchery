@@ -10,6 +10,7 @@
 
                 <div class="panel-heading">
                     <strong>{{ $file->name }}</strong>
+                    <button class="lint-button pull-right btn btn-default btn-xs">Lint</button>
                 </div>
 
                 <div class="panel-body">
@@ -25,7 +26,8 @@
                             </div>
 
                             <div class="pull-right">
-                                <button type="submit" class="btn btn-default">Save</button>
+                                <button class="lint-button btn btn-default">Lint</button>
+                                <button type="submit" class="btn btn-success">Save</button>
                             </div>
 
                             {!! Form::close() !!}
