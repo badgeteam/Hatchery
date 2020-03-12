@@ -152,7 +152,8 @@ window.lintFile = function() {
 	const form = document.getElementById('content_form');
 	const lintApi = form.getAttribute('action').replace('files', 'lint-content');
 	window.$.post(lintApi, {
-		file_content: editor.getValue()
+		file_content: editor.getValue(),
+		_token: window.Laravel.csrfToken
 	});
 };
 
