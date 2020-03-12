@@ -24,6 +24,7 @@ build:
                     - mysql -e 'create database badgeware;'
                     - mysql -e 'create database badgeware_test;'
                     - sudo apt-get install -y pyflakes iverilog
+                    - npm i -g yarn
                     - yarn global add jsonlint
                     - yarn global add markdownlint-cli
             tests:

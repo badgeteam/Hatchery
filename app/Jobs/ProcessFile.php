@@ -107,6 +107,7 @@ class ProcessFile implements ShouldQueue
             }
             $base .= '/';
         }
+        $this->tempFolder .= '/';
     }
 
     /**
@@ -114,10 +115,15 @@ class ProcessFile implements ShouldQueue
      */
     private function synthesize(Badge $badge): void
     {
+        $outfile = $this->file->baseName.'_'.$badge->slug.'.bin';
         // @todo synth for now . . dummy
 
         // yosys -q -p "read_verilog -noautowire $^ ; check ; clean ; synth_ice40 -blif $@"
+        exec('echo lol > '.$this->tempFolder.$outfile);
 
-        $this->file->version->files()->create(['name' => $this->file->baseName.'_'.$badge->slug.'.bin']);
+        $this->file->version->files()->create([
+            'name' => $outfile,
+            'content' => file_get_contents($this->tempFolder.$outfile),
+        ]);
     }
 }
