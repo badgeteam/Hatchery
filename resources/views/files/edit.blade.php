@@ -10,7 +10,9 @@
 
                 <div class="panel-heading">
                     <strong>{{ $file->name }}</strong>
+                    @if($file->lintable)
                     <button class="lint-button pull-right btn btn-default btn-xs">Lint</button>
+                    @endif
                 </div>
 
                 <div class="panel-body">
@@ -26,7 +28,9 @@
                             </div>
 
                             <div class="pull-right">
+                                @if($file->lintable)
                                 <button class="lint-button btn btn-default">Lint</button>
+                                @endif
                                 <button type="submit" class="btn btn-success">Save</button>
                             </div>
 

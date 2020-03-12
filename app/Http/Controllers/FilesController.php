@@ -80,7 +80,7 @@ class FilesController extends Controller
 
         if ($file->lintable) {
             $data = $this->lintFile($file);
-            if ($data['return_value'] == 0) {
+            if ($data['return_value'] === 0) {
                 return redirect()
                     ->route('projects.edit', ['project' => $file->version->project->slug])
                     ->withSuccesses([$file->name.' saved']);
@@ -223,7 +223,7 @@ class FilesController extends Controller
 
     /**
      * @param FileUpdateRequest $request
-     * @param File $file
+     * @param File              $file
      *
      * @return JsonResponse
      */
@@ -231,7 +231,7 @@ class FilesController extends Controller
     {
         LintContent::dispatch($file, $request->file_content);
 
-        return response()->json(['success' => true]);
+        return response()->json(['linting' => 'started']);
     }
 
     /**

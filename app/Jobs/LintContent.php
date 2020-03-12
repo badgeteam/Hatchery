@@ -11,7 +11,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-
 class LintContent implements ShouldQueue
 {
     use Dispatchable;
@@ -45,18 +44,18 @@ class LintContent implements ShouldQueue
     public function handle()
     {
         if (!$this->file->lintable) {
-            event(new ProjectUpdated($this->file->version->project, 'File '.$this->file->name.' currently not lintable.','info'));
+            event(new ProjectUpdated($this->file->version->project, 'File '.$this->file->name.' currently not lintable.', 'info'));
 
             return;
         }
         $data = FilesController::lintFile($this->file, $this->content);
 
-        if ($data['return_value'] == 0) {
+        if ($data['return_value'] === 0) {
             event(new ProjectUpdated($this->file->version->project, 'File '.$this->file->name.' linted successfully.'));
 
             return;
         } elseif (!empty($data[0])) {
-            event(new ProjectUpdated($this->file->version->project, (string) $data[0],'warning'));
+            event(new ProjectUpdated($this->file->version->project, (string) $data[0], 'warning'));
 
             return;
         }

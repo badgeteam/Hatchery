@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Events\ProjectUpdated;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
@@ -9,6 +10,7 @@ use App\Models\Version;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -465,5 +467,106 @@ time.localtime()';
             ->post('/create-icon?version='.$version->id, ['name' => $this->faker->text(1024)]);
         $response->assertRedirect('/projects/'.$version->project->slug.'/edit')
             ->assertSessionHasErrors();
+    }
+
+    /**
+     * Check the files can be linted.
+     */
+    public function testFilesLintSuccess(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.json']);
+        $data = json_encode(['tests' => ['test1', 'test2']]);
+        Event::fake();
+        $response = $this
+            ->actingAs($user)
+            ->json('post', '/lint-content/'.$file->id, ['file_content' => $data]);
+        $response->assertStatus(200)->assertExactJson(['linting' => 'started']);
+        /** @var File $file */
+        $file = File::find($file->id);
+        $this->assertNotEquals($data, $file->content);
+        Event::assertDispatched(ProjectUpdated::class, function ($e) {
+            $this->assertEquals('success', $e->type);
+
+            return true;
+        });
+    }
+
+    /**
+     * Check the files can be linted.
+     */
+    public function testFilesLintWarning(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.py']);
+        $data = 'import neopixel';
+        Event::fake();
+        $response = $this
+            ->actingAs($user)
+            ->json('post', '/lint-content/'.$file->id, ['file_content' => $data]);
+        $response->assertStatus(200)->assertExactJson(['linting' => 'started']);
+        /** @var File $file */
+        $file = File::find($file->id);
+        $this->assertNotEquals($data, $file->content);
+        Event::assertDispatched(ProjectUpdated::class, function ($e) {
+            $this->assertEquals('warning', $e->type);
+
+            return true;
+        });
+    }
+
+    /**
+     * Check the files can be linted.
+     */
+    public function testFilesLintDanger(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.py']);
+        $data = 'improt system';
+        Event::fake();
+        $response = $this
+            ->actingAs($user)
+            ->json('post', '/lint-content/'.$file->id, ['file_content' => $data]);
+        $response->assertStatus(200)->assertExactJson(['linting' => 'started']);
+        /** @var File $file */
+        $file = File::find($file->id);
+        $this->assertNotEquals($data, $file->content);
+        Event::assertDispatched(ProjectUpdated::class, function ($e) {
+            $this->assertEquals('danger', $e->type);
+
+            return true;
+        });
+    }
+
+    /**
+     * Check the files can't be linted.
+     */
+    public function testFilesLintInfo(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.txt']);
+        $data = 'This is a file';
+        Event::fake();
+        $response = $this
+            ->actingAs($user)
+            ->json('post', '/lint-content/'.$file->id, ['file_content' => $data]);
+        $response->assertStatus(200)->assertExactJson(['linting' => 'started']);
+        /** @var File $file */
+        $file = File::find($file->id);
+        $this->assertNotEquals($data, $file->content);
+        Event::assertDispatched(ProjectUpdated::class, function ($e) use ($file) {
+            $this->assertEquals('info', $e->type);
+            $this->assertEquals('File '.$file->name.' currently not lintable.', $e->message);
+
+            return true;
+        });
     }
 }
