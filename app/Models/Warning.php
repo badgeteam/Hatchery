@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -16,27 +18,27 @@ use Illuminate\Support\Facades\Auth;
  * @property int $user_id
  * @property int $project_id
  * @property string $description
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Project $project
- * @property-read \App\Models\User $user
+ * @property Carbon|null $deleted_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Project $project
+ * @property-read User $user
  *
  * @method static bool|null forceDelete()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning newQuery()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Warning onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning query()
+ * @method static Builder|Warning newModelQuery()
+ * @method static Builder|Warning newQuery()
+ * @method static Builder|Warning onlyTrashed()
+ * @method static Builder|Warning query()
  * @method static bool|null restore()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning whereProjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Warning whereUserId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Warning withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Warning withoutTrashed()
+ * @method static Builder|Warning whereCreatedAt($value)
+ * @method static Builder|Warning whereDeletedAt($value)
+ * @method static Builder|Warning whereDescription($value)
+ * @method static Builder|Warning whereId($value)
+ * @method static Builder|Warning whereProjectId($value)
+ * @method static Builder|Warning whereUpdatedAt($value)
+ * @method static Builder|Warning whereUserId($value)
+ * @method static Builder|Warning withTrashed()
+ * @method static Builder|Warning withoutTrashed()
  * @mixin \Eloquent
  */
 class Warning extends Model

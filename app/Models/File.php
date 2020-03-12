@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Exception\NotReadableException;
 use Intervention\Image\Facades\Image;
@@ -19,34 +21,34 @@ use Intervention\Image\Facades\Image;
  * @property int $version_id
  * @property string $name
  * @property mixed|null $content
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read bool $editable
  * @property-read bool $lintable
  * @property-read string $extension
  * @property-read string $mime
  * @property-read int $size_of_content
  * @property-read string|null $viewable
- * @property-read \App\Models\User $user
- * @property-read \App\Models\Version $version
+ * @property-read User $user
+ * @property-read Version $version
  *
  * @method static bool|null forceDelete()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File newQuery()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\File onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File query()
+ * @method static Builder|File newModelQuery()
+ * @method static Builder|File newQuery()
+ * @method static Builder|File onlyTrashed()
+ * @method static Builder|File query()
  * @method static bool|null restore()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\File whereVersionId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\File withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\File withoutTrashed()
+ * @method static Builder|File whereContent($value)
+ * @method static Builder|File whereCreatedAt($value)
+ * @method static Builder|File whereDeletedAt($value)
+ * @method static Builder|File whereId($value)
+ * @method static Builder|File whereName($value)
+ * @method static Builder|File whereUpdatedAt($value)
+ * @method static Builder|File whereUserId($value)
+ * @method static Builder|File whereVersionId($value)
+ * @method static Builder|File withTrashed()
+ * @method static Builder|File withoutTrashed()
  * @mixin \Eloquent
  */
 class File extends Model

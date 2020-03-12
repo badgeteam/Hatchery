@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * Class Badge.
@@ -15,22 +18,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name
  * @property string $slug
  * @property string|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection|Project[] $projects
  * @property-read int|null $projects_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
+ * @property-read Collection|BadgeProject[] $states
  * @property-read int|null $states_count
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Badge whereUpdatedAt($value)
+ * @method static Builder|Badge newModelQuery()
+ * @method static Builder|Badge newQuery()
+ * @method static Builder|Badge query()
+ * @method static Builder|Badge whereCreatedAt($value)
+ * @method static Builder|Badge whereDeletedAt($value)
+ * @method static Builder|Badge whereId($value)
+ * @method static Builder|Badge whereName($value)
+ * @method static Builder|Badge whereSlug($value)
+ * @method static Builder|Badge whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Badge extends Model

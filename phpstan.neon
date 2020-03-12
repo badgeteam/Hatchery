@@ -28,6 +28,7 @@ parameters:
         - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::never\(\).#'
         - '#Cannot access property \$id on Illuminate\\Contracts\\Auth\\Authenticatable\|null.#'
         - '#Static method Illuminate\\Support\\Facades\\Event::assertDispatched\(\) invoked with 3 parameters, 1-2 required.#'
+        - '#Cannot access property \$deleted_at on array<App\\Models\\User\|Illuminate\\Database\\Eloquent\\Builder>\|Illuminate\\Database\\Eloquent\\Builder\|Illuminate\\Database\\Eloquent\\Collection\|Illuminate\\Database\\Eloquent\\Model\|null.#'
     excludes_analyse:
             - tests/_support/*
             - tests/Feature/EdgeCases*

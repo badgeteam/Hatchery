@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use LaravelWebauthn\Models\WebauthnKey;
 
 /**
@@ -25,44 +30,44 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @property bool $show_projects
  * @property bool $google2fa_enabled
  * @property string|null $google2fa_secret
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property Carbon|null $deleted_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
+ * @property-read Collection|Project[] $projects
  * @property-read int|null $projects_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
+ * @property-read Collection|Vote[] $votes
  * @property-read int|null $votes_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
+ * @property-read Collection|Warning[] $warnings
  * @property-read int|null $warnings_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\LaravelWebauthn\Models\WebauthnKey[] $webauthnKeys
+ * @property-read Collection|WebauthnKey[] $webauthnKeys
  * @property-read int|null $webauthn_keys_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $collaborations
+ * @property-read Collection|Project[] $collaborations
  * @property-read int|null $collaborations_count
  *
  * @method static bool|null forceDelete()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
+ * @method static Builder|User newModelQuery()
+ * @method static Builder|User newQuery()
+ * @method static Builder|User onlyTrashed()
+ * @method static Builder|User query()
  * @method static bool|null restore()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAdmin($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEditor($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereGoogle2faEnabled($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereGoogle2faSecret($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePublic($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereShowProjects($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User withoutTrashed()
+ * @method static Builder|User whereAdmin($value)
+ * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereDeletedAt($value)
+ * @method static Builder|User whereEditor($value)
+ * @method static Builder|User whereEmail($value)
+ * @method static Builder|User whereGoogle2faEnabled($value)
+ * @method static Builder|User whereGoogle2faSecret($value)
+ * @method static Builder|User whereId($value)
+ * @method static Builder|User whereName($value)
+ * @method static Builder|User wherePassword($value)
+ * @method static Builder|User whereRememberToken($value)
+ * @method static Builder|User whereUpdatedAt($value)
+ * @method static Builder|User wherePublic($value)
+ * @method static Builder|User whereShowProjects($value)
+ * @method static Builder|User withTrashed()
+ * @method static Builder|User withoutTrashed()
  * @mixin \Eloquent
  */
 class User extends Authenticatable

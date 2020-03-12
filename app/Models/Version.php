@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -21,35 +23,35 @@ use Illuminate\Support\Facades\Auth;
  * @property string|null $zip
  * @property int|null $size_of_zip
  * @property string|null $git_commit_id
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\File[] $files
+ * @property Carbon|null $deleted_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection|File[] $files
  * @property-read int|null $files_count
  * @property-read bool $published
- * @property-read \App\Models\Project $project
- * @property-read \App\Models\User $user
+ * @property-read Project $project
+ * @property-read User $user
  *
  * @method static bool|null forceDelete()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version newQuery()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Version onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version published()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version query()
+ * @method static Builder|Version newModelQuery()
+ * @method static Builder|Version newQuery()
+ * @method static Builder|Version onlyTrashed()
+ * @method static Builder|Version published()
+ * @method static Builder|Version query()
  * @method static bool|null restore()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version unPublished()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereGitCommitId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereProjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereRevision($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereSizeOfZip($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Version whereZip($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Version withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Version withoutTrashed()
+ * @method static Builder|Version unPublished()
+ * @method static Builder|Version whereCreatedAt($value)
+ * @method static Builder|Version whereDeletedAt($value)
+ * @method static Builder|Version whereGitCommitId($value)
+ * @method static Builder|Version whereId($value)
+ * @method static Builder|Version whereProjectId($value)
+ * @method static Builder|Version whereRevision($value)
+ * @method static Builder|Version whereSizeOfZip($value)
+ * @method static Builder|Version whereUpdatedAt($value)
+ * @method static Builder|Version whereUserId($value)
+ * @method static Builder|Version whereZip($value)
+ * @method static Builder|Version withTrashed()
+ * @method static Builder|Version withoutTrashed()
  * @mixin \Eloquent
  */
 class Version extends Model
