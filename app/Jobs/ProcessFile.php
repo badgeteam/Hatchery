@@ -27,6 +27,8 @@ class ProcessFile implements ShouldQueue
     private $file;
     /** @var string */
     private $tempFolder;
+    /** @var array<string> */
+    private $files = [];
 
     /**
      * Create a new job instance.
@@ -56,7 +58,9 @@ class ProcessFile implements ShouldQueue
 
         try {
             $this->process($this->file->extension);
-            event(new ProjectUpdated($this->file->version->project, 'File '.$this->file->name.' processed successfully.'));
+            foreach($this->files as $file) {
+                event(new ProjectUpdated($this->file->version->project, 'File ' . $file . ' generated.'));
+            }
 
             return;
         } catch (\Throwable $exception) {
@@ -143,6 +147,7 @@ class ProcessFile implements ShouldQueue
             'name'    => $name,
             'content' => file_get_contents($outFile),
         ]);
+        $this->files[] = $name;
     }
 
     /**
