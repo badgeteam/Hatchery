@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Helpers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -31,6 +32,7 @@ use Intervention\Image\Facades\Image;
  * @property-read string $baseName
  * @property-read string $mime
  * @property-read int $size_of_content
+ * @property-read string $size_formatted
  * @property-read string|null $viewable
  * @property-read User $user
  * @property-read Version $version
@@ -246,6 +248,14 @@ class File extends Model
         }
 
         return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSizeFormattedAttribute(): string
+    {
+       return Helpers::formatBytes((int) $this->getSizeOfContentAttribute());
     }
 
     /**

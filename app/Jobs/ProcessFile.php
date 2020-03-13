@@ -58,8 +58,8 @@ class ProcessFile implements ShouldQueue
 
         try {
             $this->process($this->file->extension);
-            foreach($this->files as $file) {
-                event(new ProjectUpdated($this->file->version->project, 'File ' . $file . ' generated.'));
+            foreach ($this->files as $file) {
+                event(new ProjectUpdated($this->file->version->project, 'File '.$file.' generated.'));
             }
 
             return;

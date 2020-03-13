@@ -3,7 +3,8 @@
     <tr>
         <th>File</th>
         <th>Last edited</th>
-        <th>Size in bytes</th>
+        <th>Size</th>
+        <th>Process</th>
         <th>
         @if(Auth::user()->can('update', $project->versions->last()->files()->first()))
             {!! Form::open(['method' => 'get', 'route' => 'files.create']) !!}
@@ -33,12 +34,19 @@
                 @endif
             </td>
             <td>{{ $file->updated_at }}</td>
-            <td>{{ $file->size_of_content }}</td>
+            <td>{{ $file->size_formatted }}</td>
+            <td>
+        @can('process', $file)
+                {!! Form::open(['method' => 'post', 'route' => ['files.process', 'file' => $file->id]]) !!}
+                <button class="btn btn-success btn-xs" name="process-resource" type="submit" value="proccess"  style="width: 48px;">synth</button>
+                {!! Form::close() !!}
+        @endcan
+            </td>
             <td>
 		@can('delete', $file)
                 {!! Form::open(['method' => 'delete', 'route' => ['files.destroy', 'file' => $file->id]]) !!}
                 <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete"  style="width: 48px;">delete</button>
-		{!! Form::close() !!}
+		        {!! Form::close() !!}
 		@endcan
             </td>
         </tr>
@@ -82,21 +90,30 @@
 @section('script')
 <script type="text/javascript">
     window.onload = function() {
-        var uploader = new window.Dropzone("#uploader",{
+        const uploader = new window.Dropzone("#uploader",{
             maxFilesize: 1,
             acceptedFiles: ".{{ implode(',.', \App\Models\File::$extensions)  }}"
         });
-        var d = document.getElementById("uploader");
+        const d = document.getElementById("uploader");
         d.className += " dropzone";
     }
 
     // Delete resource
     $('button[name="delete-resource"]').on('click', function (e) {
         e.preventDefault()
-        var $form = $(this).closest('form')
+        const $form = $(this).closest('form')
         $('#confirm-delete').modal({ backdrop: 'static', keyboard: false }).one('click', '#delete', function (e) {
             $form.trigger('submit')
         })
     })
+
+    // Process resource
+    $('button[name="process-resource"]').on('click', function (e) {
+        e.preventDefault()
+        const form = $(this).closest('form')
+        $.post(form.attr('action'), {
+            _token: window.Laravel.csrfToken
+        });
+    });
 </script>
 @endsection
