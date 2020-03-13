@@ -23,10 +23,10 @@ build:
                 before:
                     - mysql -e 'create database badgeware;'
                     - mysql -e 'create database badgeware_test;'
-                    - sudo apt-get install -y pyflakes iverilog
-                    - npm i -g yarn
-                    - yarn global add jsonlint
-                    - yarn global add markdownlint-cli
+                    - sudo apt-get install -y pyflakes iverilog arachne-pnr arachne-pnr-chipdb fpga-icestorm fpga-icestorm-chipdb
+                    - sudo npm i -g yarn
+                    - sudo yarn global add jsonlint
+                    - sudo yarn global add markdownlint-cli
             tests:
                 override:
                     -

@@ -645,10 +645,7 @@ module chip (
   assign O_LED_R = w_led_r;
 endmodule']);
         /** @var Badge $badge */
-        $badge = factory(Badge::class)->create(['constraints' => 'set_io O_LED_R	39
-set_io O_LED_G	40
-set_io O_LED_B	41
-set_io I_INPUT_1 42']);
+        $badge = factory(Badge::class)->create(['constraints' => 'set_io O_LED_R	39']);
         $file->version->project->badges()->attach($badge);
         $files = File::count();
         Event::fake();
@@ -666,5 +663,6 @@ set_io I_INPUT_1 42']);
         });
         $this->assertCount($files + 1, File::all());
         $this->assertEquals($file->baseName.'_'.$badge->slug.'.bin', File::get()->last()->name);
+        $this->assertEquals(32220, strlen(File::get()->last()->content));
     }
 }

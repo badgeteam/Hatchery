@@ -74,11 +74,11 @@ class ProcessFile implements ShouldQueue
 
             $this->ensureWorkDirExists();
 
-            file_put_contents($this->tempFolder.'/'.$this->file->name, $this->file->content, LOCK_EX);
+            file_put_contents($this->tempFolder.$this->file->name, $this->file->content, LOCK_EX);
 
             /** @var Badge $badge */
             foreach ($badges as $badge) {
-                file_put_contents($this->tempFolder.'/'.$badge->slug.'.pcf', $badge->constraints, LOCK_EX);
+                file_put_contents($this->tempFolder.$badge->slug.'.pcf', $badge->constraints, LOCK_EX);
                 $this->synthesize($badge);
             }
 
@@ -115,15 +115,65 @@ class ProcessFile implements ShouldQueue
      */
     private function synthesize(Badge $badge): void
     {
-        $outfile = $this->file->baseName.'_'.$badge->slug.'.bin';
-        // @todo synth for now . . dummy
+        $name = $this->file->baseName.'_'.$badge->slug.'.bin';
+        $vdlFile = $this->tempFolder.$this->file->name;
+        $outFile = $this->tempFolder.$name;
 
-        // yosys -q -p "read_verilog -noautowire $^ ; check ; clean ; synth_ice40 -blif $@"
-        exec('echo lol > '.$this->tempFolder.$outfile);
+        $pcfFile = $this->tempFolder.$badge->slug.'.pcf';
+        $blfFile = $this->tempFolder.$this->file->baseName.'_'.$badge->slug.'.blf';
+        $txtFile = $this->tempFolder.$this->file->baseName.'_'.$badge->slug.'.txt';
+
+        $commands = [
+            'yosys -q -p "read_verilog -noautowire '.$vdlFile.' ; check ; clean ; synth_ice40 -blif '.$blfFile.'"',
+//            'arachne-pnr -d 5k -P sg48 -p '.$pcfFile.' '.$blfFile.' -o '.$txtFile,
+            'arachne-pnr -p '.$pcfFile.' '.$blfFile.' -o '.$txtFile,
+            'icepack '.$txtFile.' '.$outFile,
+        ];
+
+        foreach ($commands as $command) {
+            if ($this->execute($command) > 0) {
+                return;
+            }
+        }
 
         $this->file->version->files()->create([
-            'name' => $outfile,
-            'content' => file_get_contents($this->tempFolder.$outfile),
+            'name'    => $name,
+            'content' => file_get_contents($outFile),
         ]);
+    }
+
+    /**
+     * @param string $command
+     *
+     * @return int
+     */
+    private function execute(string $command): int
+    {
+        $stdOut = $stdErr = '';
+        $returnValue = 255;
+        $fds = [
+            0 => ['pipe', 'r'], // stdin is a pipe that the child can read from
+            1 => ['pipe', 'w'], // stdout is a pipe that the child might write to
+            2 => ['pipe', 'w'], // stderr is a pipe that the child might write to
+        ];
+        $process = proc_open($command, $fds, $pipes, null, null);
+        if (is_resource($process)) {
+            $stdOut = (string) stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+            $stdErr = (string) stream_get_contents($pipes[2]);
+            fclose($pipes[2]);
+            $returnValue = proc_close($process);
+        }
+
+        if ($returnValue > 0) {
+            if ($stdErr) {
+                event(new ProjectUpdated($this->file->version->project, str_replace($this->tempFolder, '', $stdErr), 'danger'));
+            }
+            if ($stdOut) {
+                event(new ProjectUpdated($this->file->version->project, str_replace($this->tempFolder, '', $stdOut), 'warning'));
+            }
+        }
+
+        return $returnValue;
     }
 }
