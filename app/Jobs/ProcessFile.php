@@ -12,6 +12,11 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class ProcessFile.
+ *
+ * @author annejan@badge.team
+ */
 class ProcessFile implements ShouldQueue
 {
     use Dispatchable;
@@ -67,9 +72,9 @@ class ProcessFile implements ShouldQueue
     private function process(string $extension): void
     {
         if ($extension === 'v') {
-            $badges = $this->file->version->project->badges()->whereNotNull('constraints')->get();
+            $badges = $this->file->version->project->badges()->whereNotNull('commands')->get();
             if ($badges->count() === 0) {
-                throw new \Exception('No badges with workable constraints for project: '.$this->file->version->project->name);
+                throw new \Exception('No badges with workable commands for project: '.$this->file->version->project->name);
             }
 
             $this->ensureWorkDirExists();
@@ -78,8 +83,12 @@ class ProcessFile implements ShouldQueue
 
             /** @var Badge $badge */
             foreach ($badges as $badge) {
-                file_put_contents($this->tempFolder.$badge->slug.'.pcf', $badge->constraints, LOCK_EX);
-                $this->synthesize($badge);
+                if ($badge->constraints) {
+                    file_put_contents($this->tempFolder.$badge->slug.'.pcf', $badge->constraints, LOCK_EX);
+                    $this->synthesize($badge);
+                } else {
+                    event(new ProjectUpdated($this->file->version->project, 'No constraints for badge: '.$badge->name, 'warning'));
+                }
             }
 
             Helpers::delTree($this->tempFolder);
@@ -116,21 +125,15 @@ class ProcessFile implements ShouldQueue
     private function synthesize(Badge $badge): void
     {
         $name = $this->file->baseName.'_'.$badge->slug.'.bin';
+
         $vdlFile = $this->tempFolder.$this->file->name;
+        $pcfFile = $this->tempFolder.$badge->slug.'.pcf';
         $outFile = $this->tempFolder.$name;
 
-        $pcfFile = $this->tempFolder.$badge->slug.'.pcf';
-        $blfFile = $this->tempFolder.$this->file->baseName.'_'.$badge->slug.'.blf';
-        $txtFile = $this->tempFolder.$this->file->baseName.'_'.$badge->slug.'.txt';
-
-        $commands = [
-            'yosys -q -p "read_verilog -noautowire '.$vdlFile.' ; check ; clean ; synth_ice40 -blif '.$blfFile.'"',
-//            'arachne-pnr -d 5k -P sg48 -p '.$pcfFile.' '.$blfFile.' -o '.$txtFile,
-            'arachne-pnr -p '.$pcfFile.' '.$blfFile.' -o '.$txtFile,
-            'icepack '.$txtFile.' '.$outFile,
-        ];
-
-        foreach ($commands as $command) {
+        foreach (explode("\n", (string) $badge->commands) as $command) {
+            $command = str_replace('VDL', $vdlFile, $command);
+            $command = str_replace('PCF', $pcfFile, $command);
+            $command = str_replace('OUT', $outFile, $command);
             if ($this->execute($command) > 0) {
                 return;
             }
