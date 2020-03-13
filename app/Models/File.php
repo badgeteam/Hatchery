@@ -255,7 +255,7 @@ class File extends Model
      */
     public function getSizeFormattedAttribute(): string
     {
-       return Helpers::formatBytes((int) $this->getSizeOfContentAttribute());
+        return Helpers::formatBytes((int) $this->getSizeOfContentAttribute());
     }
 
     /**
