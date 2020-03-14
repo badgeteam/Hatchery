@@ -143,13 +143,7 @@ class ProcessFile implements ShouldQueue
             }
         }
 
-        /** @var File $file */
-        $file = $this->file->version->files()->firstOrCreate([
-            'name'    => $name,
-        ]);
-        $file->content = file_get_contents($outFile);
-        $file->save();
-
+        $this->file->version->files()->firstOrCreate(['name' => $name], ['content' => file_get_contents($outFile)]);
         $this->files[] = $name;
     }
 
