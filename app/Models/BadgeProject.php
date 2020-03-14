@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * Class BadgeProject.
@@ -14,20 +16,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $badge_id
  * @property int $project_id
  * @property string $status
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Badge $badge
- * @property-read \App\Models\Project $project
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Badge $badge
+ * @property-read Project $project
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject whereBadgeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject whereProjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BadgeProject whereUpdatedAt($value)
+ * @method static Builder|BadgeProject newModelQuery()
+ * @method static Builder|BadgeProject newQuery()
+ * @method static Builder|BadgeProject query()
+ * @method static Builder|BadgeProject whereBadgeId($value)
+ * @method static Builder|BadgeProject whereCreatedAt($value)
+ * @method static Builder|BadgeProject whereId($value)
+ * @method static Builder|BadgeProject whereProjectId($value)
+ * @method static Builder|BadgeProject whereStatus($value)
+ * @method static Builder|BadgeProject whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class BadgeProject extends Model

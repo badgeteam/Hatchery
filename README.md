@@ -20,14 +20,6 @@ Simple micropython software repository for Badges.
 [Documentation](https://docs.badge.team/hatchery/) \|
 [GitHub](https://github.com/badgeteam/)
 
-## License
-
-Hatchery is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
-
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery?ref=badge_large)
-
 ## Installation
 
 -   Requires PHP 7.2.5 or later
@@ -173,3 +165,10 @@ php artisan route:clear && php artisan config:clear
 vendor/bin/codecept build
 vendor/bin/codecept run
 ```
+## License
+
+Hatchery is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+
+The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery?ref=badge_large)

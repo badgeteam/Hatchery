@@ -41,6 +41,7 @@ Route::middleware(['auth', 'webauthn', '2fa'])->group(function () {
     Route::resource('files', 'FilesController', ['except' => 'show']);
     Route::any('create-icon', 'FilesController@createIcon')->name('files.create-icon');
     Route::post('lint-content/{file}', 'FilesController@lint')->name('files.lint');
+    Route::post('process-file/{file}', 'FilesController@process')->name('files.process');
 
     Route::get('profile', 'UsersController@redirect');
     Route::resource('users', 'UsersController');

@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -17,28 +19,28 @@ use Illuminate\Support\Facades\Auth;
  * @property int $project_id
  * @property string $type
  * @property string|null $comment
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Project $project
- * @property-read \App\Models\User $user
+ * @property Carbon|null $deleted_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Project $project
+ * @property-read User $user
  *
  * @method static bool|null forceDelete()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote newQuery()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Vote onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote query()
+ * @method static Builder|Vote newModelQuery()
+ * @method static Builder|Vote newQuery()
+ * @method static Builder|Vote onlyTrashed()
+ * @method static Builder|Vote query()
  * @method static bool|null restore()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote whereComment($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote whereProjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Vote whereUserId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Vote withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Vote withoutTrashed()
+ * @method static Builder|Vote whereComment($value)
+ * @method static Builder|Vote whereCreatedAt($value)
+ * @method static Builder|Vote whereDeletedAt($value)
+ * @method static Builder|Vote whereId($value)
+ * @method static Builder|Vote whereProjectId($value)
+ * @method static Builder|Vote whereType($value)
+ * @method static Builder|Vote whereUpdatedAt($value)
+ * @method static Builder|Vote whereUserId($value)
+ * @method static Builder|Vote withTrashed()
+ * @method static Builder|Vote withoutTrashed()
  * @mixin \Eloquent
  */
 class Vote extends Model

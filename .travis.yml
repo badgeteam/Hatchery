@@ -16,6 +16,10 @@ addons:
     packages:
       - pyflakes
       - iverilog
+      - arachne-pnr
+      - arachne-pnr-chipdb
+      - fpga-icestorm
+      - fpga-icestorm-chipdb
 
 before_script:
   - cp .env.travis .env

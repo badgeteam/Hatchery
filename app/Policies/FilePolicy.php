@@ -60,4 +60,18 @@ class FilePolicy
         // Normal users can only delete  files in their own project
         return $user->admin || $user->id == $file->version->project->user->id;
     }
+
+    /**
+     * Determine whether the user can process the file.
+     *
+     * @param User $user
+     * @param File $file
+     *
+     * @return bool
+     */
+    public function process(User $user, File $file): bool
+    {
+        // Normal users can only delete  files in their own project
+        return $file->processable && ($user->admin || $user->id == $file->version->project->user->id);
+    }
 }

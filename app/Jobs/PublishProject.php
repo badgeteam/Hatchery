@@ -15,6 +15,11 @@ use Illuminate\Queue\SerializesModels;
 use Phar;
 use PharData;
 
+/**
+ * Class PublishProject.
+ *
+ * @author annejan@badge.team
+ */
 class PublishProject implements ShouldQueue
 {
     use Dispatchable;

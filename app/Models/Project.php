@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Support\Helpers;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Mail\Markdown;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -24,17 +27,17 @@ use Illuminate\Support\Str;
  * @property string $slug
  * @property string|null $git
  * @property string|null $git_commit_id
- * @property \Illuminate\Support\Carbon|null $published_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon $updated_at
+ * @property Carbon|null $published_at
+ * @property Carbon|null $deleted_at
+ * @property Carbon|null $created_at
+ * @property Carbon $updated_at
  * @property int $download_counter
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Badge[] $badges
+ * @property-read Collection|Badge[] $badges
  * @property-read int|null $badges_count
  * @property-read string $category
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $dependants
+ * @property-read Collection|Project[] $dependants
  * @property-read int|null $dependants_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $dependencies
+ * @property-read Collection|Project[] $dependencies
  * @property-read int|null $dependencies_count
  * @property-read string|null $description
  * @property-read string|null $description_html
@@ -45,38 +48,38 @@ use Illuminate\Support\Str;
  * @property-read int $size_of_zip
  * @property-read string $size_of_zip_formatted
  * @property-read string $status
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BadgeProject[] $states
+ * @property-read Collection|BadgeProject[] $states
  * @property-read int|null $states_count
- * @property-read \App\Models\User $user
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Version[] $versions
+ * @property-read User $user
+ * @property-read Collection|Version[] $versions
  * @property-read int|null $versions_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Vote[] $votes
+ * @property-read Collection|Vote[] $votes
  * @property-read int|null $votes_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Warning[] $warnings
+ * @property-read Collection|Warning[] $warnings
  * @property-read int|null $warnings_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $collaborators
+ * @property-read Collection|User[] $collaborators
  * @property-read int|null $collaborators_count
  *
  * @method static bool|null forceDelete()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Project onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project query()
+ * @method static Builder|Project newModelQuery()
+ * @method static Builder|Project newQuery()
+ * @method static Builder|Project onlyTrashed()
+ * @method static Builder|Project query()
  * @method static bool|null restore()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereDownloadCounter($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereGit($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereGitCommitId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project wherePublishedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUserId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Project withoutTrashed()
+ * @method static Builder|Project whereCategoryId($value)
+ * @method static Builder|Project whereCreatedAt($value)
+ * @method static Builder|Project whereDeletedAt($value)
+ * @method static Builder|Project whereDownloadCounter($value)
+ * @method static Builder|Project whereGit($value)
+ * @method static Builder|Project whereGitCommitId($value)
+ * @method static Builder|Project whereId($value)
+ * @method static Builder|Project whereName($value)
+ * @method static Builder|Project wherePublishedAt($value)
+ * @method static Builder|Project whereSlug($value)
+ * @method static Builder|Project whereUpdatedAt($value)
+ * @method static Builder|Project whereUserId($value)
+ * @method static Builder|Project withTrashed()
+ * @method static Builder|Project withoutTrashed()
  * @mixin \Eloquent
  */
 class Project extends Model

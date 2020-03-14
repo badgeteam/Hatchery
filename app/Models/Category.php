@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 /**
@@ -15,29 +18,29 @@ use Illuminate\Support\Str;
  * @property int $id
  * @property string $name
  * @property string $slug
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property bool $hidden
  * @property-read int $eggs
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
+ * @property-read Collection|Project[] $projects
  * @property-read int|null $projects_count
  *
  * @method static bool|null forceDelete()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newQuery()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Category onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category query()
+ * @method static Builder|Category newModelQuery()
+ * @method static Builder|Category newQuery()
+ * @method static Builder|Category onlyTrashed()
+ * @method static Builder|Category query()
  * @method static bool|null restore()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereHidden($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Category withoutTrashed()
+ * @method static Builder|Category whereCreatedAt($value)
+ * @method static Builder|Category whereDeletedAt($value)
+ * @method static Builder|Category whereHidden($value)
+ * @method static Builder|Category whereId($value)
+ * @method static Builder|Category whereName($value)
+ * @method static Builder|Category whereSlug($value)
+ * @method static Builder|Category whereUpdatedAt($value)
+ * @method static Builder|Category withTrashed()
+ * @method static Builder|Category withoutTrashed()
  * @mixin \Eloquent
  */
 class Category extends Model

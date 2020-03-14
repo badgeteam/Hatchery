@@ -3,7 +3,7 @@
     <tr>
         <th>File</th>
         <th>Last edited</th>
-        <th>Size in bytes</th>
+        <th>Size</th>
     </tr>
     </thead>
     <tbody>
@@ -17,7 +17,7 @@
                 @endif
             </td>
             <td>{{ $file->updated_at }}</td>
-            <td>{{ $file->size_of_content }}</td>
+            <td>{{ $file->size_formatted }}</td>
         </tr>
     @empty
         <tr>

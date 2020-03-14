@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Events\ProjectUpdated;
+use App\Models\Badge;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
@@ -568,5 +569,190 @@ time.localtime()';
 
             return true;
         });
+    }
+
+    /**
+     * Check the files can't be processed.
+     */
+    public function testFilesProcessInfo(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.txt']);
+        Event::fake();
+        $response = $this
+            ->actingAs($user)
+            ->json('post', '/process-file/'.$file->id);
+        $response->assertStatus(200)->assertExactJson(['processing' => 'started']);
+        /** @var File $file */
+        $file = File::find($file->id);
+        Event::assertDispatched(ProjectUpdated::class, function ($e) use ($file) {
+            $this->assertEquals('info', $e->type);
+            $this->assertEquals('File '.$file->name.' currently not processable.', $e->message);
+
+            return true;
+        });
+    }
+
+    /**
+     * Check the files can't be processed.
+     */
+    public function testFilesProcessNoCommands(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.v', 'content' => '`default_nettype none
+module chip (
+  output  O_LED_R
+  );
+  wire  w_led_r;
+  assign w_led_r = 1\'b0;
+  assign O_LED_R = w_led_r;
+endmodule']);
+        $files = File::count();
+        Event::fake();
+        $response = $this
+            ->actingAs($user)
+            ->json('post', '/process-file/'.$file->id);
+        $response->assertStatus(200)->assertExactJson(['processing' => 'started']);
+        /** @var File $file */
+        $file = File::find($file->id);
+        Event::assertDispatched(ProjectUpdated::class, function ($e) use ($file) {
+            $this->assertEquals('danger', $e->type);
+            $this->assertEquals('No badges with workable commands for project: '.$file->version->project->name, $e->message);
+
+            return true;
+        });
+        $this->assertCount($files, File::all());
+    }
+
+    /**
+     * Check the files can't be processed.
+     */
+    public function testFilesProcessNoConstraints(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.v', 'content' => '`default_nettype none
+module chip (
+  output  O_LED_R
+  );
+  wire  w_led_r;
+  assign w_led_r = 1\'b0;
+  assign O_LED_R = w_led_r;
+endmodule']);
+        $files = File::count();
+        $badge = factory(Badge::class)->create([
+            'commands' => 'echo VDL > OUT',
+        ]);
+        $file->version->project->badges()->attach($badge);
+        Event::fake();
+        $response = $this
+            ->actingAs($user)
+            ->json('post', '/process-file/'.$file->id);
+        $response->assertStatus(200)->assertExactJson(['processing' => 'started']);
+        $i = 0;
+        Event::assertDispatched(ProjectUpdated::class, function ($e) use ($badge, &$i) {
+            if ($i == 0) {
+                $this->assertEquals('warning', $e->type);
+                $this->assertEquals('No constraints for badge: '.$badge->name, $e->message);
+            }
+            $i++;
+
+            return true;
+        });
+        $this->assertCount($files, File::all());
+    }
+
+    /**
+     * Check the files can be processed.
+     */
+    public function testFilesProcessSuccess(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.v', 'content' => '`default_nettype none
+module chip (
+  output  O_LED_R
+  );
+  wire  w_led_r;
+  assign w_led_r = 1\'b0;
+  assign O_LED_R = w_led_r;
+endmodule']);
+        /** @var Badge $badge */
+        $badge = factory(Badge::class)->create([
+            'constraints' => 'set_io O_LED_R	39',
+            'commands'    => 'yosys -q -p "read_verilog -noautowire VDL ; check ; clean ; synth_ice40 -blif VDL.blif"
+# arachne-pnr -d 5k -P sg48 -p PCF VDL.blif -o VDL.txt
+arachne-pnr -p PCF VDL.blif -o VDL.txt
+icepack VDL.txt OUT',
+        ]);
+        $file->version->project->badges()->attach($badge);
+        $files = File::count();
+        Event::fake();
+        $response = $this
+            ->actingAs($user)
+            ->json('post', '/process-file/'.$file->id);
+        $response->assertStatus(200)->assertExactJson(['processing' => 'started']);
+        /** @var File $generated */
+        $generated = File::get()->last();
+        Event::assertDispatched(ProjectUpdated::class, function ($e) use ($generated) {
+            $this->assertEquals('success', $e->type);
+            $this->assertEquals('File '.$generated->name.' generated.', $e->message);
+
+            return true;
+        });
+        $this->assertCount($files + 1, File::all());
+        $this->assertEquals($file->baseName.'_'.$badge->slug.'.bin', $generated->name);
+        $this->assertGreaterThan(32200, strlen($generated->content));
+        $this->assertLessThan(32300, strlen($generated->content));
+    }
+
+    /**
+     * Check the files can't be processed.
+     */
+    public function testFilesProcessError(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = factory(File::class)->create(['name' => 'test.v', 'content' => '`default_nettype none
+module chip (
+  output  O_LED_R
+  );
+  wire  w_led_r;
+  assign w_led_r = 1\'b0;
+  assign O_LED_R = w_led_r;
+endmodule']);
+        /** @var Badge $badge */
+        $badge = factory(Badge::class)->create([
+            'constraints' => 'set_io O_LED_R	39',
+            'commands'    => 'echo lol && some typo',
+        ]);
+        $file->version->project->badges()->attach($badge);
+        $files = File::count();
+        Event::fake();
+        $response = $this
+            ->actingAs($user)
+            ->json('post', '/process-file/'.$file->id);
+        $response->assertStatus(200)->assertExactJson(['processing' => 'started']);
+        $i = 0;
+        Event::assertDispatched(ProjectUpdated::class, function ($e) use (&$i) {
+            if ($i == 0) {
+                $this->assertEquals('danger', $e->type);
+            }
+            if ($i == 1) {
+                $this->assertEquals('warning', $e->type);
+                $this->assertEquals("lol\n", $e->message);
+            }
+            $i++;
+
+            return true;
+        });
+        $this->assertCount($files, File::all());
     }
 }

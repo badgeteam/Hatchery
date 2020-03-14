@@ -11,6 +11,11 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class LintContent.
+ *
+ * @author annejan@badge.team
+ */
 class LintContent implements ShouldQueue
 {
     use Dispatchable;
