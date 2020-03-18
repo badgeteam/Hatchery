@@ -120,7 +120,7 @@
                                     @endif
                                 </div>
                             </div>
-                        @include('users.partials.projects')
+                        @include('partials.projects')
                 </div>
             </div>
         </div>

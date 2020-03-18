@@ -42,7 +42,7 @@
                         </table>
                         @if($user->show_projects && $projects->total() > 0)
                         <h3>Projects:</h3>
-                        @include('users.partials.projects')
+                        @include('partials.projects')
                         @endif
                     </div>
                 </div>
