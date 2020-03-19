@@ -7,11 +7,11 @@ use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Vote;
+use App\Policies\BadgePolicy;
 use App\Policies\FilePolicy;
 use App\Policies\ProjectPolicy;
 use App\Policies\UserPolicy;
 use App\Policies\VotePolicy;
-use App\Policies\BadgePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 /**
