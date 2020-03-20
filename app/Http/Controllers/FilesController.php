@@ -261,7 +261,7 @@ class FilesController extends Controller
         } elseif ($file->extension === 'v') {
             $command = base_path('linters/ice40');
         } elseif ($file->extension === 'json') {
-            $command = 'jsonlint -q';
+            $command = base_path('vendor/bin/jsonlint');
         }
 
         if ($content === null) {
@@ -299,8 +299,8 @@ class FilesController extends Controller
 
         return [
             'return_value' => $returnValue,
-            0              => preg_replace('/<?stdin>?\:/', '', $stdOut),
-            1              => preg_replace('/<?stdin>?\:/', '', $stdErr),
+            0              => preg_replace('/[<|(]?stdin[)|>]?\:/', '', $stdOut),
+            1              => preg_replace('/[<|(]?stdin[)|>]?\:/', '', $stdErr),
         ];
     }
 }

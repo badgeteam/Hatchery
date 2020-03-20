@@ -32,7 +32,6 @@ before_script:
   - yarn
   - yarn production
   - yarn global add laravel-echo-server
-  - yarn global add jsonlint
   - yarn global add markdownlint-cli
   - php artisan key:generate
   - php artisan config:clear

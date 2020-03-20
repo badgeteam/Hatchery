@@ -36,6 +36,7 @@
         "pragmarx/google2fa-laravel": "^1.3",
         "pragmarx/recovery": "^0.1.0",
         "predis/predis": "^1",
+        "seld/jsonlint": "^1.7",
         "sentry/sentry-laravel": "^1.7",
         "spatie/laravel-sitemap": "^5.7",
         "symfony/yaml": "^5",

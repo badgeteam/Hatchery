@@ -46,7 +46,6 @@ Install and configure required items.
 
 ```bash
 pip install pyflakes
-yarn global add jsonlint
 yarn global add markdownlint-cli
 composer install
 php artisan key:generate

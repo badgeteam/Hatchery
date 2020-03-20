@@ -45,7 +45,6 @@ jobs:
             - node_modules
 
       # Install some warez
-      - run: sudo yarn global add jsonlint
       - run: sudo yarn global add markdownlint-cli
 
       # Build frontend

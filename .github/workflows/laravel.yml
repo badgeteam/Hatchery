@@ -37,7 +37,6 @@ jobs:
         composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
         yarn
         yarn build
-        yarn global add jsonlint
         yarn global add markdownlint-cli
     - name: Generate key
       run: php artisan key:generate
