@@ -65,7 +65,7 @@ class File extends Model
      * @var array<string>
      */
     public static $extensions = [
-        'py', 'pyc', 'v',
+        'py', 'pyc', 'mpy', 'v',
         'png', 'bmp', 'jpg',
         'json', 'txt', 'md',
         'wav', 'mp3', 'ogg',
@@ -82,6 +82,7 @@ class File extends Model
         'py'   => 'application/x-python-code',
         'txt'  => 'text/plain',
         'pyc'  => 'application/x-python-bytecode',
+        'mpy'  => 'application/x-python-bytecode',
         'png'  => 'image/png',
         'json' => 'application/json',
         'md'   => 'text/markdown',
