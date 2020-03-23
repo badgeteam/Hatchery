@@ -54,7 +54,7 @@ class Helpers
                     $file = new File();
                     $file->user_id = $version->user_id;
                     $file->name = "$prefix$object";
-                    $file->content = file_get_contents("$dir/$object");
+                    $file->content = (string) file_get_contents("$dir/$object");
                     $file->version()->associate($version);
                     $file->save();
                 }

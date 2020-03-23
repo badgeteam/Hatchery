@@ -442,6 +442,7 @@ time.localtime()';
             ->get('/create-icon?version='.$version->id);
         $response->assertRedirect()
             ->assertSessionHas('successes');
+        /** @var File $file */
         $file = File::get()->last();
         $this->assertEquals('icon.py', $file->name);
         $this->assertEquals('icon = ([0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,'.

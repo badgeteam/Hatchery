@@ -174,6 +174,7 @@ class UsersTest extends TestCase
             ->actingAs($user)
             ->call('delete', '/users/'.$user->id);
         $response->assertRedirect('/')->assertSessionHas('successes');
+        /** @var User $user */
         $user = User::withTrashed()->find($user->id);
         $this->assertNotNull($user->deleted_at);
     }

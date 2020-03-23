@@ -3,8 +3,8 @@
 namespace App\Jobs;
 
 use App\Events\ProjectUpdated;
-use App\Http\Controllers\FilesController;
 use App\Models\File;
+use App\Support\Linters;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -53,7 +53,7 @@ class LintContent implements ShouldQueue
 
             return;
         }
-        $data = FilesController::lintFile($this->file, $this->content);
+        $data = Linters::lintFile($this->file, $this->content);
 
         if ($data['return_value'] === 0) {
             event(new ProjectUpdated($this->file->version->project, 'File '.$this->file->name.' linted successfully.'));

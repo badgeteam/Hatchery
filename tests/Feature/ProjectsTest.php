@@ -100,7 +100,9 @@ class ProjectsTest extends TestCase
             ->actingAs($user)
             ->call('post', '/projects', ['name' => $this->faker->name, 'description' => $this->faker->paragraph, 'category_id' => $category->id, 'status' => 'unknown']);
         $this->assertNotNull(Project::get()->last());
-        $response->assertRedirect('/projects/'.Project::get()->last()->slug.'/edit')->assertSessionHas('successes');
+        /** @var Project $lastProject */
+        $lastProject = Project::get()->last();
+        $response->assertRedirect('/projects/'.$lastProject->slug.'/edit')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
     }
 
@@ -117,7 +119,9 @@ class ProjectsTest extends TestCase
             ->actingAs($user)
             ->call('post', '/projects', ['name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id, 'status' => 'unknown']);
         $this->assertNotNull(Project::get()->last());
-        $response->assertRedirect('/projects/'.Project::get()->last()->slug.'/edit')->assertSessionHas('successes');
+        /** @var Project $lastProject */
+        $lastProject = Project::get()->last();
+        $response->assertRedirect('/projects/'.$lastProject->slug.'/edit')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
         $response = $this
             ->actingAs($user)
@@ -551,6 +555,7 @@ class ProjectsTest extends TestCase
     {
         $user = factory(User::class)->create();
         $this->assertEmpty(Project::all());
+        /** @var Category $category */
         $category = factory(Category::class)->create();
         $badge = factory(Badge::class)->create();
         $response = $this
@@ -562,7 +567,9 @@ class ProjectsTest extends TestCase
                 'badge_ids'   => [$badge->id],
                 'status'      => 'unknown', ]);
         $this->assertNotNull(Project::get()->last());
-        $response->assertRedirect('/projects/'.Project::get()->last()->slug.'/edit')->assertSessionHas('successes');
+        /** @var Project $lastProject */
+        $lastProject = Project::get()->last();
+        $response->assertRedirect('/projects/'.$lastProject->slug.'/edit')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
     }
 

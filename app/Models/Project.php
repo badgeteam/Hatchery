@@ -29,7 +29,7 @@ use Illuminate\Support\Str;
  * @property string|null $git_commit_id
  * @property Carbon|null $published_at
  * @property Carbon|null $deleted_at
- * @property Carbon|null $created_at
+ * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property int $download_counter
  * @property-read Collection|Badge[] $badges
@@ -410,6 +410,7 @@ class Project extends Model
      */
     public function userVoted(): ?bool
     {
+        /** @var User|null $user */
         $user = Auth::guard()->user();
         if ($user === null) {
             return null;

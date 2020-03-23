@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\VoteStoreRequest;
 use App\Http\Requests\VoteUpdateRequest;
 use App\Models\Project;
+use App\Models\User;
 use App\Models\Vote;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,7 @@ class VotesController extends Controller
      */
     public function store(VoteStoreRequest $request): RedirectResponse
     {
+        /** @var User $user */
         $user = Auth::guard()->user();
 
         if (Vote::where('user_id', $user->id)->where('project_id', $request->project_id)->exists()) {

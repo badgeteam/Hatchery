@@ -45,21 +45,28 @@ class GenerateSitemap extends Command
             ->add(
                 Url::create('/')
                 ->setPriority(1)
-                ->setLastModificationDate(Project::exists() ? Project::get()->last()->updated_at : Carbon::now())
+                ->setLastModificationDate($this->getLastUpdated())
             )
             ->add(
                 Url::create('/projects')
-                ->setLastModificationDate(Project::exists() ? Project::get()->last()->updated_at : Carbon::now())
+                ->setLastModificationDate($this->getLastUpdated())
             );
 
         Project::all()->each(function (Project $project) use ($sitemap) {
             $sitemap->add(
-                Url::create("/projects/{$project->slug}")
+                Url::create(route('projects.show', $project->slug))
                 ->setLastModificationDate($project->updated_at)
                 ->setPriority(0.5)
             );
         });
 
         $sitemap->writeToFile(public_path('sitemap.xml'));
+    }
+
+    private function getLastUpdated(): Carbon
+    {
+        /** @var Project|null $project */
+        $project = Project::get()->last();
+        return $project === null ? Carbon::now() : $project->updated_at;
     }
 }

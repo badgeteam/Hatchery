@@ -99,12 +99,12 @@ class TwoFAController extends Controller
      */
     public function disable2fa(Disable2FaRequest $request)
     {
-        if (!(Hash::check($request->get('current-password'), Auth::guard()->user()->password))) {
+        /** @var User $user */
+        $user = Auth::guard()->user();
+        if (!(Hash::check($request->get('current-password'), $user->password))) {
             return redirect()->back()
                 ->with('error', 'Your password is invalid, try again.');
         }
-        /** @var User $user */
-        $user = Auth::guard()->user();
         $user->google2fa_enabled = false;
         $user->save();
 

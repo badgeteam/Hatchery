@@ -244,7 +244,7 @@ class File extends Model
      */
     public function getSizeOfContentAttribute(): ?int
     {
-        if (is_string($this->content)) {
+        if ($this->content !== null) {
             return strlen($this->content);
         }
 
