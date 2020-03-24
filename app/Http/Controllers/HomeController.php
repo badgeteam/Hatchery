@@ -31,9 +31,9 @@ class HomeController extends Controller
     {
         return view('home')
             ->with([
-                'users' => User::count(),
+                'users'    => User::count(),
                 'projects' => Project::count(),
-                'badges' => Badge::paginate(),
+                'badges'   => Badge::paginate(),
             ]);
     }
 }

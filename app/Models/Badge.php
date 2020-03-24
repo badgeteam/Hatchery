@@ -55,7 +55,7 @@ class Badge extends Model
         );
     }
 
-        /**
+    /**
      * @return BelongsToMany
      */
     public function projects(): BelongsToMany

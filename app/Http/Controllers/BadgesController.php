@@ -99,7 +99,7 @@ class BadgesController extends Controller
      * Update the specified resource in storage.
      *
      * @param BadgeUpdateRequest $request
-     * @param Badge $badge
+     * @param Badge              $badge
      *
      * @return RedirectResponse
      */
@@ -116,7 +116,6 @@ class BadgesController extends Controller
         }
 
         return redirect()->route('badges.index')->withSuccesses([$badge->name.' updated']);
-
     }
 
     /**
