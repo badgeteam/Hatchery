@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BadgeStoreRequest;
+use App\Http\Requests\BadgeUpdateRequest;
 use App\Models\Badge;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 /**
@@ -44,5 +47,95 @@ class BadgesController extends Controller
         return view('badges.show')
             ->with('badge', $badge)
             ->with('projects', $badge->projects()->paginate());
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param Badge $badge
+     *
+     * @return View
+     */
+    public function edit(Badge $badge): View
+    {
+        return view('badges.edit')
+            ->with('badge', $badge);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return View
+     */
+    public function create(): View
+    {
+        return view('badges.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param BadgeStoreRequest $request
+     *
+     * @return RedirectResponse
+     */
+    public function store(BadgeStoreRequest $request): RedirectResponse
+    {
+        $badge = new Badge();
+
+        try {
+            $badge->name = $request->name;
+            $badge->commands = $request->commands;
+            $badge->constraints = $request->constraints;
+            $badge->save();
+        } catch (\Exception $e) {
+            return redirect()->route('badges.create')->withInput()->withErrors([$e->getMessage()]);
+        }
+
+        return redirect()->route('badges.index')->withSuccesses([$badge->name.' saved']);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param BadgeUpdateRequest $request
+     * @param Badge $badge
+     *
+     * @return RedirectResponse
+     */
+    public function update(BadgeUpdateRequest $request, Badge $badge): RedirectResponse
+    {
+        try {
+            $badge->name = $request->name;
+            $badge->commands = $request->commands;
+            $badge->constraints = $request->constraints;
+            $badge->save();
+        } catch (\Exception $e) {
+            return redirect()->route('badges.update', ['badge' => $badge])
+                ->withInput()->withErrors([$e->getMessage()]);
+        }
+
+        return redirect()->route('badges.index')->withSuccesses([$badge->name.' updated']);
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Badge $badge
+     *
+     * @return RedirectResponse
+     */
+    public function destroy(Badge $badge): RedirectResponse
+    {
+        try {
+            $badge->delete();
+        } catch (\Exception $e) {
+            return redirect(URL()->previous())
+                ->withInput()
+                ->withErrors([$e->getMessage()]);
+        }
+
+        return redirect()->route('badges.index')->withSuccesses([$badge->name.' deleted']);
     }
 }

@@ -9,25 +9,38 @@
                         <strong class="spacer">{{ $badge->name }}</strong>
                         <div class="pull-right">
                             @can('update', $badge)
-                                <a class="btn btn-primary btn-xs" href="{{ route('badges.edit', ['badge' => $badge->id])  }}">edit</a>
+                                <a class="btn btn-primary btn-xs" href="{{ route('badges.edit', ['badge' => $badge])  }}">edit</a>
                             @endcan
                             @can('delete', $badge)
-                                {!! Form::open(['method' => 'delete', 'route' => ['badges.destroy', 'badge' => $badge->id], 'class' => 'deleteform']) !!}
+                                {!! Form::open(['method' => 'delete', 'route' => ['badges.destroy', 'badge' => $badge], 'class' => 'deleteform']) !!}
                                 <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">delete</button>
                                 {!! Form::close() !!}
                             @endcan
                         </div>
                     </div>
                     <div class="panel-body">
+                        <div class="row">
 
-                        <table class="table table-striped">
-                            <tbody>
-                            <tr>
-                                <td>Badge added:</td>
-                                <td>{{ $badge->created_at }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                            <div class="col-md-12 clearfix">
+                                <div class="form-group">
+                                    {{ Form::label('added', 'Badge added', ['class' => 'control-label']) }}:
+                                    {{ $badge->created_at }}
+                                </div>
+                                @if($badge->constraints)
+                                <div class="form-group">
+                                    {{ Form::label('constraints-readonly', 'Constraints', ['class' => 'control-label']) }}:
+                                    {{ Form::textarea('constraints', $badge->constraints, ['class' => 'form-control', 'id' => 'constraints-readonly']) }}
+                                </div>
+                                @endif
+                                @if($badge->commands)
+                                    <div class="form-group">
+                                        {{ Form::label('commands-readonly', 'Commands', ['class' => 'control-label']) }}:
+                                        {{ Form::textarea('commands', $badge->commands, ['class' => 'form-control', 'id' => 'commands-readonly']) }}
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                        {{ Form::hidden('extension', 'sh', ['id' => 'extension']) }}
                         @if($projects->total() > 0)
                             <h3>Projects:</h3>
                             @include('partials.projects')

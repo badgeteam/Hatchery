@@ -26,7 +26,7 @@
                         <div class="col-md-12 clearfix">
                             @if($file->editable)
                             <div class="form-group">
-                                {{ Form::label('file_content', 'Content', ['class' => 'control-label']) }}
+                                {{ Form::label('content-readonly', 'Content', ['class' => 'control-label']) }}
                                 {{ Form::textarea('file_content', $file->content, ['class' => 'form-control', 'id' => 'content-readonly']) }}
                                 {{ Form::hidden('extension', $file->extension, ['id' => 'extension']) }}
                             </div>
@@ -90,4 +90,10 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+    <script>
+			window.keymap = "{{ Auth::user()->editor }}";
+    </script>
 @endsection

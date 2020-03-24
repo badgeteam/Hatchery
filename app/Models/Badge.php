@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 /**
  * Class Badge.
@@ -41,6 +42,20 @@ use Illuminate\Support\Carbon;
 class Badge extends Model
 {
     /**
+     * Generate a slug on save.
+     */
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::saving(
+            function ($badge) {
+                $badge->slug = Str::slug($badge->name, '_');
+            }
+        );
+    }
+
+        /**
      * @return BelongsToMany
      */
     public function projects(): BelongsToMany

@@ -161,62 +161,73 @@ window.onload = function() {
 	const ext = document.getElementById('extension');
 	let langmode = 'python';
 	if (ext) {
-		if (ext.getAttribute('value')  === 'json') {
+		if (ext.getAttribute('value') === 'json') {
 			langmode = 'javascript';
-		} else if (ext.getAttribute('value')  === 'v') {
+		} else if (ext.getAttribute('value') === 'v') {
 			langmode = 'verilog';
 		} else if (ext.getAttribute('value') === 'md' || ext.getAttribute('value') === 'txt') {
 			langmode = 'markdown';
+		} else if (ext.getAttribute('value') === 'sh') {
+			langmode = 'shell';
 		}
 	}
 
-	if (document.getElementById('content')) {
-		window.CodeMirror = require([
-			'../../../node_modules/codemirror/lib/codemirror',
-			'../../../node_modules/codemirror/mode/python/python',
-			'../../../node_modules/codemirror/mode/javascript/javascript',
-			'../../../node_modules/codemirror/mode/markdown/markdown',
-			'../../../node_modules/codemirror/mode/verilog/verilog',
-			'../../../node_modules/codemirror/addon/dialog/dialog.js',
-			'../../../node_modules/codemirror/addon/search/searchcursor.js',
-			'../../../node_modules/codemirror/keymap/vim.js',
-			'../../../node_modules/codemirror/keymap/sublime.js',
-			'../../../node_modules/codemirror/keymap/emacs.js'
-		], function (CodeMirror) {
-			editor = CodeMirror.fromTextArea(document.getElementById('content'), {
-				lineNumbers: true,
-				mode: langmode,
-				showCursorWhenSelecting: true,
-				indentWithTabs: true,
-				keyMap: window.keymap,
-				json: true,
-				theme: (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'ambiance' : ''
+	[
+		'content',
+		'commands',
+		'constraints'
+	].forEach(function (field) {
+		if (document.getElementById(field)) {
+			window.CodeMirror = require([
+				'../../../node_modules/codemirror/lib/codemirror',
+				'../../../node_modules/codemirror/mode/python/python',
+				'../../../node_modules/codemirror/mode/javascript/javascript',
+				'../../../node_modules/codemirror/mode/markdown/markdown',
+				'../../../node_modules/codemirror/mode/verilog/verilog',
+				'../../../node_modules/codemirror/mode/shell/shell',
+				'../../../node_modules/codemirror/addon/dialog/dialog',
+				'../../../node_modules/codemirror/addon/search/searchcursor',
+				'../../../node_modules/codemirror/keymap/vim',
+				'../../../node_modules/codemirror/keymap/sublime',
+				'../../../node_modules/codemirror/keymap/emacs'
+			], function (CodeMirror) {
+				editor = CodeMirror.fromTextArea(document.getElementById(field), {
+					lineNumbers: true,
+					mode: langmode,
+					showCursorWhenSelecting: true,
+					indentWithTabs: true,
+					keyMap: window.keymap,
+					json: true,
+					theme: (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'ambiance' : ''
+				});
 			});
-		});
-		// Enable navigation prompt
-		window.onbeforeunload = function() {
-			return true;
-		};
-		document.getElementById('content_form').addEventListener('submit', function() {
-			window.onbeforeunload = null;
-		});
-	}
-	if (document.getElementById('content-readonly')) {
-		window.CodeMirror = require([
-			'../../../node_modules/codemirror/lib/codemirror',
-			'../../../node_modules/codemirror/mode/python/python',
-			'../../../node_modules/codemirror/mode/javascript/javascript',
-			'../../../node_modules/codemirror/mode/markdown/markdown',
-			'../../../node_modules/codemirror/mode/verilog/verilog'
-		], function (CodeMirror) {
-			CodeMirror.fromTextArea(document.getElementById('content-readonly'), {
-				lineNumbers: true,
-				mode: langmode,
-				readOnly: true,
-				theme: (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'ambiance' : ''
+			// Enable navigation prompt
+			window.onbeforeunload = function () {
+				return true;
+			};
+			document.getElementById('content_form').addEventListener('submit', function () {
+				window.onbeforeunload = null;
 			});
-		});
-	}
+		}
+
+		if (document.getElementById(field + '-readonly')) {
+			window.CodeMirror = require([
+				'../../../node_modules/codemirror/lib/codemirror',
+				'../../../node_modules/codemirror/mode/python/python',
+				'../../../node_modules/codemirror/mode/javascript/javascript',
+				'../../../node_modules/codemirror/mode/markdown/markdown',
+				'../../../node_modules/codemirror/mode/verilog/verilog',
+				'../../../node_modules/codemirror/mode/shell/shell'
+			], function (CodeMirror) {
+				CodeMirror.fromTextArea(document.getElementById(field + '-readonly'), {
+					lineNumbers: true,
+					mode: langmode,
+					readOnly: true,
+					theme: (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'ambiance' : ''
+				});
+			});
+		}
+	});
 	if (document.getElementById('pixels')) {
 		let icon;
 		let readOnly = true;
