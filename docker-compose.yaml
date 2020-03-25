@@ -15,6 +15,7 @@ services:
       - ./routes:/app/routes
       - ./storage:/app/storage
       - ./tests:/app/tests
+      - ./build:/app/build
       - ./.git:/app/.git
     ports:
       - "8000:8000"
