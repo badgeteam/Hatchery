@@ -11,11 +11,10 @@ build:
                 docker: true
             dependencies:
                 before:
-                    - sudo apt-get install -y pyflakes iverilog
-                    - npm i -g yarn
-                    - docker-compose up
+                    - docker-compose up -d
                     - docker exec -it hatchery_laravel_1 php artisan migrate --seed
-                    - docker exec -it hatchery_laravel_1 yarn build
+                    - docker exec -it hatchery_laravel_1 sudo pecl install xdebug-2.9.4
+                    - docker exec -it hatchery_laravel_1 docker-php-ext-enable xdebug
             tests:
                 override:
                     -
