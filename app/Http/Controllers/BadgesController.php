@@ -105,13 +105,14 @@ class BadgesController extends Controller
      */
     public function update(BadgeUpdateRequest $request, Badge $badge): RedirectResponse
     {
+        $slug = $badge->slug;
         try {
             $badge->name = $request->name;
             $badge->commands = $request->commands;
             $badge->constraints = $request->constraints;
             $badge->save();
         } catch (\Exception $e) {
-            return redirect()->route('badges.update', ['badge' => $badge])
+            return redirect()->route('badges.edit', ['badge' => $slug])
                 ->withInput()->withErrors([$e->getMessage()]);
         }
 

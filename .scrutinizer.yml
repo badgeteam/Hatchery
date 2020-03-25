@@ -23,7 +23,7 @@ build:
                 before:
                     - mysql -e 'create database badgeware;'
                     - mysql -e 'create database badgeware_test;'
-                    - sudo apt-get install -y pyflakes iverilog
+                    - sudo apt-get install -y pyflakes iverilog arachne-pnr arachne-pnr-chipdb fpga-icestorm fpga-icestorm-chipdb
                     - npm i -g yarn
             tests:
                 override:

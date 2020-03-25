@@ -65,17 +65,4 @@ class BadgePolicy
         // Only admin users
         return $user->admin;
     }
-
-    /**
-     * Determine whether the user can rename the badge.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function rename(User $user)
-    {
-        // Ony admin users can rename badges
-        return  $user->admin;
-    }
 }

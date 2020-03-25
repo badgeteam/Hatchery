@@ -7,7 +7,8 @@ COPY . /app
 COPY .env.dev /app/.env
 
 RUN apt update && apt upgrade -y && apt install -y python-pip git zip sudo wget nodejs gnupg \
-    zlib1g-dev libzip-dev libicu-dev libpng-dev libonig-dev libgmp-dev
+    zlib1g-dev libzip-dev libicu-dev libpng-dev libonig-dev libgmp-dev iverilog arachne-pnr \
+    arachne-pnr-chipdb fpga-icestorm fpga-icestorm-chipdb
 
 RUN docker-php-ext-install pdo pdo_mysql mysqli pcntl zip intl gd mbstring gmp exif
 

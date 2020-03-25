@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbiin/laravel-webauthn.git",
-                "reference": "f2c0bdfc512d93d0433f9ac38ff001220abe7d23"
+                "reference": "1aca3fc776ddde16eb7bf2eff32c4dfa901237ce"
             },
             "dist": {
                 "type": "zip",
