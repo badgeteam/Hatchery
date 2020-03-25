@@ -106,6 +106,7 @@ class BadgesController extends Controller
     public function update(BadgeUpdateRequest $request, Badge $badge): RedirectResponse
     {
         $slug = $badge->slug;
+
         try {
             $badge->name = $request->name;
             $badge->commands = $request->commands;
