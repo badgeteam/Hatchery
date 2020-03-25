@@ -40,7 +40,7 @@ class FilePolicy
             return false;   // No manual fucking with git managed project
         }
         // Normal users can only change files in their own project or projects they collaborate on
-        return $user->admin || $user->id == $file->version->project->user->id || $file->version->project
+        return $user->admin || $user->id == $file->version->project->user_id || $file->version->project
                 ->collaborators()->where('user_id', $user->id)->exists();
     }
 
@@ -58,7 +58,7 @@ class FilePolicy
             return false;   // No manual fucking with git managed project
         }
         // Normal users can only delete  files in their own project
-        return $user->admin || $user->id == $file->version->project->user->id;
+        return $user->admin || $user->id == $file->version->project->user_id;
     }
 
     /**
@@ -72,6 +72,6 @@ class FilePolicy
     public function process(User $user, File $file): bool
     {
         // Normal users can only delete  files in their own project
-        return $file->processable && ($user->admin || $user->id == $file->version->project->user->id);
+        return $file->processable && ($user->admin || $user->id == $file->version->project->user_id);
     }
 }

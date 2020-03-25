@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Events\ProjectUpdated;
+use App\Http\Controllers\BadgesController;
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\UsersController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\VotesController;
 use App\Http\Requests\FileUpdateRequest;
 use App\Jobs\PublishProject;
 use App\Jobs\UpdateProject;
+use App\Models\Badge;
 use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
@@ -165,5 +167,19 @@ class EdgeCasesTest extends TestCase
 
             return true;
         });
+    }
+
+    /**
+     * Check that a user can delete Vote.
+     */
+    public function testBadgesDeleteRaceCondition(): void
+    {
+        $badge = $this->mock(Badge::class, function ($mock) {
+            $mock->shouldReceive('delete')->once()->andThrow(new \Exception('b0rk'));
+        })->makePartial();
+
+        $projectsController = new BadgesController();
+        $redirectResponse = $projectsController->destroy($badge);
+        $this->assertEquals('[["b0rk"]]', (string) $redirectResponse->getSession()->get('errors'));
     }
 }

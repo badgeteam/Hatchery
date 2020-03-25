@@ -35,7 +35,7 @@ class VotePolicy
      */
     public function update(User $user, Vote $vote): bool
     {
-        return $user->admin || $user->id == $vote->user->id;
+        return $user->admin || $user->id == $vote->user_id;
     }
 
     /**
@@ -48,6 +48,6 @@ class VotePolicy
      */
     public function delete(User $user, Vote $vote): bool
     {
-        return $user->admin || $user->id == $vote->user->id;
+        return $user->admin || $user->id == $vote->user_id;
     }
 }
