@@ -13,7 +13,7 @@ build:
                 before:
                     - sudo apt-get install -y pyflakes iverilog
                     - npm i -g yarn
-                    - docker-compose ups
+                    - docker-compose up
                     - docker exec -it hatchery_laravel_1 php artisan migrate --seed
                     - docker exec -it hatchery_laravel_1 yarn build
             tests:
