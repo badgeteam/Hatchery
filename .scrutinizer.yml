@@ -1,7 +1,4 @@
 build:
-    environment:
-        php: 7.3
-        node: 10
     nodes:
         analysis:
             project_setup:
@@ -12,24 +9,17 @@ build:
         tests:
             environment:
                 docker: true
-                php:
-                    version: 7.3
-                mysql: 5.7
-                variables:
-                    DB_TEST_USERNAME: root
-                    DB_USERNAME: root
-                    APP_KEY: base64:ApakOSikUFhPmEJK9wnsJideoBf0HMdP08JxrtB7JkE=
-                    APP_DEBUG: true
             dependencies:
                 before:
-                    - mysql -e 'create database badgeware;'
-                    - mysql -e 'create database badgeware_test;'
                     - sudo apt-get install -y pyflakes iverilog
                     - npm i -g yarn
+                    - docker-compose ups
+                    - docker exec -it hatchery_laravel_1 php artisan migrate --seed
+                    - docker exec -it hatchery_laravel_1 yarn build
             tests:
                 override:
                     -
-                        command: 'vendor/bin/phpunit --coverage-clover=clover'
+                        command: 'docker exec -it hatchery_laravel_1 vendor/bin/phpunit --coverage-clover=clover'
                         coverage:
                             file: 'clover'
                             format: 'clover'
