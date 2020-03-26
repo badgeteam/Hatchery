@@ -22,7 +22,9 @@
   "aggregateRating" : {
     "@type": "AggregateRating",
     "ratingValue": "{{ $project->score }}",
-    "reviewCount": "{{ $project->votes->count() }}"
+    "reviewCount": "{{ $project->votes->count() }}",
+    "bestRating": 1,
+    "worstRating": 0
   },
 @endif
   "offers": {
