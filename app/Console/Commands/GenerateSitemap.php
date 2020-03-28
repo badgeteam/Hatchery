@@ -55,7 +55,7 @@ class GenerateSitemap extends Command
         Project::all()->each(function (Project $project) use ($sitemap) {
             $sitemap->add(
                 Url::create(route('projects.show', $project->slug))
-                ->setLastModificationDate($project->updated_at)
+                ->setLastModificationDate($this->getLastUpdated($project))
                 ->setPriority(0.5)
             );
         });
@@ -63,11 +63,17 @@ class GenerateSitemap extends Command
         $sitemap->writeToFile(public_path('sitemap.xml'));
     }
 
-    private function getLastUpdated(): Carbon
+    /**
+     * @param Project|null $project
+     *
+     * @return Carbon
+     */
+    private function getLastUpdated($project = null): Carbon
     {
-        /** @var Project|null $project */
-        $project = Project::get()->last();
-
-        return $project === null ? Carbon::now() : $project->updated_at;
+        if ($project === null) {
+            /** @var Project|null $project */
+            $project = Project::get()->last();
+        }
+        return ($project === null || $project->updated_at === null) ? Carbon::now() : $project->updated_at;
     }
 }

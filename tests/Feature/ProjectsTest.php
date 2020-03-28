@@ -363,6 +363,7 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsPublish(): void
     {
+        /** @var User $user */
         $user = factory(User::class)->create();
         $this->be($user);
         $projectDep = factory(Project::class)->create();
@@ -407,7 +408,7 @@ class ProjectsTest extends TestCase
             'name'        => $project->name,
             'description' => null,
             'category'    => $project->category,
-            'author'      => $project->user->name,
+            'author'      => $user->name,
             'revision'    => 1,
         ]), $json);
 

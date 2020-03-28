@@ -38,7 +38,7 @@ class BadgeProjectTest extends TestCase
         /** @var BadgeProject $state */
         $state = $badge->states->first();
         $this->assertInstanceOf(Badge::class, $state->badge);
-        $this->assertEquals($badge->id, $state->badge->id);
+        $this->assertEquals($badge->id, $state->badge_id);
     }
 
     /**
@@ -56,6 +56,6 @@ class BadgeProjectTest extends TestCase
         /** @var BadgeProject $state */
         $state = $badge->states->first();
         $this->assertInstanceOf(Project::class, $state->project);
-        $this->assertEquals($project->id, $state->project->id);
+        $this->assertEquals($project->id, $state->project_id);
     }
 }

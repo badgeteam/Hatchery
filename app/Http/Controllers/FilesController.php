@@ -8,6 +8,7 @@ use App\Http\Requests\FileUploadRequest;
 use App\Jobs\LintContent;
 use App\Jobs\ProcessFile;
 use App\Models\File;
+use App\Models\Project;
 use App\Models\Version;
 use App\Support\Linters;
 use Illuminate\Http\JsonResponse;
@@ -84,7 +85,7 @@ class FilesController extends Controller
             $data = Linters::lintFile($file);
             if ($data['return_value'] === 0) {
                 return redirect()
-                    ->route('projects.edit', ['project' => $file->version->project->slug])
+                    ->route('projects.edit', ['project' => $file->version->project])
                     ->withSuccesses([$file->name.' saved']);
             } elseif (!empty($data[0])) {
                 return redirect()->route('files.edit', ['file' => $file->id])
@@ -100,7 +101,7 @@ class FilesController extends Controller
         }
 
         return redirect()
-            ->route('projects.edit', ['project' => $file->version->project->slug])
+            ->route('projects.edit', ['project' => $file->version->project])
             ->withSuccesses([$file->name.' saved']);
     }
 
@@ -127,6 +128,7 @@ class FilesController extends Controller
      */
     public function createIcon(Request $request): RedirectResponse
     {
+        /** @var Version $version */
         $version = Version::where('id', $request->get('version'))->firstOrFail();
         $file = new File();
         $pixels = [];
@@ -140,7 +142,7 @@ class FilesController extends Controller
             $file->content = 'icon = (['.implode(', ', $pixels).'], 1)';
             $file->save();
         } catch (\Exception $e) {
-            return redirect()->route('projects.edit', ['project' => $version->project->slug])->withInput()->withErrors([$e->getMessage()]);
+            return redirect()->route('projects.edit', ['project' => $version->project])->withInput()->withErrors([$e->getMessage()]);
         }
 
         return redirect()->route('files.edit', ['file' => $file->id])->withSuccesses([$file->name.' created']);
@@ -167,7 +169,7 @@ class FilesController extends Controller
             return redirect()->route('files.create')->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.edit', ['project' => $file->version->project->slug])->withSuccesses([$file->name.' saved']);
+        return redirect()->route('projects.edit', ['project' => $file->version->project])->withSuccesses([$file->name.' saved']);
     }
 
     /**
@@ -189,7 +191,7 @@ class FilesController extends Controller
                 ->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$file->name.' deleted']);
+        return redirect()->route('projects.edit', ['project' => $project])->withSuccesses([$file->name.' deleted']);
     }
 
     /**
