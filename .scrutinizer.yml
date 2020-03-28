@@ -16,6 +16,8 @@ build:
                     - docker-compose up -d
                     - docker exec -it build_laravel_1 sudo pecl install xdebug-2.9.4
                     - docker exec -it build_laravel_1 docker-php-ext-enable xdebug
+            project_setup:
+                override:
                     - docker exec -it build_laravel_1 php artisan migrate --seed || echo 'weird'
             tests:
                 override:
