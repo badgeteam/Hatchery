@@ -12,13 +12,13 @@ build:
             dependencies:
                 before:
                     - docker-compose up -d
-                    - docker exec -it hatchery_laravel_1 php artisan migrate --seed
-                    - docker exec -it hatchery_laravel_1 sudo pecl install xdebug-2.9.4
-                    - docker exec -it hatchery_laravel_1 docker-php-ext-enable xdebug
+                    - docker exec -it build_laravel_1 php artisan migrate --seed
+                    - docker exec -it build_laravel_1 sudo pecl install xdebug-2.9.4
+                    - docker exec -it build_laravel_1 docker-php-ext-enable xdebug
             tests:
                 override:
                     -
-                        command: 'docker exec -it hatchery_laravel_1 vendor/bin/phpunit --coverage-clover=clover'
+                        command: 'docker exec -it build_laravel_1 vendor/bin/phpunit --coverage-clover=clover'
                         coverage:
                             file: 'clover'
                             format: 'clover'
