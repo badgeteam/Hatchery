@@ -91,9 +91,10 @@
     </div>
 </div>
 @endsection
-
 @section('script')
+    @auth
     <script>
 			window.keymap = "{{ Auth::user()->editor }}";
     </script>
+    @endauth
 @endsection

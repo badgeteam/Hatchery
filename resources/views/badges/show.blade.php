@@ -67,7 +67,10 @@
 @endsection
 @section('script')
     <script type="text/javascript">
-			// Delete resource
+        @auth
+            window.keymap = "{{ Auth::user()->editor }}";
+        @endauth
+				// Delete resource
 			$('button[name="delete-resource"]').on('click', function (e) {
 				e.preventDefault()
 				var $form = $(this).closest('form')

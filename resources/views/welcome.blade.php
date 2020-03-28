@@ -1,4 +1,5 @@
 @extends('layouts.app_splash')
+
 @section('content')
 <div class="container">
     <div class="row">

@@ -47,7 +47,6 @@
     </div>
 </div>
 @endsection
-
 @section('script')
     <script>
         window.keymap = "{{ Auth::user()->editor }}";
