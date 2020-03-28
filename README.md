@@ -98,7 +98,7 @@ php artisan serve
 If you don't want to install things and do the above steps, Docker makes all the above as easy as:
 
 ```bash
-docker-compose up
+docker-compose up # -d for daemon mode
 docker exec -it hatchery_laravel_1 php artisan migrate --seed
 docker exec -it hatchery_laravel_1 yarn watch
 ```
