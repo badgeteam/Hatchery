@@ -43,6 +43,12 @@ services:
       - backend
     restart: unless-stopped
 
+  redis:
+    image: redis
+    networks:
+      - backend
+    restart: unless-stopped
+
 networks:
   frontend:
     driver: bridge
