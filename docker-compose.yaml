@@ -28,7 +28,7 @@ services:
     networks:
       - frontend
       - backend
-    restart: on-failure
+    restart: unless-stopped
 
   mariadb:
     image: mariadb
@@ -41,7 +41,7 @@ services:
       MYSQL_PASSWORD: badgeware
     networks:
       - backend
-    restart: on-failure
+    restart: unless-stopped
 
 networks:
   frontend:
