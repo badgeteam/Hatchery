@@ -8,8 +8,9 @@
 		    @if (Route::has('login'))
 			<div class="pull-right links">
 			    @if (Auth::check())
-				<a href="{{ url('/projects') }}">Eggs</a>
-				<a href="{{ url('/users') }}">Users</a>
+				<a href="{{ route('projects.index') }}">Eggs</a>
+				<a href="{{ route('users.index') }}">Users</a>
+				<a href="{{ route('badges.index') }}">Badges</a>
 			    @else
 				<a href="{{ url('/login') }}">Login</a>
 				<a href="{{ url('/register') }}">Register</a>

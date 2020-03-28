@@ -77,6 +77,7 @@
                             </li>
                         @endif
                             <li><a href="{{ route('users.index') }}">Users</a></li>
+                            <li><a href="{{ route('badges.index') }}">Badges</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
