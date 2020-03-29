@@ -4,6 +4,10 @@ services:
   laravel:
     depends_on:
       - mariadb
+      - redis
+    links:
+      - mariadb
+      - redis
     tty: true
     build: .
     volumes:

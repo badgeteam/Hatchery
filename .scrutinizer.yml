@@ -13,6 +13,7 @@ build:
                 override:
                     - true
                 before:
+                    - cp .env.scrutinizer .env.dev
                     - docker-compose up -d
                     - docker exec -it build_laravel_1 sudo pecl install xdebug-2.9.4
                     - docker exec -it build_laravel_1 docker-php-ext-enable xdebug
