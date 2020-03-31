@@ -8,6 +8,7 @@ use App\Http\Requests\FileUploadRequest;
 use App\Jobs\LintContent;
 use App\Jobs\ProcessFile;
 use App\Models\File;
+use App\Models\Project;
 use App\Models\Version;
 use App\Support\Linters;
 use Illuminate\Http\JsonResponse;
