@@ -38,6 +38,7 @@
         "predis/predis": "^1",
         "seld/jsonlint": "^1.7",
         "sentry/sentry-laravel": "^1.7",
+        "spatie/laravel-backup": "^6.8",
         "spatie/laravel-sitemap": "^5.7",
         "symfony/yaml": "^5",
         "verschuur/laravel-robotstxt": "^3"
