@@ -21,7 +21,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "bootstrap-sass": "^3.4.1",
-    "codemirror": "^5.52.0",
+    "codemirror": "^5.53.2",
     "cross-env": "^7.0.2",
     "css-loader": "^3.5.1",
     "dropzone": "^5.7.0",
