@@ -115,7 +115,7 @@ class BadgesTest extends TestCase
         $this->be($user);
         $response = $this
             ->actingAs($user)
-            ->call('post', '/badges', ['name' => $this->faker->text]);
+            ->call('post', '/badges', ['name' => $this->faker->name]);
         $response->assertRedirect('/badges')->assertSessionHasNoErrors();
         $this->assertCount(1, Badge::all());
     }
