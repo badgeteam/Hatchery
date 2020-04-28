@@ -26,7 +26,7 @@ build:
             tests:
                 override:
                     -
-                        command: 'docker exec -it build_laravel_1 vendor/bin/phpunit --coverage-clover=clover'
+                        command: 'docker exec -it build_laravel_1 vendor/bin/phpunit --coverage-clover=clover && docker cp build_laravel_1:/app/clover clover'
                         coverage:
                             file: 'clover'
                             format: 'clover'

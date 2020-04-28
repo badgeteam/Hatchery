@@ -25,7 +25,7 @@ RUN curl -O http://zlib.net/zlib-1.2.11.tar.gz && \
     ./configure && \
     echo "#define MAX_WBITS  13\n$(cat zconf.h)" > zconf.h && \
     make && \
-    make install
+    cp minigzip /usr/local/bin/
 
 RUN pip install pyflakes==2.1.1
 
