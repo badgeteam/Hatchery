@@ -1356,16 +1356,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v7.8.1",
+            "version": "v7.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "cdc6d7e6c744f4d8f7d61102aea9b111550cd297"
+                "reference": "165bb112ec8de79939504cbcee8886c93bad6819"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/cdc6d7e6c744f4d8f7d61102aea9b111550cd297",
-                "reference": "cdc6d7e6c744f4d8f7d61102aea9b111550cd297",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/165bb112ec8de79939504cbcee8886c93bad6819",
+                "reference": "165bb112ec8de79939504cbcee8886c93bad6819",
                 "shasum": ""
             },
             "require": {
@@ -1504,7 +1504,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2020-04-24T17:21:56+00:00"
+            "time": "2020-04-28T14:47:17+00:00"
         },
         {
             "name": "laravel/horizon",
@@ -8427,12 +8427,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "ca25ff8b0d7e8931161dfccae9b0237be0b54f95"
+                "reference": "270c7c3262b928835b78c2c809cb51aaabfe4fed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/ca25ff8b0d7e8931161dfccae9b0237be0b54f95",
-                "reference": "ca25ff8b0d7e8931161dfccae9b0237be0b54f95",
+                "url": "https://api.github.com/repos/composer/composer/zipball/270c7c3262b928835b78c2c809cb51aaabfe4fed",
+                "reference": "270c7c3262b928835b78c2c809cb51aaabfe4fed",
                 "shasum": ""
             },
             "require": {
@@ -8509,7 +8509,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-04-22T07:40:35+00:00"
+            "time": "2020-04-28T14:04:00+00:00"
         },
         {
             "name": "composer/semver",
@@ -9461,16 +9461,16 @@
         },
         {
             "name": "nunomaduro/larastan",
-            "version": "v0.5.6",
+            "version": "v0.5.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/larastan.git",
-                "reference": "b9aefca4fbfe9b67abefbf57e2532bea09530c8b"
+                "reference": "12af69f657b88182fa5608e137b7c47fba386b7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/b9aefca4fbfe9b67abefbf57e2532bea09530c8b",
-                "reference": "b9aefca4fbfe9b67abefbf57e2532bea09530c8b",
+                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/12af69f657b88182fa5608e137b7c47fba386b7e",
+                "reference": "12af69f657b88182fa5608e137b7c47fba386b7e",
                 "shasum": ""
             },
             "require": {
@@ -9543,7 +9543,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-04-26T19:11:12+00:00"
+            "time": "2020-04-28T15:19:01+00:00"
         },
         {
             "name": "phan/phan",
