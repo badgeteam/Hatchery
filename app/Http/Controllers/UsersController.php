@@ -120,7 +120,9 @@ class UsersController extends Controller
                 ->withErrors([$e->getMessage()]);
         }
 
-        $this->guard()->logout();
+        /** @var Auth $guard */
+        $guard = $this->guard();
+        $guard->logout();
 
         return redirect()->guest('/')->withSuccesses([$user->name.' deleted']);
     }
