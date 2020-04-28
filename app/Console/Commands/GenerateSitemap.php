@@ -72,7 +72,7 @@ class GenerateSitemap extends Command
     {
         if ($project === null) {
             /** @var Project|null $project */
-            $project = Project::get()->last();
+            $project = Project::latest()->first();
         }
 
         return ($project === null || $project->updated_at === null) ? Carbon::now() : $project->updated_at;
