@@ -27,7 +27,7 @@ RUN curl -O http://zlib.net/zlib-1.2.11.tar.gz && \
     make && \
     cp minigzip /usr/local/bin/
 
-RUN pip install pyflakes==2.1.1
+RUN pip install pyflakes==2.2.0
 
 RUN composer install
 RUN chmod -R 777 bootstrap/cache storage
