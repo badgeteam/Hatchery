@@ -22,7 +22,7 @@ build:
                 override:
                     - docker exec -it build_laravel_1 php artisan route:clear || echo ignore
                     - docker exec -it build_laravel_1 php artisan config:clear || echo ignore
-                    - docker exec -it build_laravel_1 php artisan migrate --seed
+                    - docker exec -it build_laravel_1 php artisan migrate --seed || echo ignore
             tests:
                 override:
                     -
