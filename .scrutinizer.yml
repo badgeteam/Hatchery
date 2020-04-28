@@ -25,9 +25,9 @@ build:
                     - docker exec -it build_laravel_1 php artisan migrate --seed || echo ignore
             tests:
                 override:
-                    - command: 'docker exec -it build_laravel_1 "vendor/bin/phpunit --coverage-clover=clover" && docker cp build_laravel_1:/app/clover /home/scrutinizer/build/clover || pwd'
+                    - command: 'docker exec -it build_laravel_1 "vendor/bin/phpunit --coverage-clover=coverage.clover" && docker cp build_laravel_1:/app/coverage.clover /home/scrutinizer/build/coverage.clover || pwd'
                       coverage:
-                        file: 'clover'
+                        file: 'coverage.clover'
                         format: 'clover'
 checks:
     php:
