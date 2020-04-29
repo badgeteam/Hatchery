@@ -10,7 +10,5 @@ plugins:
     enabled: true
   phpmd:
     enabled: true
-  phan:
+  eslint:
     enabled: true
-    config:
-      file_extensions: "php"

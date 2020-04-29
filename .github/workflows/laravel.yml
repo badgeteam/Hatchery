@@ -61,6 +61,10 @@ jobs:
         DB_USERNAME: root
         DB_PASSWORD: root
       run: php artisan sitemap:generate
+    - name: Config clear
+      run: php artisan config:clear
+    - name: Route clear
+      run: php artisan route:clear
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DB_CONNECTION: mysql
