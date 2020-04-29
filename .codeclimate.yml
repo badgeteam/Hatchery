@@ -10,7 +10,3 @@ plugins:
     enabled: true
   phpmd:
     enabled: true
-  phan:
-    enabled: true
-    config:
-      file_extensions: "php"
