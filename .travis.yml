@@ -47,6 +47,8 @@ script:
   - make
   - export PATH=$PATH:`pwd`
   - cd ..
+  - php artisan route:clear
+  - php artisan config:clear
   - vendor/bin/phpstan analyse
   - vendor/bin/phpunit
   - yarn lint
