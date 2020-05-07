@@ -27,7 +27,7 @@
     "dropzone": "^5.7.0",
     "eslint": "^6.8.0",
     "file-loader": "^6.0.0",
-    "jquery": "^3.4",
+    "jquery": "^3.5.1",
     "laravel-mix": "^5.0.1",
     "lodash": "^4.17.15",
     "mem": "^6.0.1",
@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "laravel-echo": "^1.7.0",
-    "markdownlint-cli": "^0.22.0",
+    "markdownlint-cli": "^0.23.0",
     "socket.io-client": "^2.3.0"
   }
 }
