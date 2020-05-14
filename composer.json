@@ -17,7 +17,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=7.2.5",
+        "php": ">=7.3",
         "ext-gd": "*",
         "ext-gmp": "*",
         "ext-json": "*",
@@ -56,8 +56,7 @@
         "nunomaduro/larastan": "^0.5.8",
         "phan/phan": "^2.7",
         "phpstan/phpstan": "^0.12",
-        "phpunit/phpunit": "^8.5",
-        "sempro/phpunit-pretty-print": "^1.2"
+        "phpunit/phpunit": "^9.1"
     },
     "autoload": {
         "classmap": [

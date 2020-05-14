@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
  * Class Project.
  *
  * @author annejan@badge.team
+ *
  * @property int $id
  * @property int $category_id
  * @property int $user_id
@@ -60,6 +61,7 @@ use Illuminate\Support\Str;
  * @property-read int|null $warnings_count
  * @property-read Collection|User[] $collaborators
  * @property-read int|null $collaborators_count
+ *
  * @method static bool|null forceDelete()
  * @method static Builder|Project newModelQuery()
  * @method static Builder|Project newQuery()
@@ -83,7 +85,6 @@ use Illuminate\Support\Str;
  * @method static Builder|Project whereMaxFirmware($value)
  * @method static Builder|Project whereMinFirmware($value)
  * @mixin \Eloquent
-
  */
 class Project extends Model
 {

@@ -22,7 +22,7 @@ Simple micropython software repository for Badges.
 
 ## Installation
 
--   Requires PHP 7.2.5 or later
+-   Requires PHP 7.3 or later
 -   Requires Python 3.6 or later
 -   Requires Node.js 6.0 or later
 -   Requires Redis 3.2 or later

@@ -378,7 +378,7 @@ class ProjectsTest extends TestCase
 
         $zip = (string) $version->zip;
         $this->assertFileExists(public_path($zip));
-        $this->assertFileNotExists(public_path(str_replace('.gz', '', $zip)));
+        $this->assertFileDoesNotExist(public_path(str_replace('.gz', '', $zip)));
 
         $p = new \PharData(public_path($zip));
         $this->assertEquals(\Phar::GZ, $p->isCompressed());

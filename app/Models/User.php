@@ -18,6 +18,7 @@ use LaravelWebauthn\Models\WebauthnKey;
  * Class User.
  *
  * @author annejan@badge.team
+ *
  * @property int $id
  * @property bool $admin
  * @property string $name
@@ -44,6 +45,7 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @property-read int|null $webauthn_keys_count
  * @property-read Collection|Project[] $collaborations
  * @property-read int|null $collaborations_count
+ *
  * @method static bool|null forceDelete()
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()

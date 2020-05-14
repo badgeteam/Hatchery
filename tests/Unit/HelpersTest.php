@@ -37,7 +37,7 @@ class HelpersTest extends TestCase
         mkdir($folder);
         $this->assertFileExists($folder);
         $this->assertTrue(Helpers::delTree($folder));
-        $this->assertFileNotExists($folder);
+        $this->assertFileDoesNotExist($folder);
     }
 
     /**
@@ -52,8 +52,8 @@ class HelpersTest extends TestCase
         $this->assertFileExists($folder);
         $this->assertFileExists($secondFolder);
         $this->assertTrue(Helpers::delTree($folder));
-        $this->assertFileNotExists($folder);
-        $this->assertFileNotExists($secondFolder);
+        $this->assertFileDoesNotExist($folder);
+        $this->assertFileDoesNotExist($secondFolder);
     }
 
     /**
@@ -68,8 +68,8 @@ class HelpersTest extends TestCase
         $this->assertFileExists($folder);
         $this->assertFileExists($file);
         $this->assertTrue(Helpers::delTree($folder));
-        $this->assertFileNotExists($folder);
-        $this->assertFileNotExists($file);
+        $this->assertFileDoesNotExist($folder);
+        $this->assertFileDoesNotExist($file);
     }
 
     /**
