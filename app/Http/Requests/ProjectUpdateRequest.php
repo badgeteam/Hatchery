@@ -30,6 +30,8 @@ class ProjectUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'min_firmware' => 'nullable|integer',
+            'max_firmware' => 'nullable|integer'
         ];
     }
 }

@@ -19,12 +19,13 @@ use Illuminate\Support\Str;
  * Class Project.
  *
  * @author annejan@badge.team
- *
  * @property int $id
  * @property int $category_id
  * @property int $user_id
  * @property string $name
  * @property string $slug
+ * @property int|null $min_firmware
+ * @property int|null $max_firmware
  * @property string|null $git
  * @property string|null $git_commit_id
  * @property Carbon|null $published_at
@@ -59,7 +60,6 @@ use Illuminate\Support\Str;
  * @property-read int|null $warnings_count
  * @property-read Collection|User[] $collaborators
  * @property-read int|null $collaborators_count
- *
  * @method static bool|null forceDelete()
  * @method static Builder|Project newModelQuery()
  * @method static Builder|Project newQuery()
@@ -80,7 +80,10 @@ use Illuminate\Support\Str;
  * @method static Builder|Project whereUserId($value)
  * @method static Builder|Project withTrashed()
  * @method static Builder|Project withoutTrashed()
+ * @method static Builder|Project whereMaxFirmware($value)
+ * @method static Builder|Project whereMinFirmware($value)
  * @mixin \Eloquent
+
  */
 class Project extends Model
 {

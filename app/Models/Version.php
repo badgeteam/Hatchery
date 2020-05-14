@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Auth;
  * Class Version.
  *
  * @author annejan@badge.team
- *
  * @property int $id
  * @property int $user_id
  * @property int $project_id
@@ -31,7 +30,6 @@ use Illuminate\Support\Facades\Auth;
  * @property-read bool $published
  * @property-read Project $project
  * @property-read User $user
- *
  * @method static bool|null forceDelete()
  * @method static Builder|Version newModelQuery()
  * @method static Builder|Version newQuery()

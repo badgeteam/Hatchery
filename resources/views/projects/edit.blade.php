@@ -51,7 +51,12 @@
                                 {{ Form::label('category_id', 'Category', ['class' => 'control-label']) }}
                                 {{ Form::select('category_id', \App\Models\Category::where('hidden', false)->pluck('name', 'id'), $project->category_id, ['class' => 'form-control', 'id' => 'category_id']) }}
                             </div>
-
+                            <div class="form-group @if($errors->has('min_firmware') || $errors->has('max_firmware')) has-error @endif">
+                                {{ Form::label('min_firmware', 'Minimal firmware version', ['class' => 'control-label']) }}
+                                {{ Form::text('min_firmware', $project->min_firmware, ['class' => 'form-control', 'id' => 'min_firmware']) }}
+                                {{ Form::label('max_firmware', 'Maximum firmware version', ['class' => 'control-label']) }}
+                                {{ Form::text('max_firmware', $project->max_firmware, ['class' => 'form-control', 'id' => 'max_firmware']) }}
+                            </div>
                             @include('projects.partials.compatibility')
                             @include('projects.partials.dependencies')
                             @include('projects.partials.collaborators')

@@ -157,9 +157,7 @@ class PublicController extends Controller
      */
     public function projectJson(string $slug): JsonResponse
     {
-        /**
-         * @var Project|null
-         */
+        /** @var Project|null */
         $project = Project::where('slug', $slug)->first();
         if ($project === null) {
             return response()->json(['message' => 'No releases found'], 404, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
@@ -182,6 +180,8 @@ class PublicController extends Controller
         $package->name = $project->name;
         $package->category = $project->category;
         $package->releases = $releases;
+        $package->min_firmware = $project->min_firmware;
+        $package->max_firmware = $project->max_firmware;
 
         event(new DownloadCounter($project));
 

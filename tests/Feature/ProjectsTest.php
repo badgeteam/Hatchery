@@ -812,4 +812,69 @@ class ProjectsTest extends TestCase
         $zip = (string) $version->zip;
         unlink(public_path($zip));
     }
+
+    /**
+     * Check the projects validation min_firmware.
+     */
+    public function testProjectsUpdateMinFirmwareNaN(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/projects/'.$project->slug, [
+                'description'  => $this->faker->paragraph,
+                'category_id'  => $project->category_id,
+                'status'       => 'unknown',
+                'min_firmware' => 'something',
+            ]);
+        $response->assertRedirect('/')->assertSessionHas('errors');
+    }
+
+    /**
+     * Check the projects validation max_firmware.
+     */
+    public function testProjectsUpdateMaxFirmwareNaN(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/projects/'.$project->slug, [
+                'description'  => $this->faker->paragraph,
+                'category_id'  => $project->category_id,
+                'status'       => 'unknown',
+                'min_firmware' => 'something',
+            ]);
+        $response->assertRedirect('/')->assertSessionHas('errors');
+    }
+
+    /**
+     * Check the projects saves max_firmware.
+     */
+    public function testProjectsUpdateMaxFirmware(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = factory(Project::class)->create();
+        $response = $this
+            ->actingAs($user)
+            ->call('put', '/projects/'.$project->slug, [
+                'description'  => $this->faker->paragraph,
+                'category_id'  => $project->category_id,
+                'status'       => 'unknown',
+                'min_firmware' => 13,
+                'max_firmware' => 37,
+            ]);
+        $response->assertRedirect('/projects')->assertSessionHas('successes');
+        /** @var Project $project */
+        $project = Project::find($project->id);
+        $this->assertEquals(13, $project->min_firmware);
+        $this->assertEquals(37, $project->max_firmware);
+    }
 }

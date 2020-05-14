@@ -14,7 +14,6 @@ use Illuminate\Support\Str;
  * Class Badge.
  *
  * @author annejan@badge.team
- *
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -27,7 +26,6 @@ use Illuminate\Support\Str;
  * @property-read int|null $projects_count
  * @property-read Collection|BadgeProject[] $states
  * @property-read int|null $states_count
- *
  * @method static Builder|Badge newModelQuery()
  * @method static Builder|Badge newQuery()
  * @method static Builder|Badge query()
@@ -37,6 +35,8 @@ use Illuminate\Support\Str;
  * @method static Builder|Badge whereName($value)
  * @method static Builder|Badge whereSlug($value)
  * @method static Builder|Badge whereUpdatedAt($value)
+ * @method static Builder|Badge whereCommands($value)
+ * @method static Builder|Badge whereConstraints($value)
  * @mixin \Eloquent
  */
 class Badge extends Model

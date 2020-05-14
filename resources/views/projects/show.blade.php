@@ -67,6 +67,18 @@
                             <hr>
                             <strong>Status: {{ $project->status }}</strong>
                             <hr>
+                            @if($project->min_firmware)
+                            Minimal firmware version: {{ $project->min_firmware }}
+                            @endif
+                            @if($project->min_firmware && $project->max_firmware)
+                            <br>
+                            @endif
+                            @if($project->max_firmware)
+                            Maximum firmware version: {{ $project->max_firmware }}
+                            @endif
+                            @if($project->min_firmware || $project->max_firmware)
+                            <hr>
+                            @endif
                             @include('projects.partials.vote-and-notify')
                             @include('projects.partials.show-compatibility')
                             @include('projects.partials.show-dependencies')

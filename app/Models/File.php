@@ -16,7 +16,6 @@ use Intervention\Image\Facades\Image;
  * Class File.
  *
  * @author annejan@badge.team
- *
  * @property int $id
  * @property int $user_id
  * @property int $version_id
@@ -36,7 +35,7 @@ use Intervention\Image\Facades\Image;
  * @property-read string|null $viewable
  * @property-read User $user
  * @property-read Version $version
- *
+ * @property-read string $base_name
  * @method static bool|null forceDelete()
  * @method static Builder|File newModelQuery()
  * @method static Builder|File newQuery()

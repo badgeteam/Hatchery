@@ -191,6 +191,8 @@ class PublicTest extends TestCase
                         ],
                     ],
                 ],
+                'min_firmware' => null,
+                'max_firmware' => null,
             ]);
     }
 
@@ -239,6 +241,8 @@ class PublicTest extends TestCase
                     'download_counter'        => 0,
                     'status'                  => 'unknown',
                     'published_at'            => null,
+                    'min_firmware'            => null,
+                    'max_firmware'            => null,
                 ],
             ]);
     }
@@ -274,6 +278,8 @@ class PublicTest extends TestCase
                     'download_counter' => 0,
                     'status'           => 'unknown',
                     'published_at'     => null,
+                    'min_firmware'     => null,
+                    'max_firmware'     => null,
                 ],
             ]);
     }
@@ -308,6 +314,8 @@ class PublicTest extends TestCase
                     'download_counter' => 0,
                     'status'           => 'unknown',
                     'published_at'     => null,
+                    'min_firmware'     => null,
+                    'max_firmware'     => null,
                 ],
             ]);
     }
@@ -448,6 +456,8 @@ class PublicTest extends TestCase
                     'download_counter'        => 0,
                     'status'                  => 'unknown',
                     'published_at'            => null,
+                    'min_firmware'            => null,
+                    'max_firmware'            => null,
                 ],
             ]);
     }
@@ -488,6 +498,8 @@ class PublicTest extends TestCase
                     'download_counter'        => 0,
                     'status'                  => 'unknown',
                     'published_at'            => null,
+                    'min_firmware'            => null,
+                    'max_firmware'            => null,
                 ],
             ]);
     }
@@ -566,7 +578,43 @@ class PublicTest extends TestCase
                     'download_counter' => 0,
                     'status'           => 'unknown',
                     'published_at'     => null,
+                    'min_firmware'     => null,
+                    'max_firmware'     => null,
                 ],
+            ]);
+    }
+
+    /**
+     * Check JSON egg request . .
+     */
+    public function testProjectGetJsonMinMaxFirmware(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $version->zip = 'some_path.tar.gz';
+        $version->save();
+        $category = $version->project->category()->first();
+        $version->project->min_firmware = 13;
+        $version->project->max_firmware = 37;
+        $version->project->save();
+
+        $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json');
+        $response->assertStatus(200)
+            ->assertExactJson([
+                'description' => null,
+                'name'        => $version->project->name,
+                'info'        => ['version' => '1'],
+                'category'    => $category->slug,
+                'releases'    => [
+                    '1' => [
+                        [
+                            'url' => url('some_path.tar.gz'),
+                        ],
+                    ],
+                ],
+                'min_firmware' => 13,
+                'max_firmware' => 37,
             ]);
     }
 

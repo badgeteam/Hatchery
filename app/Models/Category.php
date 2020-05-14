@@ -14,7 +14,6 @@ use Illuminate\Support\Str;
  * Class Category.
  *
  * @author annejan@badge.team
- *
  * @property int $id
  * @property string $name
  * @property string $slug
@@ -25,7 +24,6 @@ use Illuminate\Support\Str;
  * @property-read int $eggs
  * @property-read Collection|Project[] $projects
  * @property-read int|null $projects_count
- *
  * @method static bool|null forceDelete()
  * @method static Builder|Category newModelQuery()
  * @method static Builder|Category newQuery()

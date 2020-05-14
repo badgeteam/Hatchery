@@ -150,6 +150,8 @@ class ProjectsController extends Controller
         $project->category_id = $request->category_id;
 
         try {
+            $project->min_firmware = $request->min_firmware;
+            $project->max_firmware = $request->max_firmware;
             $project->save();
             $this->manageDependencies($project, $request);
             $this->manageBadges($project, $request);
