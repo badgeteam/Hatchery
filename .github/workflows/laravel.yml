@@ -65,7 +65,7 @@ jobs:
       run: php artisan config:clear
     - name: Route clear
       run: php artisan route:clear
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
+    - name: Execute (Unit and Feature) tests via Pest
       env:
         DB_CONNECTION: mysql
         DB_HOST: 127.0.0.1
@@ -76,4 +76,4 @@ jobs:
         DB_TEST_DATABASE: badge
         DB_TEST_USERNAME: root
         DB_TEST_PASSWORD: root
-      run: vendor/bin/phpunit
+      run: vendor/bin/pest

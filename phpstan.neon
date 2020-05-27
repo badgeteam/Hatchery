@@ -23,3 +23,4 @@ parameters:
     excludes_analyse:
             - tests/_support/*
             - tests/Feature/EdgeCases*
+            - tests/Helpers.php

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c44caeb4cdddc34b610ba61934bc6806",
+    "content-hash": "1e5c5712af050468e87802688af4020e",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -1835,16 +1835,16 @@
         },
         {
             "name": "laravel/horizon",
-            "version": "v4.3.2",
+            "version": "v4.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/horizon.git",
-                "reference": "203e1a75a8811dcb0285ca00c51cba042e752f3e"
+                "reference": "0172084dd26f93fc3521b9118f4e3a330a36eda8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/horizon/zipball/203e1a75a8811dcb0285ca00c51cba042e752f3e",
-                "reference": "203e1a75a8811dcb0285ca00c51cba042e752f3e",
+                "url": "https://api.github.com/repos/laravel/horizon/zipball/0172084dd26f93fc3521b9118f4e3a330a36eda8",
+                "reference": "0172084dd26f93fc3521b9118f4e3a330a36eda8",
                 "shasum": ""
             },
             "require": {
@@ -1904,7 +1904,7 @@
                 "laravel",
                 "queue"
             ],
-            "time": "2020-04-28T15:54:04+00:00"
+            "time": "2020-05-26T18:27:29+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -7588,7 +7588,7 @@
         },
         {
             "name": "tightenco/collect",
-            "version": "v7.11.0",
+            "version": "v7.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tightenco/collect.git",
@@ -8999,16 +8999,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.10.x-dev",
+            "version": "1.10.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "2332b60f351f3e9a0e651149b7a067b61148c97c"
+                "reference": "be81b9c4735362c26876bdbfd3b5bc7e7f711c88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/2332b60f351f3e9a0e651149b7a067b61148c97c",
-                "reference": "2332b60f351f3e9a0e651149b7a067b61148c97c",
+                "url": "https://api.github.com/repos/composer/composer/zipball/be81b9c4735362c26876bdbfd3b5bc7e7f711c88",
+                "reference": "be81b9c4735362c26876bdbfd3b5bc7e7f711c88",
                 "shasum": ""
             },
             "require": {
@@ -9082,15 +9082,11 @@
                     "type": "custom"
                 },
                 {
-                    "url": "https://github.com/composer",
-                    "type": "github"
-                },
-                {
                     "url": "https://tidelift.com/funding/github/packagist/composer/composer",
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-22T08:23:47+00:00"
+            "time": "2020-05-06T08:28:10+00:00"
         },
         {
             "name": "composer/semver",
@@ -10044,6 +10040,92 @@
             "time": "2020-04-16T18:48:43+00:00"
         },
         {
+            "name": "nunomaduro/collision",
+            "version": "v5.0.0-BETA1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nunomaduro/collision.git",
+                "reference": "f82d97153a4e07724ff8db984deec420447546cd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/f82d97153a4e07724ff8db984deec420447546cd",
+                "reference": "f82d97153a4e07724ff8db984deec420447546cd",
+                "shasum": ""
+            },
+            "require": {
+                "facade/ignition-contracts": "^1.0",
+                "filp/whoops": "^2.7.2",
+                "php": "^7.3",
+                "symfony/console": "^5.0"
+            },
+            "require-dev": {
+                "facade/ignition": "^2.0.2",
+                "fideloper/proxy": "^4.3",
+                "friendsofphp/php-cs-fixer": "^2.16.3",
+                "fruitcake/laravel-cors": "^1.0.6",
+                "laravel/framework": "^7.10.3",
+                "laravel/tinker": "^2.4",
+                "nunomaduro/larastan": "^0.5.8",
+                "nunomaduro/mock-final-classes": "^1.0",
+                "orchestra/testbench": "^5.2",
+                "phpstan/phpstan": "^0.12.25",
+                "phpunit/phpunit": "^9.1.4",
+                "rector/rector": "^0.7.23"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "NunoMaduro\\Collision\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nuno Maduro",
+                    "email": "enunomaduro@gmail.com"
+                }
+            ],
+            "description": "Cli error handling for console/command-line PHP applications.",
+            "keywords": [
+                "artisan",
+                "cli",
+                "command-line",
+                "console",
+                "error",
+                "handling",
+                "laravel",
+                "laravel-zero",
+                "php",
+                "symfony"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=66BYDWAT92N6L",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/nunomaduro",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/nunomaduro",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2020-05-11T13:56:01+00:00"
+        },
+        {
             "name": "nunomaduro/larastan",
             "version": "v0.5.8",
             "source": {
@@ -10128,6 +10210,93 @@
                 }
             ],
             "time": "2020-05-06T08:56:49+00:00"
+        },
+        {
+            "name": "pestphp/pest",
+            "version": "v0.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pestphp/pest.git",
+                "reference": "ddc08cf0f9947462ed8bbbe206e72de639e8fcf7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pestphp/pest/zipball/ddc08cf0f9947462ed8bbbe206e72de639e8fcf7",
+                "reference": "ddc08cf0f9947462ed8bbbe206e72de639e8fcf7",
+                "shasum": ""
+            },
+            "require": {
+                "nunomaduro/collision": "^5.0",
+                "php": "^7.3",
+                "phpunit/phpunit": "^9.1.4",
+                "sebastian/environment": "^5.1"
+            },
+            "require-dev": {
+                "ergebnis/phpstan-rules": "^0.14.4",
+                "friendsofphp/php-cs-fixer": "^2.16.3",
+                "illuminate/console": "^7.10.3",
+                "illuminate/support": "^7.10.3",
+                "mockery/mockery": "^1.3.1",
+                "phpstan/phpstan": "^0.12.25",
+                "phpstan/phpstan-strict-rules": "^0.12.2",
+                "rector/rector": "^0.7.25",
+                "symfony/var-dumper": "^5.0.8",
+                "thecodingmachine/phpstan-strict-rules": "^0.12.0"
+            },
+            "bin": [
+                "bin/pest"
+            ],
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Pest\\Laravel\\PestServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pest\\": "src/"
+                },
+                "files": [
+                    "src/globals.php",
+                    "compiled/globals.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nuno Maduro",
+                    "email": "enunomaduro@gmail.com"
+                }
+            ],
+            "description": "An elegant PHP Testing Framework.",
+            "keywords": [
+                "framework",
+                "pest",
+                "php",
+                "test",
+                "testing",
+                "unit"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=66BYDWAT92N6L",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/nunomaduro",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/nunomaduro",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2020-05-24T19:41:35+00:00"
         },
         {
             "name": "phan/phan",
@@ -12018,12 +12187,11 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
-        "asbiin/laravel-webauthn": 20,
-        "composer/composer": 20
+        "asbiin/laravel-webauthn": 20
     },
-    "prefer-stable": false,
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.3",
