@@ -27,6 +27,7 @@
         "czproject/git-php": "^3.17",
         "darkaonline/l5-swagger": "^7",
         "facade/ignition": "^2.0",
+        "fruitcake/laravel-cors": "^2.0",
         "intervention/image": "^2.5",
         "laravel/framework": "^7.11",
         "laravel/horizon": "^4.3",
