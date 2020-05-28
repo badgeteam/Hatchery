@@ -56,8 +56,8 @@ jobs:
 
       # run tests with codecept
       - run: vendor/bin/codecept build
-      - run: ./vendor/bin/codecept run --xml result.xml
+      - run: vendor/bin/codecept run --xml result.xml
       - store_test_results:
-        path: tests/_output
+          path: tests/_output
       - store_artifacts:
-        path: tests/_output
+          path: tests/_output
