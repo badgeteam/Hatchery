@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Support\Darksky;
 use Carbon\Carbon;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use OpenApi\Annotations as OA;
@@ -46,6 +47,7 @@ class WeatherController extends Controller
      * )
      *
      * @return JsonResponse
+     * @throws GuzzleException
      */
     public function show(): JsonResponse
     {
@@ -82,6 +84,7 @@ class WeatherController extends Controller
      * @param string $location
      *
      * @return JsonResponse
+     * @throws GuzzleException
      */
     public function location(string $location): JsonResponse
     {
@@ -102,6 +105,7 @@ class WeatherController extends Controller
 
     /**
      * @return stdClass
+     * @throws GuzzleException
      */
     private function getJson(): stdClass
     {

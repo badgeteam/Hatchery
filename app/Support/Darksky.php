@@ -31,6 +31,8 @@ class Darksky
      *
      * @return string
      *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     *
      * @codeCoverageIgnore
      */
     public function get(string $url): string
