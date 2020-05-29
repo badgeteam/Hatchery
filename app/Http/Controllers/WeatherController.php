@@ -46,8 +46,9 @@ class WeatherController extends Controller
      *   @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
      *
-     * @return JsonResponse
      * @throws GuzzleException
+     *
+     * @return JsonResponse
      */
     public function show(): JsonResponse
     {
@@ -83,8 +84,9 @@ class WeatherController extends Controller
      *
      * @param string $location
      *
-     * @return JsonResponse
      * @throws GuzzleException
+     *
+     * @return JsonResponse
      */
     public function location(string $location): JsonResponse
     {
@@ -104,8 +106,9 @@ class WeatherController extends Controller
     }
 
     /**
-     * @return stdClass
      * @throws GuzzleException
+     *
+     * @return stdClass
      */
     private function getJson(): stdClass
     {

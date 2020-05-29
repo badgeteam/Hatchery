@@ -29,9 +29,10 @@ class Darksky
     /**
      * @param string $url
      *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     *
      * @return string
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
      *
      * @codeCoverageIgnore
      */
