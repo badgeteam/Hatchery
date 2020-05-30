@@ -6,7 +6,7 @@
 
 @section('more')
     <div class="flex-center position-ref full-height">
-        <div style="height: 100%; overflow: scroll"></div>
+        <div style="height: 100%; overflow: scroll">
             <ul>
                 <li><a href="{{ route('home') }}">Hatchery</a></li>
                 <li><a href="{{ route('login') }}">Login</a></li>
