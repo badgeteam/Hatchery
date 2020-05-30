@@ -65,5 +65,6 @@
             </div>
             <img class="logo" src="/img/bs.png" alt="Badge.r & smol snek" height="33%" />
         </div>
+        @yield('more')
     </body>
 </html>
