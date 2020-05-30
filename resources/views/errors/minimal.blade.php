@@ -63,6 +63,7 @@
             <div class="message" style="padding: 10px;">
                 @yield('message')
             </div>
+            <img class="logo" src="/img/bs.png" alt="Badge.r & smol snek" height="33%" />
         </div>
     </body>
 </html>
