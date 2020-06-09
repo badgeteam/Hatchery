@@ -58,7 +58,7 @@
         "nunomaduro/larastan": "^0.5.8",
         "pestphp/pest": "^0.1.5",
         "phan/phan": "^2.7",
-        "phpstan/phpstan": "^0.12",
+        "phpstan/phpstan": "0.12.25",
         "phpunit/phpunit": "^9.1"
     },
     "autoload": {
