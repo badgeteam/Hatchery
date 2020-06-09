@@ -122,31 +122,31 @@ vendor/bin/phpstan analyse
 Run all the tests
 
 ```bash
-vendor/bin/hpunit --no-coverage
+vendor/bin/pest --no-coverage
 ```
 
 Run a test suite (for a list of availabe suites, see `/phpunit.xml`)
 
 ```bash
-vendor/bin/phpunit --testsuite <suite_name>
+vendor/bin/pest --testsuite <suite_name>
 ```
 
 Run a specific test file
 
 ```bash
-vendor/bin/phpunit tests/<optional_folders>/TestFileName
+vendor/bin/pest tests/<optional_folders>/TestFileName
 ```
 
 Run a specific test case
 
 ```bash
-vendor/bin/phpunit --filter <test_case_name>
+vendor/bin/pest --filter <test_case_name>
 ```
 
 Generate code coverage as HTML
 
 ```bash
-vendor/bin/phpunit --coverage-html docs/coverage
+vendor/bin/pest --coverage-html docs/coverage
 ```
 
 This will create the code coverage docs in `docs/coverage/index.html`
