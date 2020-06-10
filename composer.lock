@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3efa85c6465ece8bec8c7d9ed8f77839",
+    "content-hash": "f48622d1636f5e5eeb237c2a2c0e80fb",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -10762,16 +10762,16 @@
         },
         {
             "name": "nunomaduro/larastan",
-            "version": "v0.5.8",
+            "version": "v0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/larastan.git",
-                "reference": "0eaea6316dcdcbaef56a67e0d7bd5fff0da7b773"
+                "reference": "849bbe8a6ae8b77357d3c7073050983e6ba4245e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/0eaea6316dcdcbaef56a67e0d7bd5fff0da7b773",
-                "reference": "0eaea6316dcdcbaef56a67e0d7bd5fff0da7b773",
+                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/849bbe8a6ae8b77357d3c7073050983e6ba4245e",
+                "reference": "849bbe8a6ae8b77357d3c7073050983e6ba4245e",
                 "shasum": ""
             },
             "require": {
@@ -10786,7 +10786,7 @@
                 "illuminate/support": "^6.0 || ^7.0",
                 "mockery/mockery": "^0.9 || ^1.0",
                 "php": "^7.2",
-                "phpstan/phpstan": "^0.12.23",
+                "phpstan/phpstan": "^0.12.28",
                 "symfony/process": "^4.3 || ^5.0"
             },
             "require-dev": {
@@ -10798,6 +10798,9 @@
             },
             "type": "phpstan-extension",
             "extra": {
+                "branch-alias": {
+                    "dev-master": "0.6-dev"
+                },
                 "phpstan": {
                     "includes": [
                         "extension.neon"
@@ -10844,7 +10847,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-05-06T08:56:49+00:00"
+            "time": "2020-06-10T17:10:33+00:00"
         },
         {
             "name": "pestphp/pest",
@@ -11322,16 +11325,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.25",
+            "version": "0.12.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "9619551d68b2d4c0d681a8df73f3c847c798ee64"
+                "reference": "76c0c4ec90b1eed66fa4855b8b4b53fa9054353f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/9619551d68b2d4c0d681a8df73f3c847c798ee64",
-                "reference": "9619551d68b2d4c0d681a8df73f3c847c798ee64",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/76c0c4ec90b1eed66fa4855b8b4b53fa9054353f",
+                "reference": "76c0c4ec90b1eed66fa4855b8b4b53fa9054353f",
                 "shasum": ""
             },
             "require": {
@@ -11374,7 +11377,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-10T20:36:16+00:00"
+            "time": "2020-06-10T06:20:14+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
