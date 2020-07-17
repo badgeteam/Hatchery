@@ -29,7 +29,7 @@
     "file-loader": "^6.0.0",
     "jquery": "^3.5.1",
     "laravel-mix": "^5.0.4",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "mem": "^6.0.1",
     "popper.js": "^1.16",
     "pre-commit": "^1.2.2",
