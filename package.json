@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "laravel-echo": "^1.8.0",
-    "markdownlint-cli": "^0.23.1",
+    "markdownlint-cli": "^0.23.2",
     "socket.io-client": "^2.3.0"
   }
 }
