@@ -133,6 +133,7 @@ class Project extends Model
         'states',
         'git',
         'git_commit_id',
+        'user',
     ];
 
     /**
