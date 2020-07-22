@@ -481,7 +481,7 @@ class Project extends Model
      */
     public function getAuthorAttribute(): string
     {
-        if empty($this->user->name) {
+        if (empty($this->user->name)) {
             return 'Unknown';
         } else {
             return $this->user->name;
