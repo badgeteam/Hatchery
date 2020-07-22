@@ -53,6 +53,7 @@ use Illuminate\Support\Str;
  * @property-read Collection|BadgeProject[] $states
  * @property-read int|null $states_count
  * @property-read User $user
+ * @property-read string $author
  * @property-read Collection|Version[] $versions
  * @property-read int|null $versions_count
  * @property-read Collection|Vote[] $votes
@@ -112,6 +113,7 @@ class Project extends Model
         'category',
         'description',
         'status',
+        'author',
     ];
 
     /**
@@ -472,6 +474,14 @@ class Project extends Model
         }
 
         return $score / $this->votes->count();
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthorAttribute(): string
+    {
+        return $this->user->name || 'Unknown';
     }
 
     /**
