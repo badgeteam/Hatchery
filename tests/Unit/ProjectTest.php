@@ -397,7 +397,7 @@ class ProjectTest extends TestCase
     }
 
     /**
-     * Why not test for Unknown authors ;)
+     * Why not test for Unknown authors ;).
      */
     public function testProjectAuthorUnknown(): void
     {

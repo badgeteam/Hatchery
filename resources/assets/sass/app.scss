@@ -7,16 +7,13 @@
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-
 @import "node_modules/dropzone/dist/dropzone";
-
 @import "node_modules/codemirror/lib/codemirror";
 @import "node_modules/codemirror/theme/ambiance";
-
 @import "node_modules/codemirror/addon/dialog/dialog";
 
 .CodeMirror {
-    height: 100% !important;
+  height: 100% !important;
 }
 
 .alert p {
@@ -26,18 +23,23 @@
 }
 
 #pixels {
+
   table {
     background: black;
+
     td {
       width: 20px;
       height: 20px;
       border: 1px solid $text-color;
     }
+
     .clickable {
       cursor: pointer;
     }
   }
-  #colour, .colour-container {
+
+  #colour,
+  .colour-container {
     display: inline-block;
     box-sizing: border-box;
     width: 40px;
@@ -46,6 +48,7 @@
     outline: none;
     overflow: visible;
   }
+
   .colour-container {
     background: black;
   }
@@ -54,9 +57,11 @@
 .modal {
   background: radial-gradient(transparent, grey);
 }
+
 .show {
   opacity: 1;
 }
+
 .modal-dialog {
   margin-top: 13em;
 }
@@ -76,9 +81,12 @@
     border-top: none;
   }
 }
-.panel, body {
+
+.panel,
+body {
   background: none;
 }
+
 .logo {
   position: absolute;
   opacity: 0.75;
@@ -86,15 +94,20 @@
   left: 10px;
   top: 10px;
 }
-.searchform, .deleteform {
+
+.searchform,
+.deleteform {
   display: inline-block;
 }
+
 #uploader {
   width: 100%;
 }
+
 .compatibility-block {
   min-height: 36px;
 }
+
 .compatibility {
   display: inline-block;
   float: right;
@@ -125,31 +138,53 @@
 .compact {
   overflow: scroll;
   max-height: 100px;
+
   .form-control {
     height: 22px;
   }
 }
 
 @media screen and (prefers-color-scheme: dark) {
-  body, .navbar-default, .navbar-default .navbar-brand, .navbar-default .navbar-nav li a,
-  .panel-default .panel-heading, input, select, select option, .pagination > .disabled > span,
-  .pagination > li > a, .pagination > li > span, .form-control, .modal-content {
+
+  body,
+  .navbar-default,
+  .navbar-default .navbar-brand,
+  .navbar-default .navbar-nav li a,
+  .panel-default .panel-heading,
+  input,
+  select,
+  select option,
+  .pagination > .disabled > span,
+  .pagination > li > a,
+  .pagination > li > span,
+  .form-control,
+  .modal-content {
     background-color: #222;
     color: #fff;
   }
-  code, pre {
+
+  code,
+  pre {
+
     background-color: #333;
   }
+
   pre {
     color: #f5f5f5;
   }
-  .table-striped > tbody > tr:nth-of-type(odd), .dropdown-menu {
+
+  .table-striped > tbody > tr:nth-of-type(odd),
+  .dropdown-menu {
     background-color: #0a1520;
   }
+
   a {
     color: #98ccf7;
   }
-  .navbar-default .navbar-brand:hover, .navbar-default .navbar-nav li a:hover, a:hover {
+
+  .navbar-default .navbar-brand:hover,
+  .navbar-default .navbar-nav li a:hover,
+  a:hover {
     color: #2ab27b;
   }
 }
