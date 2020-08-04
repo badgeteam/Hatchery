@@ -145,18 +145,17 @@ body {
 }
 
 @media screen and (prefers-color-scheme: dark) {
-
   body,
   .navbar-default,
   .navbar-default .navbar-brand,
-  .navbar-default .navbar-nav li a,
   .panel-default .panel-heading,
   input,
   select,
   select option,
-  .pagination > .disabled > span,
   .pagination > li > a,
+  .navbar-default .navbar-nav li a,
   .pagination > li > span,
+  .pagination > .disabled > span,
   .form-control,
   .modal-content {
     background-color: #222;
@@ -182,9 +181,9 @@ body {
     color: #98ccf7;
   }
 
+  a:hover,
   .navbar-default .navbar-brand:hover,
-  .navbar-default .navbar-nav li a:hover,
-  a:hover {
+  .navbar-default .navbar-nav li a:hover {
     color: #2ab27b;
   }
 }
