@@ -19,13 +19,13 @@
   "devDependencies": {
     "@hapi/hoek": "^9.0.3",
     "axios": "^0.19.2",
-    "bootstrap": "^4.5.0",
+    "bootstrap": "^4.5.1",
     "bootstrap-sass": "^3.4.1",
     "codemirror": "^5.56.0",
     "cross-env": "^7.0.2",
-    "css-loader": "^3.6.0",
-    "dropzone": "^5.7.1",
-    "eslint": "^7.5.0",
+    "css-loader": "^4.2.0",
+    "dropzone": "^5.7.2",
+    "eslint": "^7.6.0",
     "file-loader": "^6.0.0",
     "jquery": "^3.5.1",
     "laravel-mix": "^5.0.4",
@@ -40,10 +40,11 @@
     "vanilla-picker": "^2.10.1",
     "vue": "^2.6.11",
     "vue-template-compiler": "^2.6.11",
-    "webpack": "^4.43.0"
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
   },
   "dependencies": {
-    "laravel-echo": "^1.8.0",
+    "laravel-echo": "^1.8.1",
     "markdownlint-cli": "^0.23.2",
     "socket.io-client": "^2.3.0"
   }
