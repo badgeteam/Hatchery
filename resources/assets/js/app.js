@@ -241,7 +241,7 @@ window.onload = function() {
 		if (data.startsWith('icon = ')) {
 			data = data.replace('icon = (', '');
 			data = data.replace(')','');
-			let numFrames = parseInt(data.match(/[0-9]+?$/)[0]);
+			let numFrames = parseInt(data.match(/[0-9]+?$/)[0], 10);
 			data = data.replace(', '+numFrames, '');
 			if (numFrames > 0) {
 				frames = data.split('],');
@@ -276,8 +276,8 @@ window.onload = function() {
 							framebuffer[r][p].onclick = function() {
 								this.style.backgroundColor = document.getElementById('colour').style.backgroundColor;
 								let pos = this.id.match(/[0-9]+?/g);
-								let r = parseInt(pos[0]);
-								let p = parseInt(pos[1]);
+								let r = parseInt(pos[0], 10);
+								let p = parseInt(pos[1], 10);
 								frames[currentFrame][(r*8)+p] = window.pixelToHexA(this.style.backgroundColor);
 								window.framesToContent();
 							};

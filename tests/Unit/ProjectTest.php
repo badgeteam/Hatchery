@@ -395,4 +395,15 @@ class ProjectTest extends TestCase
         $this->assertEquals('private-App.User.'.$user->id, $event->broadcastOn()[0]->name);
         $this->assertEquals('private-App.User.'.$otherUser->id, $event->broadcastOn()[1]->name);
     }
+
+    /**
+     * Why not test for Unknown authors ;)
+     */
+    public function testProjectAuthorUnknown(): void
+    {
+        $user = factory(User::class)->create(['name' => '']);
+        $this->be($user);
+        $project = factory(Project::class)->create();
+        $this->assertEquals('Unknown', $project->author);
+    }
 }
