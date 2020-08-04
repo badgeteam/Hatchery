@@ -12,10 +12,10 @@ use Illuminate\Support\Carbon;
  *
  * @author annejan@badge.team
  *
- * @property int $id
- * @property int $badge_id
- * @property int $project_id
- * @property string $status
+ * @property int         $id
+ * @property int         $badge_id
+ * @property int         $project_id
+ * @property string      $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Badge $badge

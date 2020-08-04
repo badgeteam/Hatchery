@@ -19,16 +19,16 @@ use LaravelWebauthn\Models\WebauthnKey;
  *
  * @author annejan@badge.team
  *
- * @property int $id
- * @property bool $admin
- * @property string $name
- * @property string $email
- * @property string $password
+ * @property int         $id
+ * @property bool        $admin
+ * @property string      $name
+ * @property string      $email
+ * @property string      $password
  * @property string|null $remember_token
- * @property string $editor
- * @property bool $public
- * @property bool $show_projects
- * @property bool $google2fa_enabled
+ * @property string      $editor
+ * @property bool        $public
+ * @property bool        $show_projects
+ * @property bool        $google2fa_enabled
  * @property string|null $google2fa_secret
  * @property Carbon|null $deleted_at
  * @property Carbon|null $created_at

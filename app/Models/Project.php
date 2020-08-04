@@ -20,20 +20,20 @@ use Illuminate\Support\Str;
  *
  * @author annejan@badge.team
  *
- * @property int $id
- * @property int $category_id
- * @property int $user_id
- * @property string $name
- * @property string $slug
- * @property int|null $min_firmware
- * @property int|null $max_firmware
+ * @property int         $id
+ * @property int         $category_id
+ * @property int         $user_id
+ * @property string      $name
+ * @property string      $slug
+ * @property int|null    $min_firmware
+ * @property int|null    $max_firmware
  * @property string|null $git
  * @property string|null $git_commit_id
  * @property Carbon|null $published_at
  * @property Carbon|null $deleted_at
- * @property Carbon $created_at
- * @property Carbon $updated_at
- * @property int $download_counter
+ * @property Carbon      $created_at
+ * @property Carbon      $updated_at
+ * @property int         $download_counter
  * @property-read Collection|Badge[] $badges
  * @property-read int|null $badges_count
  * @property-read string $category

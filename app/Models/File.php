@@ -17,11 +17,11 @@ use Intervention\Image\Facades\Image;
  *
  * @author annejan@badge.team
  *
- * @property int $id
- * @property int $user_id
- * @property int $version_id
- * @property string $name
- * @property mixed|null $content
+ * @property int         $id
+ * @property int         $user_id
+ * @property int         $version_id
+ * @property string      $name
+ * @property mixed|null  $content
  * @property Carbon|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at

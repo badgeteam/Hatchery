@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Auth;
  *
  * @author annejan@badge.team
  *
- * @property int $id
- * @property int $user_id
- * @property int $project_id
- * @property string $description
+ * @property int         $id
+ * @property int         $user_id
+ * @property int         $project_id
+ * @property string      $description
  * @property Carbon|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at

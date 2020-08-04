@@ -1,4 +1,4 @@
-name: Laravel
+name: Laravel PHPStan, Swagger and Pest
 
 on: [push, pull_request]
 
@@ -33,7 +33,7 @@ jobs:
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist && yarn install --production
     - name: Generate key
       run: php artisan key:generate
     - name: LaraStan

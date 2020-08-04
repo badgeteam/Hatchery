@@ -23,7 +23,7 @@
     "bootstrap-sass": "^3.4.1",
     "codemirror": "^5.56.0",
     "cross-env": "^7.0.2",
-    "css-loader": "^4.2.0",
+    "css-loader": "^3.6.0",
     "dropzone": "^5.7.2",
     "eslint": "^7.6.0",
     "file-loader": "^6.0.0",

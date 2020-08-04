@@ -15,13 +15,13 @@ use Illuminate\Support\Str;
  *
  * @author annejan@badge.team
  *
- * @property int $id
- * @property string $name
- * @property string $slug
+ * @property int         $id
+ * @property string      $name
+ * @property string      $slug
  * @property Carbon|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property bool $hidden
+ * @property bool        $hidden
  * @property-read int $eggs
  * @property-read Collection|Project[] $projects
  * @property-read int|null $projects_count

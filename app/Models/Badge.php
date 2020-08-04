@@ -15,9 +15,9 @@ use Illuminate\Support\Str;
  *
  * @author annejan@badge.team
  *
- * @property int $id
- * @property string $name
- * @property string $slug
+ * @property int         $id
+ * @property string      $name
+ * @property string      $slug
  * @property string|null $constraints
  * @property string|null $commands
  * @property Carbon|null $deleted_at

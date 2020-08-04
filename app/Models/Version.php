@@ -16,12 +16,12 @@ use Illuminate\Support\Facades\Auth;
  *
  * @author annejan@badge.team
  *
- * @property int $id
- * @property int $user_id
- * @property int $project_id
- * @property int $revision
+ * @property int         $id
+ * @property int         $user_id
+ * @property int         $project_id
+ * @property int         $revision
  * @property string|null $zip
- * @property int|null $size_of_zip
+ * @property int|null    $size_of_zip
  * @property string|null $git_commit_id
  * @property Carbon|null $deleted_at
  * @property Carbon|null $created_at
