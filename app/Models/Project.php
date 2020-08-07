@@ -134,7 +134,7 @@ class Project extends Model
         'git',
         'git_commit_id',
         'user',
-        'description'
+        'description',
     ];
 
     /**

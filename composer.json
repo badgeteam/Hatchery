@@ -58,7 +58,7 @@
         "nunomaduro/larastan": "^0.6.0",
         "pestphp/pest": "^0.1.5",
         "phan/phan": "^2.7",
-        "phpunit/phpunit": "^9.1"
+        "phpunit/phpunit": "9.2.*"
     },
     "autoload": {
         "classmap": [
