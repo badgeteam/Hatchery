@@ -155,7 +155,7 @@ class PublicController extends Controller
      *
      * @return JsonResponse
      */
-    public function projectJson(string $slug): JsonResponse
+    public function projectJson(string $slug, Request $request): JsonResponse
     {
         /** @var Project|null */
         $project = Project::where('slug', $slug)->first();
@@ -176,7 +176,9 @@ class PublicController extends Controller
 
         $package = new stdClass();
         $package->info = ['version' => (string) $version->revision];
-        $package->description = $project->description;
+        if ($request->description) {
+            $package->description = $project->description;
+        }
         $package->name = $project->name;
         $package->category = $project->category;
         $package->releases = $releases;

@@ -180,6 +180,36 @@ class PublicTest extends TestCase
         $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json');
         $response->assertStatus(200)
             ->assertExactJson([
+                'name'        => $version->project->name,
+                'info'        => ['version' => '1'],
+                'category'    => $category->slug,
+                'releases'    => [
+                    '1' => [
+                        [
+                            'url' => url('some_path.tar.gz'),
+                        ],
+                    ],
+                ],
+                'min_firmware' => null,
+                'max_firmware' => null,
+            ]);
+    }
+
+    /**
+     * Check JSON egg request . .
+     */
+    public function testProjectGetJsonDescription(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        $version = factory(Version::class)->create();
+        $version->zip = 'some_path.tar.gz';
+        $version->save();
+        $category = $version->project->category()->first();
+
+        $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json?description=true');
+        $response->assertStatus(200)
+            ->assertExactJson([
                 'description' => null,
                 'name'        => $version->project->name,
                 'info'        => ['version' => '1'],
@@ -232,7 +262,6 @@ class PublicTest extends TestCase
             ->assertExactJson([
                 [
                     'author'                  => $version->project->user->name,
-                    'description'             => null,
                     'name'                    => $version->project->name,
                     'revision'                => '1',
                     'slug'                    => $version->project->slug,
@@ -270,7 +299,6 @@ class PublicTest extends TestCase
             ->assertExactJson([
                 [
                     'author'                  => $version->project->user->name,
-                    'description'             => null,
                     'name'                    => $version->project->name,
                     'revision'                => '1',
                     'slug'                    => $version->project->slug,
@@ -307,7 +335,6 @@ class PublicTest extends TestCase
             ->assertExactJson([
                 [
                     'author'                  => $version->project->user->name,
-                    'description'             => null,
                     'name'                    => $version->project->name,
                     'revision'                => '1',
                     'slug'                    => $version->project->slug,
@@ -450,7 +477,6 @@ class PublicTest extends TestCase
             ->assertExactJson([
                 [
                     'author'                  => $version->project->user->name,
-                    'description'             => null,
                     'name'                    => $version->project->name,
                     'revision'                => '1',
                     'slug'                    => $version->project->slug,
@@ -493,7 +519,6 @@ class PublicTest extends TestCase
             ->assertExactJson([
                 [
                     'author'                  => $version->project->user->name,
-                    'description'             => null,
                     'name'                    => $version->project->name,
                     'revision'                => '1',
                     'slug'                    => $version->project->slug,
@@ -574,7 +599,6 @@ class PublicTest extends TestCase
             ->assertExactJson([
                 [
                     'author'           => $version->project->user->name,
-                    'description'      => null,
                     'name'             => $version->project->name,
                     'revision'         => '1',
                     'slug'             => $version->project->slug,
@@ -608,7 +632,6 @@ class PublicTest extends TestCase
         $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json');
         $response->assertStatus(200)
             ->assertExactJson([
-                'description' => null,
                 'name'        => $version->project->name,
                 'info'        => ['version' => '1'],
                 'category'    => $category->slug,
