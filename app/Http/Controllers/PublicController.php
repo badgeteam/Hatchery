@@ -180,7 +180,7 @@ class PublicController extends Controller
         if ($request->description) {
             $package->description = $project->description;
         } else {
-            $package->description = Str::limit((string)$project->description, 16);
+            $package->description = Str::limit((string) $project->description, 16);
         }
         $package->name = $project->name;
         $package->category = $project->category;
