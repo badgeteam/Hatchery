@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use OpenApi\Annotations as OA;
 use stdClass;
@@ -178,6 +179,8 @@ class PublicController extends Controller
         $package->info = ['version' => (string) $version->revision];
         if ($request->description) {
             $package->description = $project->description;
+        } else {
+            $package->description = Str::limit((string) $project->description, 16);
         }
         $package->name = $project->name;
         $package->category = $project->category;
