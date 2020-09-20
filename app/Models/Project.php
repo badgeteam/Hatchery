@@ -134,7 +134,6 @@ class Project extends Model
         'git',
         'git_commit_id',
         'user',
-        'description',
     ];
 
     /**
@@ -389,13 +388,23 @@ class Project extends Model
      */
     public function getDescriptionAttribute(): ?string
     {
+        $full = true;
+        $request = request();
+        if ($request->has('description') && $request->description === false) {
+            $full = false;
+        }
+
         /** @var Version|null $version */
         $version = $this->versions->last();
         if ($version && $version->files()->where('name', 'like', 'README.md')->count() === 1) {
             /** @var File $file */
             $file = $version->files()->where('name', 'like', 'README.md')->first();
 
-            return $file->content;
+            if ($full) {
+                return $file->content;
+            } else {
+                Str::limit((string) $file->content, 16);
+            }
         }
 
         return null;

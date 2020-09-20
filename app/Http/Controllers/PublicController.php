@@ -156,9 +156,9 @@ class PublicController extends Controller
      *
      * @return JsonResponse
      */
-    public function projectJson(string $slug, Request $request): JsonResponse
+    public function projectJson(string $slug): JsonResponse
     {
-        /** @var Project|null */
+        /** @var Project|null $project */
         $project = Project::where('slug', $slug)->first();
         if ($project === null) {
             return response()->json(['message' => 'No releases found'], 404, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
@@ -177,11 +177,7 @@ class PublicController extends Controller
 
         $package = new stdClass();
         $package->info = ['version' => (string) $version->revision];
-        if ($request->description) {
-            $package->description = $project->description;
-        } else {
-            $package->description = Str::limit((string) $project->description, 16);
-        }
+        $package->description = $project->description;
         $package->name = $project->name;
         $package->category = $project->category;
         $package->releases = $releases;
