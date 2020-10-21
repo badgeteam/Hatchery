@@ -181,7 +181,7 @@ class PublicTest extends TestCase
         $response->assertStatus(200)
             ->assertExactJson([
                 'name'        => $version->project->name,
-                'description' => '',
+                'description' => null,
                 'info'        => ['version' => '1'],
                 'category'    => $category->slug,
                 'releases'    => [
@@ -264,6 +264,7 @@ class PublicTest extends TestCase
                 [
                     'author'                  => $version->project->user->name,
                     'name'                    => $version->project->name,
+                    'description'             => null,
                     'revision'                => '1',
                     'slug'                    => $version->project->slug,
                     'size_of_content'         => $version->project->size_of_content,
@@ -301,6 +302,7 @@ class PublicTest extends TestCase
                 [
                     'author'                  => $version->project->user->name,
                     'name'                    => $version->project->name,
+                    'description'             => null,
                     'revision'                => '1',
                     'slug'                    => $version->project->slug,
                     'size_of_content'         => 0,
@@ -337,6 +339,7 @@ class PublicTest extends TestCase
                 [
                     'author'                  => $version->project->user->name,
                     'name'                    => $version->project->name,
+                    'description'             => null,
                     'revision'                => '1',
                     'slug'                    => $version->project->slug,
                     'size_of_content'         => 0,
@@ -479,6 +482,7 @@ class PublicTest extends TestCase
                 [
                     'author'                  => $version->project->user->name,
                     'name'                    => $version->project->name,
+                    'description'             => null,
                     'revision'                => '1',
                     'slug'                    => $version->project->slug,
                     'size_of_content'         => $version->project->size_of_content,
@@ -521,6 +525,7 @@ class PublicTest extends TestCase
                 [
                     'author'                  => $version->project->user->name,
                     'name'                    => $version->project->name,
+                    'description'             => null,
                     'revision'                => '1',
                     'slug'                    => $version->project->slug,
                     'size_of_content'         => 0,
@@ -601,6 +606,7 @@ class PublicTest extends TestCase
                 [
                     'author'           => $version->project->user->name,
                     'name'             => $version->project->name,
+                    'description'      => null,
                     'revision'         => '1',
                     'slug'             => $version->project->slug,
                     'size_of_content'  => 0,
@@ -634,7 +640,7 @@ class PublicTest extends TestCase
         $response->assertStatus(200)
             ->assertExactJson([
                 'name'        => $version->project->name,
-                'description' => '',
+                'description' => null,
                 'info'        => ['version' => '1'],
                 'category'    => $category->slug,
                 'releases'    => [
