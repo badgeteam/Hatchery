@@ -13,6 +13,6 @@
         </ignoreFiles>
     </projectFiles>
     <stubs>
-        <file name="_ide_helper.php" />
+        <file name="./_ide_helper.php" />
     </stubs>
 </psalm>

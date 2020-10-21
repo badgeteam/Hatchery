@@ -76,6 +76,6 @@ class Helpers
         $pow = min($pow, count($units) - 1);
         $bytes /= (1 << (10 * $pow));
 
-        return round($bytes, $precision).' '.$units[(int)$pow];
+        return round($bytes, $precision).' '.$units[(int) $pow];
     }
 }
