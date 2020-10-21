@@ -69,7 +69,8 @@ class BadgesController extends Controller
      */
     public function create(): View
     {
-        return view('badges.create');
+        return view('badges.create')
+            ->with('create', 'badge');
     }
 
     /**

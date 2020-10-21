@@ -8,6 +8,7 @@ use App\Http\Requests\Enable2FaRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
@@ -112,7 +113,7 @@ class TwoFAController extends Controller
     }
 
     /**
-     * @return RedirectResponse
+     * @return RedirectResponse|Redirector
      */
     public function verify()
     {
