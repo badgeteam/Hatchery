@@ -19,7 +19,7 @@ jobs:
           - 33306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Install Linux packages
       run: sudo apt update && sudo apt install -y --no-install-recommends pyflakes git iverilog arachne-pnr arachne-pnr-chipdb fpga-icestorm fpga-icestorm-chipdb
     - name: Install PHP
@@ -38,8 +38,6 @@ jobs:
       run: php artisan key:generate
     - name: LaraStan
       run: vendor/bin/phpstan analyse
-    - name: Psalm
-      run: vendor/bin/psalm
     - name: Swagger generate
       run: php artisan l5-swagger:generate
     - name: Populate DB
