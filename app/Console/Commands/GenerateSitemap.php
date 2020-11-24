@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Badge;
 use App\Models\Project;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -49,7 +50,11 @@ class GenerateSitemap extends Command
             )
             ->add(
                 Url::create('/projects')
-                ->setLastModificationDate($this->getLastUpdated())
+                    ->setLastModificationDate($this->getLastUpdated())
+            )
+            ->add(
+                Url::create('/badges')
+                    ->setLastModificationDate($this->getLastUpdatedBadge())
             );
 
         Project::all()->each(function (Project $project) use ($sitemap) {
@@ -59,7 +64,13 @@ class GenerateSitemap extends Command
                 ->setPriority(0.5)
             );
         });
-
+        Badge::all()->each(function (Badge $badge) use ($sitemap) {
+            $sitemap->add(
+                Url::create(route('badges.show', $badge->slug))
+                    ->setLastModificationDate($this->getLastUpdatedBadge($badge))
+                    ->setPriority(0.6)
+            );
+        });
         $sitemap->writeToFile(public_path('sitemap.xml'));
     }
 
@@ -76,5 +87,20 @@ class GenerateSitemap extends Command
         }
 
         return ($project === null || $project->updated_at === null) ? Carbon::now() : $project->updated_at;
+    }
+
+    /**
+     * @param Badge|null $badge
+     *
+     * @return Carbon
+     */
+    private function getLastUpdatedBadge($badge = null): Carbon
+    {
+        if ($badge === null) {
+            /** @var Badge|null $badge */
+            $badge = Badge::latest()->first();
+        }
+
+        return ($badge === null || $badge->updated_at === null) ? Carbon::now() : $badge->updated_at;
     }
 }

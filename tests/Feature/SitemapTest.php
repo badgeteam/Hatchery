@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Badge;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -46,7 +47,7 @@ class SitemapTest extends TestCase
         $this->assertEquals('', $response);
         $dom = new \DOMDocument();
         $dom->load(public_path('sitemap.xml'));
-        $this->assertCount(2, $dom->getElementsByTagName('url'));
+        $this->assertCount(3, $dom->getElementsByTagName('url'));
     }
 
     /**
@@ -60,6 +61,20 @@ class SitemapTest extends TestCase
         Artisan::call('sitemap:generate');
         $dom = new \DOMDocument();
         $dom->load(public_path('sitemap.xml'));
-        $this->assertCount(3, $dom->getElementsByTagName('url'));
+        $this->assertCount(4, $dom->getElementsByTagName('url'));
+    }
+
+    /**
+     * Make sure we have badges added.
+     */
+    public function testSitemapBadge(): void
+    {
+        $user = factory(User::class)->create();
+        $this->be($user);
+        factory(Badge::class)->create();
+        Artisan::call('sitemap:generate');
+        $dom = new \DOMDocument();
+        $dom->load(public_path('sitemap.xml'));
+        $this->assertCount(4, $dom->getElementsByTagName('url'));
     }
 }
