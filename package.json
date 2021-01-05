@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@hapi/hoek": "^9.0.3",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
     "bootstrap-sass": "^3.4.1",
     "codemirror": "^5.58.1",
