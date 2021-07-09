@@ -45,7 +45,7 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
-    "laravel-echo": "^1.10.0",
+    "laravel-echo": "^1.11.0",
     "markdownlint-cli": "^0.26.0",
     "socket.io-client": "^3.0.0"
   }
