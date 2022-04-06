@@ -53,7 +53,8 @@ class ProjectsTest extends TestCase
 
     public function testProjectsIndex(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('/projects');
@@ -66,7 +67,8 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsCreate(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('/projects/create');
@@ -78,7 +80,8 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsImport(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('/import');
@@ -91,9 +94,11 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsStore(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->assertEmpty(Project::all());
-        $category = factory(Category::class)->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('post', '/projects', ['name' => $this->faker->name, 'description' => $this->faker->paragraph, 'category_id' => $category->id, 'status' => 'unknown']);
@@ -109,9 +114,11 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsStoreUnique(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->assertEmpty(Project::all());
-        $category = factory(Category::class)->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
         $name = $this->faker->name;
         $response = $this
             ->actingAs($user)
@@ -140,9 +147,11 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsEdit(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('/projects/'.$project->slug.'/edit');
@@ -154,10 +163,13 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsEditOtherUser(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($otherUser)
             ->get('/projects/'.$project->slug.'/edit');
@@ -169,11 +181,13 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsEditCollaboratingUser(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $project->collaborators()->attach($otherUser);
         $response = $this
             ->actingAs($otherUser)
@@ -186,12 +200,17 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsUpdate(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $projectDep = factory(Project::class)->create();
-        $projectDep->versions()->first()->zip = 'test';
-        $projectDep->versions()->first()->save();
-        $project = factory(Project::class)->create();
+        /** @var Project $projectDep */
+        $projectDep = Project::factory()->create();
+        /** @var Version $depVer */
+        $depVer = $projectDep->versions()->first();
+        $depVer->zip = 'test';
+        $depVer->save();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
@@ -224,16 +243,18 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsUpdateBrokenBadge(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
-                'description' => $this->faker->paragraph,
-                'category_id' => $project->category_id,
-                'badge_ids'   => [1],  // non-existing badge ;)
-                'status'      => 'unknown',
+                'description'  => $this->faker->paragraph,
+                'category_id'  => $project->category_id,
+                'badge_ids'    => [1],  // non-existing badge ;)
+                'badge_status' => [1 => 'unknown'],
             ]);
         $response->assertRedirect('/projects/'.$project->slug.'/edit')->assertSessionHasErrors();
     }
@@ -243,10 +264,13 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsUpdateCollaborators(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
@@ -279,13 +303,19 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsUpdateOtherUser(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $this->be($user);
-        $projectDep = factory(Project::class)->create();
-        $projectDep->versions()->first()->zip = 'test';
-        $projectDep->versions()->first()->save();
-        $project = factory(Project::class)->create();
+        /** @var Project $projectDep */
+        $projectDep = Project::factory()->create();
+        /** @var Version $depVer */
+        $depVer = $projectDep->versions()->first();
+        $depVer->zip = 'test';
+        $depVer->save();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
@@ -312,14 +342,19 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsUpdateCollaboratingUser(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $this->be($user);
-        $projectDep = factory(Project::class)->create();
-        $projectDep->versions()->first()->zip = 'test';
-        $projectDep->versions()->first()->save();
+        /** @var Project $projectDep */
+        $projectDep = Project::factory()->create();
+        /** @var Version $depVer */
+        $depVer = $projectDep->versions()->first();
+        $depVer->zip = 'test';
+        $depVer->save();
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $project->collaborators()->attach($otherUser);
         $response = $this
             ->actingAs($otherUser)
@@ -344,23 +379,28 @@ class ProjectsTest extends TestCase
 
     /**
      * Check the projects can be published.
+     *
+     * @throws \JsonException
      */
     public function testProjectsPublish(): void
     {
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->be($user);
-        $projectDep = factory(Project::class)->create();
-        $projectDep->versions()->first()->zip = 'test';
-        $projectDep->versions()->first()->save();
+        /** @var Project $projectDep */
+        $projectDep = Project::factory()->create();
+        /** @var Version $depVer */
+        $depVer = $projectDep->versions()->first();
+        $depVer->zip = 'test';
+        $depVer->save();
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $project->dependencies()->save($projectDep);
         /** @var Collection $versions */
         $versions = $project->versions()->unPublished();
         /** @var Version $version */
         $version = $versions->first();
-        $file = factory(File::class)->create(['version_id' => $version->id]);
+        $file = File::factory()->create(['version_id' => $version->id]);
         $file->first()->version_id = $version->id; // yah ugly
         $file->first()->save(); // wut?
         $this->assertNull($project->published_at);
@@ -394,7 +434,7 @@ class ProjectsTest extends TestCase
             'category'    => $project->category,
             'author'      => $user->name,
             'revision'    => 1,
-        ]), $json);
+        ], JSON_THROW_ON_ERROR), $json);
 
         $dep = file_get_contents($path.'/'.$project->slug.'.egg-info/requires.txt');
         $this->assertEquals($projectDep->slug."\n", $dep);
@@ -406,21 +446,27 @@ class ProjectsTest extends TestCase
         $this->assertNotNull($project->published_at);
         $this->assertTrue(now()->isSameDay($project->published_at));
 
-        Event::assertDispatched(ProjectUpdated::class, function ($e) use ($project) {
+        Event::assertDispatched(ProjectUpdated::class, static function ($e) use ($project) {
             return $e->project->id === $project->id;
         }, 1);
     }
 
     /**
      * Check published project with icon has correct metadata.
+     *
+     * @throws \JsonException
      */
     public function testProjectsPublishIconMeta(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
-        $file = factory(File::class)->create([
-            'version_id' => $project->versions()->unPublished()->first()->id,
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var Version $newVersion */
+        $newVersion = $project->versions()->unPublished()->first();
+        File::factory()->create([
+            'version_id' => $newVersion->id,
             'content'    => 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAF'.
                 'FElEQVRYw+1XfVDTZRxXj9oxN4a8bGMbG4ONTdBUEuVFQImjk5ISxBOQN3kJDSFAQgMRQh0ahLyj'.
                 'EBAblaF2cnqWRml1h1meCUmGQhmVvQioMC8RsM8ToxR/v59o/FF3/u6e+217vs/3+/m+fb7Ppkx5'.
@@ -470,7 +516,7 @@ class ProjectsTest extends TestCase
             'author'      => $project->user->name,
             'revision'    => 1,
             'icon'        => 'icon.png',
-        ]), $json);
+        ], JSON_THROW_ON_ERROR), $json);
 
         unlink(public_path($zip));
         Helpers::delTree($path);
@@ -481,9 +527,11 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsDestroy(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('delete', '/projects/'.$project->slug);
@@ -495,10 +543,13 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsDestroyOtherUser(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($otherUser)
             ->call('delete', '/projects/'.$project->slug);
@@ -510,10 +561,13 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsDestroyAdminUser(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create(['admin' => true]);
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create(['admin' => true]);
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($otherUser)
             ->call('delete', '/projects/'.$project->slug);
@@ -525,9 +579,11 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsView(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $response = $this
             ->call('get', '/projects/'.$project->slug);
         $response->assertStatus(200)->assertViewHas(['project']);
@@ -538,11 +594,13 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsStoreBadge(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->assertEmpty(Project::all());
         /** @var Category $category */
-        $category = factory(Category::class)->create();
-        $badge = factory(Badge::class)->create();
+        $category = Category::factory()->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('post', '/projects', [
@@ -563,11 +621,13 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsUpdateBadge(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create();
-        $badge = factory(Badge::class)->create();
+        $project = Project::factory()->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
         $this->assertEquals('unknown', $project->status);
         $response = $this
             ->actingAs($user)
@@ -589,15 +649,16 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsNotify(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('post', '/notify/'.$project->slug, ['description' => 'het zuigt']);
         $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
-        Mail::assertSent(ProjectNotificationMail::class, function (ProjectNotificationMail $mail) {
+        Mail::assertSent(ProjectNotificationMail::class, static function (ProjectNotificationMail $mail) {
             Container::getInstance()->call([$mail, 'build']);
 
             return 'mails.projectNotify' === $mail->build()->textView;
@@ -618,10 +679,11 @@ class ProjectsTest extends TestCase
     public function testProjectsRename(): void
     {
         $name = $this->faker->name;
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $this->assertNotEquals($name, $project->name);
         $response = $this
             ->actingAs($user)
@@ -641,12 +703,13 @@ class ProjectsTest extends TestCase
     public function testProjectsRenameAdminUser(): void
     {
         $name = $this->faker->name;
-        $user = factory(User::class)->create([
+        /** @var User $user */
+        $user = User::factory()->create([
             'admin' => true,
         ]);
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $this->assertNotEquals($name, $project->name);
         $response = $this
             ->actingAs($user)
@@ -671,10 +734,11 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsRenameForm(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('get', '/projects/'.$project->slug.'/rename');
@@ -686,12 +750,13 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsRenameFormAdminUser(): void
     {
-        $user = factory(User::class)->create([
+        /** @var User $user */
+        $user = User::factory()->create([
             'admin' => true,
         ]);
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('get', '/projects/'.$project->slug.'/rename');
@@ -703,7 +768,8 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsIndexBadge(): void
     {
-        $badge = factory(Badge::class)->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
         $response = $this
             ->get('/projects?badge='.$badge->slug);
         $response->assertStatus(200)
@@ -716,7 +782,8 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsIndexCategory(): void
     {
-        $category = factory(Category::class)->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
         $response = $this
             ->get('/projects?category='.$category->slug);
         $response->assertStatus(200)
@@ -729,8 +796,10 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsIndexCategoryBadge(): void
     {
-        $badge = factory(Badge::class)->create();
-        $category = factory(Category::class)->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
         $response = $this
             ->get('/projects?badge='.$badge->slug.'&category='.$category->slug);
         $response->assertStatus(200)
@@ -758,8 +827,10 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsStoreForbiddenName(): void
     {
-        $user = factory(User::class)->create();
-        $category = factory(Category::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
 
         $response = $this
             ->actingAs($user)
@@ -774,8 +845,10 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsStoreNameTooLong(): void
     {
-        $user = factory(User::class)->create();
-        $category = factory(Category::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
 
         $response = $this
             ->actingAs($user)
@@ -790,10 +863,11 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsUpdatePublish(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
@@ -818,10 +892,11 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsUpdateMinFirmwareNaN(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
@@ -838,10 +913,11 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsUpdateMaxFirmwareNaN(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
@@ -858,10 +934,11 @@ class ProjectsTest extends TestCase
      */
     public function testProjectsUpdateMaxFirmware(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [

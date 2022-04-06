@@ -3,12 +3,8 @@
 [![Build Status](https://travis-ci.org/badgeteam/Hatchery.svg)](https://travis-ci.org/badgeteam/Hatchery)
 [![Maintainability](https://api.codeclimate.com/v1/badges/05fc2bac5b3669fa1b0c/maintainability)](https://codeclimate.com/github/badgeteam/Hatchery/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/05fc2bac5b3669fa1b0c/test_coverage)](https://codeclimate.com/github/badgeteam/Hatchery/test_coverage)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/78402ccc553245f2be2d1def6fdc3c68)](https://www.codacy.com/app/Badgeteam/Hatchery?utm_source=github.com&utm_medium=referral&utm_content=badgeteam/Hatchery&utm_campaign=Badge_Grade)
-[![CircleCI](https://circleci.com/gh/badgeteam/Hatchery.svg?style=svg)](https://circleci.com/gh/badgeteam/Hatchery)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/badgeteam/Hatchery/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/badgeteam/Hatchery/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/badgeteam/Hatchery/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/badgeteam/Hatchery/?branch=master)
-[![Build Status](https://scrutinizer-ci.com/g/badgeteam/Hatchery/badges/build.png?b=master)](https://scrutinizer-ci.com/g/badgeteam/Hatchery/build-status/master)
-[![codecov](https://codecov.io/gh/badgeteam/Hatchery/branch/master/graph/badge.svg)](https://codecov.io/gh/badgeteam/Hatchery)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/de585b432198428a88cab0a13f9c2774)](https://www.codacy.com/gh/badgeteam/Hatchery/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=badgeteam/Hatchery&amp;utm_campaign=Badge_Grade)
+[![Codecov](https://codecov.io/gh/badgeteam/Hatchery/branch/master/graph/badge.svg)](https://codecov.io/gh/badgeteam/Hatchery)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery?ref=badge_shield)
 [![Known Vulnerabilities](https://snyk.io/test/github/badgeteam/Hatchery/badge.svg)](https://snyk.io/test/github/badgeteam/Hatchery)
 [![Github Actions](https://github.com/badgeteam/Hatchery/workflows/Laravel/badge.svg)](https://github.com/badgeteam/Hatchery/actions)
@@ -22,9 +18,9 @@ Simple micropython software repository for Badges.
 
 ## Installation
 
--   Requires PHP 7.3 or later
+-   Requires PHP 8.0 or later
 -   Requires Python 3.6 or later
--   Requires Node.js 6.0 or later
+-   Requires Node.js 16.14 or later
 -   Requires Redis 3.2 or later
 -   Requires Git 2.8 or later
 
@@ -63,9 +59,9 @@ laravel-echo-server init
 Compiling and installing the patched minigzip.
 
 ```bash
-wget http://zlib.net/zlib-1.2.11.tar.gz
-tar xvf zlib-1.2.11.tar.gz
-cd zlib-1.2.11
+wget http://zlib.net/zlib-1.2.12.tar.gz
+tar xvf zlib-1.2.12.tar.gz
+cd zlib-1.2.12
 ./configure
 echo -e "#define MAX_WBITS  13\n$(cat zconf.h)" > zconf.h
 make

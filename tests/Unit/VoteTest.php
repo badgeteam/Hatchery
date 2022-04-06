@@ -22,9 +22,11 @@ class VoteTest extends TestCase
      */
     public function testVoteUserRelationship(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $vote = factory(Vote::class)->create();
+        /** @var Vote $vote */
+        $vote = Vote::factory()->create();
         $this->assertInstanceOf(User::class, $vote->user);
         $this->assertEquals($user->id, $vote->user->id);
     }
@@ -34,10 +36,13 @@ class VoteTest extends TestCase
      */
     public function testVoteProjectRelationship(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
-        $vote = factory(Vote::class)->create(['project_id' => $project->id]);
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var Vote $vote */
+        $vote = Vote::factory()->create(['project_id' => $project->id]);
         $this->assertInstanceOf(Project::class, $vote->project);
         $this->assertEquals($project->id, $vote->project->id);
     }
@@ -47,9 +52,11 @@ class VoteTest extends TestCase
      */
     public function testVoteTypeEnumDefault(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $vote = factory(Vote::class)->create();
+        /** @var Vote $vote */
+        $vote = Vote::factory()->create();
         $this->assertNull($vote->type);
         /** @var Vote $vote */
         $vote = Vote::find($vote->id);
@@ -61,10 +68,13 @@ class VoteTest extends TestCase
      */
     public function testVoteTypeEnumPig(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
-        $vote = factory(Vote::class)->create(['project_id' => $project->id, 'type' => 'pig']);
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var Vote $vote */
+        $vote = Vote::factory()->create(['project_id' => $project->id, 'type' => 'pig']);
         $this->assertEquals('pig', $vote->type);
         /** @var Vote $vote */
         $vote = Vote::find($vote->id);
@@ -76,10 +86,13 @@ class VoteTest extends TestCase
      */
     public function testVoteTypeEnumDown(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
-        $vote = factory(Vote::class)->create(['project_id' => $project->id, 'type' => 'down']);
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var Vote $vote */
+        $vote = Vote::factory()->create(['project_id' => $project->id, 'type' => 'down']);
         $this->assertEquals('down', $vote->type);
         /** @var Vote $vote */
         $vote = Vote::find($vote->id);

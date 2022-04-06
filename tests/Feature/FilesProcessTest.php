@@ -26,9 +26,11 @@ class FilesProcessTest extends TestCase
      */
     public function testFilesUpdateLintWarning(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create();
+        /** @var File $file */
+        $file = File::factory()->create();
         $data = 'import time';
         $response = $this
             ->actingAs($user)
@@ -41,9 +43,11 @@ class FilesProcessTest extends TestCase
      */
     public function testFilesUpdateLintError(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create();
+        /** @var File $file */
+        $file = File::factory()->create();
         $data = 'imprt time';
         $response = $this
             ->actingAs($user)
@@ -53,14 +57,17 @@ class FilesProcessTest extends TestCase
 
     /**
      * Check the files can be linted.
+     *
+     * @throws \JsonException
      */
     public function testFilesLintSuccess(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'test.json']);
-        $data = json_encode(['tests' => ['test1', 'test2']]);
+        $file = File::factory()->create(['name' => 'test.json']);
+        $data = json_encode(['tests' => ['test1', 'test2']], JSON_THROW_ON_ERROR);
         Event::fake();
         $response = $this
             ->actingAs($user)
@@ -81,10 +88,11 @@ class FilesProcessTest extends TestCase
      */
     public function testFilesLintWarning(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'test.py']);
+        $file = File::factory()->create(['name' => 'test.py']);
         $data = 'import neopixel';
         Event::fake();
         $response = $this
@@ -106,10 +114,11 @@ class FilesProcessTest extends TestCase
      */
     public function testFilesLintDanger(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'test.py']);
+        $file = File::factory()->create(['name' => 'test.py']);
         $data = 'improt system';
         Event::fake();
         $response = $this
@@ -131,10 +140,11 @@ class FilesProcessTest extends TestCase
      */
     public function testFilesLintInfo(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'test.txt']);
+        $file = File::factory()->create(['name' => 'test.txt']);
         $data = 'This is a file';
         Event::fake();
         $response = $this
@@ -157,10 +167,11 @@ class FilesProcessTest extends TestCase
      */
     public function testFilesProcessInfo(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'test.txt']);
+        $file = File::factory()->create(['name' => 'test.txt']);
         Event::fake();
         $response = $this
             ->actingAs($user)
@@ -181,10 +192,11 @@ class FilesProcessTest extends TestCase
      */
     public function testFilesProcessNoCommands(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'test.v', 'content' => '`default_nettype none
+        $file = File::factory()->create(['name' => 'test.v', 'content' => '`default_nettype none
 module chip (
   output  O_LED_R
   );
@@ -214,10 +226,11 @@ endmodule']);
      */
     public function testFilesProcessNoConstraints(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'test.v', 'content' => '`default_nettype none
+        $file = File::factory()->create(['name' => 'test.v', 'content' => '`default_nettype none
 module chip (
   output  O_LED_R
   );
@@ -226,7 +239,8 @@ module chip (
   assign O_LED_R = w_led_r;
 endmodule']);
         $files = File::count();
-        $badge = factory(Badge::class)->create([
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create([
             'commands' => 'echo VDL > OUT',
         ]);
         $file->version->project->badges()->attach($badge);
@@ -237,7 +251,7 @@ endmodule']);
         $response->assertStatus(200)->assertExactJson(['processing' => 'started']);
         $i = 0;
         Event::assertDispatched(ProjectUpdated::class, function ($e) use ($badge, &$i) {
-            if ($i == 0) {
+            if ($i === 0) {
                 $this->assertEquals('warning', $e->type);
                 $this->assertEquals('No constraints for badge: '.$badge->name, $e->message);
             }
@@ -253,10 +267,11 @@ endmodule']);
      */
     public function testFilesProcessSuccess(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'test.v', 'content' => '`default_nettype none
+        $file = File::factory()->create(['name' => 'test.v', 'content' => '`default_nettype none
 module chip (
   output  O_LED_R
   );
@@ -265,7 +280,7 @@ module chip (
   assign O_LED_R = w_led_r;
 endmodule']);
         /** @var Badge $badge */
-        $badge = factory(Badge::class)->create([
+        $badge = Badge::factory()->create([
             'constraints' => 'set_io O_LED_R	39',
             'commands'    => 'yosys -q -p "read_verilog -noautowire VDL ; check ; clean ; synth_ice40 -blif VDL.blif"
 # arachne-pnr -d 5k -P sg48 -p PCF VDL.blif -o VDL.txt
@@ -298,10 +313,11 @@ icepack VDL.txt OUT',
      */
     public function testFilesProcessError(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'test.v', 'content' => '`default_nettype none
+        $file = File::factory()->create(['name' => 'test.v', 'content' => '`default_nettype none
 module chip (
   output  O_LED_R
   );
@@ -310,7 +326,7 @@ module chip (
   assign O_LED_R = w_led_r;
 endmodule']);
         /** @var Badge $badge */
-        $badge = factory(Badge::class)->create([
+        $badge = Badge::factory()->create([
             'constraints' => 'set_io O_LED_R	39',
             'commands'    => 'echo lol && some typo',
         ]);
@@ -323,10 +339,10 @@ endmodule']);
         $response->assertStatus(200)->assertExactJson(['processing' => 'started']);
         $i = 0;
         Event::assertDispatched(ProjectUpdated::class, function ($e) use (&$i) {
-            if ($i == 0) {
+            if ($i === 0) {
                 $this->assertEquals('danger', $e->type);
             }
-            if ($i == 1) {
+            if ($i === 1) {
                 $this->assertEquals('warning', $e->type);
                 $this->assertEquals("lol\n", $e->message);
             }

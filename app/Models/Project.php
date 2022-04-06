@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Support\Helpers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -90,6 +91,7 @@ use Illuminate\Support\Str;
 class Project extends Model
 {
     use SoftDeletes;
+    use HasFactory;
 
     /**
      * Create with these.
@@ -366,11 +368,13 @@ class Project extends Model
      */
     public function getCategoryAttribute(): ?string
     {
-        if ($this->category()->first() === null) {
+        /** @var Category|null $category */
+        $category = $this->category()->first();
+        if ($category === null) {
             return 'uncategorised';
         }
 
-        return $this->category()->first()->slug;
+        return $category->slug;
     }
 
     /**
@@ -402,9 +406,9 @@ class Project extends Model
 
             if ($full) {
                 return $file->content;
-            } else {
-                Str::limit((string) $file->content, 16);
             }
+
+            return Str::limit((string) $file->content, 16);
         }
 
         return null;
@@ -494,9 +498,9 @@ class Project extends Model
     {
         if (empty($this->user->name)) {
             return 'Unknown';
-        } else {
-            return $this->user->name;
         }
+
+        return $this->user->name;
     }
 
     /**
@@ -504,6 +508,7 @@ class Project extends Model
      */
     public function getUnpublishedVersion(): Version
     {
+        /** @var Version|null $version */
         $version = $this->versions()->unPublished()->first();
         if ($version === null) {
             /** @var Version $previousVersion */

@@ -22,9 +22,11 @@ class WarningTest extends TestCase
      */
     public function testWarningUserRelationship(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $warning = factory(Warning::class)->create();
+        /** @var Warning $warning */
+        $warning = Warning::factory()->create();
         $this->assertInstanceOf(User::class, $warning->user);
         $this->assertEquals($user->id, $warning->user->id);
     }
@@ -34,10 +36,13 @@ class WarningTest extends TestCase
      */
     public function testWarningProjectRelationship(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
-        $warning = factory(Warning::class)->create(['project_id' => $project->id]);
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var Warning $warning */
+        $warning = Warning::factory()->create(['project_id' => $project->id]);
         $this->assertInstanceOf(Project::class, $warning->project);
         $this->assertEquals($project->id, $warning->project->id);
     }

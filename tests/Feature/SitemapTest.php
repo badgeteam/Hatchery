@@ -55,9 +55,10 @@ class SitemapTest extends TestCase
      */
     public function testSitemapProject(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        factory(Project::class)->create();
+        Project::factory()->create();
         Artisan::call('sitemap:generate');
         $dom = new \DOMDocument();
         $dom->load(public_path('sitemap.xml'));
@@ -69,9 +70,10 @@ class SitemapTest extends TestCase
      */
     public function testSitemapBadge(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        factory(Badge::class)->create();
+        Badge::factory()->create();
         Artisan::call('sitemap:generate');
         $dom = new \DOMDocument();
         $dom->load(public_path('sitemap.xml'));

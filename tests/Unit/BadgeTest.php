@@ -23,10 +23,13 @@ class BadgeTest extends TestCase
      */
     public function testBadgeProjectRelationship(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $badge = factory(Badge::class)->create();
-        $project = factory(Project::class)->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $project->badges()->attach($badge);
         /** @var Badge $badge */
         $badge = Badge::find($badge->id);
