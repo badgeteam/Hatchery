@@ -396,11 +396,16 @@ class ProjectsController extends Controller
             $badges = Badge::find($request->get('badge_ids'));
             $project->badges()->attach($badges);
             $status = $request->get('badge_status');
-
+            if (!is_array($status)) {
+                throw new \RuntimeException('Badge status must be an array');
+            }
             foreach ($request->get('badge_ids') as $badge_id) {
                 if (array_key_exists($badge_id, $status)) {
-                    /** @var BadgeProject $state */
+                    /** @var BadgeProject|null $state */
                     $state = BadgeProject::where('badge_id', $badge_id)->where('project_id', $project->id)->first();
+                    if ($state === null) {
+                        throw new \RuntimeException('BadgeProject not found');
+                    }
                     $state->status = $status[$badge_id];
                     $state->save();
                 }

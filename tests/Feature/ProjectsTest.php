@@ -251,10 +251,10 @@ class ProjectsTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('put', '/projects/'.$project->slug, [
-                'description' => $this->faker->paragraph,
-                'category_id' => $project->category_id,
-                'badge_ids'   => [1],  // non-existing badge ;)
-                'status'      => 'unknown',
+                'description'  => $this->faker->paragraph,
+                'category_id'  => $project->category_id,
+                'badge_ids'    => [1],  // non-existing badge ;)
+                'badge_status' => [1 => 'unknown'],
             ]);
         $response->assertRedirect('/projects/'.$project->slug.'/edit')->assertSessionHasErrors();
     }
