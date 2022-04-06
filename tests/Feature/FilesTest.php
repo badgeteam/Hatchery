@@ -29,13 +29,16 @@ class FilesTest extends TestCase
         $path = sys_get_temp_dir().'/'.$name;
         copy($stub, $path);
         $file = new UploadedFile($path, $name, 'image/png', null, true);
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
-
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var Version $lastVer */
+        $lastVer = $project->versions->last();
         $response = $this
             ->actingAs($user)
-            ->post('/upload/'.$project->versions->last()->id, ['file' => $file]);
+            ->post('/upload/'.$lastVer->id, ['file' => $file]);
         $response->assertStatus(200);
 
         $this->assertCount(2, File::all()); // you get a free __init__.py
@@ -54,9 +57,9 @@ class FilesTest extends TestCase
 //        $path = sys_get_temp_dir().'/'.$name;
 //        copy($stub, $path);
 //        $file = new UploadedFile($path, $name, 'applications/zip', null, true);
-//        $user = factory(User::class)->create();
+//        $user = User::factory()->create();
 //        $this->be($user);
-//        $project = factory(Project::class)->create();
+//        $project = Project::factory()->create();
 //
 //        $response = $this
 //            ->actingAs($user)
@@ -69,9 +72,11 @@ class FilesTest extends TestCase
      */
     public function testFilesEdit(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create();
+        /** @var File $file */
+        $file = File::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('/files/'.$file->id.'/edit');
@@ -83,10 +88,13 @@ class FilesTest extends TestCase
      */
     public function testFilesEditOtherUser(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create();
+        /** @var File $file */
+        $file = File::factory()->create();
         $response = $this
             ->actingAs($otherUser)
             ->get('/files/'.$file->id.'/edit');
@@ -98,10 +106,13 @@ class FilesTest extends TestCase
      */
     public function testFilesEditCollaboratingUser(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create();
+        /** @var File $file */
+        $file = File::factory()->create();
         $file->version->project->collaborators()->attach($otherUser);
         $response = $this
             ->actingAs($otherUser)
@@ -114,10 +125,11 @@ class FilesTest extends TestCase
      */
     public function testFilesEditGit(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create();
+        $file = File::factory()->create();
         $file->version->project->git = 'some.uri';
         $file->version->project->save();
         $response = $this
@@ -131,10 +143,11 @@ class FilesTest extends TestCase
      */
     public function testFilesUpdate(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create();
+        $file = File::factory()->create();
         $data = 'import time
 time.localtime()';
         $response = $this
@@ -151,10 +164,11 @@ time.localtime()';
      */
     public function testFilesUpdateNonPy(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'info.txt']);
+        $file = File::factory()->create(['name' => 'info.txt']);
         $data = 'info';
         $response = $this
             ->actingAs($user)
@@ -170,10 +184,11 @@ time.localtime()';
      */
     public function testFilesUpdateMarkdown(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'README.md']);
+        $file = File::factory()->create(['name' => 'README.md']);
         $data = '# test
 
 text';
@@ -190,14 +205,16 @@ text';
 
     /**
      * Check the files can be stored.
+     * @throws \JsonException
      */
     public function testFilesUpdateJson(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'test.json']);
-        $data = json_encode(['tests' => ['test1', 'test2']]);
+        $file = File::factory()->create(['name' => 'test.json']);
+        $data = json_encode(['tests' => ['test1', 'test2']], JSON_THROW_ON_ERROR);
         $response = $this
             ->actingAs($user)
             ->call('put', '/files/'.$file->id, ['file_content' => $data]);
@@ -214,10 +231,11 @@ text';
      */
     public function testFilesUpdateVerilog(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'test.v']);
+        $file = File::factory()->create(['name' => 'test.v']);
         $data = '`default_nettype none
 module chip (
   output  O_LED_R
@@ -242,10 +260,13 @@ endmodule';
      */
     public function testFilesUpdateOtherUser(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create();
+        /** @var File $file */
+        $file = File::factory()->create();
         $data = 'import time
 time.localtime()';
         $response = $this
@@ -259,10 +280,13 @@ time.localtime()';
      */
     public function testFilesUpdateCollaboratingUser(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create();
+        /** @var File $file */
+        $file = File::factory()->create();
         $file->version->project->collaborators()->attach($otherUser);
         $data = 'import time
 time.localtime()';
@@ -277,10 +301,11 @@ time.localtime()';
      */
     public function testFilesUpdateGit(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create();
+        $file = File::factory()->create();
         $file->version->project->git = 'some.uri';
         $file->version->project->save();
         $data = 'import time
@@ -296,9 +321,11 @@ time.localtime()';
      */
     public function testFilesDestroy(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create();
+        /** @var File $file */
+        $file = File::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('delete', '/files/'.$file->id);
@@ -310,10 +337,11 @@ time.localtime()';
      */
     public function testFilesDestroyGit(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create();
+        $file = File::factory()->create();
         $file->version->project->git = 'some.uri';
         $file->version->project->save();
         $response = $this
@@ -327,9 +355,11 @@ time.localtime()';
      */
     public function testFilesCreate(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('/files/create?version='.$version->id);
@@ -342,9 +372,11 @@ time.localtime()';
      */
     public function testFilesStore(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $response = $this
             ->actingAs($user)
             ->post('/files', ['name' => 'test.py', 'file_content' => '# test', 'version_id' => $version->id]);
@@ -360,9 +392,11 @@ time.localtime()';
      */
     public function testFilesStoreNameTooLarge(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $response = $this
             ->actingAs($user)
             ->post('/files', ['name' => $this->faker->text(1024), 'file_content' => '# test', 'version_id' => $version->id]);
@@ -375,9 +409,11 @@ time.localtime()';
      */
     public function testFilesView(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create();
+        /** @var File $file */
+        $file = File::factory()->create();
         $response = $this
             ->call('get', '/files/'.$file->id);
         $response->assertStatus(200)->assertViewHas(['file']);
@@ -388,9 +424,11 @@ time.localtime()';
      */
     public function testFilesDownload(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create();
+        /** @var File $file */
+        $file = File::factory()->create();
         $response = $this
             ->call('get', '/download/'.$file->id);
         $response->assertStatus(200)->assertHeader('Content-Type', 'application/x-python-code');
@@ -401,9 +439,11 @@ time.localtime()';
      */
     public function testFilesCreateIcon(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('/create-icon?version='.$version->id);
@@ -428,9 +468,11 @@ time.localtime()';
      */
     public function testFilesCreateIconNameTooLarge(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $response = $this
             ->actingAs($user)
             ->post('/create-icon?version='.$version->id, ['name' => $this->faker->text(1024)]);

@@ -40,7 +40,7 @@ class EdgeCasesTest extends TestCase
      */
     public function testUserDeleteRaceCondition(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->be($user);
 
         $user = $this->mock(User::class, function ($mock) {
@@ -57,10 +57,10 @@ class EdgeCasesTest extends TestCase
      */
     public function testProjectsVoteDeleteRaceCondition(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
-        $vote = factory(Vote::class)->create([
+        $project = Project::factory()->create();
+        $vote = Vote::factory()->create([
             'project_id' => $project->id,
             'type'       => 'pig',
         ]);
@@ -96,9 +96,9 @@ class EdgeCasesTest extends TestCase
      */
     public function testFilesDeleteRaceCondition(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        $version = Version::factory()->create();
         $file = $this->mock(File::class, function ($mock) use ($version) {
             $mock->shouldReceive('delete')->once()->andThrow(new \Exception('b0rk'));
             $mock->shouldReceive('getAttribute')->with('version')->once()->andReturn($version);
@@ -114,7 +114,7 @@ class EdgeCasesTest extends TestCase
      */
     public function testFilesUpdateRaceCondition(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->be($user);
         $file = $this->mock(File::class, function ($mock) {
             $mock->shouldReceive('save')->once()->andThrow(new \Exception('b0rk'));
@@ -132,9 +132,9 @@ class EdgeCasesTest extends TestCase
      */
     public function testPublishProjectException(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        $version = Version::factory()->create();
 
         $project = $this->mock(Project::class, function ($mock) use ($version) {
             $mock->shouldReceive('getUnpublishedVersion')->once()->andReturn($version);
@@ -149,9 +149,9 @@ class EdgeCasesTest extends TestCase
      */
     public function testUpdateProjectException(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        $version = Version::factory()->create();
 
         $project = $this->mock(Project::class, function ($mock) use ($version) {
             $mock->shouldReceive('getUnpublishedVersion')->once()->andReturn($version);

@@ -38,7 +38,8 @@ class PublicTest extends TestCase
      */
     public function testWelcomeBadge(): void
     {
-        $badge = factory(Badge::class)->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
         $response = $this->get('/?badge='.$badge->slug);
         $response->assertStatus(200)
             ->assertViewHas('badge', $badge->slug)
@@ -82,7 +83,8 @@ class PublicTest extends TestCase
      */
     public function testWelcomeCategory(): void
     {
-        $category = factory(Category::class)->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
         $response = $this->get('/?category='.$category->slug);
         $response->assertStatus(200)
             ->assertViewHas('badge', '')
@@ -96,8 +98,10 @@ class PublicTest extends TestCase
      */
     public function testWelcomeBadgeCategory(): void
     {
-        $badge = factory(Badge::class)->create();
-        $category = factory(Category::class)->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
         $response = $this->get('/?badge='.$badge->slug.'&category='.$category->slug);
         $response->assertStatus(200)
             ->assertViewHas('badge', $badge->slug)
@@ -111,7 +115,8 @@ class PublicTest extends TestCase
      */
     public function testBadge(): void
     {
-        $badge = factory(Badge::class)->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
         $response = $this->get('/badge/'.$badge->slug);
         $response->assertStatus(200)
             ->assertViewHas('badge', $badge->slug)
@@ -125,8 +130,10 @@ class PublicTest extends TestCase
      */
     public function testBadgeCategory(): void
     {
-        $badge = factory(Badge::class)->create();
-        $category = factory(Category::class)->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
         $response = $this->get('/badge/'.$badge->slug.'?category='.$category->slug);
         $response->assertStatus(200)
             ->assertViewHas('badge', $badge->slug)
@@ -170,11 +177,14 @@ class PublicTest extends TestCase
      */
     public function testProjectGetJson(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $version->zip = 'some_path.tar.gz';
         $version->save();
+        /** @var Category $category */
         $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json');
@@ -201,11 +211,14 @@ class PublicTest extends TestCase
      */
     public function testProjectGetJsonDescription(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $version->zip = 'some_path.tar.gz';
         $version->save();
+        /** @var Category $category */
         $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json?description=true');
@@ -232,9 +245,11 @@ class PublicTest extends TestCase
      */
     public function testProjectGetJson404(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
 
         $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json');
         $response->assertStatus(404)
@@ -248,14 +263,15 @@ class PublicTest extends TestCase
     {
         $response = $this->json('GET', '/eggs/list/json');
         $response->assertStatus(200)->assertExactJson([]);
-
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $version->zip = 'some_path.tar.gz';
         $version->save();
-        factory(File::class)->create(['version_id' => $version->id]);
-
+        File::factory()->create(['version_id' => $version->id]);
+        /** @var Category $category */
         $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/eggs/list/json');
@@ -286,14 +302,16 @@ class PublicTest extends TestCase
     {
         $response = $this->json('GET', '/eggs/search/something/json');
         $response->assertStatus(200)->assertExactJson([]);
-
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $version->zip = 'some_path.tar.gz';
         $version->save();
 
         $len = strlen($version->project->name);
+        /** @var Category $category */
         $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/eggs/search/'.substr($version->project->name, 2, $len - 4).'/json');
@@ -322,12 +340,14 @@ class PublicTest extends TestCase
      */
     public function testProjectCategoryJson(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $version->zip = 'some_path.tar.gz';
         $version->save();
-
+        /** @var Category $category */
         $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/eggs/category/nonexisting/json');
@@ -359,13 +379,15 @@ class PublicTest extends TestCase
      */
     public function testCategoriesJson(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $version->zip = 'some_path.tar.gz';
         $version->project->save();
         $version->save();
-
+        /** @var Category $category */
         $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/eggs/categories/json');
@@ -384,14 +406,15 @@ class PublicTest extends TestCase
      */
     public function testCategoriesCountJson(): void
     {
-        $user = factory(User::class)->create();
-
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $version->zip = 'iets anders';
         $version->project->save();
         $version->save();
-
+        /** @var Category $category */
         $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/eggs/categories/json');
@@ -410,13 +433,14 @@ class PublicTest extends TestCase
      */
     public function testCategoriesUnpublishedJson(): void
     {
-        $user = factory(User::class)->create();
-
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $version->project->save();
         $version->save();
-
+        /** @var Category $category */
         $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/eggs/categories/json');
@@ -435,9 +459,11 @@ class PublicTest extends TestCase
      */
     public function testProjectShow(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
 
         $response = $this->get('/projects/'.$version->project->slug.'');
         $response->assertStatus(200)
@@ -449,9 +475,11 @@ class PublicTest extends TestCase
      */
     public function testFileShow(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create();
+        /** @var File $file */
+        $file = File::factory()->create();
 
         $response = $this->get('/files/'.$file->id.'');
         $response->assertStatus(200)
@@ -463,14 +491,18 @@ class PublicTest extends TestCase
      */
     public function testBasketListJson(): void
     {
-        $badge = factory(Badge::class)->create();
-        $user = factory(User::class)->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $version->zip = 'some_path.tar.gz';
         $version->save();
         $version->project->badges()->attach($badge);
-        factory(File::class)->create(['version_id' => $version->id]);
+        File::factory()->create(['version_id' => $version->id]);
+        /** @var Category $category */
         $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/basket/nonexisting/list/json');
@@ -502,18 +534,21 @@ class PublicTest extends TestCase
      */
     public function testBasketSearchJson(): void
     {
-        $badge = factory(Badge::class)->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
         $response = $this->json('GET', '/eggs/search/something/json');
         $response->assertStatus(200)->assertExactJson([]);
-
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $version->zip = 'some_path.tar.gz';
         $version->save();
         $version->project->badges()->attach($badge);
 
         $len = strlen($version->project->name);
+        /** @var Category $category */
         $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/basket/nonexisting/search/'.substr($version->project->name, 2, $len - 4).'/json');
@@ -545,14 +580,17 @@ class PublicTest extends TestCase
      */
     public function testBasketCategoriesJson(): void
     {
-        $badge = factory(Badge::class)->create();
-        $user = factory(User::class)->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $version->zip = 'some_path.tar.gz';
         $version->save();
         $version->project->badges()->attach($badge);
-
+        /** @var Category $category */
         $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/basket/nonexisting/categories/json');
@@ -568,7 +606,7 @@ class PublicTest extends TestCase
                 ],
             ]);
 
-        factory(Category::class)->create();
+        Category::factory()->create();
 
         $this->assertCount(2, Category::all());
 
@@ -587,14 +625,17 @@ class PublicTest extends TestCase
      */
     public function testBasketCategoryJson(): void
     {
-        $badge = factory(Badge::class)->create();
-        $user = factory(User::class)->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $version->zip = 'some_path.tar.gz';
         $version->save();
         $version->project->badges()->attach($badge);
-
+        /** @var Category $category */
         $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/basket/nonexisting/category/'.$category->slug.'/json');
@@ -626,11 +667,14 @@ class PublicTest extends TestCase
      */
     public function testProjectGetJsonMinMaxFirmware(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $version->zip = 'some_path.tar.gz';
         $version->save();
+        /** @var Category $category */
         $category = $version->project->category()->first();
         $version->project->min_firmware = 13;
         $version->project->max_firmware = 37;

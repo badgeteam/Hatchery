@@ -79,9 +79,11 @@ class HelpersTest extends TestCase
     {
         $folder = sys_get_temp_dir().'/'.$this->faker->firstName;
         mkdir($folder);
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         Helpers::addFiles($folder, $version);
         /** @var Version $version */
         $version = Version::find($version->id);
@@ -98,9 +100,11 @@ class HelpersTest extends TestCase
         mkdir($folder);
         $file = $folder.'/'.$this->faker->firstName;
         touch($file);
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         Helpers::addFiles($folder, $version);
         /** @var Version $version */
         $version = Version::find($version->id);
@@ -117,9 +121,11 @@ class HelpersTest extends TestCase
         mkdir($folder);
         $file = $folder.'/'.$this->faker->firstName.'.py';
         touch($file);
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         Helpers::addFiles($folder, $version);
         /** @var Version $version */
         $version = Version::find($version->id);
@@ -141,9 +147,11 @@ class HelpersTest extends TestCase
         mkdir($secondFolder);
         $file = $secondFolder.'/'.$this->faker->firstName.'.py';
         touch($file);
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         Helpers::addFiles($folder, $version);
         /** @var Version $version */
         $version = Version::find($version->id);

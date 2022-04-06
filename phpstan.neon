@@ -20,7 +20,7 @@ parameters:
         - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::once\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::never\(\).#'
         - '#Called .* on Laravel collection, but could have been retrieved as a query.#'
-    excludes_analyse:
+    excludePaths:
             - tests/_support/*
             - tests/Feature/EdgeCases*
             - tests/Helpers.php

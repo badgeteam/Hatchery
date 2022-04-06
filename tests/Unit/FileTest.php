@@ -23,9 +23,11 @@ class FileTest extends TestCase
      */
     public function testFileVersionProjectRelationship(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create();
+        /** @var File $file */
+        $file = File::factory()->create();
         $this->assertInstanceOf(Version::class, $file->version);
         $this->assertInstanceOf(Project::class, $file->version->project);
     }
@@ -35,9 +37,11 @@ class FileTest extends TestCase
      */
     public function testFileExtensionAttribute(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create(['name' => 'test.txt']);
+        /** @var File $file */
+        $file = File::factory()->create(['name' => 'test.txt']);
         $this->assertEquals('txt', $file->extension);
     }
 
@@ -46,9 +50,11 @@ class FileTest extends TestCase
      */
     public function testFileEditableAttribute(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create(['name' => 'test.txt']);
+        /** @var File $file */
+        $file = File::factory()->create(['name' => 'test.txt']);
         $this->assertTrue($file->editable);
     }
 
@@ -57,11 +63,14 @@ class FileTest extends TestCase
      */
     public function testFileSizeOfContentAttribute(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create(['content' => 0]);
+        /** @var File $file */
+        $file = File::factory()->create(['content' => 0]);
         $this->assertNull($file->size_of_content);
-        $file = factory(File::class)->create(['content' => '123']);
+        /** @var File $file */
+        $file = File::factory()->create(['content' => '123']);
         $this->assertEquals(3, $file->size_of_content);
     }
 
@@ -70,9 +79,11 @@ class FileTest extends TestCase
      */
     public function testFilePythonMimeAttribute(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create(['name' => 'test.py']);
+        /** @var File $file */
+        $file = File::factory()->create(['name' => 'test.py']);
         $this->assertEquals('application/x-python-code', $file->mime);
     }
 
@@ -81,9 +92,11 @@ class FileTest extends TestCase
      */
     public function testFilePngMimeAttribute(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create(['name' => 'test.png']);
+        /** @var File $file */
+        $file = File::factory()->create(['name' => 'test.png']);
         $this->assertEquals('image/png', $file->mime);
     }
 
@@ -92,9 +105,11 @@ class FileTest extends TestCase
      */
     public function testFileUnknownMimeAttribute(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create(['name' => 'test.unknown']);
+        /** @var File $file */
+        $file = File::factory()->create(['name' => 'test.unknown']);
         $this->assertEquals('application/octet-stream', $file->mime);
     }
 
@@ -103,9 +118,11 @@ class FileTest extends TestCase
      */
     public function testFileWavMimeAttribute(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create(['name' => 'test.wav']);
+        /** @var File $file */
+        $file = File::factory()->create(['name' => 'test.wav']);
         $this->assertEquals('audio/wave', $file->mime);
     }
 
@@ -114,9 +131,11 @@ class FileTest extends TestCase
      */
     public function testFileBinMimeAttribute(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create(['name' => 'test.bin']);
+        /** @var File $file */
+        $file = File::factory()->create(['name' => 'test.bin']);
         $this->assertEquals('application/octet-stream', $file->mime);
     }
 
@@ -125,9 +144,11 @@ class FileTest extends TestCase
      */
     public function testFileIsInvalidIcon(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create(['name' => 'test.bin']);
+        /** @var File $file */
+        $file = File::factory()->create(['name' => 'test.bin']);
         $this->assertFalse($file->isValidIcon());
     }
 
@@ -136,10 +157,11 @@ class FileTest extends TestCase
      */
     public function testFileIsValidIcon(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'icon.png']);
+        $file = File::factory()->create(['name' => 'icon.png']);
         $this->assertFalse($file->isValidIcon());
         $file->content = base64_decode( // 32x32 pixel PNG
             'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFsUlEQVRYw9VXa1CUZRgFpd2lcjTR'.
@@ -180,16 +202,17 @@ class FileTest extends TestCase
      */
     public function testFileIsViewable(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'test.bin']);
+        $file = File::factory()->create(['name' => 'test.bin']);
         $this->assertNull($file->viewable);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'test.mp3']);
+        $file = File::factory()->create(['name' => 'test.mp3']);
         $this->assertEquals('audio', $file->viewable);
         /** @var File $file */
-        $file = factory(File::class)->create(['name' => 'test.png']);
+        $file = File::factory()->create(['name' => 'test.png']);
         $this->assertEquals('image', $file->viewable);
     }
 }

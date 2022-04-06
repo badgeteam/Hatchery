@@ -24,10 +24,11 @@ class VotesTest extends TestCase
      */
     public function testProjectsVote(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
@@ -45,9 +46,11 @@ class VotesTest extends TestCase
      */
     public function testProjectsVoteOnce(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
@@ -65,9 +68,11 @@ class VotesTest extends TestCase
      */
     public function testProjectsVoteTypeExists(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'awesome']);
@@ -80,10 +85,13 @@ class VotesTest extends TestCase
      */
     public function testProjectsVoteDelete(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
-        $vote = factory(Vote::class)->create([
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var Vote $vote */
+        $vote = Vote::factory()->create([
             'project_id' => $project->id,
             'type'       => 'pig',
         ]);
@@ -99,11 +107,15 @@ class VotesTest extends TestCase
      */
     public function testProjectsVoteDeleteOtherUser(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
-        $vote = factory(Vote::class)->create([
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var Vote $vote */
+        $vote = Vote::factory()->create([
             'project_id' => $project->id,
             'type'       => 'pig',
         ]);
@@ -119,10 +131,13 @@ class VotesTest extends TestCase
      */
     public function testProjectsVoteUpdates(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
-        $vote = factory(Vote::class)->create([
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var Vote $vote */
+        $vote = Vote::factory()->create([
             'project_id' => $project->id,
             'type'       => 'pig',
         ]);
@@ -142,11 +157,15 @@ class VotesTest extends TestCase
      */
     public function testProjectsVoteUpdatesOther(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
-        $vote = factory(Vote::class)->create([
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var Vote $vote */
+        $vote = Vote::factory()->create([
             'project_id' => $project->id,
             'type'       => 'pig',
         ]);
@@ -166,10 +185,11 @@ class VotesTest extends TestCase
      */
     public function testProjectScore(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $this->assertEquals(0, $project->score);
         $this
             ->actingAs($user)
@@ -177,17 +197,23 @@ class VotesTest extends TestCase
         /** @var Project $project */
         $project = Project::find($project->id);
         $this->assertEquals(0, $project->score);
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $this
-            ->actingAs(factory(User::class)->create())
+            ->actingAs($otherUser)
             ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'up']);
-        $project = Project::find($project->id);
         /** @var Project $project */
+        $project = Project::find($project->id);
         $this->assertEquals(0.5, $project->score);
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $this
-            ->actingAs(factory(User::class)->create())
+            ->actingAs($otherUser)
             ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'down']);
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $this
-            ->actingAs(factory(User::class)->create())
+            ->actingAs($otherUser)
             ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'down']);
         /** @var Project $project */
         $project = Project::find($project->id);
@@ -199,10 +225,11 @@ class VotesTest extends TestCase
      */
     public function testProjectsVoteCommentTooLarge(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('post', '/votes', [
@@ -219,10 +246,13 @@ class VotesTest extends TestCase
      */
     public function testProjectsVoteUpdateCommentTooLarge(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
-        $vote = factory(Vote::class)->create([
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var Vote $vote */
+        $vote = Vote::factory()->create([
             'project_id' => $project->id,
             'type'       => 'pig',
         ]);

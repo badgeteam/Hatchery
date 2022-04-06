@@ -48,7 +48,8 @@ class UsersTest extends TestCase
     public function testLogin(): void
     {
         $password = $this->faker->password;
-        $user = factory(User::class)->create(['password' => bcrypt($password)]);
+        /** @var User $user */
+        $user = User::factory()->create(['password' => bcrypt($password)]);
         $response = $this
             ->withSession(['_token' => 'test'])
             ->post('/login', [
@@ -64,7 +65,8 @@ class UsersTest extends TestCase
      */
     public function testHome(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('/home');
@@ -78,7 +80,8 @@ class UsersTest extends TestCase
      */
     public function testLogout(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
             ->post('/logout');
@@ -92,8 +95,8 @@ class UsersTest extends TestCase
     public function testUserResetPassword(): void
     {
         Notification::fake();
-
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
 
         $response = $this
             ->withSession(['_token' => 'test'])
@@ -169,7 +172,8 @@ class UsersTest extends TestCase
      */
     public function testUserDestroy(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('delete', '/users/'.$user->id);
@@ -184,8 +188,10 @@ class UsersTest extends TestCase
      */
     public function testUserDestroyOtherUser(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $response = $this
             ->actingAs($otherUser)
             ->call('delete', '/users/'.$user->id);
@@ -197,8 +203,10 @@ class UsersTest extends TestCase
      */
     public function testUserDestroyAdminUser(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $otherUser->admin = true;
         $otherUser->save();
         $response = $this
@@ -212,7 +220,8 @@ class UsersTest extends TestCase
      */
     public function testUserEdit(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('/users/'.$user->id.'/edit');
@@ -224,8 +233,10 @@ class UsersTest extends TestCase
      */
     public function testUserEditOtherUser(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $response = $this
             ->actingAs($otherUser)
             ->get('/users/'.$user->id.'/edit');
@@ -237,7 +248,8 @@ class UsersTest extends TestCase
      */
     public function testUserUpdate(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('put', '/users/'.$user->id, [
@@ -253,8 +265,10 @@ class UsersTest extends TestCase
      */
     public function testUserUpdateOtherUser(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $response = $this
             ->actingAs($otherUser)
             ->call('put', '/users/'.$user->id, [
@@ -270,7 +284,8 @@ class UsersTest extends TestCase
      */
     public function testUserViewHorizon(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $response = $this->actingAs($user)->get('/horizon');
         $response->assertStatus(403);
     }
@@ -280,7 +295,8 @@ class UsersTest extends TestCase
      */
     public function testAdminUserViewHorizon(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $user->admin = true;
         $user->save();
         $response = $this->actingAs($user)->get('/horizon');
@@ -292,7 +308,8 @@ class UsersTest extends TestCase
      */
     public function testUser2faForm(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('/2fa');
@@ -304,13 +321,14 @@ class UsersTest extends TestCase
      */
     public function testUser2faGenerateSecret(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
             ->post('/generate2faSecret');
         $response->assertRedirect('/2fa')
             ->assertSessionHas('success');
-        $this->assertEquals(16, strlen($user->google2fa_secret));
+        $this->assertEquals(16, strlen((string)$user->google2fa_secret));
     }
 
     /**
@@ -319,7 +337,8 @@ class UsersTest extends TestCase
     public function testUser2faFormEnabled(): void
     {
         $g2fa = new Google2FA();
-        $user = factory(User::class)->create([
+        /** @var User $user */
+        $user = User::factory()->create([
             'google2fa_secret' => $g2fa->generateSecretKey(),
         ]);
         $response = $this
@@ -334,7 +353,8 @@ class UsersTest extends TestCase
     public function testUser2faEnableFail(): void
     {
         $g2fa = new Google2FA();
-        $user = factory(User::class)->create([
+        /** @var User $user */
+        $user = User::factory()->create([
             'google2fa_secret' => $g2fa->generateSecretKey(),
         ]);
         $response = $this
@@ -355,14 +375,15 @@ class UsersTest extends TestCase
     public function testUser2faEnableSuccess(): void
     {
         $g2fa = new Google2FA();
-        $user = factory(User::class)->create([
+        /** @var User $user */
+        $user = User::factory()->create([
             'google2fa_enabled' => false,
             'google2fa_secret'  => $g2fa->generateSecretKey(),
         ]);
         $response = $this
             ->actingAs($user)
             ->post('/2fa', [
-                'verify-code' => $g2fa->getCurrentOtp($user->google2fa_secret),
+                'verify-code' => $g2fa->getCurrentOtp((string)$user->google2fa_secret),
             ]);
         $response->assertRedirect('/2fa')
             ->assertSessionHas('success');
@@ -377,7 +398,8 @@ class UsersTest extends TestCase
     public function testUser2faDisableFail(): void
     {
         $g2fa = new Google2FA();
-        $user = factory(User::class)->create([
+        /** @var User $user */
+        $user = User::factory()->create([
             'google2fa_secret'  => $g2fa->generateSecretKey(),
             'google2fa_enabled' => true,
         ]);
@@ -399,7 +421,8 @@ class UsersTest extends TestCase
     public function testUser2faDisableSuccess(): void
     {
         $g2fa = new Google2FA();
-        $user = factory(User::class)->create([
+        /** @var User $user */
+        $user = User::factory()->create([
             'google2fa_secret'  => $g2fa->generateSecretKey(),
             'google2fa_enabled' => true,
         ]);
@@ -421,7 +444,8 @@ class UsersTest extends TestCase
     public function testUser2faVerifyRedirect(): void
     {
         $g2fa = new Google2FA();
-        $user = factory(User::class)->create([
+        /** @var User $user */
+        $user = User::factory()->create([
             'google2fa_secret'  => $g2fa->generateSecretKey(),
             'google2fa_enabled' => true,
         ]);
@@ -433,7 +457,7 @@ class UsersTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->post('/2faVerify', [
-                'one_time_password' => $g2fa->getCurrentOtp($user->google2fa_secret),
+                'one_time_password' => $g2fa->getCurrentOtp((string)$user->google2fa_secret),
             ]);
         $response->assertStatus(302);
     }
@@ -443,7 +467,8 @@ class UsersTest extends TestCase
      */
     public function testUsersIndex(): void
     {
-        $user = factory(User::class)->create(['public' => true]);
+        /** @var User $user */
+        $user = User::factory()->create(['public' => true]);
         $response = $this
             ->actingAs($user)
             ->get('/users');
@@ -456,7 +481,8 @@ class UsersTest extends TestCase
      */
     public function testUserShow(): void
     {
-        $user = factory(User::class)->create(['public' => true]);
+        /** @var User $user */
+        $user = User::factory()->create(['public' => true]);
         $response = $this
             ->actingAs($user)
             ->get('/users/'.$user->id);
@@ -469,7 +495,8 @@ class UsersTest extends TestCase
      */
     public function testProfile(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('profile');
@@ -481,7 +508,8 @@ class UsersTest extends TestCase
      */
     public function testUserUpdateTooLarge(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('put', '/users/'.$user->id, [

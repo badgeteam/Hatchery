@@ -31,9 +31,11 @@ class ProjectsGitTest extends TestCase
      */
     public function testProjectsEditGit(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create(['git' => $this->faker->url]);
+        /** @var Project $project */
+        $project = Project::factory()->create(['git' => $this->faker->url]);
         $response = $this
             ->actingAs($user)
             ->get('/projects/'.$project->slug.'/edit');
@@ -54,9 +56,10 @@ class ProjectsGitTest extends TestCase
         $mock->expects('cloneRepository')->twice()->andReturnSelf();
         $mock->expects('getLastCommitId')->twice()->andReturns($hash);
         $this->app->instance(GitRepository::class, $mock);
-
-        $user = factory(User::class)->create();
-        $category = factory(Category::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
         $this->assertEmpty(Project::all());
         $response = $this
             ->actingAs($user)
@@ -75,10 +78,11 @@ class ProjectsGitTest extends TestCase
         $name = $this->faker->name;
         $folder = sys_get_temp_dir().'/'.Str::slug($name, '_');
         mkdir($folder);
-
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $category = factory(Category::class)->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
         $this->assertEmpty(Project::all());
 
         $mock = $this->mock(GitRepository::class);
@@ -96,10 +100,13 @@ class ProjectsGitTest extends TestCase
      */
     public function testProjectsStoreGitFailures(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
-        $category = factory(Category::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
         $response = $this
             ->actingAs($user)
             ->call('post', '/import-git', ['name' => $project->name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
@@ -133,10 +140,11 @@ class ProjectsGitTest extends TestCase
      */
     public function testProjectsPullNoGit(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         $response = $this
             ->actingAs($user)
@@ -149,10 +157,11 @@ class ProjectsGitTest extends TestCase
      */
     public function testProjectsPullNothingToUpdate(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create([
+        $project = Project::factory()->create([
             'git_commit_id' => $this->faker->sha256,
             'git'           => $this->faker->url,
         ]);
@@ -194,10 +203,11 @@ class ProjectsGitTest extends TestCase
      */
     public function testProjectsPullClean(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create([
+        $project = Project::factory()->create([
             'git_commit_id' => $this->faker->sha256,
             'git'           => $this->faker->url,
         ]);
@@ -231,10 +241,11 @@ class ProjectsGitTest extends TestCase
      */
     public function testProjectsPullRecycleFolder(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create([
+        $project = Project::factory()->create([
             'git_commit_id' => $this->faker->sha256,
             'git'           => $this->faker->url,
         ]);

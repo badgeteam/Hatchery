@@ -23,10 +23,11 @@ class BadgesTest extends TestCase
      */
     public function testBadgesEdit(): void
     {
-        $user = factory(User::class)->create(['admin' => true]);
+        /** @var User $user */
+        $user = User::factory()->create(['admin' => true]);
         $this->be($user);
         /** @var Badge $badge */
-        $badge = factory(Badge::class)->create();
+        $badge = Badge::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('/badges/'.$badge->slug.'/edit');
@@ -39,10 +40,11 @@ class BadgesTest extends TestCase
      */
     public function testBadgesEditNonAdmin(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Badge $badge */
-        $badge = factory(Badge::class)->create();
+        $badge = Badge::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('/badges/'.$badge->slug.'/edit');
@@ -54,9 +56,10 @@ class BadgesTest extends TestCase
      */
     public function testBadgesIndex(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        factory(Badge::class)->create();
+        Badge::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('/badges');
@@ -69,7 +72,8 @@ class BadgesTest extends TestCase
      */
     public function testBadgesCreate(): void
     {
-        $user = factory(User::class)->create(['admin' => true]);
+        /** @var User $user */
+        $user = User::factory()->create(['admin' => true]);
         $this->be($user);
         $response = $this
             ->actingAs($user)
@@ -82,7 +86,8 @@ class BadgesTest extends TestCase
      */
     public function testBadgesCreateNonAdmin(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         $response = $this
             ->actingAs($user)
@@ -95,10 +100,11 @@ class BadgesTest extends TestCase
      */
     public function testBadgesShow(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Badge $badge */
-        $badge = factory(Badge::class)->create();
+        $badge = Badge::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('/badges/'.$badge->slug);
@@ -111,7 +117,8 @@ class BadgesTest extends TestCase
      */
     public function testBadgesStore(): void
     {
-        $user = factory(User::class)->create(['admin' => true]);
+        /** @var User $user */
+        $user = User::factory()->create(['admin' => true]);
         $this->be($user);
         $response = $this
             ->actingAs($user)
@@ -125,7 +132,8 @@ class BadgesTest extends TestCase
      */
     public function testBadgesStoreNonAdmin(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         $response = $this
             ->actingAs($user)
@@ -139,7 +147,8 @@ class BadgesTest extends TestCase
      */
     public function testBadgesStoreNameTooLong(): void
     {
-        $user = factory(User::class)->create(['admin' => true]);
+        /** @var User $user */
+        $user = User::factory()->create(['admin' => true]);
         $this->be($user);
         $response = $this
             ->actingAs($user)
@@ -153,10 +162,11 @@ class BadgesTest extends TestCase
      */
     public function testBadgesUpdate(): void
     {
-        $user = factory(User::class)->create(['admin' => true]);
+        /** @var User $user */
+        $user = User::factory()->create(['admin' => true]);
         $this->be($user);
         /** @var Badge $badge */
-        $badge = factory(Badge::class)->create();
+        $badge = Badge::factory()->create();
         $name = $this->faker->name;
         $this->assertNotEquals($name, $badge->name);
         $response = $this
@@ -173,10 +183,11 @@ class BadgesTest extends TestCase
      */
     public function testBadgesUpdateNonAdmin(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Badge $badge */
-        $badge = factory(Badge::class)->create();
+        $badge = Badge::factory()->create();
         $name = $this->faker->name;
         $this->assertNotEquals($name, $badge->name);
         $response = $this
@@ -191,10 +202,11 @@ class BadgesTest extends TestCase
      */
     public function testBadgesUpdateNameTooLong(): void
     {
-        $user = factory(User::class)->create(['admin' => true]);
+        /** @var User $user */
+        $user = User::factory()->create(['admin' => true]);
         $this->be($user);
         /** @var Badge $badge */
-        $badge = factory(Badge::class)->create();
+        $badge = Badge::factory()->create();
         $name = $this->faker->text(1024);
         $this->assertNotEquals($name, $badge->name);
         $response = $this
@@ -209,10 +221,11 @@ class BadgesTest extends TestCase
      */
     public function testBadgesDelete(): void
     {
-        $user = factory(User::class)->create(['admin' => true]);
+        /** @var User $user */
+        $user = User::factory()->create(['admin' => true]);
         $this->be($user);
         /** @var Badge $badge */
-        $badge = factory(Badge::class)->create();
+        $badge = Badge::factory()->create();
         $this->assertCount(1, Badge::all());
         $response = $this
             ->actingAs($user)
@@ -226,10 +239,11 @@ class BadgesTest extends TestCase
      */
     public function testBadgesDeleteNonAdmin(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Badge $badge */
-        $badge = factory(Badge::class)->create();
+        $badge = Badge::factory()->create();
         $this->assertCount(1, Badge::all());
         $response = $this
             ->actingAs($user)

@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
+use App\Models\Vote;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -23,9 +24,11 @@ class VersionTest extends TestCase
      */
     public function testVersionProjectRelationship(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $this->assertInstanceOf(Project::class, $version->project);
     }
 
@@ -34,9 +37,11 @@ class VersionTest extends TestCase
      */
     public function testVersionFileRelationship(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $this->assertInstanceOf(Collection::class, $version->files);
         $this->assertEmpty($version->files);
     }
@@ -46,9 +51,11 @@ class VersionTest extends TestCase
      */
     public function testVersionPublishedHelper(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $this->assertFalse($version->published);
         $version->zip = 'iets';
         $this->assertTrue($version->published);
@@ -59,9 +66,11 @@ class VersionTest extends TestCase
      */
     public function testVersionScopes(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         /** @var Collection $versions */
         $versions = Version::unPublished()->get();
         $this->assertCount(2, $versions);

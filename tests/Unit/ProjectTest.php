@@ -32,9 +32,11 @@ class ProjectTest extends TestCase
      */
     public function testProjectUserRelationship(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $this->assertInstanceOf(User::class, $project->user);
     }
 
@@ -43,9 +45,11 @@ class ProjectTest extends TestCase
      */
     public function testProjectVersionRelationship(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $this->assertInstanceOf(Collection::class, $project->versions);
     }
 
@@ -54,9 +58,11 @@ class ProjectTest extends TestCase
      */
     public function testNewProjectHasAVersion(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $this->assertCount(1, $project->versions);
     }
 
@@ -65,9 +71,11 @@ class ProjectTest extends TestCase
      */
     public function testProjectRevisionAttribute(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $this->assertNull($version->project->revision);
         $version->zip = 'iets';
         $version->save();
@@ -79,9 +87,11 @@ class ProjectTest extends TestCase
      */
     public function testProjectSizeOfContentNoRelease(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $version = factory(Version::class)->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $this->assertEquals(0, $version->project->size_of_content);
     }
 
@@ -90,7 +100,8 @@ class ProjectTest extends TestCase
      */
     public function testProjectForbiddenNames(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         $this->assertTrue(Project::isForbidden('badge'));
         $this->assertTrue(Project::isForbidden('request'));
@@ -102,7 +113,8 @@ class ProjectTest extends TestCase
     public function testProjectSaveForbiddenNames(): void
     {
         $this->expectException(\Exception::class);
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         $project = new Project();
         $project->name = 'ESP32';
@@ -114,7 +126,8 @@ class ProjectTest extends TestCase
      */
     public function testProjectCategoryAttribute(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         $project = new Project();
         $project->name = 'test';
@@ -122,7 +135,8 @@ class ProjectTest extends TestCase
 
         $this->assertEquals('uncategorised', $project->category);
 
-        $category = factory(Category::class)->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
         $project->category()->associate($category);
 
         $this->assertEquals($category->slug, $project->category);
@@ -133,12 +147,14 @@ class ProjectTest extends TestCase
      */
     public function testProjectDescriptionAttribute(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $this->assertNull($project->description);
-
-        $file = factory(File::class)->create(['content' => 'Description', 'name' => 'ReadMe.md']);
+        /** @var File $file */
+        $file = File::factory()->create(['content' => 'Description', 'name' => 'ReadMe.md']);
         $this->assertEquals('Description', $file->version->project->description);
     }
 
@@ -147,12 +163,14 @@ class ProjectTest extends TestCase
      */
     public function testProjectDescriptionHtmlAttribute(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $this->assertNull($project->descriptionHtml);
-
-        $file = factory(File::class)->create(['content' => "Description\n----------", 'name' => 'ReadMe.md']);
+        /** @var File $file */
+        $file = File::factory()->create(['content' => "Description\n----------", 'name' => 'ReadMe.md']);
         $this->assertEquals("<h2>Description</h2>\n", $file->version->project->descriptionHtml);
     }
 
@@ -163,11 +181,13 @@ class ProjectTest extends TestCase
     {
         $project = new Project();
         $this->assertNull($project->userVoted());
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $this->assertFalse($project->userVoted());
-        factory(Vote::class)->create(['project_id' => $project->id]);
+        Vote::factory()->create(['project_id' => $project->id]);
         $this->assertTrue($project->userVoted());
     }
 
@@ -176,11 +196,14 @@ class ProjectTest extends TestCase
      */
     public function testProjectStatusMagic(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $this->assertEquals('unknown', $project->status);
-        $badge = factory(Badge::class)->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
         $project->badges()->attach($badge);
         /** @var BadgeProject $state */
         $state = BadgeProject::where('badge_id', $badge->id)->where('project_id', $project->id)->first();
@@ -189,7 +212,8 @@ class ProjectTest extends TestCase
         /** @var Project $project */
         $project = Project::find($project->id);
         $this->assertEquals('broken', $project->status);
-        $badge = factory(Badge::class)->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
         $project->badges()->attach($badge);
         /** @var BadgeProject $state */
         $state = BadgeProject::where('badge_id', $badge->id)->where('project_id', $project->id)->first();
@@ -198,7 +222,8 @@ class ProjectTest extends TestCase
         /** @var Project $project */
         $project = Project::find($project->id);
         $this->assertEquals('in_progress', $project->status);
-        $badge = factory(Badge::class)->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
         $project->badges()->attach($badge);
         /** @var BadgeProject $state */
         $state = BadgeProject::where('badge_id', $badge->id)->where('project_id', $project->id)->first();
@@ -207,7 +232,8 @@ class ProjectTest extends TestCase
         /** @var Project $project */
         $project = Project::find($project->id);
         $this->assertEquals('working', $project->status);
-        $badge = factory(Badge::class)->create();
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
         $project->badges()->attach($badge);
         /** @var BadgeProject $state */
         $state = BadgeProject::where('badge_id', $badge->id)->where('project_id', $project->id)->first();
@@ -224,11 +250,14 @@ class ProjectTest extends TestCase
      */
     public function testProjectHasValidIcon(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $this->assertFalse($project->hasValidIcon());
-        $file = factory(File::class)->create([ // 32x32 pixel PNG
+        /** @var File $file */
+        $file = File::factory()->create([ // 32x32 pixel PNG
             'content' => base64_decode('iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAGWElEQVR42sVXCUxUVxQ9fxZm'.
                 'YGRRWQQRHaoWY21dSqkpYo1tXEi0bdwwqVsXErVp01qwWlutxAWNrSXiXlcqYAiVtgpKi0tdAkVQoIhLGcAFF1YHhvnz//ze9/8A'.
                 '4oYaqD9z8/68effdc+899743HJ7zwz2LUt4W/TSNGvMFEZor1+27Jy3l99H0XRLhfwFQsF2f7d1/TDB7v3g2vWLEp9aZ9JpPUtPp'.
@@ -262,13 +291,17 @@ class ProjectTest extends TestCase
      */
     public function testFileSizeOfContentFormattedAttribute(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $file = factory(File::class)->create(['content' => '']);
+        /** @var File $file */
+        $file = File::factory()->create(['content' => '']);
         $this->assertEquals('0 B', $file->version->project->size_of_content_formatted);
-        $file = factory(File::class)->create(['content' => '321']);
+        /** @var File $file */
+        $file = File::factory()->create(['content' => '321']);
         $this->assertEquals('3 B', $file->version->project->size_of_content_formatted);
-        $file = factory(File::class)->create(['content' => $this->faker->regexify('[A-Za-z0-9]{1024}')]);
+        /** @var File $file */
+        $file = File::factory()->create(['content' => $this->faker->regexify('[A-Za-z0-9]{1024}')]);
         $this->assertEquals('1 KiB', $file->version->project->size_of_content_formatted);
     }
 
@@ -277,9 +310,11 @@ class ProjectTest extends TestCase
      */
     public function testFileSizeOfZipFormattedAttribute(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $this->assertEquals('0 B', $project->size_of_zip_formatted);
     }
 
@@ -288,10 +323,11 @@ class ProjectTest extends TestCase
      */
     public function testProjectsVersionFilesUnderscoreUnderscoreInitUnderscoreUnderscoreDotPy(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         /** @var Version $version */
         $version = $project->versions->last();
         $this->assertCount(1, $version->files);
@@ -305,10 +341,11 @@ class ProjectTest extends TestCase
      */
     public function testProjectsGitEmptyVersionFiles(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
         /** @var Project $project */
-        $project = factory(Project::class)->create(['git' => 'https://github.com/badgeteam/Hatchery']);
+        $project = Project::factory()->create(['git' => 'https://github.com/badgeteam/Hatchery']);
         /** @var Version $version */
         $version = $project->versions->last();
         $this->assertEmpty($version->files);
@@ -319,10 +356,13 @@ class ProjectTest extends TestCase
      */
     public function testProjectUsersRelationship(): void
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $this->assertEmpty($project->collaborators);
         $project->collaborators()->attach($otherUser);
         /** @var Project $project */
@@ -333,7 +373,7 @@ class ProjectTest extends TestCase
         $collaborator = $project->collaborators->first();
         $this->assertEquals($otherUser->id, $collaborator->id);
         $this->assertCount(1, $project->collaborators);
-        $anotherUser = factory(User::class)->create();
+        $anotherUser = User::factory()->create();
         $project->collaborators()->attach($anotherUser);
         /** @var Project $project */
         $project = Project::find($project->id);
@@ -345,15 +385,17 @@ class ProjectTest extends TestCase
      */
     public function testProjectUpdateEventUser(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
 
         Event::fake();
 
         event(new ProjectUpdated($project, $this->faker->text));
 
-        Event::assertDispatched(ProjectUpdated::class, function ($e) use ($project) {
+        Event::assertDispatched(ProjectUpdated::class, static function ($e) use ($project) {
             return $e->project->id === $project->id;
         }, 1);
     }
@@ -363,17 +405,19 @@ class ProjectTest extends TestCase
      */
     public function testProjectUpdateEventCollaborator(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        $otherUser = User::factory()->create();
         $project->collaborators()->attach($otherUser);
 
         Event::fake();
 
         event(new ProjectUpdated($project, $this->faker->text));
 
-        Event::assertDispatched(ProjectUpdated::class, function ($e) use ($project) {
+        Event::assertDispatched(ProjectUpdated::class, static function ($e) use ($project) {
             return $e->project->id === $project->id;
         }, 2);
     }
@@ -381,12 +425,15 @@ class ProjectTest extends TestCase
     /**
      * Let's not catch some events :).
      */
-    public function testProjectUpdateEventCollaboratorRecepients(): void
+    public function testProjectUpdateEventCollaboratorRecipients(): void
     {
-        $user = factory(User::class)->create();
+        /** @var User $user */
+        $user = User::factory()->create();
         $this->be($user);
-        $project = factory(Project::class)->create();
-        $otherUser = factory(User::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var User $otherUser */
+        $otherUser = User::factory()->create();
         $project->collaborators()->attach($otherUser);
 
         $event = new ProjectUpdated($project, $this->faker->text);
@@ -401,9 +448,11 @@ class ProjectTest extends TestCase
      */
     public function testProjectAuthorUnknown(): void
     {
-        $user = factory(User::class)->create(['name' => '']);
+        /** @var User $user */
+        $user = User::factory()->create(['name' => '']);
         $this->be($user);
-        $project = factory(Project::class)->create();
+        /** @var Project $project */
+        $project = Project::factory()->create();
         $this->assertEquals('Unknown', $project->author);
     }
 }
