@@ -102,7 +102,7 @@
 
                                     {!! Form::close() !!}
 
-                                    <a href="{{ route('webauthn.register') }}" class="btn btn-info">
+                                    <a href="{{ route('webauthn.create') }}" class="btn btn-info">
                                         Add WebAuthn
                                     </a>
 

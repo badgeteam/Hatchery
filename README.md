@@ -63,9 +63,9 @@ laravel-echo-server init
 Compiling and installing the patched minigzip.
 
 ```bash
-wget http://zlib.net/zlib-1.2.11.tar.gz
-tar xvf zlib-1.2.11.tar.gz
-cd zlib-1.2.11
+wget http://zlib.net/zlib-1.2.12.tar.gz
+tar xvf zlib-1.2.12.tar.gz
+cd zlib-1.2.12
 ./configure
 echo -e "#define MAX_WBITS  13\n$(cat zconf.h)" > zconf.h
 make

@@ -46,6 +46,7 @@
         "verschuur/laravel-robotstxt": "^3"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-latest",
         "barryvdh/laravel-ide-helper": "^2.7",
         "codacy/coverage": "^1.4",
         "codeception/codeception": "^4.1",
