@@ -426,13 +426,13 @@ class UsersTest extends TestCase
             'google2fa_secret'  => $g2fa->generateSecretKey(),
             'google2fa_enabled' => true,
         ]);
+        $this->assertTrue($user->google2fa_enabled);
         $response = $this
             ->actingAs($user)
             ->post('/disable2fa', [
                 'current-password' => 'secret',
             ]);
-        $response->assertRedirect('/2fa')
-            ->assertSessionHas('success');
+        $response->assertRedirect('/');
         /** @var User $user */
         $user = User::find($user->id);
         $this->assertNotTrue($user->google2fa_enabled);
