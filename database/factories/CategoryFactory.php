@@ -6,10 +6,9 @@ use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * Class CategoryFactory
+ * Class CategoryFactory.
  *
  * @author annejan@badge.team
- * @package Database\Factories
  */
 class CategoryFactory extends Factory
 {

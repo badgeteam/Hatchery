@@ -57,6 +57,7 @@ class FilesProcessTest extends TestCase
 
     /**
      * Check the files can be linted.
+     *
      * @throws \JsonException
      */
     public function testFilesLintSuccess(): void

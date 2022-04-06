@@ -7,10 +7,9 @@ use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * Class ProjectFactory
+ * Class ProjectFactory.
  *
  * @author annejan@badge.team
- * @package Database\Factories
  */
 class ProjectFactory extends Factory
 {
@@ -29,7 +28,7 @@ class ProjectFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name,
+            'name'        => $this->faker->name,
             'category_id' => Category::factory(),
         ];
     }

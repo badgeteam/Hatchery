@@ -7,10 +7,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * Class TeamFactory
+ * Class TeamFactory.
  *
  * @author annejan@badge.team
- * @package Database\Factories
  */
 class TeamFactory extends Factory
 {
@@ -29,8 +28,8 @@ class TeamFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name,
-            'user_id' => User::factory(),
+            'name'          => $this->faker->name,
+            'user_id'       => User::factory(),
             'personal_team' => false,
         ];
     }

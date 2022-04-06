@@ -379,6 +379,7 @@ class ProjectsTest extends TestCase
 
     /**
      * Check the projects can be published.
+     *
      * @throws \JsonException
      */
     public function testProjectsPublish(): void
@@ -427,12 +428,12 @@ class ProjectsTest extends TestCase
         $path = sys_get_temp_dir().'/'.$project->slug;
         $json = (string) file_get_contents($path.'/metadata.json');
 
-        $this->assertJsonStringEqualsJsonString((string)json_encode([
-            'name' => $project->name,
+        $this->assertJsonStringEqualsJsonString((string) json_encode([
+            'name'        => $project->name,
             'description' => null,
-            'category' => $project->category,
-            'author' => $user->name,
-            'revision' => 1,
+            'category'    => $project->category,
+            'author'      => $user->name,
+            'revision'    => 1,
         ], JSON_THROW_ON_ERROR), $json);
 
         $dep = file_get_contents($path.'/'.$project->slug.'.egg-info/requires.txt');
@@ -452,6 +453,7 @@ class ProjectsTest extends TestCase
 
     /**
      * Check published project with icon has correct metadata.
+     *
      * @throws \JsonException
      */
     public function testProjectsPublishIconMeta(): void
@@ -507,13 +509,13 @@ class ProjectsTest extends TestCase
         $path = sys_get_temp_dir().'/'.$project->slug;
         $json = (string) file_get_contents($path.'/metadata.json');
 
-        $this->assertJsonStringEqualsJsonString((string)json_encode([
-            'name' => $project->name,
+        $this->assertJsonStringEqualsJsonString((string) json_encode([
+            'name'        => $project->name,
             'description' => null,
-            'category' => $project->category,
-            'author' => $project->user->name,
-            'revision' => 1,
-            'icon' => 'icon.png',
+            'category'    => $project->category,
+            'author'      => $project->user->name,
+            'revision'    => 1,
+            'icon'        => 'icon.png',
         ], JSON_THROW_ON_ERROR), $json);
 
         unlink(public_path($zip));

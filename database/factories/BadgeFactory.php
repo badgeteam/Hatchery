@@ -6,10 +6,9 @@ use App\Models\Badge;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * Class BadgeFactory
+ * Class BadgeFactory.
  *
  * @author annejan@badge.team
- * @package Database\Factories
  */
 class BadgeFactory extends Factory
 {

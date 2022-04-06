@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # Specify the version you desire here
-      - image: circleci/php:7.3-node-browsers
+      - image: circleci/php:8.1-node-browsers
       - image: circleci/mysql:5.7-ram
         environment:
           - MYSQL_ROOT_PASSWORD=
@@ -20,7 +20,7 @@ jobs:
       - run: sudo apt-get install -y libpng-dev libgmp-dev git
       - run: sudo docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd
       - run: sudo docker-php-ext-install zip pdo_mysql gd gmp exif pcntl
-      - run: sudo apt-get install mariadb-client pyflakes iverilog arachne-pnr arachne-pnr-chipdb fpga-icestorm fpga-icestorm-chipdb
+      - run: sudo apt-get install mariadb-client python3-pyflakes iverilog arachne-pnr arachne-pnr-chipdb fpga-icestorm fpga-icestorm-chipdb
 
       # Download and cache dependencies
       - restore_cache:

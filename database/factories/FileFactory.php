@@ -7,10 +7,9 @@ use App\Models\Version;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * Class FileFactory
+ * Class FileFactory.
  *
  * @author annejan@badge.team
- * @package Database\Factories
  */
 class FileFactory extends Factory
 {
@@ -30,8 +29,8 @@ class FileFactory extends Factory
     {
         return [
             'version_id' => Version::factory(),
-            'name'    => $this->faker->word.'.py',
-            'content' => $this->faker->paragraph,
+            'name'       => $this->faker->word.'.py',
+            'content'    => $this->faker->paragraph,
         ];
     }
 }

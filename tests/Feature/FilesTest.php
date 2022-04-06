@@ -205,6 +205,7 @@ text';
 
     /**
      * Check the files can be stored.
+     *
      * @throws \JsonException
      */
     public function testFilesUpdateJson(): void

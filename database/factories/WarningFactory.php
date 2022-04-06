@@ -7,10 +7,9 @@ use App\Models\Warning;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * Class WarningFactory
+ * Class WarningFactory.
  *
  * @author annejan@badge.team
- * @package Database\Factories
  */
 class WarningFactory extends Factory
 {
@@ -29,7 +28,7 @@ class WarningFactory extends Factory
     public function definition()
     {
         return [
-            'project_id' => Project::factory(),
+            'project_id'  => Project::factory(),
             'description' => $this->faker->paragraph,
         ];
     }

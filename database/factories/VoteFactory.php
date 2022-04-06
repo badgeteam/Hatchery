@@ -7,10 +7,9 @@ use App\Models\Vote;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * Class VoteFactory
+ * Class VoteFactory.
  *
  * @author annejan@badge.team
- * @package Database\Factories
  */
 class VoteFactory extends Factory
 {

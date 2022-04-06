@@ -328,7 +328,7 @@ class UsersTest extends TestCase
             ->post('/generate2faSecret');
         $response->assertRedirect('/2fa')
             ->assertSessionHas('success');
-        $this->assertEquals(16, strlen((string)$user->google2fa_secret));
+        $this->assertEquals(16, strlen((string) $user->google2fa_secret));
     }
 
     /**
@@ -383,7 +383,7 @@ class UsersTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->post('/2fa', [
-                'verify-code' => $g2fa->getCurrentOtp((string)$user->google2fa_secret),
+                'verify-code' => $g2fa->getCurrentOtp((string) $user->google2fa_secret),
             ]);
         $response->assertRedirect('/2fa')
             ->assertSessionHas('success');
@@ -457,7 +457,7 @@ class UsersTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->post('/2faVerify', [
-                'one_time_password' => $g2fa->getCurrentOtp((string)$user->google2fa_secret),
+                'one_time_password' => $g2fa->getCurrentOtp((string) $user->google2fa_secret),
             ]);
         $response->assertStatus(302);
     }
