@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Events\ProjectUpdated;
@@ -101,11 +103,18 @@ class ProjectsTest extends TestCase
         $category = Category::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $this->faker->name, 'description' => $this->faker->paragraph, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call(
+                'post',
+                '/projects',
+                [
+                    'name' => $this->faker->name, 'description' => $this->faker->paragraph,
+                    'category_id' => $category->id, 'status' => 'unknown'
+                ]
+            );
         $this->assertNotNull(Project::get()->last());
         /** @var Project $lastProject */
         $lastProject = Project::get()->last();
-        $response->assertRedirect('/projects/'.$lastProject->slug.'/edit')->assertSessionHas('successes');
+        $response->assertRedirect('/projects/' . $lastProject->slug . '/edit')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
     }
 
@@ -122,22 +131,41 @@ class ProjectsTest extends TestCase
         $name = $this->faker->name;
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call(
+                'post',
+                '/projects',
+                [
+                    'name' => $name, 'description' => $this->faker->paragraph,
+                    'category_id' => $category->id, 'status' => 'unknown'
+                ]
+            );
         $this->assertNotNull(Project::get()->last());
         /** @var Project $lastProject */
         $lastProject = Project::get()->last();
-        $response->assertRedirect('/projects/'.$lastProject->slug.'/edit')->assertSessionHas('successes');
+        $response->assertRedirect('/projects/' . $lastProject->slug . '/edit')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id]);
+            ->call(
+                'post',
+                '/projects',
+                [
+                    'name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id
+                ]
+            );
         $response->assertRedirect('')->assertSessionHasErrors();
 
         $name .= '_'; // issue found by fox name is unique, slug is identical (the + becomes plus now)
         $this->assertCount(1, Project::all());
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id]);
+            ->call(
+                'post',
+                '/projects',
+                [
+                    'name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id
+                ]
+            );
         $response->assertRedirect('/projects/create')->assertSessionHasErrors();
         $this->assertCount(1, Project::all());
     }
@@ -154,7 +182,7 @@ class ProjectsTest extends TestCase
         $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->get('/projects/'.$project->slug.'/edit');
+            ->get('/projects/' . $project->slug . '/edit');
         $response->assertStatus(200);
     }
 
@@ -172,7 +200,7 @@ class ProjectsTest extends TestCase
         $project = Project::factory()->create();
         $response = $this
             ->actingAs($otherUser)
-            ->get('/projects/'.$project->slug.'/edit');
+            ->get('/projects/' . $project->slug . '/edit');
         $response->assertStatus(403);
     }
 
@@ -191,7 +219,7 @@ class ProjectsTest extends TestCase
         $project->collaborators()->attach($otherUser);
         $response = $this
             ->actingAs($otherUser)
-            ->get('/projects/'.$project->slug.'/edit');
+            ->get('/projects/' . $project->slug . '/edit');
         $response->assertStatus(200);
     }
 
@@ -213,7 +241,7 @@ class ProjectsTest extends TestCase
         $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/'.$project->slug, [
+            ->call('put', '/projects/' . $project->slug, [
                 'description'  => $this->faker->paragraph,
                 'dependencies' => [$projectDep->id],
                 'category_id'  => $project->category_id,
@@ -226,7 +254,7 @@ class ProjectsTest extends TestCase
         $this->assertCount(1, $project->dependencies);
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/'.$project->slug, [
+            ->call('put', '/projects/' . $project->slug, [
                 'description' => $this->faker->paragraph,
                 'category_id' => $project->category_id,
                 'status'      => 'unknown',
@@ -250,13 +278,13 @@ class ProjectsTest extends TestCase
         $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/'.$project->slug, [
+            ->call('put', '/projects/' . $project->slug, [
                 'description'  => $this->faker->paragraph,
                 'category_id'  => $project->category_id,
                 'badge_ids'    => [1],  // non-existing badge ;)
                 'badge_status' => [1 => 'unknown'],
             ]);
-        $response->assertRedirect('/projects/'.$project->slug.'/edit')->assertSessionHasErrors();
+        $response->assertRedirect('/projects/' . $project->slug . '/edit')->assertSessionHasErrors();
     }
 
     /**
@@ -273,7 +301,7 @@ class ProjectsTest extends TestCase
         $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/'.$project->slug, [
+            ->call('put', '/projects/' . $project->slug, [
                 'description'   => $this->faker->paragraph,
                 'category_id'   => $project->category_id,
                 'collaborators' => [$otherUser->id],
@@ -286,7 +314,7 @@ class ProjectsTest extends TestCase
         $this->assertCount(1, $project->collaborators);
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/'.$project->slug, [
+            ->call('put', '/projects/' . $project->slug, [
                 'description' => $this->faker->paragraph,
                 'category_id' => $project->category_id,
                 'status'      => 'unknown',
@@ -318,7 +346,7 @@ class ProjectsTest extends TestCase
         $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/'.$project->slug, [
+            ->call('put', '/projects/' . $project->slug, [
                 'description'  => $this->faker->paragraph,
                 'dependencies' => [$projectDep->id],
                 'category_id'  => $project->category_id,
@@ -328,7 +356,7 @@ class ProjectsTest extends TestCase
         // add deps
         $response = $this
             ->actingAs($otherUser)
-            ->call('put', '/projects/'.$project->slug, [
+            ->call('put', '/projects/' . $project->slug, [
                 'description' => $this->faker->paragraph,
                 'category_id' => $project->category_id,
                 'status'      => 'unknown',
@@ -358,7 +386,7 @@ class ProjectsTest extends TestCase
         $project->collaborators()->attach($otherUser);
         $response = $this
             ->actingAs($otherUser)
-            ->call('put', '/projects/'.$project->slug, [
+            ->call('put', '/projects/' . $project->slug, [
                 'description'  => $this->faker->paragraph,
                 'dependencies' => [$projectDep->id],
                 'category_id'  => $project->category_id,
@@ -368,7 +396,7 @@ class ProjectsTest extends TestCase
         // add deps
         $response = $this
             ->actingAs($otherUser)
-            ->call('put', '/projects/'.$project->slug, [
+            ->call('put', '/projects/' . $project->slug, [
                 'description' => $this->faker->paragraph,
                 'category_id' => $project->category_id,
                 'status'      => 'unknown',
@@ -409,7 +437,7 @@ class ProjectsTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->call('post', '/release/'.$project->slug);
+            ->call('post', '/release/' . $project->slug);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
         /** @var Collection $versions */
         $versions = Version::published()->where('project_id', $project->id)->get();
@@ -423,10 +451,10 @@ class ProjectsTest extends TestCase
         $p = new \PharData(public_path($zip));
         $this->assertEquals(\Phar::GZ, $p->isCompressed());
 
-        exec('tar xf '.public_path($zip).' -C '.sys_get_temp_dir());
+        exec('tar xf ' . public_path($zip) . ' -C ' . sys_get_temp_dir());
 
-        $path = sys_get_temp_dir().'/'.$project->slug;
-        $json = (string) file_get_contents($path.'/metadata.json');
+        $path = sys_get_temp_dir() . '/' . $project->slug;
+        $json = (string) file_get_contents($path . '/metadata.json');
 
         $this->assertJsonStringEqualsJsonString((string) json_encode([
             'name'        => $project->name,
@@ -436,8 +464,8 @@ class ProjectsTest extends TestCase
             'revision'    => 1,
         ], JSON_THROW_ON_ERROR), $json);
 
-        $dep = file_get_contents($path.'/'.$project->slug.'.egg-info/requires.txt');
-        $this->assertEquals($projectDep->slug."\n", $dep);
+        $dep = file_get_contents($path . '/' . $project->slug . '.egg-info/requires.txt');
+        $this->assertEquals($projectDep->slug . "\n", $dep);
 
         unlink(public_path($zip));
         Helpers::delTree($path);
@@ -467,30 +495,30 @@ class ProjectsTest extends TestCase
         $newVersion = $project->versions()->unPublished()->first();
         File::factory()->create([
             'version_id' => $newVersion->id,
-            'content'    => 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAF'.
-                'FElEQVRYw+1XfVDTZRxXj9oxN4a8bGMbG4ONTdBUEuVFQImjk5ISxBOQN3kJDSFAQgMRQh0ahLyj'.
-                'EBAblaF2cnqWRml1h1meCUmGQhmVvQioMC8RsM8ToxR/v59o/FF3/u6e+217vs/3+/m+fb7Ppkx5'.
-                '9Pyfnp2r+a5n8+WaAa3q+IBO3Y339QGtulevVbX31Ni/eyRDunat7wz+pBs+sEESAGOtep3qZl+d'.
-                '/fvHNktfKYwUBHyYJX0qO8jCt2adVWRbgW0RgHQQmct7lLUbnze3/teGIxfzzK/U2DcN6FQDMLA1'.
-                '2pt3l3cAkz3+TGGEwKu31v4jAO4/ud0m5qGNZwSYy6Hk4rU3VS2blpvLx++nLjNzRPhvwVMp1fmj'.
-                'm6VRBPilckXhAxuP8zEVwHjXb9X2B7xnsVlUMhWxwjC9Tn37p93KKjo9JWuEzkhJT2epIm/CxmdL'.
-                'WVMRwua+OtWJxQ7sx+nkymOF4QQADAwm+ZmJQz1MLJuzpKvGy1W9YOUOmT8+yJQGTAgACiwainuh'.
-                'VEQnczxb5v9xtsxjFID6du06q/CmdAkJeRuV/OfbbdL1WvXl0EUmXEbj8PgxhL4bxZPMJNdRbKeF'.
-                '3DtY1wiAUxobL3z+FkZGVrpxeePlXZTGRmT/bL5tBiMAeBIIwd7lC7hsJrkLxXYNxDBk96IQr5L3'.
-                'WDTWeJvKqM40pVvHIULdnjONp9EqRkE1dFcoq++Xpk9eleUaDI5A6fCYcfDAcMBCLofqTJALl4f9'.
-                'm5oQvgutYnhySbteFMxk/ODLkqWnd8jdwYQjfxs2rH6tqoXpLNlHjaVSbj49d7ox8SjN3+wJJiXn'.
-                'd9nVAGgV1utYPQbPSRquvp0kdquME86HDjnV2fZC22qkbw+l4hUuXDFRttrTRMQEAGlqInI/lCuS'.
-                '614UOZLPRzOlridyZPO6KxVliMwA0jCd6mzzFqnmlyrlfkrFgS5cEVEW4cUTMwHoLLHTjhageqi/'.
-                'XlVkKMYv8P2vlGAo7Wdo3zwA2Ee56TObzSJFBNp1otoP8+QJ30oS++xLlcSO5RwFOHRnDcD73sxA'.
-                'CwVD99QihRW03gHAhcYUSQTVXmOKmLTRxZJogQW8PATZXw3e3zC8WwvC+XOYogeeOH14k3UircB3'.
-                'ZYo3wP8NVHuYhruJIUzHg+AJI7RiMPnekCjyAMNZz7JmTfWcyTbatspSTjNZ+QAwlLXCYi4tgNJo'.
-                '4VIyRiFsSkc+ZP1YqdgKuXbk/ZxheAlBzQlkeuaH8xdQckeOLAUp6mAkmHk2rGmEMtEuW+6p4Cxp'.
-                'xvjcQ/YbDJouvaEAMcQOU+l9xoljTCj+s1xZ4n2H0d5kMehYrdeE8pV3/h7jbSrSG7ifasHA7+h/'.
-                'GQ137MB+J7iGNaGJiCtVIw58Fex+9/TaFSmYj9/P3wMADFoUKaDM7aGNEn+cGdStFy2e8J3gWScO'.
-                '93q96gxuQ59GLfmnHnJWWjgg3IMEHIyew7sFBJT2nDOHQ0PbfqRLQN0vPfCtKHiRiSUAnCIXzap4'.
-                'K2fy25d58nzk/IYmxNKB6SzphtYC20xyWTmzU77hoe+FSxzZxl2ligqAuIW01OGe4FYcJbChjdyT'.
-                'HBa8DhntENXPIC2/SbmWvxbGXwjyOYI2Gobir3HHK8N8T6yOtwqrTxBFgWIzCQXD4z6k6Eprvm1u'.
-                'kKsJb9L/H8T7zpC9lyZJ+L5coQOQk6QNsdqQqmMIdWFZjHCZ75wJVvqj57/y/AkQ6a2eMiXbygAA'.
+            'content'    => 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAF' .
+                'FElEQVRYw+1XfVDTZRxXj9oxN4a8bGMbG4ONTdBUEuVFQImjk5ISxBOQN3kJDSFAQgMRQh0ahLyj' .
+                'EBAblaF2cnqWRml1h1meCUmGQhmVvQioMC8RsM8ToxR/v59o/FF3/u6e+217vs/3+/m+fb7Ppkx5' .
+                '9Pyfnp2r+a5n8+WaAa3q+IBO3Y339QGtulevVbX31Ni/eyRDunat7wz+pBs+sEESAGOtep3qZl+d' .
+                '/fvHNktfKYwUBHyYJX0qO8jCt2adVWRbgW0RgHQQmct7lLUbnze3/teGIxfzzK/U2DcN6FQDMLA1' .
+                '2pt3l3cAkz3+TGGEwKu31v4jAO4/ud0m5qGNZwSYy6Hk4rU3VS2blpvLx++nLjNzRPhvwVMp1fmj' .
+                'm6VRBPilckXhAxuP8zEVwHjXb9X2B7xnsVlUMhWxwjC9Tn37p93KKjo9JWuEzkhJT2epIm/CxmdL' .
+                'WVMRwua+OtWJxQ7sx+nkymOF4QQADAwm+ZmJQz1MLJuzpKvGy1W9YOUOmT8+yJQGTAgACiwainuh' .
+                'VEQnczxb5v9xtsxjFID6du06q/CmdAkJeRuV/OfbbdL1WvXl0EUmXEbj8PgxhL4bxZPMJNdRbKeF' .
+                '3DtY1wiAUxobL3z+FkZGVrpxeePlXZTGRmT/bL5tBiMAeBIIwd7lC7hsJrkLxXYNxDBk96IQr5L3' .
+                'WDTWeJvKqM40pVvHIULdnjONp9EqRkE1dFcoq++Xpk9eleUaDI5A6fCYcfDAcMBCLofqTJALl4f9' .
+                'm5oQvgutYnhySbteFMxk/ODLkqWnd8jdwYQjfxs2rH6tqoXpLNlHjaVSbj49d7ox8SjN3+wJJiXn' .
+                'd9nVAGgV1utYPQbPSRquvp0kdquME86HDjnV2fZC22qkbw+l4hUuXDFRttrTRMQEAGlqInI/lCuS' .
+                '614UOZLPRzOlridyZPO6KxVliMwA0jCd6mzzFqnmlyrlfkrFgS5cEVEW4cUTMwHoLLHTjhageqi/' .
+                'XlVkKMYv8P2vlGAo7Wdo3zwA2Ee56TObzSJFBNp1otoP8+QJ30oS++xLlcSO5RwFOHRnDcD73sxA' .
+                'CwVD99QihRW03gHAhcYUSQTVXmOKmLTRxZJogQW8PATZXw3e3zC8WwvC+XOYogeeOH14k3UircB3' .
+                'ZYo3wP8NVHuYhruJIUzHg+AJI7RiMPnekCjyAMNZz7JmTfWcyTbatspSTjNZ+QAwlLXCYi4tgNJo' .
+                '4VIyRiFsSkc+ZP1YqdgKuXbk/ZxheAlBzQlkeuaH8xdQckeOLAUp6mAkmHk2rGmEMtEuW+6p4Cxp' .
+                'xvjcQ/YbDJouvaEAMcQOU+l9xoljTCj+s1xZ4n2H0d5kMehYrdeE8pV3/h7jbSrSG7ifasHA7+h/' .
+                'GQ137MB+J7iGNaGJiCtVIw58Fex+9/TaFSmYj9/P3wMADFoUKaDM7aGNEn+cGdStFy2e8J3gWScO' .
+                '93q96gxuQ59GLfmnHnJWWjgg3IMEHIyew7sFBJT2nDOHQ0PbfqRLQN0vPfCtKHiRiSUAnCIXzap4' .
+                'K2fy25d58nzk/IYmxNKB6SzphtYC20xyWTmzU77hoe+FSxzZxl2ligqAuIW01OGe4FYcJbChjdyT' .
+                'HBa8DhntENXPIC2/SbmWvxbGXwjyOYI2Gobir3HHK8N8T6yOtwqrTxBFgWIzCQXD4z6k6Eprvm1u' .
+                'kKsJb9L/H8T7zpC9lyZJ+L5coQOQk6QNsdqQqmMIdWFZjHCZ75wJVvqj57/y/AkQ6a2eMiXbygAA' .
                 'AABJRU5ErkJggg==',
             'name' => 'icon.png',
         ]);
@@ -498,16 +526,16 @@ class ProjectsTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->call('post', '/release/'.$project->slug);
+            ->call('post', '/release/' . $project->slug);
         $response->assertRedirect();
         /** @var Collection $versions */
         $versions = Version::published()->where('project_id', $project->id)->get();
         /** @var Version $version */
         $version = $versions->last();
         $zip = (string) $version->zip;
-        exec('tar xf '.public_path($zip).' -C '.sys_get_temp_dir());
-        $path = sys_get_temp_dir().'/'.$project->slug;
-        $json = (string) file_get_contents($path.'/metadata.json');
+        exec('tar xf ' . public_path($zip) . ' -C ' . sys_get_temp_dir());
+        $path = sys_get_temp_dir() . '/' . $project->slug;
+        $json = (string) file_get_contents($path . '/metadata.json');
 
         $this->assertJsonStringEqualsJsonString((string) json_encode([
             'name'        => $project->name,
@@ -534,7 +562,7 @@ class ProjectsTest extends TestCase
         $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('delete', '/projects/'.$project->slug);
+            ->call('delete', '/projects/' . $project->slug);
         $response->assertRedirect('/projects/')->assertSessionHas('successes');
     }
 
@@ -552,7 +580,7 @@ class ProjectsTest extends TestCase
         $project = Project::factory()->create();
         $response = $this
             ->actingAs($otherUser)
-            ->call('delete', '/projects/'.$project->slug);
+            ->call('delete', '/projects/' . $project->slug);
         $response->assertStatus(403);
     }
 
@@ -570,7 +598,7 @@ class ProjectsTest extends TestCase
         $project = Project::factory()->create();
         $response = $this
             ->actingAs($otherUser)
-            ->call('delete', '/projects/'.$project->slug);
+            ->call('delete', '/projects/' . $project->slug);
         $response->assertRedirect('/projects/')->assertSessionHas('successes');
     }
 
@@ -585,7 +613,7 @@ class ProjectsTest extends TestCase
         /** @var Project $project */
         $project = Project::factory()->create();
         $response = $this
-            ->call('get', '/projects/'.$project->slug);
+            ->call('get', '/projects/' . $project->slug);
         $response->assertStatus(200)->assertViewHas(['project']);
     }
 
@@ -612,7 +640,7 @@ class ProjectsTest extends TestCase
         $this->assertNotNull(Project::get()->last());
         /** @var Project $lastProject */
         $lastProject = Project::get()->last();
-        $response->assertRedirect('/projects/'.$lastProject->slug.'/edit')->assertSessionHas('successes');
+        $response->assertRedirect('/projects/' . $lastProject->slug . '/edit')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
     }
 
@@ -631,7 +659,7 @@ class ProjectsTest extends TestCase
         $this->assertEquals('unknown', $project->status);
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/'.$project->slug, [
+            ->call('put', '/projects/' . $project->slug, [
                 'description'  => $this->faker->paragraph,
                 'category_id'  => $project->category_id,
                 'badge_ids'    => [$badge->id],
@@ -656,8 +684,8 @@ class ProjectsTest extends TestCase
         $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('post', '/notify/'.$project->slug, ['description' => 'het zuigt']);
-        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
+            ->call('post', '/notify/' . $project->slug, ['description' => 'het zuigt']);
+        $response->assertRedirect('/projects/' . $project->slug)->assertSessionHas('successes');
         Mail::assertSent(ProjectNotificationMail::class, static function (ProjectNotificationMail $mail) {
             Container::getInstance()->call([$mail, 'build']);
 
@@ -687,7 +715,7 @@ class ProjectsTest extends TestCase
         $this->assertNotEquals($name, $project->name);
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects/'.$project->slug.'/move', [
+            ->call('post', '/projects/' . $project->slug . '/move', [
                 'name' => $name,
             ]);
         $response->assertStatus(403);
@@ -713,18 +741,19 @@ class ProjectsTest extends TestCase
         $this->assertNotEquals($name, $project->name);
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects/'.$project->slug.'/move', [
+            ->call('post', '/projects/' . $project->slug . '/move', [
                 'name' => $name,
             ]);
-        $response->assertRedirect('/projects/'.Str::slug($name, '_').'/edit')->assertSessionHas('successes');
+        $response->assertRedirect('/projects/' . Str::slug($name, '_') . '/edit')
+            ->assertSessionHas('successes');
         /** @var Project $project */
         $project = Project::find($project->id);
         $this->assertEquals($name, $project->name);
         $this->assertEquals(Str::slug($name, '_'), $project->slug);
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects/'.$project->slug.'/move', [
-                'name' => $name.'_',    // different name, same slug
+            ->call('post', '/projects/' . $project->slug . '/move', [
+                'name' => $name . '_',    // different name, same slug
             ]);
         $response->assertStatus(302)->assertSessionHasErrors();
     }
@@ -741,7 +770,7 @@ class ProjectsTest extends TestCase
         $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('get', '/projects/'.$project->slug.'/rename');
+            ->call('get', '/projects/' . $project->slug . '/rename');
         $response->assertStatus(403);
     }
 
@@ -759,7 +788,7 @@ class ProjectsTest extends TestCase
         $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('get', '/projects/'.$project->slug.'/rename');
+            ->call('get', '/projects/' . $project->slug . '/rename');
         $response->assertStatus(200);
     }
 
@@ -771,7 +800,7 @@ class ProjectsTest extends TestCase
         /** @var Badge $badge */
         $badge = Badge::factory()->create();
         $response = $this
-            ->get('/projects?badge='.$badge->slug);
+            ->get('/projects?badge=' . $badge->slug);
         $response->assertStatus(200)
             ->assertViewHas('projects')
             ->assertViewHas('badge', $badge->slug);
@@ -785,7 +814,7 @@ class ProjectsTest extends TestCase
         /** @var Category $category */
         $category = Category::factory()->create();
         $response = $this
-            ->get('/projects?category='.$category->slug);
+            ->get('/projects?category=' . $category->slug);
         $response->assertStatus(200)
             ->assertViewHas('category', $category->slug)
             ->assertViewHas('projects');
@@ -801,7 +830,7 @@ class ProjectsTest extends TestCase
         /** @var Category $category */
         $category = Category::factory()->create();
         $response = $this
-            ->get('/projects?badge='.$badge->slug.'&category='.$category->slug);
+            ->get('/projects?badge=' . $badge->slug . '&category=' . $category->slug);
         $response->assertStatus(200)
             ->assertViewHas('badge', $badge->slug)
             ->assertViewHas('category', $category->slug)
@@ -834,7 +863,13 @@ class ProjectsTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => 'woezel', 'description' => $this->faker->paragraph, 'category_id' => $category->id]);
+            ->call(
+                'post',
+                '/projects',
+                [
+                    'name' => 'woezel', 'description' => $this->faker->paragraph, 'category_id' => $category->id
+                ]
+            );
         $response->assertRedirect('/projects/create')->assertSessionHasErrors();
 
         $this->assertEmpty(Project::all());
@@ -852,7 +887,14 @@ class ProjectsTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $this->faker->text(1024), 'description' => $this->faker->paragraph, 'category_id' => $category->id]);
+            ->call(
+                'post',
+                '/projects',
+                [
+                    'name' => $this->faker->text(1024),
+                    'description' => $this->faker->paragraph, 'category_id' => $category->id
+                ]
+            );
         $response->assertRedirect('/projects/create')->assertSessionHasErrors();
 
         $this->assertEmpty(Project::all());
@@ -870,7 +912,7 @@ class ProjectsTest extends TestCase
         $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/'.$project->slug, [
+            ->call('put', '/projects/' . $project->slug, [
                 'description' => $this->faker->paragraph,
                 'category_id' => $project->category_id,
                 'status'      => 'unknown',
@@ -899,7 +941,7 @@ class ProjectsTest extends TestCase
         $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/'.$project->slug, [
+            ->call('put', '/projects/' . $project->slug, [
                 'description'  => $this->faker->paragraph,
                 'category_id'  => $project->category_id,
                 'status'       => 'unknown',
@@ -920,7 +962,7 @@ class ProjectsTest extends TestCase
         $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/'.$project->slug, [
+            ->call('put', '/projects/' . $project->slug, [
                 'description'  => $this->faker->paragraph,
                 'category_id'  => $project->category_id,
                 'status'       => 'unknown',
@@ -941,7 +983,7 @@ class ProjectsTest extends TestCase
         $project = Project::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('put', '/projects/'.$project->slug, [
+            ->call('put', '/projects/' . $project->slug, [
                 'description'  => $this->faker->paragraph,
                 'category_id'  => $project->category_id,
                 'status'       => 'unknown',

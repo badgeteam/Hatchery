@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 /**
  * Class Darksky.
@@ -29,17 +32,11 @@ class Darksky
     /**
      * @param string $url
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     *
      * @return string
-     *
-     *
-     * @codeCoverageIgnore
+     * @throws GuzzleException
      */
     public function get(string $url): string
     {
-        $response = $this->client->request('GET', $url);
-
-        return $response->getBody();
+        return $this->client->request('GET', $url)->getBody()->getContents();
     }
 }

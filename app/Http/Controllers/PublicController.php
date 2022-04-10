@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Events\DownloadCounter;
@@ -7,7 +9,6 @@ use App\Models\Badge;
 use App\Models\Category;
 use App\Models\Project;
 use App\Models\User;
-use App\Models\Version;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
@@ -160,7 +161,12 @@ class PublicController extends Controller
         /** @var Project|null $project */
         $project = Project::where('slug', $slug)->first();
         if ($project === null) {
-            return response()->json(['message' => 'No releases found'], 404, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+            return response()->json(
+                ['message' => 'No releases found'],
+                404,
+                ['Content-Type' => 'application/json'],
+                JSON_UNESCAPED_SLASHES
+            );
         }
         $releases = [];
         foreach ($project->versions()->published()->orderBy('revision', 'desc')->limit(5)->get() as $version) {
@@ -185,7 +191,12 @@ class PublicController extends Controller
 
         event(new DownloadCounter($project));
 
-        return response()->json($package, 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        return response()->json(
+            $package,
+            200,
+            ['Content-Type' => 'application/json'],
+            JSON_UNESCAPED_SLASHES
+        );
     }
 
     /**
@@ -235,7 +246,7 @@ class PublicController extends Controller
      */
     public function searchJson(string $search): JsonResponse
     {
-        $what = '%'.$search.'%';
+        $what = '%' . $search . '%';
 
         return response()->json(
             Project::whereHas(
@@ -300,7 +311,8 @@ class PublicController extends Controller
      */
     public function categoriesJson(): JsonResponse
     {
-        return response()->json(Category::where('hidden', false)->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        return response()->json(Category::where('hidden', false)
+            ->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
 
     /**
@@ -355,7 +367,7 @@ class PublicController extends Controller
      */
     public function badgeSearchJson(Badge $badge, string $search): JsonResponse
     {
-        $what = '%'.$search.'%';
+        $what = '%' . $search . '%';
 
         return response()->json(
             $badge->projects()->whereHas(

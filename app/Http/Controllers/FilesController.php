@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FileStoreRequest;
@@ -77,7 +79,8 @@ class FilesController extends Controller
             $file->content = $request->file_content;
             $file->save();
         } catch (\Exception $e) {
-            return redirect()->route('files.edit', ['file' => $file->id])->withInput()->withErrors([$e->getMessage()]);
+            return redirect()->route('files.edit', ['file' => $file->id])
+                ->withInput()->withErrors([$e->getMessage()]);
         }
 
         if ($file->lintable) {
@@ -85,23 +88,25 @@ class FilesController extends Controller
             if ($data['return_value'] === 0) {
                 return redirect()
                     ->route('projects.edit', ['project' => $file->version->project])
-                    ->withSuccesses([$file->name.' saved']);
-            } elseif (!empty($data[0])) {
+                    ->withSuccesses([$file->name . ' saved']);
+            }
+
+            if (!empty($data[0])) {
                 return redirect()->route('files.edit', ['file' => $file->id])
                     ->withInput()
-                    ->withSuccesses([$file->name.' saved'])
+                    ->withSuccesses([$file->name . ' saved'])
                     ->withWarnings(explode("\n", (string) $data[0]));
             }
 
             return redirect()->route('files.edit', ['file' => $file->id])
                 ->withInput()
-                ->withSuccesses([$file->name.' saved'])
+                ->withSuccesses([$file->name . ' saved'])
                 ->withErrors(explode("\n", (string) $data[1]));
         }
 
         return redirect()
             ->route('projects.edit', ['project' => $file->version->project])
-            ->withSuccesses([$file->name.' saved']);
+            ->withSuccesses([$file->name . ' saved']);
     }
 
     /**
@@ -138,13 +143,18 @@ class FilesController extends Controller
         try {
             $file->version_id = $version->id;
             $file->name = $request->has('name') ? $request->get('name') : 'icon.py';
-            $file->content = 'icon = (['.implode(', ', $pixels).'], 1)';
+            $file->content = 'icon = ([' . implode(', ', $pixels) . '], 1)';
             $file->save();
         } catch (\Exception $e) {
-            return redirect()->route('projects.edit', ['project' => $version->project])->withInput()->withErrors([$e->getMessage()]);
+            return redirect()->route(
+                'projects.edit',
+                [
+                'project' => $version->project]
+            )->withInput()->withErrors([$e->getMessage()
+                    ]);
         }
 
-        return redirect()->route('files.edit', ['file' => $file->id])->withSuccesses([$file->name.' created']);
+        return redirect()->route('files.edit', ['file' => $file->id])->withSuccesses([$file->name . ' created']);
     }
 
     /**
@@ -168,7 +178,12 @@ class FilesController extends Controller
             return redirect()->route('files.create')->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.edit', ['project' => $file->version->project])->withSuccesses([$file->name.' saved']);
+        return redirect()->route(
+            'projects.edit',
+            [
+            'project' => $file->version->project]
+        )->withSuccesses([$file->name . ' saved'
+                ]);
     }
 
     /**
@@ -190,7 +205,7 @@ class FilesController extends Controller
                 ->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.edit', ['project' => $project])->withSuccesses([$file->name.' deleted']);
+        return redirect()->route('projects.edit', ['project' => $project])->withSuccesses([$file->name . ' deleted']);
     }
 
     /**
@@ -220,7 +235,7 @@ class FilesController extends Controller
             ->header('Content-Description', 'File Transfer')
             ->header('Content-Type', $file->mime)
             ->header('Content-length', (string) strlen($file->content))
-            ->header('Content-Disposition', 'attachment; filename='.$file->name)
+            ->header('Content-Disposition', 'attachment; filename=' . $file->name)
             ->header('Content-Transfer-Encoding', 'binary');
     }
 

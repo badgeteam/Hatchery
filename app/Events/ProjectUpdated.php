@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Events;
 
 use App\Models\Project;
@@ -50,10 +52,10 @@ class ProjectUpdated extends Event implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        $whom = [new PrivateChannel('App.User.'.$this->project->user_id)];
+        $whom = [new PrivateChannel('App.User.' . $this->project->user_id)];
 
         foreach ($this->project->collaborators as $collaborator) {
-            $whom[] = new PrivateChannel('App.User.'.$collaborator->id);
+            $whom[] = new PrivateChannel('App.User.' . $collaborator->id);
         }
 
         return $whom;

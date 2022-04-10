@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -19,7 +21,6 @@ use LaravelWebauthn\Models\WebauthnKey;
  * Class User.
  *
  * @author annejan@badge.team
- *
  * @property int         $id
  * @property bool        $admin
  * @property string      $name
@@ -46,7 +47,6 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @property-read int|null $webauthn_keys_count
  * @property-read Collection|Project[] $collaborations
  * @property-read int|null $collaborations_count
- *
  * @method static bool|null forceDelete()
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
@@ -70,6 +70,9 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @method static Builder|User withTrashed()
  * @method static Builder|User withoutTrashed()
  * @mixin \Eloquent
+ * @property string|null $email_verified_at
+ * @method static \Database\Factories\UserFactory factory(...$parameters)
+ * @method static Builder|User whereEmailVerifiedAt($value)
  */
 class User extends Authenticatable
 {
@@ -142,7 +145,7 @@ class User extends Authenticatable
      */
     public function delete(): ?bool
     {
-        $this->email = 'deleted'.mt_rand().'#'.$this->email;
+        $this->email = 'deleted' . mt_rand() . '#' . $this->email;
         $this->save();
 
         return parent::delete();

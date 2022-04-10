@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -34,7 +36,7 @@ class TwoFAController extends Controller
         if ($user->google2fa_secret !== null) {
             $google2fa = app('pragmarx.google2fa');
             $google2fa_url = $google2fa->getQRCodeInline(
-                'Hatchery '.$request->getHost(),
+                'Hatchery ' . $request->getHost(),
                 $user->email,
                 $user->google2fa_secret
             );

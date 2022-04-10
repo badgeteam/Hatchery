@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit;
 
 use App\Models\File;
@@ -25,7 +27,7 @@ class HelpersTest extends TestCase
      */
     public function testDelTreeOnNonExistingFolder(): void
     {
-        $this->assertFalse(Helpers::delTree(sys_get_temp_dir().'/'.$this->faker->firstName));
+        $this->assertFalse(Helpers::delTree(sys_get_temp_dir() . '/' . $this->faker->firstName));
     }
 
     /**
@@ -33,7 +35,7 @@ class HelpersTest extends TestCase
      */
     public function testDelTreeOnEmptyFolder(): void
     {
-        $folder = sys_get_temp_dir().'/'.$this->faker->firstName;
+        $folder = sys_get_temp_dir() . '/' . $this->faker->firstName;
         mkdir($folder);
         $this->assertFileExists($folder);
         $this->assertTrue(Helpers::delTree($folder));
@@ -45,9 +47,9 @@ class HelpersTest extends TestCase
      */
     public function testDelTreeOnNestedFolder(): void
     {
-        $folder = sys_get_temp_dir().'/'.$this->faker->firstName;
+        $folder = sys_get_temp_dir() . '/' . $this->faker->firstName;
         mkdir($folder);
-        $secondFolder = $folder.'/'.$this->faker->firstName;
+        $secondFolder = $folder . '/' . $this->faker->firstName;
         mkdir($secondFolder);
         $this->assertFileExists($folder);
         $this->assertFileExists($secondFolder);
@@ -61,9 +63,9 @@ class HelpersTest extends TestCase
      */
     public function testDelTreeOnNestedFile(): void
     {
-        $folder = sys_get_temp_dir().'/'.$this->faker->firstName;
+        $folder = sys_get_temp_dir() . '/' . $this->faker->firstName;
         mkdir($folder);
-        $file = $folder.'/'.$this->faker->firstName;
+        $file = $folder . '/' . $this->faker->firstName;
         touch($file);
         $this->assertFileExists($folder);
         $this->assertFileExists($file);
@@ -77,7 +79,7 @@ class HelpersTest extends TestCase
      */
     public function testAddFilesEmptyFolder(): void
     {
-        $folder = sys_get_temp_dir().'/'.$this->faker->firstName;
+        $folder = sys_get_temp_dir() . '/' . $this->faker->firstName;
         mkdir($folder);
         /** @var User $user */
         $user = User::factory()->create();
@@ -96,9 +98,9 @@ class HelpersTest extends TestCase
      */
     public function testAddFilesIgnoresFile(): void
     {
-        $folder = sys_get_temp_dir().'/'.$this->faker->firstName;
+        $folder = sys_get_temp_dir() . '/' . $this->faker->firstName;
         mkdir($folder);
-        $file = $folder.'/'.$this->faker->firstName;
+        $file = $folder . '/' . $this->faker->firstName;
         touch($file);
         /** @var User $user */
         $user = User::factory()->create();
@@ -117,9 +119,9 @@ class HelpersTest extends TestCase
      */
     public function testAddFilesSingleFile(): void
     {
-        $folder = sys_get_temp_dir().'/'.$this->faker->firstName;
+        $folder = sys_get_temp_dir() . '/' . $this->faker->firstName;
         mkdir($folder);
-        $file = $folder.'/'.$this->faker->firstName.'.py';
+        $file = $folder . '/' . $this->faker->firstName . '.py';
         touch($file);
         /** @var User $user */
         $user = User::factory()->create();
@@ -132,7 +134,7 @@ class HelpersTest extends TestCase
         $this->assertCount(1, $version->files);
         /** @var File $versionFile */
         $versionFile = $version->files->first();
-        $this->assertEquals(str_replace($folder.'/', '', $file), $versionFile->name);
+        $this->assertEquals(str_replace($folder . '/', '', $file), $versionFile->name);
         Helpers::delTree($folder);
     }
 
@@ -141,11 +143,11 @@ class HelpersTest extends TestCase
      */
     public function testAddFilesNestedFile(): void
     {
-        $folder = sys_get_temp_dir().'/'.$this->faker->firstName;
+        $folder = sys_get_temp_dir() . '/' . $this->faker->firstName;
         mkdir($folder);
-        $secondFolder = $folder.'/'.$this->faker->firstName;
+        $secondFolder = $folder . '/' . $this->faker->firstName;
         mkdir($secondFolder);
-        $file = $secondFolder.'/'.$this->faker->firstName.'.py';
+        $file = $secondFolder . '/' . $this->faker->firstName . '.py';
         touch($file);
         /** @var User $user */
         $user = User::factory()->create();
@@ -158,7 +160,7 @@ class HelpersTest extends TestCase
         $this->assertCount(1, $version->files);
         /** @var File $versionFile */
         $versionFile = $version->files->first();
-        $this->assertEquals(str_replace($folder.'/', '', $file), $versionFile->name);
+        $this->assertEquals(str_replace($folder . '/', '', $file), $versionFile->name);
         Helpers::delTree($folder);
     }
 }

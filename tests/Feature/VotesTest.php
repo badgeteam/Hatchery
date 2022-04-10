@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Project;
@@ -32,7 +34,7 @@ class VotesTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
-        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
+        $response->assertRedirect('/projects/' . $project->slug)->assertSessionHas('successes');
         $this->assertCount(1, Vote::all());
         /** @var Project $project */
         $project = Project::find($project->id);
@@ -54,12 +56,12 @@ class VotesTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
-        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
+        $response->assertRedirect('/projects/' . $project->slug)->assertSessionHas('successes');
         $this->assertCount(1, Vote::all());
         $response = $this
             ->actingAs($user)
             ->call('post', '/votes', ['project_id' => $project->id, 'type' => 'pig']);
-        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHasErrors();
+        $response->assertRedirect('/projects/' . $project->slug)->assertSessionHasErrors();
         $this->assertCount(1, Vote::all());
     }
 
@@ -97,8 +99,8 @@ class VotesTest extends TestCase
         ]);
         $response = $this
             ->actingAs($user)
-            ->call('delete', '/votes/'.$vote->id);
-        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
+            ->call('delete', '/votes/' . $vote->id);
+        $response->assertRedirect('/projects/' . $project->slug)->assertSessionHas('successes');
         $this->assertEmpty(Vote::all());
     }
 
@@ -121,7 +123,7 @@ class VotesTest extends TestCase
         ]);
         $response = $this
             ->actingAs($otherUser)
-            ->call('delete', '/votes/'.$vote->id);
+            ->call('delete', '/votes/' . $vote->id);
         $response->assertStatus(403);
         $this->assertCount(1, Vote::all());
     }
@@ -143,10 +145,10 @@ class VotesTest extends TestCase
         ]);
         $response = $this
             ->actingAs($user)
-            ->call('put', '/votes/'.$vote->id, [
+            ->call('put', '/votes/' . $vote->id, [
                 'type' => 'up',
             ]);
-        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHas('successes');
+        $response->assertRedirect('/projects/' . $project->slug)->assertSessionHas('successes');
         /** @var Vote $vote */
         $vote = Vote::find($vote->id);
         $this->assertEquals('up', $vote->type);
@@ -171,7 +173,7 @@ class VotesTest extends TestCase
         ]);
         $response = $this
             ->actingAs($otherUser)
-            ->call('put', '/votes/'.$vote->id, [
+            ->call('put', '/votes/' . $vote->id, [
                 'type' => 'up',
             ]);
         $response->assertStatus(403);
@@ -237,7 +239,7 @@ class VotesTest extends TestCase
                 'type'       => 'pig',
                 'comment'    => $this->faker->text(1024),
             ]);
-        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHasErrors();
+        $response->assertRedirect('/projects/' . $project->slug)->assertSessionHasErrors();
         $this->assertEmpty(Vote::all());
     }
 
@@ -259,11 +261,11 @@ class VotesTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->call('put', '/votes/'.$vote->id, [
+            ->call('put', '/votes/' . $vote->id, [
                 'type'    => 'up',
                 'comment' => $this->faker->text(1024),
             ]);
-        $response->assertRedirect('/projects/'.$project->slug)->assertSessionHasErrors();
+        $response->assertRedirect('/projects/' . $project->slug)->assertSessionHasErrors();
         /** @var Vote $vote */
         $vote = Vote::find($vote->id);
         $this->assertEquals('pig', $vote->type);

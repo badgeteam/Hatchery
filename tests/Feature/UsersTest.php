@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Project;
@@ -121,7 +123,7 @@ class UsersTest extends TestCase
 
         $this->assertNotNull($token);
 
-        $response = $this->get('/password/reset/'.$token);
+        $response = $this->get('/password/reset/' . $token);
         $response->assertStatus(200);
 
         $password = $this->faker->password(8, 20);
@@ -176,7 +178,7 @@ class UsersTest extends TestCase
         $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('delete', '/users/'.$user->id);
+            ->call('delete', '/users/' . $user->id);
         $response->assertRedirect('/')->assertSessionHas('successes');
         /** @var User $user */
         $user = User::withTrashed()->find($user->id);
@@ -194,7 +196,7 @@ class UsersTest extends TestCase
         $otherUser = User::factory()->create();
         $response = $this
             ->actingAs($otherUser)
-            ->call('delete', '/users/'.$user->id);
+            ->call('delete', '/users/' . $user->id);
         $response->assertStatus(403);
     }
 
@@ -211,7 +213,7 @@ class UsersTest extends TestCase
         $otherUser->save();
         $response = $this
             ->actingAs($otherUser)
-            ->call('delete', '/users/'.$user->id);
+            ->call('delete', '/users/' . $user->id);
         $response->assertRedirect('/')->assertSessionHas('successes');
     }
 
@@ -224,7 +226,7 @@ class UsersTest extends TestCase
         $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->get('/users/'.$user->id.'/edit');
+            ->get('/users/' . $user->id . '/edit');
         $response->assertStatus(200);
     }
 
@@ -239,7 +241,7 @@ class UsersTest extends TestCase
         $otherUser = User::factory()->create();
         $response = $this
             ->actingAs($otherUser)
-            ->get('/users/'.$user->id.'/edit');
+            ->get('/users/' . $user->id . '/edit');
         $response->assertStatus(403);
     }
 
@@ -252,7 +254,7 @@ class UsersTest extends TestCase
         $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('put', '/users/'.$user->id, [
+            ->call('put', '/users/' . $user->id, [
                 'name'   => 'Henk',
                 'email'  => 'henk@annejan.com',
                 'editor' => 'vim',
@@ -271,7 +273,7 @@ class UsersTest extends TestCase
         $otherUser = User::factory()->create();
         $response = $this
             ->actingAs($otherUser)
-            ->call('put', '/users/'.$user->id, [
+            ->call('put', '/users/' . $user->id, [
                 'name'   => 'Henk',
                 'email'  => 'henk@annejan.com',
                 'editor' => 'vim',
@@ -485,7 +487,7 @@ class UsersTest extends TestCase
         $user = User::factory()->create(['public' => true]);
         $response = $this
             ->actingAs($user)
-            ->get('/users/'.$user->id);
+            ->get('/users/' . $user->id);
         $response->assertStatus(200)
             ->assertViewHas('projects');
     }
@@ -500,7 +502,7 @@ class UsersTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->get('profile');
-        $response->assertRedirect('/users/'.$user->id);
+        $response->assertRedirect('/users/' . $user->id);
     }
 
     /**
@@ -512,11 +514,11 @@ class UsersTest extends TestCase
         $user = User::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('put', '/users/'.$user->id, [
+            ->call('put', '/users/' . $user->id, [
                 'name'   => $this->faker->text(1024),
                 'email'  => 'henk@annejan.com',
                 'editor' => 'vim',
             ]);
-        $response->assertRedirect('/users/'.$user->id.'/edit')->assertSessionHasErrors();
+        $response->assertRedirect('/users/' . $user->id . '/edit')->assertSessionHasErrors();
     }
 }

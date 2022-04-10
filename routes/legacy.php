@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 Route::middleware(['auth', 'webauthn', '2fa'])->group(function () {
     Route::get('home', 'HomeController@index')->name('home');
 

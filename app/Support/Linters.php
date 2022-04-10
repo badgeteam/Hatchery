@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support;
 
 use App\Models\File;
@@ -52,7 +54,7 @@ class Linters
         ];
         $process = proc_open($command, $fds, $pipes, null, null);
         if (is_resource($process)) {
-            fwrite($pipes[0], $content."\n");   // insert trailing newline ;)
+            fwrite($pipes[0], $content . "\n");   // insert trailing newline ;)
             fclose($pipes[0]);
             $stdOut = (string) stream_get_contents($pipes[1]);
             fclose($pipes[1]);

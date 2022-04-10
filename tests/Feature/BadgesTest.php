@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Badge;
@@ -30,7 +32,7 @@ class BadgesTest extends TestCase
         $badge = Badge::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->get('/badges/'.$badge->slug.'/edit');
+            ->get('/badges/' . $badge->slug . '/edit');
         $response->assertStatus(200)
             ->assertViewHas('badge', $badge);
     }
@@ -47,7 +49,7 @@ class BadgesTest extends TestCase
         $badge = Badge::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->get('/badges/'.$badge->slug.'/edit');
+            ->get('/badges/' . $badge->slug . '/edit');
         $response->assertStatus(403);
     }
 
@@ -107,7 +109,7 @@ class BadgesTest extends TestCase
         $badge = Badge::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->get('/badges/'.$badge->slug);
+            ->get('/badges/' . $badge->slug);
         $response->assertStatus(200)
             ->assertViewHas('badge', $badge);
     }
@@ -171,7 +173,7 @@ class BadgesTest extends TestCase
         $this->assertNotEquals($name, $badge->name);
         $response = $this
             ->actingAs($user)
-            ->call('put', '/badges/'.$badge->slug, ['name' => $name]);
+            ->call('put', '/badges/' . $badge->slug, ['name' => $name]);
         $response->assertRedirect('/badges')->assertSessionHasNoErrors();
         /** @var Badge $badge */
         $badge = Badge::find($badge->id);
@@ -192,7 +194,7 @@ class BadgesTest extends TestCase
         $this->assertNotEquals($name, $badge->name);
         $response = $this
             ->actingAs($user)
-            ->call('put', '/badges/'.$badge->slug, ['name' => $name]);
+            ->call('put', '/badges/' . $badge->slug, ['name' => $name]);
         $response->assertStatus(403);
         $this->assertNotEquals($name, $badge->name);
     }
@@ -211,8 +213,8 @@ class BadgesTest extends TestCase
         $this->assertNotEquals($name, $badge->name);
         $response = $this
             ->actingAs($user)
-            ->call('put', '/badges/'.$badge->slug, ['name' => $name]);
-        $response->assertRedirect('/badges/'.$badge->slug.'/edit')->assertSessionHasErrors();
+            ->call('put', '/badges/' . $badge->slug, ['name' => $name]);
+        $response->assertRedirect('/badges/' . $badge->slug . '/edit')->assertSessionHasErrors();
         $this->assertNotEquals($name, $badge->name);
     }
 
@@ -229,7 +231,7 @@ class BadgesTest extends TestCase
         $this->assertCount(1, Badge::all());
         $response = $this
             ->actingAs($user)
-            ->call('delete', '/badges/'.$badge->slug);
+            ->call('delete', '/badges/' . $badge->slug);
         $response->assertRedirect('/badges')->assertSessionHasNoErrors();
         $this->assertEmpty(Badge::all());
     }
@@ -247,7 +249,7 @@ class BadgesTest extends TestCase
         $this->assertCount(1, Badge::all());
         $response = $this
             ->actingAs($user)
-            ->call('delete', '/badges/'.$badge->slug);
+            ->call('delete', '/badges/' . $badge->slug);
         $response->assertStatus(403);
         $this->assertCount(1, Badge::all());
     }

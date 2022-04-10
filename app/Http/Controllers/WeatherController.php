@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Support\Darksky;
@@ -53,7 +55,7 @@ class WeatherController extends Controller
     public function show(): JsonResponse
     {
         $this->url = config('services.darksky.key')
-            .'/'.config('services.darksky.location').'?units=ca&exclude=currently,alerts,flags,daily,minutely';
+            . '/' . config('services.darksky.location') . '?units=ca&exclude=currently,alerts,flags,daily,minutely';
 
         return response()->json(
             $this->getJson(),
@@ -90,12 +92,15 @@ class WeatherController extends Controller
      */
     public function location(string $location): JsonResponse
     {
-        if (preg_match('/^([-+]?)([\d]{1,2})(((\.)(\d+)(,)))(\s*)(([-+]?)([\d]{1,3})((\.)(\d+))?)$/', $location) !== 1) {
+        if (
+            preg_match('/^([-+]?)([\d]{1,2})(((\.)(\d+)(,)))(\s*)(([-+]?)([\d]{1,3})((\.)(\d+))?)$/', $location)
+            !== 1
+        ) {
             abort(412, 'Location invalid');
         }
 
         $this->url = config('services.darksky.key')
-            .'/'.$location.'?units=ca&exclude=currently,alerts,flags,daily,minutely';
+            . '/' . $location . '?units=ca&exclude=currently,alerts,flags,daily,minutely';
 
         return response()->json(
             $this->getJson(),
@@ -106,9 +111,10 @@ class WeatherController extends Controller
     }
 
     /**
-     * @throws GuzzleException
-     *
      * @return stdClass
+     * @throws \JsonException
+     *
+     * @throws GuzzleException
      */
     private function getJson(): stdClass
     {
@@ -117,13 +123,13 @@ class WeatherController extends Controller
             $json = Cache::get($key);
         } else {
             $json = $this->client->get($this->url);
-            if ($json === '') {
-                abort(404, "Couldn't fetch the weather from: ".$this->url);
+            if ($json === "") {
+                abort(404, "Couldn't fetch the weather from: " . $this->url);
             }
             $expiresAt = Carbon::now()->addMinutes($this->minutes);
             Cache::put($key, $json, $expiresAt);
         }
 
-        return json_decode($json);
+        return json_decode($json, false, 512, JSON_THROW_ON_ERROR);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectNotificationRequest;
@@ -73,7 +75,7 @@ class ProjectsController extends Controller
         if ($search) {
             $projects = $projects->where(
                 function (Builder $query) use ($search) {
-                    $query->where('name', 'like', '%'.$search.'%');
+                    $query->where('name', 'like', '%' . $search . '%');
                     // @todo perhaps search in README ?
                 }
             );
@@ -121,7 +123,8 @@ class ProjectsController extends Controller
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' created!']);
+        return redirect()->route('projects.edit', ['project' => $project->slug])
+            ->withSuccesses([$project->name . ' created!']);
     }
 
     /**
@@ -157,13 +160,14 @@ class ProjectsController extends Controller
             $this->manageBadges($project, $request);
             $this->manageCollaborators($project, $request);
         } catch (Exception $e) {
-            return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors([$e->getMessage()]);
+            return redirect()->route('projects.edit', ['project' => $project->slug])
+                ->withInput()->withErrors([$e->getMessage()]);
         }
         if (isset($request->publish)) {
             return $this->publish($project);
         }
 
-        return redirect()->route('projects.index')->withSuccesses([$project->name.' saved']);
+        return redirect()->route('projects.index')->withSuccesses([$project->name . ' saved']);
     }
 
     /**
@@ -177,7 +181,7 @@ class ProjectsController extends Controller
     {
         PublishProject::dispatch($project, Auth::user());
 
-        return redirect()->route('projects.index')->withSuccesses([$project->name.' is being published.']);
+        return redirect()->route('projects.index')->withSuccesses([$project->name . ' is being published.']);
     }
 
     /**
@@ -192,7 +196,7 @@ class ProjectsController extends Controller
         $name = $project->name;
 
         try {
-            $project->name = 'Deleted '.rand().' '.$name;
+            $project->name = 'Deleted ' . rand() . ' ' . $name;
             $project->slug = Str::slug($project->name);
             $project->save();
             $project->delete();
@@ -202,7 +206,7 @@ class ProjectsController extends Controller
                 ->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.index')->withSuccesses([$name.' deleted']);
+        return redirect()->route('projects.index')->withSuccesses([$name . ' deleted']);
     }
 
     /**
@@ -232,7 +236,8 @@ class ProjectsController extends Controller
         $mail = new ProjectNotificationMail($warning);
         Mail::to('bugs@badge.team')->send($mail);
 
-        return redirect()->route('projects.show', ['project' => $project])->withSuccesses(['Notification sent to badge.team']);
+        return redirect()->route('projects.show', ['project' => $project])
+            ->withSuccesses(['Notification sent to badge.team']);
     }
 
     /**
@@ -277,7 +282,8 @@ class ProjectsController extends Controller
         $project->slug = $slug;
         $project->save();
 
-        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' renamed']);
+        return redirect()->route('projects.edit', ['project' => $project->slug])
+            ->withSuccesses([$project->name . ' renamed']);
     }
 
     /**
@@ -290,12 +296,13 @@ class ProjectsController extends Controller
     public function pull(Project $project): RedirectResponse
     {
         if ($project->git === null) {
-            return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors(['No git repo for project.']);
+            return redirect()->route('projects.edit', ['project' => $project->slug])
+                ->withInput()->withErrors(['No git repo for project.']);
         }
 
         UpdateProject::dispatch($project, Auth::user());
 
-        return redirect()->route('projects.index')->withSuccesses([$project->name.' is being updated.']);
+        return redirect()->route('projects.index')->withSuccesses([$project->name . ' is being updated.']);
     }
 
     /**
@@ -317,7 +324,7 @@ class ProjectsController extends Controller
             return redirect()->route('projects.import')->withInput()->withErrors(['reserved name']);
         }
 
-        $tempFolder = sys_get_temp_dir().'/'.Str::slug($request->name);
+        $tempFolder = sys_get_temp_dir() . '/' . Str::slug($request->name);
 
         try {
             $repo->cloneRepository($request->git, $tempFolder, ['-q', '--single-branch', '--depth', 1]);
@@ -336,7 +343,7 @@ class ProjectsController extends Controller
             return redirect()->route('projects.import')->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.index')->withSuccesses([$project->name.' being imported!']);
+        return redirect()->route('projects.index')->withSuccesses([$project->name . ' being imported!']);
     }
 
     /**
@@ -402,7 +409,8 @@ class ProjectsController extends Controller
             foreach ($request->get('badge_ids') as $badge_id) {
                 if (array_key_exists($badge_id, $status)) {
                     /** @var BadgeProject|null $state */
-                    $state = BadgeProject::where('badge_id', $badge_id)->where('project_id', $project->id)->first();
+                    $state = BadgeProject::where('badge_id', $badge_id)
+                        ->where('project_id', $project->id)->first();
                     if ($state === null) {
                         throw new \RuntimeException('BadgeProject not found');
                     }

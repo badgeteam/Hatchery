@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Events\ProjectUpdated;
@@ -34,8 +36,8 @@ class FilesProcessTest extends TestCase
         $data = 'import time';
         $response = $this
             ->actingAs($user)
-            ->call('put', '/files/'.$file->id, ['file_content' => $data]);
-        $response->assertRedirect('/files/'.$file->id.'/edit')->assertSessionHas('warnings');
+            ->call('put', '/files/' . $file->id, ['file_content' => $data]);
+        $response->assertRedirect('/files/' . $file->id . '/edit')->assertSessionHas('warnings');
     }
 
     /**
@@ -51,8 +53,8 @@ class FilesProcessTest extends TestCase
         $data = 'imprt time';
         $response = $this
             ->actingAs($user)
-            ->call('put', '/files/'.$file->id, ['file_content' => $data]);
-        $response->assertRedirect('/files/'.$file->id.'/edit')->assertSessionHasErrors();
+            ->call('put', '/files/' . $file->id, ['file_content' => $data]);
+        $response->assertRedirect('/files/' . $file->id . '/edit')->assertSessionHasErrors();
     }
 
     /**
@@ -71,7 +73,7 @@ class FilesProcessTest extends TestCase
         Event::fake();
         $response = $this
             ->actingAs($user)
-            ->json('post', '/lint-content/'.$file->id, ['file_content' => $data]);
+            ->json('post', '/lint-content/' . $file->id, ['file_content' => $data]);
         $response->assertStatus(200)->assertExactJson(['linting' => 'started']);
         /** @var File $file */
         $file = File::find($file->id);
@@ -97,7 +99,7 @@ class FilesProcessTest extends TestCase
         Event::fake();
         $response = $this
             ->actingAs($user)
-            ->json('post', '/lint-content/'.$file->id, ['file_content' => $data]);
+            ->json('post', '/lint-content/' . $file->id, ['file_content' => $data]);
         $response->assertStatus(200)->assertExactJson(['linting' => 'started']);
         /** @var File $file */
         $file = File::find($file->id);
@@ -123,7 +125,7 @@ class FilesProcessTest extends TestCase
         Event::fake();
         $response = $this
             ->actingAs($user)
-            ->json('post', '/lint-content/'.$file->id, ['file_content' => $data]);
+            ->json('post', '/lint-content/' . $file->id, ['file_content' => $data]);
         $response->assertStatus(200)->assertExactJson(['linting' => 'started']);
         /** @var File $file */
         $file = File::find($file->id);
@@ -149,14 +151,14 @@ class FilesProcessTest extends TestCase
         Event::fake();
         $response = $this
             ->actingAs($user)
-            ->json('post', '/lint-content/'.$file->id, ['file_content' => $data]);
+            ->json('post', '/lint-content/' . $file->id, ['file_content' => $data]);
         $response->assertStatus(200)->assertExactJson(['linting' => 'started']);
         /** @var File $file */
         $file = File::find($file->id);
         $this->assertNotEquals($data, $file->content);
         Event::assertDispatched(ProjectUpdated::class, function ($e) use ($file) {
             $this->assertEquals('info', $e->type);
-            $this->assertEquals('File '.$file->name.' currently not lintable.', $e->message);
+            $this->assertEquals('File ' . $file->name . ' currently not lintable.', $e->message);
 
             return true;
         });
@@ -175,13 +177,13 @@ class FilesProcessTest extends TestCase
         Event::fake();
         $response = $this
             ->actingAs($user)
-            ->json('post', '/process-file/'.$file->id);
+            ->json('post', '/process-file/' . $file->id);
         $response->assertStatus(200)->assertExactJson(['processing' => 'started']);
         /** @var File $file */
         $file = File::find($file->id);
         Event::assertDispatched(ProjectUpdated::class, function ($e) use ($file) {
             $this->assertEquals('info', $e->type);
-            $this->assertEquals('File '.$file->name.' currently not processable.', $e->message);
+            $this->assertEquals('File ' . $file->name . ' currently not processable.', $e->message);
 
             return true;
         });
@@ -208,13 +210,14 @@ endmodule']);
         Event::fake();
         $response = $this
             ->actingAs($user)
-            ->json('post', '/process-file/'.$file->id);
+            ->json('post', '/process-file/' . $file->id);
         $response->assertStatus(200)->assertExactJson(['processing' => 'started']);
         /** @var File $file */
         $file = File::find($file->id);
         Event::assertDispatched(ProjectUpdated::class, function ($e) use ($file) {
             $this->assertEquals('danger', $e->type);
-            $this->assertEquals('No badges with workable commands for project: '.$file->version->project->name, $e->message);
+            $this->assertEquals('No badges with workable commands for project: ' .
+                $file->version->project->name, $e->message);
 
             return true;
         });
@@ -247,13 +250,13 @@ endmodule']);
         Event::fake();
         $response = $this
             ->actingAs($user)
-            ->json('post', '/process-file/'.$file->id);
+            ->json('post', '/process-file/' . $file->id);
         $response->assertStatus(200)->assertExactJson(['processing' => 'started']);
         $i = 0;
         Event::assertDispatched(ProjectUpdated::class, function ($e) use ($badge, &$i) {
             if ($i === 0) {
                 $this->assertEquals('warning', $e->type);
-                $this->assertEquals('No constraints for badge: '.$badge->name, $e->message);
+                $this->assertEquals('No constraints for badge: ' . $badge->name, $e->message);
             }
             $i++;
 
@@ -292,18 +295,18 @@ icepack VDL.txt OUT',
         Event::fake();
         $response = $this
             ->actingAs($user)
-            ->json('post', '/process-file/'.$file->id);
+            ->json('post', '/process-file/' . $file->id);
         $response->assertStatus(200)->assertExactJson(['processing' => 'started']);
         /** @var File $generated */
         $generated = File::get()->last();
         Event::assertDispatched(ProjectUpdated::class, function ($e) use ($generated) {
             $this->assertEquals('success', $e->type);
-            $this->assertEquals('File '.$generated->name.' generated.', $e->message);
+            $this->assertEquals('File ' . $generated->name . ' generated.', $e->message);
 
             return true;
         });
         $this->assertCount($files + 1, File::all());
-        $this->assertEquals($file->baseName.'_'.$badge->slug.'.bin', $generated->name);
+        $this->assertEquals($file->baseName . '_' . $badge->slug . '.bin', $generated->name);
         $this->assertGreaterThan(32200, strlen($generated->content));
         $this->assertLessThan(32300, strlen($generated->content));
     }
@@ -335,7 +338,7 @@ endmodule']);
         Event::fake();
         $response = $this
             ->actingAs($user)
-            ->json('post', '/process-file/'.$file->id);
+            ->json('post', '/process-file/' . $file->id);
         $response->assertStatus(200)->assertExactJson(['processing' => 'started']);
         $i = 0;
         Event::assertDispatched(ProjectUpdated::class, function ($e) use (&$i) {

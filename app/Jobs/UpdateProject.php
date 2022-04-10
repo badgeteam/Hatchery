@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Jobs;
 
 use App\Events\ProjectUpdated;
@@ -24,6 +26,7 @@ class UpdateProject implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+
     /** @var Project */
     private $project;
     /** @var User */
@@ -55,8 +58,8 @@ class UpdateProject implements ShouldQueue
         $version = $this->project->getUnpublishedVersion();
 
         try {
-            $tempFolder = sys_get_temp_dir().'/'.$this->project->slug;
-            if (!file_exists($tempFolder.'/.git/HEAD')) {
+            $tempFolder = sys_get_temp_dir() . '/' . $this->project->slug;
+            if (!file_exists($tempFolder . '/.git/HEAD')) {
                 $repo = $git->cloneRepository(
                     $this->project->git,
                     $tempFolder,
@@ -68,7 +71,11 @@ class UpdateProject implements ShouldQueue
             }
 
             if ($this->project->git_commit_id === $repo->getLastCommitId()) {
-                event(new ProjectUpdated($version->project, 'Project '.$version->project->name.' was already up to date!', 'info'));
+                event(new ProjectUpdated(
+                    $version->project,
+                    'Project ' . $version->project->name . ' was already up to date!',
+                    'info'
+                ));
 
                 return;
             }
@@ -78,7 +85,7 @@ class UpdateProject implements ShouldQueue
             PublishProject::dispatch($this->project, $this->user);
             event(new ProjectUpdated(
                 $version->project,
-                'Project '.$version->project->name.' updated successfully!'
+                'Project ' . $version->project->name . ' updated successfully!'
             ));
         } catch (\Throwable $exception) {
             event(new ProjectUpdated($version->project, $exception->getMessage(), 'danger'));

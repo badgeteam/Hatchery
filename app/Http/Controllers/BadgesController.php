@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BadgeStoreRequest;
@@ -92,7 +94,7 @@ class BadgesController extends Controller
             return redirect()->route('badges.create')->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('badges.index')->withSuccesses([$badge->name.' saved']);
+        return redirect()->route('badges.index')->withSuccesses([$badge->name . ' saved']);
     }
 
     /**
@@ -117,7 +119,7 @@ class BadgesController extends Controller
                 ->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('badges.index')->withSuccesses([$badge->name.' updated']);
+        return redirect()->route('badges.index')->withSuccesses([$badge->name . ' updated']);
     }
 
     /**
@@ -137,6 +139,6 @@ class BadgesController extends Controller
                 ->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('badges.index')->withSuccesses([$badge->name.' deleted']);
+        return redirect()->route('badges.index')->withSuccesses([$badge->name . ' deleted']);
     }
 }

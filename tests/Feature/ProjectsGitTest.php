@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Events\ProjectUpdated;
@@ -38,7 +40,7 @@ class ProjectsGitTest extends TestCase
         $project = Project::factory()->create(['git' => $this->faker->url]);
         $response = $this
             ->actingAs($user)
-            ->get('/projects/'.$project->slug.'/edit');
+            ->get('/projects/' . $project->slug . '/edit');
         $response->assertStatus(200);
     }
 
@@ -48,7 +50,7 @@ class ProjectsGitTest extends TestCase
     public function testProjectsStoreGit(): void
     {
         $name = $this->faker->name;
-        $folder = sys_get_temp_dir().'/'.Str::slug($name, '_');
+        $folder = sys_get_temp_dir() . '/' . Str::slug($name, '_');
         mkdir($folder);
 
         $hash = $this->faker->sha256;
@@ -63,7 +65,13 @@ class ProjectsGitTest extends TestCase
         $this->assertEmpty(Project::all());
         $response = $this
             ->actingAs($user)
-            ->call('post', '/import-git', ['name' => $name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call(
+                'post',
+                '/import-git',
+                [
+                    'name' => $name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown'
+                ]
+            );
         $this->assertNotNull(Project::get()->last());
         $response->assertRedirect('/projects/')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
@@ -76,7 +84,7 @@ class ProjectsGitTest extends TestCase
     public function testProjectsStoreGitTooLong(): void
     {
         $name = $this->faker->name;
-        $folder = sys_get_temp_dir().'/'.Str::slug($name, '_');
+        $folder = sys_get_temp_dir() . '/' . Str::slug($name, '_');
         mkdir($folder);
         /** @var User $user */
         $user = User::factory()->create();
@@ -91,7 +99,14 @@ class ProjectsGitTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->call('post', '/import-git', ['name' => $name, 'git' => $this->faker->text(1024), 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call(
+                'post',
+                '/import-git',
+                [
+                    'name' => $name, 'git' => $this->faker->text(1024),
+                    'category_id' => $category->id, 'status' => 'unknown'
+                ]
+            );
         $response->assertRedirect('/import')->assertSessionHasErrors();
     }
 
@@ -109,19 +124,39 @@ class ProjectsGitTest extends TestCase
         $category = Category::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('post', '/import-git', ['name' => $project->name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call(
+                'post',
+                '/import-git',
+                [
+                    'name' => $project->name, 'git' => $this->faker->url,
+                    'category_id' => $category->id, 'status' => 'unknown'
+                ]
+            );
         $this->assertCount(1, Project::all());
         $response->assertRedirect('')->assertSessionHasErrors();
 
         $response = $this
             ->actingAs($user)
-            ->call('post', '/import-git', ['name' => $project->name.'_', 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call(
+                'post',
+                '/import-git',
+                [
+                    'name' => $project->name . '_', 'git' => $this->faker->url,
+                    'category_id' => $category->id, 'status' => 'unknown'
+                ]
+            );
         $this->assertCount(1, Project::all());  // Unique name, same slug
         $response->assertRedirect('/import')->assertSessionHasErrors();
 
         $response = $this
             ->actingAs($user)
-            ->call('post', '/import-git', ['name' => 'badge', 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call(
+                'post',
+                '/import-git',
+                [
+                    'name' => 'badge', 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown'
+                ]
+            );
         $this->assertCount(1, Project::all());  // Illegal name (badge)
         $response->assertRedirect('/import')->assertSessionHasErrors();
 
@@ -130,7 +165,14 @@ class ProjectsGitTest extends TestCase
         $this->app->instance(GitRepository::class, $mock);
         $response = $this
             ->actingAs($user)
-            ->call('post', '/import-git', ['name' => $this->faker->name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call(
+                'post',
+                '/import-git',
+                [
+                    'name' => $this->faker->name, 'git' => $this->faker->url,
+                    'category_id' => $category->id, 'status' => 'unknown'
+                ]
+            );
         $this->assertCount(1, Project::all());
         $response->assertRedirect('/import')->assertSessionHasErrors();
     }
@@ -148,8 +190,8 @@ class ProjectsGitTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->call('get', '/projects/'.$project->slug.'/pull');
-        $response->assertRedirect('/projects/'.$project->slug.'/edit')->assertSessionHasErrors();
+            ->call('get', '/projects/' . $project->slug . '/pull');
+        $response->assertRedirect('/projects/' . $project->slug . '/edit')->assertSessionHasErrors();
     }
 
     /**
@@ -170,7 +212,7 @@ class ProjectsGitTest extends TestCase
         $version->zip = 'test';
         $version->save();
 
-        $folder = sys_get_temp_dir().'/'.$project->slug;
+        $folder = sys_get_temp_dir() . '/' . $project->slug;
         mkdir($folder);
 
         $hash = $project->git_commit_id;
@@ -183,7 +225,7 @@ class ProjectsGitTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->call('get', '/projects/'.$project->slug.'/pull');
+            ->call('get', '/projects/' . $project->slug . '/pull');
         $response->assertRedirect('/projects/')->assertSessionHas('successes');
         /** @var Project $project */
         $project = Project::find($project->id);
@@ -216,7 +258,7 @@ class ProjectsGitTest extends TestCase
         $version->zip = 'test';
         $version->save();
 
-        $folder = sys_get_temp_dir().'/'.$project->slug;
+        $folder = sys_get_temp_dir() . '/' . $project->slug;
         mkdir($folder);
 
         $hash = $this->faker->sha256;
@@ -227,7 +269,7 @@ class ProjectsGitTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->call('get', '/projects/'.$project->slug.'/pull');
+            ->call('get', '/projects/' . $project->slug . '/pull');
         $response->assertRedirect('/projects/')->assertSessionHas('successes');
         /** @var Project $project */
         $project = Project::find($project->id);
@@ -254,10 +296,10 @@ class ProjectsGitTest extends TestCase
         $version->zip = 'test';
         $version->save();
 
-        $folder = sys_get_temp_dir().'/'.$project->slug;
+        $folder = sys_get_temp_dir() . '/' . $project->slug;
         mkdir($folder);
-        mkdir($folder.'/.git');
-        touch($folder.'/.git/HEAD');
+        mkdir($folder . '/.git');
+        touch($folder . '/.git/HEAD');
 
         $hash = $this->faker->sha256;
         $mock = $this->mock(GitRepository::class);
@@ -268,7 +310,7 @@ class ProjectsGitTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->call('get', '/projects/'.$project->slug.'/pull');
+            ->call('get', '/projects/' . $project->slug . '/pull');
         $response->assertRedirect('/projects/')->assertSessionHas('successes');
         /** @var Project $project */
         $project = Project::find($project->id);

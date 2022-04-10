@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'api' => [
         /*
@@ -138,9 +140,12 @@ return [
         'oauth2_security_example' => [ // Unique name of security
             'type' => 'oauth2', // The type of the security scheme. Valid values are "basic", "apiKey" or "oauth2".
             'description' => 'A short description for oauth2 security scheme.',
-            'flow' => 'implicit', // The flow used by the OAuth2 security scheme. Valid values are "implicit", "password", "application" or "accessCode".
-            'authorizationUrl' => 'http://example.com/auth', // The authorization URL to be used for (implicit/accessCode)
-            //'tokenUrl' => 'http://example.com/auth' // The authorization URL to be used for (password/application/accessCode)
+            'flow' => 'implicit', // The flow used by the OAuth2 security scheme.
+                                  // Valid values are "implicit", "password", "application" or "accessCode".
+            'authorizationUrl' => 'http://example.com/auth',
+                                  // The authorization URL to be used for (implicit/accessCode)
+            //'tokenUrl' => 'http://example.com/auth'
+                                  // The authorization URL to be used for (password/application/accessCode)
             'scopes' => [
                 'read:projects' => 'read your projects',
                 'write:projects' => 'modify projects in your account',
