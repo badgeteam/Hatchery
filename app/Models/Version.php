@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Auth;
  * Class Version.
  *
  * @author annejan@badge.team
- *
  * @property int         $id
  * @property int         $user_id
  * @property int         $project_id
@@ -34,7 +33,6 @@ use Illuminate\Support\Facades\Auth;
  * @property-read bool $published
  * @property-read Project $project
  * @property-read User $user
- *
  * @method static bool|null forceDelete()
  * @method static Builder|Version newModelQuery()
  * @method static Builder|Version newQuery()
@@ -56,6 +54,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Version withTrashed()
  * @method static Builder|Version withoutTrashed()
  * @mixin \Eloquent
+ * @method static \Database\Factories\VersionFactory factory(...$parameters)
  */
 class Version extends Model
 {

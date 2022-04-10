@@ -17,7 +17,6 @@ use Illuminate\Support\Str;
  * Class Category.
  *
  * @author annejan@badge.team
- *
  * @property int         $id
  * @property string      $name
  * @property string      $slug
@@ -28,7 +27,6 @@ use Illuminate\Support\Str;
  * @property-read int $eggs
  * @property-read Collection|Project[] $projects
  * @property-read int|null $projects_count
- *
  * @method static bool|null forceDelete()
  * @method static Builder|Category newModelQuery()
  * @method static Builder|Category newQuery()
@@ -45,6 +43,7 @@ use Illuminate\Support\Str;
  * @method static Builder|Category withTrashed()
  * @method static Builder|Category withoutTrashed()
  * @mixin \Eloquent
+ * @method static \Database\Factories\CategoryFactory factory(...$parameters)
  */
 class Category extends Model
 {

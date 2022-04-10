@@ -16,13 +16,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Mail\Markdown;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 /**
  * Class Project.
  *
  * @author annejan@badge.team
- *
  * @property int         $id
  * @property int         $category_id
  * @property int         $user_id
@@ -65,7 +65,6 @@ use Illuminate\Support\Str;
  * @property-read int|null $warnings_count
  * @property-read Collection|User[] $collaborators
  * @property-read int|null $collaborators_count
- *
  * @method static bool|null forceDelete()
  * @method static Builder|Project newModelQuery()
  * @method static Builder|Project newQuery()
@@ -89,6 +88,7 @@ use Illuminate\Support\Str;
  * @method static Builder|Project whereMaxFirmware($value)
  * @method static Builder|Project whereMinFirmware($value)
  * @mixin \Eloquent
+ * @method static \Database\Factories\ProjectFactory factory(...$parameters)
  */
 class Project extends Model
 {
@@ -417,9 +417,9 @@ class Project extends Model
     }
 
     /**
-     * @return string|null
+     * @return HtmlString|null
      */
-    public function getDescriptionHtmlAttribute(): ?string
+    public function getDescriptionHtmlAttribute(): ?HtmlString
     {
         if ($this->description) {
             return Markdown::parse($this->description);

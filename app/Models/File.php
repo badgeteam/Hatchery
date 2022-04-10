@@ -19,7 +19,6 @@ use Intervention\Image\Facades\Image;
  * Class File.
  *
  * @author annejan@badge.team
- *
  * @property int         $id
  * @property int         $user_id
  * @property int         $version_id
@@ -40,7 +39,6 @@ use Intervention\Image\Facades\Image;
  * @property-read User $user
  * @property-read Version $version
  * @property-read string $base_name
- *
  * @method static bool|null forceDelete()
  * @method static Builder|File newModelQuery()
  * @method static Builder|File newQuery()
@@ -58,6 +56,7 @@ use Intervention\Image\Facades\Image;
  * @method static Builder|File withTrashed()
  * @method static Builder|File withoutTrashed()
  * @mixin \Eloquent
+ * @method static \Database\Factories\FileFactory factory(...$parameters)
  */
 class File extends Model
 {

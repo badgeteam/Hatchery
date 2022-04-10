@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Auth;
  * Class Warning.
  *
  * @author annejan@badge.team
- *
  * @property int         $id
  * @property int         $user_id
  * @property int         $project_id
@@ -26,7 +25,6 @@ use Illuminate\Support\Facades\Auth;
  * @property Carbon|null $updated_at
  * @property-read Project $project
  * @property-read User $user
- *
  * @method static bool|null forceDelete()
  * @method static Builder|Warning newModelQuery()
  * @method static Builder|Warning newQuery()
@@ -43,6 +41,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Warning withTrashed()
  * @method static Builder|Warning withoutTrashed()
  * @mixin \Eloquent
+ * @method static \Database\Factories\WarningFactory factory(...$parameters)
  */
 class Warning extends Model
 {

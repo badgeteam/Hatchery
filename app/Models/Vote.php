@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Auth;
  * Class Vote.
  *
  * @author annejan@badge.team
- *
  * @property int         $id
  * @property int         $user_id
  * @property int         $project_id
@@ -27,7 +26,6 @@ use Illuminate\Support\Facades\Auth;
  * @property Carbon|null $updated_at
  * @property-read Project $project
  * @property-read User $user
- *
  * @method static bool|null forceDelete()
  * @method static Builder|Vote newModelQuery()
  * @method static Builder|Vote newQuery()
@@ -45,6 +43,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Vote withTrashed()
  * @method static Builder|Vote withoutTrashed()
  * @mixin \Eloquent
+ * @method static \Database\Factories\VoteFactory factory(...$parameters)
  */
 class Vote extends Model
 {

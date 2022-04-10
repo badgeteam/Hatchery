@@ -14,7 +14,6 @@ use Illuminate\Support\Carbon;
  * Class BadgeProject.
  *
  * @author annejan@badge.team
- *
  * @property int         $id
  * @property int         $badge_id
  * @property int         $project_id
@@ -23,7 +22,6 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read Badge $badge
  * @property-read Project $project
- *
  * @method static Builder|BadgeProject newModelQuery()
  * @method static Builder|BadgeProject newQuery()
  * @method static Builder|BadgeProject query()
