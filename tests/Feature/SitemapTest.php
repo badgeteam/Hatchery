@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Badge;
@@ -22,7 +24,7 @@ class SitemapTest extends TestCase
     {
         parent::setUp();
         if (file_exists(public_path('sitemap.xml'))) {
-            rename(public_path('sitemap.xml'), sys_get_temp_dir().'/hatchery_sitemap.tmp');
+            rename(public_path('sitemap.xml'), sys_get_temp_dir() . '/hatchery_sitemap.tmp');
         }
     }
 
@@ -31,8 +33,8 @@ class SitemapTest extends TestCase
      */
     protected function tearDown(): void
     {
-        if (file_exists(sys_get_temp_dir().'/hatchery_sitemap.tmp')) {
-            rename(sys_get_temp_dir().'/hatchery_sitemap.tmp', public_path('sitemap.xml'));
+        if (file_exists(sys_get_temp_dir() . '/hatchery_sitemap.tmp')) {
+            rename(sys_get_temp_dir() . '/hatchery_sitemap.tmp', public_path('sitemap.xml'));
         }
         parent::tearDown();
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit;
 
 use App\Support\GitRepository;
@@ -24,7 +26,7 @@ class GitRepositoryTest extends TestCase
     {
         $repo = new GitRepository();
         if (PHP_OS === 'Darwin') {
-            $this->assertEquals('/private'.sys_get_temp_dir(), $repo->getRepositoryPath());
+            $this->assertEquals('/private' . sys_get_temp_dir(), $repo->getRepositoryPath());
         } else {
             $this->assertEquals(sys_get_temp_dir(), $repo->getRepositoryPath());
         }
@@ -35,12 +37,12 @@ class GitRepositoryTest extends TestCase
      */
     public function testGitRepositoryOpening(): void
     {
-        $path = sys_get_temp_dir().'/'.Str::slug($this->faker->name);
+        $path = sys_get_temp_dir() . '/' . Str::slug($this->faker->name);
         mkdir($path);
         $repo = new GitRepository();
         $repo = $repo->open($path);
         if (PHP_OS === 'Darwin') {
-            $this->assertEquals('/private'.$path, $repo->getRepositoryPath());
+            $this->assertEquals('/private' . $path, $repo->getRepositoryPath());
         } else {
             $this->assertEquals($path, $repo->getRepositoryPath());
         }
@@ -52,15 +54,15 @@ class GitRepositoryTest extends TestCase
      */
     public function testGitRepositoryOpeningGit(): void
     {
-        $path = sys_get_temp_dir().'/'.Str::slug($this->faker->name);
+        $path = sys_get_temp_dir() . '/' . Str::slug($this->faker->name);
         mkdir($path);
-        $gitPath = $path.'/.git';
+        $gitPath = $path . '/.git';
         mkdir($gitPath);
 
         $repo = new GitRepository();
         $repo = $repo->open($gitPath);
         if (PHP_OS === 'Darwin') {
-            $this->assertEquals('/private'.$path, $repo->getRepositoryPath());
+            $this->assertEquals('/private' . $path, $repo->getRepositoryPath());
         } else {
             $this->assertEquals($path, $repo->getRepositoryPath());
         }

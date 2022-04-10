@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Jobs;
 
 use App\Events\ProjectUpdated;
@@ -26,6 +28,7 @@ class PublishProject implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+
     /** @var Project */
     private $project;
     /** @var User */
@@ -55,11 +58,11 @@ class PublishProject implements ShouldQueue
         $version = $this->project->getUnpublishedVersion();
 
         try {
-            $filename = 'eggs/'.uniqid($this->project->slug.'_').'.tar';
+            $filename = 'eggs/' . uniqid($this->project->slug . '_') . '.tar';
 
             $this->makeZip($filename, $version);
 
-            $version->zip = $filename.'.gz';
+            $version->zip = $filename . '.gz';
             $version->size_of_zip = (int) filesize(public_path($version->zip));
             $version->git_commit_id = $this->project->git_commit_id;
             $version->save();
@@ -70,7 +73,7 @@ class PublishProject implements ShouldQueue
             $this->project->save();
             event(new ProjectUpdated(
                 $version->project,
-                'Project '.$version->project->name.' published successfully!'
+                'Project ' . $version->project->name . ' published successfully!'
             ));
         } catch (\Throwable $exception) {
             event(new ProjectUpdated($version->project, $exception->getMessage(), 'danger'));
@@ -86,7 +89,7 @@ class PublishProject implements ShouldQueue
         $zip = new PharData(public_path($filename));
 
         foreach ($version->files as $file) {
-            $zip[$this->project->slug.'/'.$file->name] = $file->content;
+            $zip[$this->project->slug . '/' . $file->name] = $file->content;
         }
 
         $data = [
@@ -101,21 +104,21 @@ class PublishProject implements ShouldQueue
             $data['icon'] = 'icon.png';
         }
 
-        $zip[$this->project->slug.'/metadata.json'] = (string) json_encode($data);
+        $zip[$this->project->slug . '/metadata.json'] = (string) json_encode($data);
 
         if (!$this->project->dependencies->isEmpty()) {
             $dep = '';
             foreach ($this->project->dependencies as $dependency) {
-                $dep .= $dependency->slug."\n";
+                $dep .= $dependency->slug . "\n";
             }
-            $zip[$this->project->slug.'/'.$this->project->slug.'.egg-info/requires.txt'] = $dep;
+            $zip[$this->project->slug . '/' . $this->project->slug . '.egg-info/requires.txt'] = $dep;
         }
 
         if (empty(exec('which minigzip'))) {
             // @codeCoverageIgnoreStart
             $zip->compress(Phar::GZ);
         } else {
-            system('minigzip < '.public_path($filename).' > '.public_path($filename.'.gz'));
+            system('minigzip < ' . public_path($filename) . ' > ' . public_path($filename . '.gz'));
             // @codeCoverageIgnoreEnd
         }
         unlink(public_path($filename));

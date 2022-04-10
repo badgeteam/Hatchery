@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -198,7 +200,7 @@ return [
         ],
 
         'connect-src' => [
-            'allow' => [env('APP_URL', 'https://badge.team').'self'],
+            'allow' => [env('APP_URL', 'https://badge.team') . 'self'],
         ],
 
         'form-action' => [

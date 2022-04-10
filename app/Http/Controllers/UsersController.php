@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserUpdateRequest;
@@ -100,7 +102,7 @@ class UsersController extends Controller
 
         return redirect()
             ->route('projects.index')
-            ->withSuccesses([$user->name.' saved']);
+            ->withSuccesses([$user->name . ' saved']);
     }
 
     /**
@@ -124,7 +126,7 @@ class UsersController extends Controller
         $guard = $this->guard();
         $guard->logout();
 
-        return redirect()->guest('/')->withSuccesses([$user->name.' deleted']);
+        return redirect()->guest('/')->withSuccesses([$user->name . ' deleted']);
     }
 
     /**

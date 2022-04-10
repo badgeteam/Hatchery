@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Badge;
@@ -40,7 +42,7 @@ class PublicTest extends TestCase
     {
         /** @var Badge $badge */
         $badge = Badge::factory()->create();
-        $response = $this->get('/?badge='.$badge->slug);
+        $response = $this->get('/?badge=' . $badge->slug);
         $response->assertStatus(200)
             ->assertViewHas('badge', $badge->slug)
             ->assertViewHas('category', '')
@@ -85,7 +87,7 @@ class PublicTest extends TestCase
     {
         /** @var Category $category */
         $category = Category::factory()->create();
-        $response = $this->get('/?category='.$category->slug);
+        $response = $this->get('/?category=' . $category->slug);
         $response->assertStatus(200)
             ->assertViewHas('badge', '')
             ->assertViewHas('category', $category->slug)
@@ -102,7 +104,7 @@ class PublicTest extends TestCase
         $badge = Badge::factory()->create();
         /** @var Category $category */
         $category = Category::factory()->create();
-        $response = $this->get('/?badge='.$badge->slug.'&category='.$category->slug);
+        $response = $this->get('/?badge=' . $badge->slug . '&category=' . $category->slug);
         $response->assertStatus(200)
             ->assertViewHas('badge', $badge->slug)
             ->assertViewHas('category', $category->slug)
@@ -117,7 +119,7 @@ class PublicTest extends TestCase
     {
         /** @var Badge $badge */
         $badge = Badge::factory()->create();
-        $response = $this->get('/badge/'.$badge->slug);
+        $response = $this->get('/badge/' . $badge->slug);
         $response->assertStatus(200)
             ->assertViewHas('badge', $badge->slug)
             ->assertViewHas('users', User::count())
@@ -134,7 +136,7 @@ class PublicTest extends TestCase
         $badge = Badge::factory()->create();
         /** @var Category $category */
         $category = Category::factory()->create();
-        $response = $this->get('/badge/'.$badge->slug.'?category='.$category->slug);
+        $response = $this->get('/badge/' . $badge->slug . '?category=' . $category->slug);
         $response->assertStatus(200)
             ->assertViewHas('badge', $badge->slug)
             ->assertViewHas('users', User::count())
@@ -187,7 +189,7 @@ class PublicTest extends TestCase
         /** @var Category $category */
         $category = $version->project->category()->first();
 
-        $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json');
+        $response = $this->json('GET', '/eggs/get/' . $version->project->slug . '/json');
         $response->assertStatus(200)
             ->assertExactJson([
                 'name'        => $version->project->name,
@@ -221,7 +223,7 @@ class PublicTest extends TestCase
         /** @var Category $category */
         $category = $version->project->category()->first();
 
-        $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json?description=true');
+        $response = $this->json('GET', '/eggs/get/' . $version->project->slug . '/json?description=true');
         $response->assertStatus(200)
             ->assertExactJson([
                 'description' => null,
@@ -251,7 +253,7 @@ class PublicTest extends TestCase
         /** @var Version $version */
         $version = Version::factory()->create();
 
-        $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json');
+        $response = $this->json('GET', '/eggs/get/' . $version->project->slug . '/json');
         $response->assertStatus(404)
             ->assertExactJson(['message' => 'No releases found']);
     }
@@ -314,7 +316,7 @@ class PublicTest extends TestCase
         /** @var Category $category */
         $category = $version->project->category()->first();
 
-        $response = $this->json('GET', '/eggs/search/'.substr($version->project->name, 2, $len - 4).'/json');
+        $response = $this->json('GET', '/eggs/search/' . substr($version->project->name, 2, $len - 4) . '/json');
         $response->assertStatus(200)
             ->assertExactJson([
                 [
@@ -353,7 +355,7 @@ class PublicTest extends TestCase
         $response = $this->json('GET', '/eggs/category/nonexisting/json');
         $response->assertStatus(404);
 
-        $response = $this->json('GET', '/eggs/category/'.$category->slug.'/json');
+        $response = $this->json('GET', '/eggs/category/' . $category->slug . '/json');
         $response->assertStatus(200)
             ->assertExactJson([
                 [
@@ -465,7 +467,7 @@ class PublicTest extends TestCase
         /** @var Version $version */
         $version = Version::factory()->create();
 
-        $response = $this->get('/projects/'.$version->project->slug.'');
+        $response = $this->get('/projects/' . $version->project->slug . '');
         $response->assertStatus(200)
             ->assertViewHas('project');
     }
@@ -481,7 +483,7 @@ class PublicTest extends TestCase
         /** @var File $file */
         $file = File::factory()->create();
 
-        $response = $this->get('/files/'.$file->id.'');
+        $response = $this->get('/files/' . $file->id . '');
         $response->assertStatus(200)
             ->assertViewHas('file');
     }
@@ -508,7 +510,7 @@ class PublicTest extends TestCase
         $response = $this->json('GET', '/basket/nonexisting/list/json');
         $response->assertStatus(404);
 
-        $response = $this->json('GET', '/basket/'.$badge->slug.'/list/json');
+        $response = $this->json('GET', '/basket/' . $badge->slug . '/list/json');
         $response->assertStatus(200)
             ->assertExactJson([
                 [
@@ -551,10 +553,10 @@ class PublicTest extends TestCase
         /** @var Category $category */
         $category = $version->project->category()->first();
 
-        $response = $this->json('GET', '/basket/nonexisting/search/'.substr($version->project->name, 2, $len - 4).'/json');
+        $response = $this->json('GET', '/basket/nonexisting/search/' . substr($version->project->name, 2, $len - 4) . '/json');
         $response->assertStatus(404);
 
-        $response = $this->json('GET', '/basket/'.$badge->slug.'/search/'.substr($version->project->name, 2, $len - 4).'/json');
+        $response = $this->json('GET', '/basket/' . $badge->slug . '/search/' . substr($version->project->name, 2, $len - 4) . '/json');
         $response->assertStatus(200)
             ->assertExactJson([
                 [
@@ -596,7 +598,7 @@ class PublicTest extends TestCase
         $response = $this->json('GET', '/basket/nonexisting/categories/json');
         $response->assertStatus(404);
 
-        $response = $this->json('GET', '/basket/'.$badge->slug.'/categories/json');
+        $response = $this->json('GET', '/basket/' . $badge->slug . '/categories/json');
         $response->assertStatus(200)
             ->assertExactJson([
                 [
@@ -610,7 +612,7 @@ class PublicTest extends TestCase
 
         $this->assertCount(2, Category::all());
 
-        $response = $this->json('GET', '/basket/'.$badge->slug.'/categories/json');
+        $response = $this->json('GET', '/basket/' . $badge->slug . '/categories/json');
         $response->assertExactJson([
             [
                 'name' => $category->name,
@@ -638,10 +640,10 @@ class PublicTest extends TestCase
         /** @var Category $category */
         $category = $version->project->category()->first();
 
-        $response = $this->json('GET', '/basket/nonexisting/category/'.$category->slug.'/json');
+        $response = $this->json('GET', '/basket/nonexisting/category/' . $category->slug . '/json');
         $response->assertStatus(404);
 
-        $response = $this->json('GET', '/basket/'.$badge->slug.'/category/'.$category->slug.'/json');
+        $response = $this->json('GET', '/basket/' . $badge->slug . '/category/' . $category->slug . '/json');
         $response->assertStatus(200)
             ->assertExactJson([
                 [
@@ -680,7 +682,7 @@ class PublicTest extends TestCase
         $version->project->max_firmware = 37;
         $version->project->save();
 
-        $response = $this->json('GET', '/eggs/get/'.$version->project->slug.'/json');
+        $response = $this->json('GET', '/eggs/get/' . $version->project->slug . '/json');
         $response->assertStatus(200)
             ->assertExactJson([
                 'name'        => $version->project->name,

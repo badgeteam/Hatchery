@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Events\DownloadCounter;
@@ -7,7 +9,6 @@ use App\Models\Badge;
 use App\Models\Category;
 use App\Models\Project;
 use App\Models\User;
-use App\Models\Version;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
@@ -235,7 +236,7 @@ class PublicController extends Controller
      */
     public function searchJson(string $search): JsonResponse
     {
-        $what = '%'.$search.'%';
+        $what = '%' . $search . '%';
 
         return response()->json(
             Project::whereHas(
@@ -355,7 +356,7 @@ class PublicController extends Controller
      */
     public function badgeSearchJson(Badge $badge, string $search): JsonResponse
     {
-        $what = '%'.$search.'%';
+        $what = '%' . $search . '%';
 
         return response()->json(
             $badge->projects()->whereHas(

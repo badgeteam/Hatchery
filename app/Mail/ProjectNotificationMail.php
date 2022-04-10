@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail;
 
 use App\Models\Project;
@@ -47,7 +49,7 @@ class ProjectNotificationMail extends Mailable
     public function build()
     {
         return $this
-            ->subject('App notification: '.$this->project->name)
+            ->subject('App notification: ' . $this->project->name)
             ->text('mails.projectNotify');
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -142,7 +144,7 @@ class User extends Authenticatable
      */
     public function delete(): ?bool
     {
-        $this->email = 'deleted'.mt_rand().'#'.$this->email;
+        $this->email = 'deleted' . mt_rand() . '#' . $this->email;
         $this->save();
 
         return parent::delete();

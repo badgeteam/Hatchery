@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectNotificationRequest;
@@ -73,7 +75,7 @@ class ProjectsController extends Controller
         if ($search) {
             $projects = $projects->where(
                 function (Builder $query) use ($search) {
-                    $query->where('name', 'like', '%'.$search.'%');
+                    $query->where('name', 'like', '%' . $search . '%');
                     // @todo perhaps search in README ?
                 }
             );
@@ -121,7 +123,7 @@ class ProjectsController extends Controller
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' created!']);
+        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name . ' created!']);
     }
 
     /**
@@ -163,7 +165,7 @@ class ProjectsController extends Controller
             return $this->publish($project);
         }
 
-        return redirect()->route('projects.index')->withSuccesses([$project->name.' saved']);
+        return redirect()->route('projects.index')->withSuccesses([$project->name . ' saved']);
     }
 
     /**
@@ -177,7 +179,7 @@ class ProjectsController extends Controller
     {
         PublishProject::dispatch($project, Auth::user());
 
-        return redirect()->route('projects.index')->withSuccesses([$project->name.' is being published.']);
+        return redirect()->route('projects.index')->withSuccesses([$project->name . ' is being published.']);
     }
 
     /**
@@ -192,7 +194,7 @@ class ProjectsController extends Controller
         $name = $project->name;
 
         try {
-            $project->name = 'Deleted '.rand().' '.$name;
+            $project->name = 'Deleted ' . rand() . ' ' . $name;
             $project->slug = Str::slug($project->name);
             $project->save();
             $project->delete();
@@ -202,7 +204,7 @@ class ProjectsController extends Controller
                 ->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.index')->withSuccesses([$name.' deleted']);
+        return redirect()->route('projects.index')->withSuccesses([$name . ' deleted']);
     }
 
     /**
@@ -277,7 +279,7 @@ class ProjectsController extends Controller
         $project->slug = $slug;
         $project->save();
 
-        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name.' renamed']);
+        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name . ' renamed']);
     }
 
     /**
@@ -295,7 +297,7 @@ class ProjectsController extends Controller
 
         UpdateProject::dispatch($project, Auth::user());
 
-        return redirect()->route('projects.index')->withSuccesses([$project->name.' is being updated.']);
+        return redirect()->route('projects.index')->withSuccesses([$project->name . ' is being updated.']);
     }
 
     /**
@@ -317,7 +319,7 @@ class ProjectsController extends Controller
             return redirect()->route('projects.import')->withInput()->withErrors(['reserved name']);
         }
 
-        $tempFolder = sys_get_temp_dir().'/'.Str::slug($request->name);
+        $tempFolder = sys_get_temp_dir() . '/' . Str::slug($request->name);
 
         try {
             $repo->cloneRepository($request->git, $tempFolder, ['-q', '--single-branch', '--depth', 1]);
@@ -336,7 +338,7 @@ class ProjectsController extends Controller
             return redirect()->route('projects.import')->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.index')->withSuccesses([$project->name.' being imported!']);
+        return redirect()->route('projects.index')->withSuccesses([$project->name . ' being imported!']);
     }
 
     /**

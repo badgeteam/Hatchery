@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Support\Helpers;
@@ -215,7 +217,7 @@ class File extends Model
      */
     public function getBaseNameAttribute(): string
     {
-        return str_replace('.'.$this->extension, '', $this->name);
+        return str_replace('.' . $this->extension, '', $this->name);
     }
 
     /**
