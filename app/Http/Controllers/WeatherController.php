@@ -123,7 +123,7 @@ class WeatherController extends Controller
             $json = Cache::get($key);
         } else {
             $json = $this->client->get($this->url);
-            if ($json->getSize() === 0) {
+            if ($json === "") {
                 abort(404, "Couldn't fetch the weather from: " . $this->url);
             }
             $expiresAt = Carbon::now()->addMinutes($this->minutes);

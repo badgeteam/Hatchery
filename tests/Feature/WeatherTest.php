@@ -20,13 +20,14 @@ class WeatherTest extends TestCase
 
     /**
      * Make sure we can fetch weather.
+     * @throws \JsonException
      */
     public function testWeatherFetching(): void
     {
         $data = new \stdClass();
         $data->test = 'data';
         $mock = $this->mock(Darksky::class);
-        $mock->expects('get')->once()->andReturns(json_encode($data));
+        $mock->expects('get')->once()->andReturns(json_encode($data, JSON_THROW_ON_ERROR));
         $this->app->instance(Darksky::class, $mock);
         $response = $this->json('get', '/weather');
         $response->assertStatus(200);
@@ -38,6 +39,7 @@ class WeatherTest extends TestCase
 
     /**
      * Make sure we can fetch weather.
+     * @throws \JsonException
      */
     public function testWeatherCaching(): void
     {
@@ -45,7 +47,7 @@ class WeatherTest extends TestCase
         $cacheData->cache = 'test';
         Cache::shouldReceive('get')
             ->once()
-            ->andReturn(json_encode($cacheData));
+            ->andReturn(json_encode($cacheData, JSON_THROW_ON_ERROR));
         Cache::shouldReceive('has')
             ->once()
             ->andReturn(true);
@@ -74,13 +76,14 @@ class WeatherTest extends TestCase
 
     /**
      * Make sure we can fetch weather.
+     * @throws \JsonException
      */
     public function testWeatherLocationFetching(): void
     {
         $data = new \stdClass();
         $data->test = 'data';
         $mock = $this->mock(Darksky::class);
-        $mock->expects('get')->once()->andReturns(json_encode($data));
+        $mock->expects('get')->once()->andReturns(json_encode($data, JSON_THROW_ON_ERROR));
         $this->app->instance(Darksky::class, $mock);
         $response = $this->json('get', '/weather/bla,bla');
         $response->assertStatus(412);
