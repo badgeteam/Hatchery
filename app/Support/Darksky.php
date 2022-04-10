@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Support;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Class Darksky.
@@ -31,17 +33,11 @@ class Darksky
     /**
      * @param string $url
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     *
-     * @return string
-     *
-     *
-     * @codeCoverageIgnore
+     * @return StreamInterface
+     * @throws GuzzleException
      */
-    public function get(string $url): string
+    public function get(string $url): StreamInterface
     {
-        $response = $this->client->request('GET', $url);
-
-        return $response->getBody();
+        return $this->client->request('GET', $url)->getBody();
     }
 }

@@ -316,7 +316,8 @@ class PublicTest extends TestCase
         /** @var Category $category */
         $category = $version->project->category()->first();
 
-        $response = $this->json('GET', '/eggs/search/' . substr($version->project->name, 2, $len - 4) . '/json');
+        $response = $this->json('GET', '/eggs/search/' .
+            substr($version->project->name, 2, $len - 4) . '/json');
         $response->assertStatus(200)
             ->assertExactJson([
                 [
@@ -553,10 +554,12 @@ class PublicTest extends TestCase
         /** @var Category $category */
         $category = $version->project->category()->first();
 
-        $response = $this->json('GET', '/basket/nonexisting/search/' . substr($version->project->name, 2, $len - 4) . '/json');
+        $response = $this->json('GET', '/basket/nonexisting/search/' .
+            substr($version->project->name, 2, $len - 4) . '/json');
         $response->assertStatus(404);
 
-        $response = $this->json('GET', '/basket/' . $badge->slug . '/search/' . substr($version->project->name, 2, $len - 4) . '/json');
+        $response = $this->json('GET', '/basket/' . $badge->slug . '/search/' .
+            substr($version->project->name, 2, $len - 4) . '/json');
         $response->assertStatus(200)
             ->assertExactJson([
                 [

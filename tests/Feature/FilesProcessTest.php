@@ -216,7 +216,8 @@ endmodule']);
         $file = File::find($file->id);
         Event::assertDispatched(ProjectUpdated::class, function ($e) use ($file) {
             $this->assertEquals('danger', $e->type);
-            $this->assertEquals('No badges with workable commands for project: ' . $file->version->project->name, $e->message);
+            $this->assertEquals('No badges with workable commands for project: ' .
+                $file->version->project->name, $e->message);
 
             return true;
         });

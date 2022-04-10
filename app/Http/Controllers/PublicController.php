@@ -161,7 +161,12 @@ class PublicController extends Controller
         /** @var Project|null $project */
         $project = Project::where('slug', $slug)->first();
         if ($project === null) {
-            return response()->json(['message' => 'No releases found'], 404, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+            return response()->json(
+                ['message' => 'No releases found'],
+                404,
+                ['Content-Type' => 'application/json'],
+                JSON_UNESCAPED_SLASHES
+            );
         }
         $releases = [];
         foreach ($project->versions()->published()->orderBy('revision', 'desc')->limit(5)->get() as $version) {
@@ -186,7 +191,12 @@ class PublicController extends Controller
 
         event(new DownloadCounter($project));
 
-        return response()->json($package, 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        return response()->json(
+            $package,
+            200,
+            ['Content-Type' => 'application/json'],
+            JSON_UNESCAPED_SLASHES
+        );
     }
 
     /**
@@ -301,7 +311,8 @@ class PublicController extends Controller
      */
     public function categoriesJson(): JsonResponse
     {
-        return response()->json(Category::where('hidden', false)->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+        return response()->json(Category::where('hidden', false)
+            ->get(), 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
 
     /**

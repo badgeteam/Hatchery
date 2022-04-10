@@ -65,7 +65,13 @@ class ProjectsGitTest extends TestCase
         $this->assertEmpty(Project::all());
         $response = $this
             ->actingAs($user)
-            ->call('post', '/import-git', ['name' => $name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call(
+                'post',
+                '/import-git',
+                [
+                    'name' => $name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown'
+                ]
+            );
         $this->assertNotNull(Project::get()->last());
         $response->assertRedirect('/projects/')->assertSessionHas('successes');
         $this->assertCount(1, Project::all());
@@ -93,7 +99,14 @@ class ProjectsGitTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->call('post', '/import-git', ['name' => $name, 'git' => $this->faker->text(1024), 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call(
+                'post',
+                '/import-git',
+                [
+                    'name' => $name, 'git' => $this->faker->text(1024),
+                    'category_id' => $category->id, 'status' => 'unknown'
+                ]
+            );
         $response->assertRedirect('/import')->assertSessionHasErrors();
     }
 
@@ -111,19 +124,39 @@ class ProjectsGitTest extends TestCase
         $category = Category::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('post', '/import-git', ['name' => $project->name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call(
+                'post',
+                '/import-git',
+                [
+                    'name' => $project->name, 'git' => $this->faker->url,
+                    'category_id' => $category->id, 'status' => 'unknown'
+                ]
+            );
         $this->assertCount(1, Project::all());
         $response->assertRedirect('')->assertSessionHasErrors();
 
         $response = $this
             ->actingAs($user)
-            ->call('post', '/import-git', ['name' => $project->name . '_', 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call(
+                'post',
+                '/import-git',
+                [
+                    'name' => $project->name . '_', 'git' => $this->faker->url,
+                    'category_id' => $category->id, 'status' => 'unknown'
+                ]
+            );
         $this->assertCount(1, Project::all());  // Unique name, same slug
         $response->assertRedirect('/import')->assertSessionHasErrors();
 
         $response = $this
             ->actingAs($user)
-            ->call('post', '/import-git', ['name' => 'badge', 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call(
+                'post',
+                '/import-git',
+                [
+                    'name' => 'badge', 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown'
+                ]
+            );
         $this->assertCount(1, Project::all());  // Illegal name (badge)
         $response->assertRedirect('/import')->assertSessionHasErrors();
 
@@ -132,7 +165,14 @@ class ProjectsGitTest extends TestCase
         $this->app->instance(GitRepository::class, $mock);
         $response = $this
             ->actingAs($user)
-            ->call('post', '/import-git', ['name' => $this->faker->name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call(
+                'post',
+                '/import-git',
+                [
+                    'name' => $this->faker->name, 'git' => $this->faker->url,
+                    'category_id' => $category->id, 'status' => 'unknown'
+                ]
+            );
         $this->assertCount(1, Project::all());
         $response->assertRedirect('/import')->assertSessionHasErrors();
     }

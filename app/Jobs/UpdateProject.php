@@ -71,7 +71,11 @@ class UpdateProject implements ShouldQueue
             }
 
             if ($this->project->git_commit_id === $repo->getLastCommitId()) {
-                event(new ProjectUpdated($version->project, 'Project ' . $version->project->name . ' was already up to date!', 'info'));
+                event(new ProjectUpdated(
+                    $version->project,
+                    'Project ' . $version->project->name . ' was already up to date!',
+                    'info'
+                ));
 
                 return;
             }

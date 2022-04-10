@@ -123,7 +123,8 @@ class ProjectsController extends Controller
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name . ' created!']);
+        return redirect()->route('projects.edit', ['project' => $project->slug])
+            ->withSuccesses([$project->name . ' created!']);
     }
 
     /**
@@ -159,7 +160,8 @@ class ProjectsController extends Controller
             $this->manageBadges($project, $request);
             $this->manageCollaborators($project, $request);
         } catch (Exception $e) {
-            return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors([$e->getMessage()]);
+            return redirect()->route('projects.edit', ['project' => $project->slug])
+                ->withInput()->withErrors([$e->getMessage()]);
         }
         if (isset($request->publish)) {
             return $this->publish($project);
@@ -234,7 +236,8 @@ class ProjectsController extends Controller
         $mail = new ProjectNotificationMail($warning);
         Mail::to('bugs@badge.team')->send($mail);
 
-        return redirect()->route('projects.show', ['project' => $project])->withSuccesses(['Notification sent to badge.team']);
+        return redirect()->route('projects.show', ['project' => $project])
+            ->withSuccesses(['Notification sent to badge.team']);
     }
 
     /**
@@ -279,7 +282,8 @@ class ProjectsController extends Controller
         $project->slug = $slug;
         $project->save();
 
-        return redirect()->route('projects.edit', ['project' => $project->slug])->withSuccesses([$project->name . ' renamed']);
+        return redirect()->route('projects.edit', ['project' => $project->slug])
+            ->withSuccesses([$project->name . ' renamed']);
     }
 
     /**
@@ -292,7 +296,8 @@ class ProjectsController extends Controller
     public function pull(Project $project): RedirectResponse
     {
         if ($project->git === null) {
-            return redirect()->route('projects.edit', ['project' => $project->slug])->withInput()->withErrors(['No git repo for project.']);
+            return redirect()->route('projects.edit', ['project' => $project->slug])
+                ->withInput()->withErrors(['No git repo for project.']);
         }
 
         UpdateProject::dispatch($project, Auth::user());
@@ -404,7 +409,8 @@ class ProjectsController extends Controller
             foreach ($request->get('badge_ids') as $badge_id) {
                 if (array_key_exists($badge_id, $status)) {
                     /** @var BadgeProject|null $state */
-                    $state = BadgeProject::where('badge_id', $badge_id)->where('project_id', $project->id)->first();
+                    $state = BadgeProject::where('badge_id', $badge_id)
+                        ->where('project_id', $project->id)->first();
                     if ($state === null) {
                         throw new \RuntimeException('BadgeProject not found');
                     }

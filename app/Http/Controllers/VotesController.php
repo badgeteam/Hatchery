@@ -58,7 +58,8 @@ class VotesController extends Controller
             $vote->comment = $request->comment;
             $vote->save();
         } catch (\Exception $e) {
-            return redirect()->route('projects.show', ['project' => $vote->project->slug])->withInput()->withErrors([$e->getMessage()]);
+            return redirect()->route('projects.show', ['project' => $vote->project->slug])
+                ->withInput()->withErrors([$e->getMessage()]);
         }
 
         return redirect()->route('projects.show', ['project' => $vote->project->slug])->withSuccesses(['Vote saved']);
@@ -77,10 +78,12 @@ class VotesController extends Controller
             $vote->comment = $request->comment;
             $vote->save();
         } catch (\Exception $e) {
-            return redirect()->route('projects.show', ['project' => $vote->project->slug])->withInput()->withErrors([$e->getMessage()]);
+            return redirect()->route('projects.show', ['project' => $vote->project->slug])
+                ->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.show', ['project' => $vote->project->slug])->withSuccesses(['Vote updated']);
+        return redirect()->route('projects.show', ['project' => $vote->project->slug])
+            ->withSuccesses(['Vote updated']);
     }
 
     /**

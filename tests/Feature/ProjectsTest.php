@@ -103,7 +103,14 @@ class ProjectsTest extends TestCase
         $category = Category::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $this->faker->name, 'description' => $this->faker->paragraph, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call(
+                'post',
+                '/projects',
+                [
+                    'name' => $this->faker->name, 'description' => $this->faker->paragraph,
+                    'category_id' => $category->id, 'status' => 'unknown'
+                ]
+            );
         $this->assertNotNull(Project::get()->last());
         /** @var Project $lastProject */
         $lastProject = Project::get()->last();
@@ -124,7 +131,14 @@ class ProjectsTest extends TestCase
         $name = $this->faker->name;
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id, 'status' => 'unknown']);
+            ->call(
+                'post',
+                '/projects',
+                [
+                    'name' => $name, 'description' => $this->faker->paragraph,
+                    'category_id' => $category->id, 'status' => 'unknown'
+                ]
+            );
         $this->assertNotNull(Project::get()->last());
         /** @var Project $lastProject */
         $lastProject = Project::get()->last();
@@ -132,14 +146,26 @@ class ProjectsTest extends TestCase
         $this->assertCount(1, Project::all());
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id]);
+            ->call(
+                'post',
+                '/projects',
+                [
+                    'name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id
+                ]
+            );
         $response->assertRedirect('')->assertSessionHasErrors();
 
         $name .= '_'; // issue found by fox name is unique, slug is identical (the + becomes plus now)
         $this->assertCount(1, Project::all());
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id]);
+            ->call(
+                'post',
+                '/projects',
+                [
+                    'name' => $name, 'description' => $this->faker->paragraph, 'category_id' => $category->id
+                ]
+            );
         $response->assertRedirect('/projects/create')->assertSessionHasErrors();
         $this->assertCount(1, Project::all());
     }
@@ -718,7 +744,8 @@ class ProjectsTest extends TestCase
             ->call('post', '/projects/' . $project->slug . '/move', [
                 'name' => $name,
             ]);
-        $response->assertRedirect('/projects/' . Str::slug($name, '_') . '/edit')->assertSessionHas('successes');
+        $response->assertRedirect('/projects/' . Str::slug($name, '_') . '/edit')
+            ->assertSessionHas('successes');
         /** @var Project $project */
         $project = Project::find($project->id);
         $this->assertEquals($name, $project->name);
@@ -836,7 +863,13 @@ class ProjectsTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => 'woezel', 'description' => $this->faker->paragraph, 'category_id' => $category->id]);
+            ->call(
+                'post',
+                '/projects',
+                [
+                    'name' => 'woezel', 'description' => $this->faker->paragraph, 'category_id' => $category->id
+                ]
+            );
         $response->assertRedirect('/projects/create')->assertSessionHasErrors();
 
         $this->assertEmpty(Project::all());
@@ -854,7 +887,14 @@ class ProjectsTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->call('post', '/projects', ['name' => $this->faker->text(1024), 'description' => $this->faker->paragraph, 'category_id' => $category->id]);
+            ->call(
+                'post',
+                '/projects',
+                [
+                    'name' => $this->faker->text(1024),
+                    'description' => $this->faker->paragraph, 'category_id' => $category->id
+                ]
+            );
         $response->assertRedirect('/projects/create')->assertSessionHasErrors();
 
         $this->assertEmpty(Project::all());

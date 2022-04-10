@@ -44,17 +44,20 @@ class ShareMessagesFromSession
     {
         $this->view->share(
             'successes',
-            $request->session()->has('successes') ? new MessageBag($request->session()->get('successes')) : new MessageBag()
+            $request->session()->has('successes') ?
+                new MessageBag($request->session()->get('successes')) : new MessageBag()
         );
 
         $this->view->share(
             'info',
-            $request->session()->has('info') ? new MessageBag($request->session()->get('info')) : new MessageBag()
+            $request->session()->has('info') ?
+                new MessageBag($request->session()->get('info')) : new MessageBag()
         );
 
         $this->view->share(
             'warnings',
-            $request->session()->has('warnings') ? new MessageBag($request->session()->get('warnings')) : new MessageBag()
+            $request->session()->has('warnings') ?
+                new MessageBag($request->session()->get('warnings')) : new MessageBag()
         );
 
         return $next($request);

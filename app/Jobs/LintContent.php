@@ -52,17 +52,26 @@ class LintContent implements ShouldQueue
     public function handle()
     {
         if (!$this->file->lintable) {
-            event(new ProjectUpdated($this->file->version->project, 'File ' . $this->file->name . ' currently not lintable.', 'info'));
+            event(new ProjectUpdated(
+                $this->file->version->project,
+                'File ' . $this->file->name . ' currently not lintable.',
+                'info'
+            ));
 
             return;
         }
         $data = Linters::lintFile($this->file, $this->content);
 
         if ($data['return_value'] === 0) {
-            event(new ProjectUpdated($this->file->version->project, 'File ' . $this->file->name . ' linted successfully.'));
+            event(new ProjectUpdated(
+                $this->file->version->project,
+                'File ' . $this->file->name . ' linted successfully.'
+            ));
 
             return;
-        } elseif (!empty($data[0])) {
+        }
+
+        if (!empty($data[0])) {
             event(new ProjectUpdated($this->file->version->project, (string) $data[0], 'warning'));
 
             return;

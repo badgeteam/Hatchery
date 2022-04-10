@@ -79,7 +79,8 @@ class FilesController extends Controller
             $file->content = $request->file_content;
             $file->save();
         } catch (\Exception $e) {
-            return redirect()->route('files.edit', ['file' => $file->id])->withInput()->withErrors([$e->getMessage()]);
+            return redirect()->route('files.edit', ['file' => $file->id])
+                ->withInput()->withErrors([$e->getMessage()]);
         }
 
         if ($file->lintable) {
@@ -88,7 +89,9 @@ class FilesController extends Controller
                 return redirect()
                     ->route('projects.edit', ['project' => $file->version->project])
                     ->withSuccesses([$file->name . ' saved']);
-            } elseif (!empty($data[0])) {
+            }
+
+            if (!empty($data[0])) {
                 return redirect()->route('files.edit', ['file' => $file->id])
                     ->withInput()
                     ->withSuccesses([$file->name . ' saved'])
@@ -143,7 +146,12 @@ class FilesController extends Controller
             $file->content = 'icon = ([' . implode(', ', $pixels) . '], 1)';
             $file->save();
         } catch (\Exception $e) {
-            return redirect()->route('projects.edit', ['project' => $version->project])->withInput()->withErrors([$e->getMessage()]);
+            return redirect()->route(
+                'projects.edit',
+                [
+                'project' => $version->project]
+            )->withInput()->withErrors([$e->getMessage()
+                    ]);
         }
 
         return redirect()->route('files.edit', ['file' => $file->id])->withSuccesses([$file->name . ' created']);
@@ -170,7 +178,12 @@ class FilesController extends Controller
             return redirect()->route('files.create')->withInput()->withErrors([$e->getMessage()]);
         }
 
-        return redirect()->route('projects.edit', ['project' => $file->version->project])->withSuccesses([$file->name . ' saved']);
+        return redirect()->route(
+            'projects.edit',
+            [
+            'project' => $file->version->project]
+        )->withSuccesses([$file->name . ' saved'
+                ]);
     }
 
     /**

@@ -155,7 +155,8 @@ time.localtime()';
         $response = $this
             ->actingAs($user)
             ->call('put', '/files/' . $file->id, ['file_content' => $data]);
-        $response->assertRedirect('/projects/' . $file->version->project->slug . '/edit')->assertSessionHas('successes');
+        $response->assertRedirect('/projects/' . $file->version->project->slug . '/edit')
+            ->assertSessionHas('successes');
         /** @var File $file */
         $file = File::find($file->id);
         $this->assertEquals($data, $file->content);
@@ -175,7 +176,8 @@ time.localtime()';
         $response = $this
             ->actingAs($user)
             ->call('put', '/files/' . $file->id, ['file_content' => $data]);
-        $response->assertRedirect('/projects/' . $file->version->project->slug . '/edit')->assertSessionHas('successes');
+        $response->assertRedirect('/projects/' . $file->version->project->slug . '/edit')
+            ->assertSessionHas('successes');
         /** @var File $file */
         $file = File::find($file->id);
         $this->assertEquals($data, $file->content);
@@ -332,7 +334,8 @@ time.localtime()';
         $response = $this
             ->actingAs($user)
             ->call('delete', '/files/' . $file->id);
-        $response->assertRedirect('/projects/' . $file->version->project->slug . '/edit')->assertSessionHas('successes');
+        $response->assertRedirect('/projects/' . $file->version->project->slug . '/edit')
+            ->assertSessionHas('successes');
     }
 
     /**
@@ -402,7 +405,13 @@ time.localtime()';
         $version = Version::factory()->create();
         $response = $this
             ->actingAs($user)
-            ->post('/files', ['name' => $this->faker->text(1024), 'file_content' => '# test', 'version_id' => $version->id]);
+            ->post(
+                '/files',
+                [
+                    'name' => $this->faker->text(1024), 'file_content' => '# test',
+                    'version_id' => $version->id
+                ]
+            );
         $response->assertRedirect('/files/create')
             ->assertSessionHasErrors();
     }
