@@ -24,7 +24,7 @@
         "asbiin/laravel-webauthn": "^2.0",
         "bacon/bacon-qr-code": "^2.0",
         "bepsvpt/secure-headers": "^7.2",
-        "czproject/git-php": "^3.17",
+        "czproject/git-php": "^4.0",
         "darkaonline/l5-swagger": "^8.3",
         "facade/ignition": "^2.0",
         "fruitcake/laravel-cors": "^2.0",
