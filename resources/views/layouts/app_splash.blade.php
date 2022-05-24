@@ -19,7 +19,7 @@
     <link rel="canonical" href="{{ url()->current() }}" />
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css', !App::environment(['local', 'testing'])) }}?v=1.0" rel="stylesheet">
+    <link href="{{ asset('css/app.css', !App::environment(['local', 'testing', 'docker'])) }}?v=1.0" rel="stylesheet">
     <livewire:styles>
 
     <style>
@@ -72,7 +72,7 @@
 }
     </script>
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js', !App::environment(['local', 'testing'])) }}?v=1.0"></script>
+    <script src="{{ asset('js/app.js', !App::environment(['local', 'testing', 'docker'])) }}?v=1.0"></script>
     <livewire:scripts>
 
     @yield('script')
