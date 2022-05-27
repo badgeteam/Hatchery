@@ -7,8 +7,8 @@ namespace App\Jobs;
 use App\Events\ProjectUpdated;
 use App\Models\Project;
 use App\Models\User;
-use App\Support\GitRepository;
 use App\Support\Helpers;
+use CzProject\GitPhp\Git;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -49,11 +49,11 @@ class UpdateProject implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @param GitRepository $git
+     * @param Git $git
      *
      * @return void
      */
-    public function handle(GitRepository $git)
+    public function handle(Git $git)
     {
         $version = $this->project->getUnpublishedVersion();
 
@@ -61,7 +61,7 @@ class UpdateProject implements ShouldQueue
             $tempFolder = sys_get_temp_dir() . '/' . $this->project->slug;
             if (!file_exists($tempFolder . '/.git/HEAD')) {
                 $repo = $git->cloneRepository(
-                    $this->project->git,
+                    (string)$this->project->git,
                     $tempFolder,
                     ['-q', '--single-branch', '--depth', 1]
                 );
@@ -70,7 +70,7 @@ class UpdateProject implements ShouldQueue
                 $repo->pull();
             }
 
-            if ($this->project->git_commit_id === $repo->getLastCommitId()) {
+            if ($this->project->git_commit_id === $repo->getLastCommitId()->toString()) {
                 event(new ProjectUpdated(
                     $version->project,
                     'Project ' . $version->project->name . ' was already up to date!',
@@ -79,7 +79,7 @@ class UpdateProject implements ShouldQueue
 
                 return;
             }
-            $this->project->git_commit_id = $repo->getLastCommitId();
+            $this->project->git_commit_id = $repo->getLastCommitId()->toString();
             $this->project->save();
             Helpers::addFiles($tempFolder, $version);
             PublishProject::dispatch($this->project, $this->user);

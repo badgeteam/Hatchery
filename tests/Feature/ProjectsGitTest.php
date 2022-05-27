@@ -9,9 +9,9 @@ use App\Models\Category;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
-use App\Support\GitRepository;
 use App\Support\Helpers;
-use Cz\Git\GitException;
+use CzProject\GitPhp\Git;
+use CzProject\GitPhp\GitException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
@@ -54,10 +54,10 @@ class ProjectsGitTest extends TestCase
         mkdir($folder);
 
         $hash = $this->faker->sha256;
-        $mock = $this->mock(GitRepository::class); // twice since folder is not real git repo
+        $mock = $this->mock(Git::class); // twice since folder is not real git repo
         $mock->expects('cloneRepository')->twice()->andReturnSelf();
         $mock->expects('getLastCommitId')->twice()->andReturns($hash);
-        $this->app->instance(GitRepository::class, $mock);
+        $this->app->instance(Git::class, $mock);
         /** @var User $user */
         $user = User::factory()->create();
         /** @var Category $category */
@@ -93,9 +93,9 @@ class ProjectsGitTest extends TestCase
         $category = Category::factory()->create();
         $this->assertEmpty(Project::all());
 
-        $mock = $this->mock(GitRepository::class);
+        $mock = $this->mock(Git::class);
         $mock->expects('cloneRepository')->once()->andReturnSelf();
-        $this->app->instance(GitRepository::class, $mock);
+        $this->app->instance(Git::class, $mock);
 
         $response = $this
             ->actingAs($user)
@@ -160,9 +160,9 @@ class ProjectsGitTest extends TestCase
         $this->assertCount(1, Project::all());  // Illegal name (badge)
         $response->assertRedirect('/import')->assertSessionHasErrors();
 
-        $mock = $this->mock(GitRepository::class); // twice since folder is not real git repo
-        $mock->expects('cloneRepository')->once()->andThrowExceptions([new GitException()]);
-        $this->app->instance(GitRepository::class, $mock);
+        $mock = $this->mock(Git::class); // twice since folder is not real git repo
+        $mock->expects('cloneRepository')->once()->andThrowExceptions([new GitException('Stuk')]);
+        $this->app->instance(Git::class, $mock);
         $response = $this
             ->actingAs($user)
             ->call(
@@ -216,10 +216,10 @@ class ProjectsGitTest extends TestCase
         mkdir($folder);
 
         $hash = $project->git_commit_id;
-        $mock = $this->mock(GitRepository::class);
+        $mock = $this->mock(Git::class);
         $mock->expects('cloneRepository')->andReturnSelf();
         $mock->expects('getLastCommitId')->andReturns($hash);
-        $this->app->instance(GitRepository::class, $mock);
+        $this->app->instance(Git::class, $mock);
 
         Event::fake();
 
@@ -262,10 +262,10 @@ class ProjectsGitTest extends TestCase
         mkdir($folder);
 
         $hash = $this->faker->sha256;
-        $mock = $this->mock(GitRepository::class);
+        $mock = $this->mock(Git::class);
         $mock->expects('cloneRepository')->andReturnSelf();
         $mock->expects('getLastCommitId')->twice()->andReturns($hash);
-        $this->app->instance(GitRepository::class, $mock);
+        $this->app->instance(Git::class, $mock);
 
         $response = $this
             ->actingAs($user)
@@ -302,11 +302,11 @@ class ProjectsGitTest extends TestCase
         touch($folder . '/.git/HEAD');
 
         $hash = $this->faker->sha256;
-        $mock = $this->mock(GitRepository::class);
+        $mock = $this->mock(Git::class);
         $mock->expects('open')->andReturnSelf();
         $mock->expects('pull')->andReturn();
         $mock->expects('getLastCommitId')->twice()->andReturns($hash);
-        $this->app->instance(GitRepository::class, $mock);
+        $this->app->instance(Git::class, $mock);
 
         $response = $this
             ->actingAs($user)
