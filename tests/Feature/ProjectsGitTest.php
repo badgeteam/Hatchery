@@ -12,6 +12,7 @@ use App\Models\Version;
 use App\Support\Helpers;
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
+use CzProject\GitPhp\GitRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
@@ -54,10 +55,12 @@ class ProjectsGitTest extends TestCase
         mkdir($folder);
 
         $hash = $this->faker->sha256;
-        $mock = $this->mock(Git::class); // twice since folder is not real git repo
-        $mock->expects('cloneRepository')->twice()->andReturnSelf();
-        $mock->expects('getLastCommitId')->twice()->andReturns($hash);
-        $this->app->instance(Git::class, $mock);
+        $mockRepo = $this->mock(GitRepository::class);
+        $mockRepo->expects('getLastCommitId')->twice()->andReturns($hash);
+        $this->app->instance(GitRepository::class, $mockRepo);
+        $mockGit = $this->mock(Git::class);
+        $mockGit->expects('cloneRepository')->twice()->andReturnSelf();
+        $this->app->instance(Git::class, $mockGit);
         /** @var User $user */
         $user = User::factory()->create();
         /** @var Category $category */
@@ -302,11 +305,13 @@ class ProjectsGitTest extends TestCase
         touch($folder . '/.git/HEAD');
 
         $hash = $this->faker->sha256;
-        $mock = $this->mock(Git::class);
-        $mock->expects('open')->andReturnSelf();
-        $mock->expects('pull')->andReturn();
-        $mock->expects('getLastCommitId')->twice()->andReturns($hash);
-        $this->app->instance(Git::class, $mock);
+        $mockGit = $this->mock(Git::class);
+        $mockGit->expects('open')->andReturnSelf();
+        $this->app->instance(Git::class, $mockGit);
+        $mockRepo = $this->mock(GitRepository::class);
+        $mockRepo->expects('pull')->andReturn();
+        $mockRepo->expects('getLastCommitId')->twice()->andReturns($hash);
+        $this->app->instance(GitRepository::class, $mockRepo);
 
         $response = $this
             ->actingAs($user)
