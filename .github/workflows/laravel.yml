@@ -38,6 +38,8 @@ jobs:
       run: php artisan key:generate
     - name: LaraStan
       run: vendor/bin/phpstan analyse
+    - name: Security Check
+      run: php artisan security-check:now
     - name: Swagger generate
       run: php artisan l5-swagger:generate
     - name: Populate DB
