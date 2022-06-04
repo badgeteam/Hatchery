@@ -10,9 +10,11 @@ use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
 use App\Support\Helpers;
+use CzProject\GitPhp\CommitId;
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
 use CzProject\GitPhp\GitRepository;
+use CzProject\GitPhp\InvalidArgumentException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
@@ -47,6 +49,7 @@ class ProjectsGitTest extends TestCase
 
     /**
      * Check the projects can be stored.
+     * @throws InvalidArgumentException
      */
     public function testProjectsStoreGit(): void
     {
@@ -54,12 +57,12 @@ class ProjectsGitTest extends TestCase
         $folder = sys_get_temp_dir() . '/' . Str::slug($name, '_');
         mkdir($folder);
 
-        $hash = $this->faker->sha256;
+        $hash = $this->faker->sha1;
         $mockRepo = $this->mock(GitRepository::class);
-        $mockRepo->expects('getLastCommitId')->twice()->andReturns($hash);
+        $mockRepo->expects('getLastCommitId')->twice()->andReturns(new CommitId($hash));
         $this->app->instance(GitRepository::class, $mockRepo);
         $mockGit = $this->mock(Git::class);
-        $mockGit->expects('cloneRepository')->twice()->andReturnSelf();
+        $mockGit->expects('cloneRepository')->twice()->andReturns($mockRepo);
         $this->app->instance(Git::class, $mockGit);
         /** @var User $user */
         $user = User::factory()->create();
@@ -199,6 +202,7 @@ class ProjectsGitTest extends TestCase
 
     /**
      * Check the projects can be pulled.
+     * @throws InvalidArgumentException
      */
     public function testProjectsPullNothingToUpdate(): void
     {
@@ -207,7 +211,7 @@ class ProjectsGitTest extends TestCase
         $this->be($user);
         /** @var Project $project */
         $project = Project::factory()->create([
-            'git_commit_id' => $this->faker->sha256,
+            'git_commit_id' => $this->faker->sha1,
             'git'           => $this->faker->url,
         ]);
         /** @var Version $version */
@@ -221,7 +225,7 @@ class ProjectsGitTest extends TestCase
         $hash = $project->git_commit_id;
         $mock = $this->mock(Git::class);
         $mock->expects('cloneRepository')->andReturnSelf();
-        $mock->expects('getLastCommitId')->andReturns($hash);
+        $mock->expects('getLastCommitId')->andReturns(new CommitId((string)$hash));
         $this->app->instance(Git::class, $mock);
 
         Event::fake();
@@ -253,7 +257,7 @@ class ProjectsGitTest extends TestCase
         $this->be($user);
         /** @var Project $project */
         $project = Project::factory()->create([
-            'git_commit_id' => $this->faker->sha256,
+            'git_commit_id' => $this->faker->sha1,
             'git'           => $this->faker->url,
         ]);
         /** @var Version $version */
@@ -264,10 +268,10 @@ class ProjectsGitTest extends TestCase
         $folder = sys_get_temp_dir() . '/' . $project->slug;
         mkdir($folder);
 
-        $hash = $this->faker->sha256;
+        $hash = $this->faker->sha1;
         $mock = $this->mock(Git::class);
         $mock->expects('cloneRepository')->andReturnSelf();
-        $mock->expects('getLastCommitId')->twice()->andReturns($hash);
+        $mock->expects('getLastCommitId')->twice()->andReturns(new CommitId($hash));
         $this->app->instance(Git::class, $mock);
 
         $response = $this
@@ -291,7 +295,7 @@ class ProjectsGitTest extends TestCase
         $this->be($user);
         /** @var Project $project */
         $project = Project::factory()->create([
-            'git_commit_id' => $this->faker->sha256,
+            'git_commit_id' => $this->faker->sha1,
             'git'           => $this->faker->url,
         ]);
         /** @var Version $version */
@@ -304,14 +308,14 @@ class ProjectsGitTest extends TestCase
         mkdir($folder . '/.git');
         touch($folder . '/.git/HEAD');
 
-        $hash = $this->faker->sha256;
-        $mockGit = $this->mock(Git::class);
-        $mockGit->expects('open')->andReturnSelf();
-        $this->app->instance(Git::class, $mockGit);
+        $hash = $this->faker->sha1;
         $mockRepo = $this->mock(GitRepository::class);
+        $mockRepo->expects('getLastCommitId')->twice()->andReturns(new CommitId((string)$hash));
         $mockRepo->expects('pull')->andReturn();
-        $mockRepo->expects('getLastCommitId')->twice()->andReturns($hash);
         $this->app->instance(GitRepository::class, $mockRepo);
+        $mockGit = $this->mock(Git::class);
+        $mockGit->expects('open')->andReturns($mockRepo);
+        $this->app->instance(Git::class, $mockGit);
 
         $response = $this
             ->actingAs($user)

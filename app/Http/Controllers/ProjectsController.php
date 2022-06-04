@@ -23,6 +23,7 @@ use App\Support\Helpers;
 use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -245,7 +246,7 @@ class ProjectsController extends Controller
      *
      * @param Project $project
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
      * @return View
      */
@@ -263,7 +264,7 @@ class ProjectsController extends Controller
      * @param ProjectRenameRequest $request
      * @param Project              $project
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
      * @return RedirectResponse
      */
