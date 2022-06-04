@@ -19,7 +19,7 @@ use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
 use App\Models\Vote;
-use App\Support\GitRepository;
+use CzProject\GitPhp\Git;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
@@ -162,7 +162,7 @@ class EdgeCasesTest extends TestCase
         Event::fake();
 
         $publishProject = new UpdateProject($project, $user);
-        $publishProject->handle(new GitRepository());
+        $publishProject->handle(new Git());
 
         Event::assertDispatched(ProjectUpdated::class, function ($e) {
             $this->assertEquals('danger', $e->type);
