@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        if (!App::environment(['local', 'testing'])) {
+        if (!App::environment(['local', 'testing', 'docker'])) {
             // @codeCoverageIgnoreStart
             URL::forceScheme('https');
             // @codeCoverageIgnoreEnd
