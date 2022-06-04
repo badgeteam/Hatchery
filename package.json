@@ -14,15 +14,19 @@
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
     "lint": "./node_modules/.bin/eslint --ext .js resources/assets/js",
     "build": "yarn production",
-    "test": "vendor/bin/phpstan analyse"
+    "test": "vendor/bin/phpstan analyse",
+    "changelog": "conventional-changelog",
+    "audit": "better-npm-audit audit"
   },
   "devDependencies": {
     "@hapi/hoek": "^9.2.1",
     "@popperjs/core": "^2.11.5",
     "axios": "^0.26.1",
+    "better-npm-audit": "^3.4.0",
     "bootstrap": "^5.1.3",
     "bootstrap-sass": "^3.4.3",
     "codemirror": "^5.65.2",
+    "conventional-changelog-cli": "^2.1.1",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "dropzone": "^6.0.0-beta.2",
