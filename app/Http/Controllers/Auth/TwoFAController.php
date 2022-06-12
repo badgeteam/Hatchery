@@ -65,7 +65,7 @@ class TwoFAController extends Controller
         $user->google2fa_secret = $google2fa->generateSecretKey();
         $user->save();
 
-        return redirect()->route('2fa')->with('success', 'Secret key has been §rated, enter OTP to activate 2FA.');
+        return redirect()->route('2fa')->with('success', 'Secret key has been created, enter OTP to activate 2FA.');
     }
 
     /**
