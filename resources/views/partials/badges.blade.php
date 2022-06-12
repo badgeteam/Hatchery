@@ -17,7 +17,7 @@
         </tr>
     @empty
         <tr>
-            <td colspan="5">No basdges found.</td>
+            <td colspan="5">No badges found.</td>
         </tr>
     @endforelse
     </tbody>

@@ -60,6 +60,8 @@ jobs:
         DB_USERNAME: root
         DB_PASSWORD: root
       run: php artisan sitemap:generate
+    - name: Publish assets
+      run: php artisan horizon:publish && php artisan livewire:publish
     - name: Config clear
       run: php artisan config:clear
     - name: Route clear

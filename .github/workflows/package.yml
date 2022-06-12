@@ -34,7 +34,10 @@ jobs:
         run: php artisan config:clear
       - name: Clear route cache
         run: php artisan route:clear
-      - run: 'echo "{ \"version\": \"${{ env.RELEASE_VERSION }}\", \"git_ref\": \"$GITHUB_SHA\"}" > public/version.json'
+      - name: Publish assets
+        run: php artisan horizon:publish && php artisan livewire:publish
+      - name: Add version.json
+        run: 'echo "{ \"version\": \"${{ env.RELEASE_VERSION }}\", \"git_ref\": \"$GITHUB_SHA\"}" > public/version.json'
         shell: bash
       - name: Make ./storage group writable for, code_owner != run_user
         run: chmod 775 ./storage

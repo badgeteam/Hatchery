@@ -49,6 +49,13 @@ yarn
 yarn production
 ```
 
+Install assets.
+
+```bash
+php artisan horizon:publish
+php artisan livewire:publish
+```
+
 Installing and configuring the async websocket server.
 
 ```bash
