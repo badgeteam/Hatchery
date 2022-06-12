@@ -1,7 +1,8 @@
 /node_modules
 /public/hot
 /public/storage
-/public/fonts/
+/public/vendor
+/public/fonts
 /public/mix-manifest.json
 /public/css/app.css
 /public/js/app.js
@@ -30,8 +31,9 @@ _ide_helper.php
 .phpstorm.meta.php
 .env
 /.php_cs.cache
-/storage/api-docs/
+/storage/api-docs
 /database/mariadb
 /public/vendor/livewire
 laravel-echo-server.*
 /public/sw.js.LICENSE.txt
+/resources/views/vendor
