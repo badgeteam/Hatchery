@@ -5,6 +5,8 @@
     <file>./app</file>
     <file>./config</file>
     <file>./routes</file>
+    <file>./database/seeders</file>
+    <file>./database/factories</file>
     <file>./tests/Feature</file>
     <file>./tests/Unit</file>
 

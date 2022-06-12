@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\File;
@@ -29,7 +31,7 @@ class FileFactory extends Factory
     {
         return [
             'version_id' => Version::factory(),
-            'name'       => $this->faker->word.'.py',
+            'name'       => $this->faker->word . '.py',
             'content'    => $this->faker->paragraph,
         ];
     }
