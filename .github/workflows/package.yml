@@ -23,7 +23,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@master
         with:
-          php-version: 8.0
+          php-version: 8.1
       - name: Composer install (for indexing of vendor blade classes)
         env:
           COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.REPO_READ_ONLY_TOKEN }}"}}'
