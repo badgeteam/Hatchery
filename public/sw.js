@@ -1,4 +1,4 @@
-const cacheName = 'hatchery::20200324';
+const cacheName = 'hatchery::22061217';
 
 self.addEventListener('install', e => {
 	e.waitUntil(
@@ -21,12 +21,8 @@ self.addEventListener('install', e => {
 				'/fonts/vendor/bootstrap-sass/bootstrap/glyphicons-halflings-regular.ttf',
 				'/fonts/vendor/bootstrap-sass/bootstrap/glyphicons-halflings-regular.svg',
 				'/mix-manifest.json',
-				'/0.js',
-				'/2.js',
-				'/icons/blank.gif',
-				'/icons/back.gif',
-				'/icons/tar.gif',
-				'/icons/compressed.gif',
+				'/js/806.js',
+				'/js/867.js',
 				'/vendor/webauthn/webauthn.js',
 				'/vendor/horizon/app.css',
 				'/vendor/horizon/img/horizon.svg',
