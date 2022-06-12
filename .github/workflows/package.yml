@@ -27,7 +27,7 @@ jobs:
       - name: Composer install (for indexing of vendor blade classes)
         env:
           COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.REPO_READ_ONLY_TOKEN }}"}}'
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --no-dev
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist --no-dev
       - name: Run build task
         run: yarn build
       - name: Clean build
