@@ -715,7 +715,7 @@ class PublicTest extends TestCase
     }
 
     /**
-     * Check JSON egg request . .
+     * Check JSON files request . .
      */
     public function testProjectFilesGetJsonModelNotFound(): void
     {
@@ -725,7 +725,7 @@ class PublicTest extends TestCase
     }
 
     /**
-     * Check JSON egg request . .
+     * Check JSON files request . .
      */
     public function testProjectFilesGetJsonFilesNotFound(): void
     {
@@ -740,7 +740,7 @@ class PublicTest extends TestCase
     }
 
     /**
-     * Check JSON egg request . .
+     * Check JSON files request . .
      */
     public function testProjectFilesGetJson(): void
     {
@@ -763,5 +763,71 @@ class PublicTest extends TestCase
                     'extension' => $file->extension
                 ]
             ]);
+    }
+
+    /**
+     * Check File request . .
+     */
+    public function testProjectFileContentModelNotFound(): void
+    {
+        $response = $this->json('GET', '/eggs/file/something/get/file.py');
+        $response->assertStatus(404)
+            ->assertExactJson(['message' => 'Project not found']);
+    }
+
+    /**
+     * Check File request . .
+     */
+    public function testProjectFileContentFilesNotFound(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        $response = $this->json('GET', '/eggs/file/' . $project->slug . '/get/file.py');
+        $response->assertStatus(404)
+            ->assertExactJson(['message' => 'No files found']);
+    }
+
+    /**
+     * Check File request . .
+     */
+    public function testProjectFileContentFileNotFound(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = File::factory()->create();
+
+        $version = $file->version;
+        $version->zip = 'some_path.tar.gz';
+        $version->save();
+
+        $response = $this->json('GET', '/eggs/file/' . $version->project->slug . '/get/file.py');
+        $response->assertStatus(404)
+            ->assertExactJson(['message' => 'File not found']);
+    }
+
+    /**
+     * Check File request . .
+     */
+    public function testProjectFileContent(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = File::factory()->create();
+
+        $version = $file->version;
+        $version->zip = 'some_path.tar.gz';
+        $version->save();
+
+        $response = $this->json('GET', '/eggs/file/' . $version->project->slug . '/get/' . $file->name);
+        $response->assertStatus(200)
+            ->assertHeader('Content-Type', $file->mime)
+            ->assertSee($file->content);
     }
 }
