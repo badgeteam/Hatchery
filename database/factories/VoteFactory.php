@@ -23,7 +23,7 @@ class VoteFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, ProjectFactory>
      */
     public function definition()
     {

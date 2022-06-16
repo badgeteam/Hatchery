@@ -713,4 +713,55 @@ class PublicTest extends TestCase
         $response->assertStatus(302)
             ->assertRedirect('/login');
     }
+
+    /**
+     * Check JSON egg request . .
+     */
+    public function testProjectFilesGetJsonModelNotFound(): void
+    {
+        $response = $this->json('GET', '/eggs/files/something/json');
+        $response->assertStatus(404)
+            ->assertExactJson(['message' => 'Project not found']);
+    }
+
+    /**
+     * Check JSON egg request . .
+     */
+    public function testProjectFilesGetJsonFilesNotFound(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        $response = $this->json('GET', '/eggs/files/' . $project->slug . '/json');
+        $response->assertStatus(404)
+            ->assertExactJson(['message' => 'No files found']);
+    }
+
+    /**
+     * Check JSON egg request . .
+     */
+    public function testProjectFilesGetJson(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->be($user);
+        /** @var File $file */
+        $file = File::factory()->create();
+
+        $version = $file->version;
+        $version->zip = 'some_path.tar.gz';
+        $version->save();
+
+        $response = $this->json('GET', '/eggs/files/' . $version->project->slug . '/json');
+        $response->assertStatus(200)
+            ->assertJson([
+                [
+                    'name' => $file->name,
+                    'size' => $file->size_of_content,
+                    'extension' => $file->extension
+                ]
+            ]);
+    }
 }

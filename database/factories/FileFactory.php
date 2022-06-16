@@ -23,13 +23,13 @@ class FileFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, VersionFactory|string>
      */
     public function definition()
     {
         return [
             'version_id' => Version::factory(),
-            'name'       => $this->faker->word.'.py',
+            'name'       => $this->faker->word . '.py',
             'content'    => $this->faker->paragraph,
         ];
     }
