@@ -36,6 +36,8 @@ jobs:
         run: php artisan route:clear
       - name: Publish assets
         run: php artisan horizon:publish && php artisan livewire:publish
+      - name: Generate swagger
+        run: php artisan l5-swagger:generate
       - name: Add version.json
         run: 'echo "{ \"version\": \"${{ env.RELEASE_VERSION }}\", \"git_ref\": \"$GITHUB_SHA\"}" > public/version.json'
         shell: bash
