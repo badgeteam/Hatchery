@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Database\Seeders;
+
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 
@@ -13,7 +17,8 @@ class CategoriesSeeder extends Seeder
     public function run()
     {
         if (Category::count() === 0) {
-            foreach ([
+            foreach (
+                [
                 'Uncategorised',
                 'Event related',
                 'Games',
@@ -28,7 +33,8 @@ class CategoriesSeeder extends Seeder
                 'Unusable',
                 'Adult',
                 'Virus',
-            ] as $name) {
+                ] as $name
+            ) {
                 Category::create(['name' => $name]);
             }
         }
