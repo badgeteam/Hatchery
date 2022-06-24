@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\VersionFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -53,8 +54,8 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Version whereZip($value)
  * @method static Builder|Version withTrashed()
  * @method static Builder|Version withoutTrashed()
+ * @method static VersionFactory factory(...$parameters)
  * @mixin \Eloquent
- * @method static \Database\Factories\VersionFactory factory(...$parameters)
  */
 class Version extends Model
 {

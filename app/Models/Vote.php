@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\VoteFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -42,8 +43,8 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Vote whereUserId($value)
  * @method static Builder|Vote withTrashed()
  * @method static Builder|Vote withoutTrashed()
+ * @method static VoteFactory factory(...$parameters)
  * @mixin \Eloquent
- * @method static \Database\Factories\VoteFactory factory(...$parameters)
  */
 class Vote extends Model
 {

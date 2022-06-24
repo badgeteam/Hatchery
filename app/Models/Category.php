@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\CategoryFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -42,8 +43,8 @@ use Illuminate\Support\Str;
  * @method static Builder|Category whereUpdatedAt($value)
  * @method static Builder|Category withTrashed()
  * @method static Builder|Category withoutTrashed()
+ * @method static CategoryFactory factory(...$parameters)
  * @mixin \Eloquent
- * @method static \Database\Factories\CategoryFactory factory(...$parameters)
  */
 class Category extends Model
 {

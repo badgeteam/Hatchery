@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\BadgeFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -41,8 +42,8 @@ use Illuminate\Support\Str;
  * @method static Builder|Badge whereUpdatedAt($value)
  * @method static Builder|Badge whereCommands($value)
  * @method static Builder|Badge whereConstraints($value)
+ * @method static BadgeFactory factory(...$parameters)
  * @mixin \Eloquent
- * @method static \Database\Factories\BadgeFactory factory(...$parameters)
  */
 class Badge extends Model
 {

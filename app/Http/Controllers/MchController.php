@@ -62,7 +62,7 @@ class MchController extends Controller
     {
         /** @var Badge $badge */
         $badge = Badge::whereSlug($device)->firstOrFail();
-        return response()->json($badge->types, 200, ['Content-Type' => 'application/json']);
+        return response()->json($badge->types, 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
 
     /**
@@ -76,7 +76,7 @@ class MchController extends Controller
      *     required=true,
      * @OA\Schema(type="string", format="slug", example="mch2022")
      *   ),
- *     @OA\Parameter(
+     * @OA\Parameter(
      *     name="type",
      *     in="path",
      *     required=true,
@@ -96,7 +96,6 @@ class MchController extends Controller
         $badge = Badge::whereSlug($device)->firstOrFail();
 
         $count = $categories =  [];
-
         /** @var Project $project */
         foreach ($badge->projects()->whereProjectType($type)->get() as $project) {
             $count[$project->category_id] =
@@ -112,9 +111,60 @@ class MchController extends Controller
             ];
         }
 
-        return response()->json($categories, 200, ['Content-Type' => 'application/json']);
+        return response()->json($categories, 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
     }
 
+    /**
+     * Get the apps from a device / type / category
+     *
+     * @OA\Get(
+     *   path="/mch2022/{device}/{type}/{category}",
+     * @OA\Parameter(
+     *     name="device",
+     *     in="path",
+     *     required=true,
+     * @OA\Schema(type="string", format="slug", example="mch2022")
+     *   ),
+     * @OA\Parameter(
+     *     name="type",
+     *     in="path",
+     *     required=true,
+     * @OA\Schema(type="string", format="slug", example="esp32")
+     *   ),
+     * @OA\Parameter(
+     *     name="category",
+     *     in="path",
+     *     required=true,
+     * @OA\Schema(type="string", format="slug", example="game_of_life")
+     *   ),
+     *   tags={"MCH2022"},
+     * @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * )
+     *
+     * @param string $device
+     * @param string $type
+     * @param string $category
+     * @return JsonResponse
+     */
+    public function apps(string $device, string $type, string $category): JsonResponse
+    {
+        /** @var Badge $badge */
+        $badge = Badge::whereSlug($device)->firstOrFail();
+        /** @var Category $category */
+        $categoryId = Category::whereSlug($category)->firstOrFail()->id;
+        $apps = [];
+        /** @var Project $project */
+        foreach ($badge->projects()->whereProjectType($type)->whereCategoryId($categoryId)->get() as $project) {
+            $apps[] = [
+                'slug' => $project->slug,
+                'name' => $project->name,
+                'author' => $project->author,
+                'license' => $project->license,
+                'description' => $project->description,
+            ];
+        }
+        return response()->json($apps, 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
+    }
 
 
     /**

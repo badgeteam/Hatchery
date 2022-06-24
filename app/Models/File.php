@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Support\Helpers;
+use Database\Factories\FileFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -55,8 +56,8 @@ use Intervention\Image\Facades\Image;
  * @method static Builder|File whereVersionId($value)
  * @method static Builder|File withTrashed()
  * @method static Builder|File withoutTrashed()
+ * @method static FileFactory factory(...$parameters)
  * @mixin \Eloquent
- * @method static \Database\Factories\FileFactory factory(...$parameters)
  */
 class File extends Model
 {
