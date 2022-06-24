@@ -168,7 +168,7 @@ class Mch20222Test extends TestCase
                     [
                         'name' => $file->name,
                         'url' => url(
-                            'mch2022/' . $badge->slug . '/python/' . $category->slug .  '/' .
+                            'v2/' . $badge->slug . '/python/' . $category->slug .  '/' .
                             $version->project->slug . '/' . $file->name
                         ),
                         'size' => $file->size_of_content
