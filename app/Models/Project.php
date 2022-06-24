@@ -143,6 +143,7 @@ class Project extends Model
         'git_commit_id',
         'user',
         'allow_team_fixes',
+        'project_type',
     ];
 
     /**

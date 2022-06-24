@@ -107,7 +107,8 @@ class Mch20222Test extends TestCase
         $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/mch2022/' . $badge->slug . '/esp32/categories');
-        $response->assertStatus(404);
+        $response->assertStatus(200)
+            ->assertExactJson([]);
 
         $response = $this->json('GET', '/mch2022/' . $badge->slug . '/python/categories');
         $response->assertStatus(200)

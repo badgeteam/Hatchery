@@ -97,8 +97,8 @@ class MchController extends Controller
 
         $count = $categories =  [];
 
-        // @todo Filtering on type
-        foreach ($badge->projects as $project) {
+        /** @var Project $project */
+        foreach ($badge->projects()->whereProjectType($type)->get() as $project) {
             $count[$project->category_id] =
                 isset($count[$project->category_id]) ? $count[$project->category_id] + 1 : 1;
         }
