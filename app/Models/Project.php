@@ -87,8 +87,10 @@ use Illuminate\Support\Str;
  * @method static Builder|Project withoutTrashed()
  * @method static Builder|Project whereMaxFirmware($value)
  * @method static Builder|Project whereMinFirmware($value)
- * @mixin \Eloquent
  * @method static \Database\Factories\ProjectFactory factory(...$parameters)
+ * @property int $allow_team_fixes
+ * @method static Builder|Project whereAllowTeamFixes($value)
+ * @mixin \Eloquent
  */
 class Project extends Model
 {
@@ -138,6 +140,7 @@ class Project extends Model
         'git',
         'git_commit_id',
         'user',
+        'allow_team_fixes',
     ];
 
     /**
@@ -276,7 +279,7 @@ class Project extends Model
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getRevisionAttribute(): ?string
     {
@@ -312,7 +315,7 @@ class Project extends Model
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getSizeOfZipAttribute(): ?int
     {
@@ -322,7 +325,7 @@ class Project extends Model
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getSizeOfContentAttribute(): ?int
     {
@@ -366,7 +369,7 @@ class Project extends Model
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getCategoryAttribute(): ?string
     {
@@ -384,7 +387,7 @@ class Project extends Model
      *
      * @return bool
      */
-    public static function isForbidden(string $slug)
+    public static function isForbidden(string $slug): bool
     {
         return in_array($slug, self::$forbidden);
     }

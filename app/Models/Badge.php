@@ -29,6 +29,7 @@ use Illuminate\Support\Str;
  * @property-read int|null $projects_count
  * @property-read Collection|BadgeProject[] $states
  * @property-read int|null $states_count
+ * @property-read array $types
  * @method static Builder|Badge newModelQuery()
  * @method static Builder|Badge newQuery()
  * @method static Builder|Badge query()
@@ -85,5 +86,26 @@ class Badge extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    /**
+     * @return array<int, array<string, string>>
+     */
+    public function getTypesAttribute(): array
+    {
+        return [
+            [
+                'name' => 'Espressif ESP32 binary',
+                'slug' => 'esp32',
+            ],
+            [
+                'name' => 'MicroPython egg',
+                'slug' => 'python',
+            ],
+            [
+                'name' => 'Lattice iCE40 bitstream',
+                'slug' => 'fpga',
+            ],
+        ];
     }
 }

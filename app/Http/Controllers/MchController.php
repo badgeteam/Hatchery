@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Badge;
+use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
 use Illuminate\Http\JsonResponse;
@@ -11,6 +13,108 @@ use OpenApi\Annotations as OA;
 
 class MchController extends Controller
 {
+    /**
+     * List the available devices.
+     *
+     * @OA\Get(
+     *   path="/mch2022/devices",
+     * @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * )
+     *
+     * @return JsonResponse
+     */
+    public function devices(): JsonResponse
+    {
+        $devices = [];
+        foreach (Badge::pluck('name', 'slug') as $slug => $name) {
+            $devices[] = [
+                'slug' => $slug,
+                'name' => $name
+                ];
+        }
+        return response()->json(
+            $devices,
+            200,
+            ['Content-Type' => 'application/json'],
+            JSON_UNESCAPED_SLASHES
+        );
+    }
+
+    /**
+     * Get the types of apps a device supports.
+     *
+     * @OA\Get(
+     *   path="/mch2022/{device}/types",
+     * @OA\Parameter(
+     *     name="device",
+     *     in="path",
+     *     required=true,
+     * @OA\Schema(type="string", format="slug", example="mch2022")
+     *   ),
+     *   tags={"MCH2022"},
+     * @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * )
+     *
+     * @param Badge $badge
+     * @return JsonResponse
+     */
+    public function types(Badge $badge): JsonResponse
+    {
+        return response()->json($badge->types, 200, ['Content-Type' => 'application/json']);
+    }
+
+    /**
+     * Get the types of apps a device supports.
+     *
+     * @OA\Get(
+     *   path="/mch2022/{device}/{type}/categories",
+     * @OA\Parameter(
+     *     name="device",
+     *     in="path",
+     *     required=true,
+     * @OA\Schema(type="string", format="slug", example="mch2022")
+     *   ),
+ *     @OA\Parameter(
+     *     name="type",
+     *     in="path",
+     *     required=true,
+     * @OA\Schema(type="string", format="slug", example="esp32")
+     *   ),
+     *   tags={"MCH2022"},
+     * @OA\Response(response="default",ref="#/components/responses/undocumented")
+     * )
+     *
+     * @param string $device
+     * @param string $type
+     * @return JsonResponse
+     */
+    public function categories(string $device, string $type): JsonResponse
+    {
+        /** @var Badge $badge */
+        $badge = Badge::whereSlug($device)->firstOrFail();
+
+        $count = $categories =  [];
+
+        // @todo Filtering on type
+        foreach ($badge->projects as $project) {
+            $count[$project->category_id] =
+                isset($count[$project->category_id]) ? $count[$project->category_id] + 1 : 1;
+        }
+        foreach ($count as $id => $apps) {
+            /** @var Category $category */
+            $category = Category::find($id);
+            $categories[] = [
+                'name' => $category->name,
+                'slug' => $category->slug,
+                'apps' => $apps,
+            ];
+        }
+
+        return response()->json($categories, 200, ['Content-Type' => 'application/json']);
+    }
+
+
+
     /**
      * Get the latest released files from a project.
      *
