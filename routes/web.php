@@ -17,6 +17,8 @@ Route::get('/', 'PublicController@index')->name('splash');
 Route::get('badge/{badge}', 'PublicController@badge')->name('badge');
 Route::any('search', 'ProjectsController@index')->name('projects.search');
 
+Route::get('api', 'PublicController@api');
+
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
