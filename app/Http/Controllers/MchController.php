@@ -19,7 +19,7 @@ class MchController extends Controller
      * List the available devices.
      *
      * @OA\Get(
-     *   path="/mch2022/devices",
+     *   path="/devices",
      *   tags={"MCH2022"},
      * @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
@@ -47,7 +47,7 @@ class MchController extends Controller
      * Get the types of apps a device supports.
      *
      * @OA\Get(
-     *   path="/mch2022/{device}/types",
+     *   path="/{device}/types",
      * @OA\Parameter(
      *     name="device",
      *     in="path",
@@ -72,7 +72,7 @@ class MchController extends Controller
      * Get the types of apps a device supports.
      *
      * @OA\Get(
-     *   path="/mch2022/{device}/{type}/categories",
+     *   path="/{device}/{type}/categories",
      * @OA\Parameter(
      *     name="device",
      *     in="path",
@@ -121,7 +121,7 @@ class MchController extends Controller
      * Get the apps from a device / type / category
      *
      * @OA\Get(
-     *   path="/mch2022/{device}/{type}/{category}",
+     *   path="/{device}/{type}/{category}",
      * @OA\Parameter(
      *     name="device",
      *     in="path",
@@ -174,7 +174,7 @@ class MchController extends Controller
      * Get the apps from a device / type / category
      *
      * @OA\Get(
-     *   path="/mch2022/{device}/{type}/{category}/{app}",
+     *   path="/{device}/{type}/{category}/{app}",
      * @OA\Parameter(
      *     name="device",
      *     in="path",
@@ -256,7 +256,7 @@ class MchController extends Controller
      * Get app file content
      *
      * @OA\Get(
-     *   path="/mch2022/{device}/{type}/{category}/{app}/{file}",
+     *   path="/{device}/{type}/{category}/{app}/{file}",
      * @OA\Parameter(
      *     name="device",
      *     in="path",
