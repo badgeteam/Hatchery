@@ -8,6 +8,7 @@ use App\Models\Badge;
 use App\Models\Category;
 use App\Models\File;
 use App\Models\Project;
+use App\Models\Version;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Annotations as OA;
 
@@ -135,7 +136,7 @@ class MchController extends Controller
      *     name="category",
      *     in="path",
      *     required=true,
-     * @OA\Schema(type="string", format="slug", example="game_of_life")
+     * @OA\Schema(type="string", format="slug", example="fun")
      *   ),
      *   tags={"MCH2022"},
      * @OA\Response(response="default",ref="#/components/responses/undocumented")
@@ -168,12 +169,30 @@ class MchController extends Controller
 
 
     /**
-     * Get the latest released files from a project.
+     * Get the apps from a device / type / category
      *
      * @OA\Get(
-     *   path="/eggs/files/{project}/json",
+     *   path="/mch2022/{device}/{type}/{category}",
      * @OA\Parameter(
-     *     name="project",
+     *     name="device",
+     *     in="path",
+     *     required=true,
+     * @OA\Schema(type="string", format="slug", example="mch2022")
+     *   ),
+     * @OA\Parameter(
+     *     name="type",
+     *     in="path",
+     *     required=true,
+     * @OA\Schema(type="string", format="slug", example="esp32")
+     *   ),
+     * @OA\Parameter(
+     *     name="category",
+     *     in="path",
+     *     required=true,
+     * @OA\Schema(type="string", format="slug", example="fun")
+     *   ),
+     * @OA\Parameter(
+     *     name="app",
      *     in="path",
      *     required=true,
      * @OA\Schema(type="string", format="slug", example="game_of_life")
@@ -182,42 +201,48 @@ class MchController extends Controller
      * @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
      *
-     * @param string $slug
-     *
+     * @param string $device
+     * @param string $type
+     * @param string $category
      * @return JsonResponse
      */
-    public function filesJson(string $slug): JsonResponse
+    public function app(string $device, string $type, string $category, string $app): JsonResponse
     {
-        /** @var Project|null $project */
-        $project = Project::where('slug', $slug)->first();
-        if ($project === null) {
-            return response()->json(
-                ['message' => 'Project not found'],
-                404,
-                ['Content-Type' => 'application/json'],
-                JSON_UNESCAPED_SLASHES
-            );
-        }
+        /** @var Badge $badge */
+        $badge = Badge::whereSlug($device)->firstOrFail();
+        $categoryId = Category::whereSlug($category)->firstOrFail()->id;
+        /** @var Project $project */
+        $project = $badge->projects()
+            ->whereProjectType($type)->whereCategoryId($categoryId)->whereSlug($app)->firstOrFail();
 
+        /** @var Version $version */
         $version = $project->versions()->published()->get()->last();
-
-        if ($version === null || empty($version->files)) {
-            return response()->json(['message' => 'No files found'], 404);
-        }
-
         $files = [];
-
+        /** @var File $file */
         foreach ($version->files as $file) {
             $fileData = new \stdClass();
             $fileData->name = $file->name;
-            $fileData->extension = $file->extension;
+            $fileData->url = route('mch.file', [
+                'device' => $badge->slug,
+                'type' => $project->project_type,
+                'category' => $category,
+                'app' => $project->slug,
+                'file' => $file->name
+            ]);
             $fileData->size = $file->size_of_content;
 
             $files[] = $fileData;
         }
 
         return response()->json(
-            $files,
+            [
+                'slug' => $project->slug,
+                'name' => $project->name,
+                'author' => $project->author,
+                'license' => $project->license,
+                'description' => $project->description,
+                'files' => $files,
+            ],
             200,
             ['Content-Type' => 'application/json'],
             JSON_UNESCAPED_SLASHES

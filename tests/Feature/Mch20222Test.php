@@ -121,55 +121,59 @@ class Mch20222Test extends TestCase
             ]);
     }
 
-
-
     /**
-     * Check JSON files request . .
+     * Check JSON files / app info request . .
      */
-    public function testProjectFilesGetJsonModelNotFound(): void
+    public function testMchApps(): void
     {
-        $response = $this->json('GET', '/eggs/files/something/json');
-        $response->assertStatus(404)
-            ->assertExactJson(['message' => 'Project not found']);
-    }
+        $response = $this->json('GET', '/mch2022/iets/app/some_app');
+        $response->assertStatus(404);
 
-    /**
-     * Check JSON files request . .
-     */
-    public function testProjectFilesGetJsonFilesNotFound(): void
-    {
         /** @var User $user */
         $user = User::factory()->create();
         $this->be($user);
-        /** @var Project $project */
-        $project = Project::factory()->create();
-        $response = $this->json('GET', '/eggs/files/' . $project->slug . '/json');
-        $response->assertStatus(404)
-            ->assertExactJson(['message' => 'No files found']);
-    }
 
-    /**
-     * Check JSON files request . .
-     */
-    public function testProjectFilesGetJson(): void
-    {
-        /** @var User $user */
-        $user = User::factory()->create();
-        $this->be($user);
-        /** @var File $file */
-        $file = File::factory()->create();
-
-        $version = $file->version;
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
         $version->zip = 'some_path.tar.gz';
         $version->save();
+        $version->project->badges()->attach($badge);
+        /** @var Category $category */
+        $category = $version->project->category()->first();
 
-        $response = $this->json('GET', '/eggs/files/' . $version->project->slug . '/json');
+        $response = $this->json('GET', '/mch2022/' . $badge->slug . '/python/' . $category->slug .  '/iets');
+        $response->assertStatus(404);
+
+        $response = $this->json(
+            'GET',
+            '/mch2022/' . $badge->slug . '/python/' . $category->slug .  '/' . $version->project->slug
+        );
+        $response->assertStatus(200)
+            ->assertJson([]);
+        /** @var File $file */
+        $file = File::factory()->create(['version_id' => $version->id]);
+        $response = $this->json(
+            'GET',
+            '/mch2022/' . $badge->slug . '/python/' . $category->slug .  '/' . $version->project->slug
+        );
         $response->assertStatus(200)
             ->assertJson([
-                [
-                    'name' => $file->name,
-                    'size' => $file->size_of_content,
-                    'extension' => $file->extension
+                'slug' => $version->project->slug,
+                'name' => $version->project->name,
+                'author' => $version->project->author,
+                'license' => $version->project->license,
+                'description' => $version->project->description,
+                'files' => [
+                    [
+                        'name' => $file->name,
+                        'url' => url(
+                            'mch2022/' . $badge->slug . '/python/' . $category->slug .  '/' .
+                            $version->project->slug . '/' . $file->name
+                        ),
+                        'size' => $file->size_of_content
+                    ]
                 ]
             ]);
     }
