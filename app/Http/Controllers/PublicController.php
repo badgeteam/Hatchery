@@ -54,7 +54,7 @@ class PublicController extends Controller
         /** @var Builder $projects */
         $projects = Project::whereHas(
             'versions',
-            function ($query) {
+            static function ($query) {
                 $query->published();
             }
         );
@@ -98,7 +98,7 @@ class PublicController extends Controller
 
         $orderField = 'id';
         $orderDirection = 'desc';
-        if ($request->has('order') && in_array($request->get('order'), $this->orderFields)) {
+        if ($request->has('order') && in_array($request->get('order'), $this->orderFields, true)) {
             $orderField = $request->get('order');
             if ($request->has('direction') && $request->get('direction') === 'asc') {
                 $orderDirection = 'asc';

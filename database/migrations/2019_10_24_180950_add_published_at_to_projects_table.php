@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Project;
+use App\Models\Version;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -29,7 +30,9 @@ class AddPublishedAtToProjectsTable extends Migration
             }
         );
         foreach ($projects->get() as $project) {
-            $project->published_at = $project->versions()->published()->get()->last()->updated_at;
+            /** @var Version $version */
+            $version = $project->versions()->published()->get()->last();
+            $project->published_at = $version->updated_at;
             $project->save();
         }
     }

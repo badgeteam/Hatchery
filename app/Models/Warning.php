@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\WarningFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -40,8 +41,8 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Warning whereUserId($value)
  * @method static Builder|Warning withTrashed()
  * @method static Builder|Warning withoutTrashed()
+ * @method static WarningFactory factory(...$parameters)
  * @mixin \Eloquent
- * @method static \Database\Factories\WarningFactory factory(...$parameters)
  */
 class Warning extends Model
 {

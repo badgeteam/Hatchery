@@ -25,7 +25,7 @@ class ProjectFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, CategoryFactory|string>
      */
     public function definition()
     {

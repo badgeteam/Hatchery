@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Project;
+use App\Models\File;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -51,7 +52,10 @@ class AlterProjectsDropDescription extends Migration
         foreach (Project::all() as $project) {
             $version = $project->versions->last();
             if ($version && $version->files()->where('name', 'like', 'README.md')->count() === 1) {
-                $project->description = $version->files()->where('name', 'like', 'README.md')->first()->content;
+                /** @var File $file */
+                $file = $version->files()->where('name', 'like', 'README.md')->first();
+                $project->description = $file->content;
+                $project->save();
             }
         }
     }

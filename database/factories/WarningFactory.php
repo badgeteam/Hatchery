@@ -25,7 +25,7 @@ class WarningFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, ProjectFactory|string>
      */
     public function definition()
     {

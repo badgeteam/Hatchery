@@ -25,7 +25,7 @@ class FileFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, VersionFactory|string>
      */
     public function definition()
     {

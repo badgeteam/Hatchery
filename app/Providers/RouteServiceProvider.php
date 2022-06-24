@@ -70,5 +70,9 @@ class RouteServiceProvider extends ServiceProvider
             ->namespace($this->namespace)
             ->prefix('weather')
             ->group(base_path('routes/weather.php'));
+        Route::middleware('web')
+            ->namespace($this->namespace)
+            ->prefix('mch2022')
+            ->group(base_path('routes/mch2022.php'));
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -35,6 +36,7 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @property Carbon|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property string|null $email_verified_at
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read Collection|Project[] $projects
@@ -67,12 +69,11 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @method static Builder|User whereUpdatedAt($value)
  * @method static Builder|User wherePublic($value)
  * @method static Builder|User whereShowProjects($value)
+ * @method static Builder|User whereEmailVerifiedAt($value)
  * @method static Builder|User withTrashed()
  * @method static Builder|User withoutTrashed()
+ * @method static UserFactory factory(...$parameters)
  * @mixin \Eloquent
- * @property string|null $email_verified_at
- * @method static \Database\Factories\UserFactory factory(...$parameters)
- * @method static Builder|User whereEmailVerifiedAt($value)
  */
 class User extends Authenticatable
 {

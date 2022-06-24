@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Support\Helpers;
+use Database\Factories\ProjectFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,6 +38,9 @@ use Illuminate\Support\Str;
  * @property Carbon      $created_at
  * @property Carbon      $updated_at
  * @property int         $download_counter
+ * @property string|null $license
+ * @property int $allow_team_fixes
+ * @property string $project_type
  * @property-read Collection|Badge[] $badges
  * @property-read int|null $badges_count
  * @property-read string $category
@@ -87,8 +91,11 @@ use Illuminate\Support\Str;
  * @method static Builder|Project withoutTrashed()
  * @method static Builder|Project whereMaxFirmware($value)
  * @method static Builder|Project whereMinFirmware($value)
+ * @method static Builder|Project whereAllowTeamFixes($value)
+ * @method static Builder|Project whereProjectType($value)
+ * @method static Builder|Project whereLicense($value)
+ * @method static ProjectFactory factory(...$parameters)
  * @mixin \Eloquent
- * @method static \Database\Factories\ProjectFactory factory(...$parameters)
  */
 class Project extends Model
 {
@@ -138,6 +145,9 @@ class Project extends Model
         'git',
         'git_commit_id',
         'user',
+        'allow_team_fixes',
+        'project_type',
+        'license',
     ];
 
     /**
@@ -158,7 +168,7 @@ class Project extends Model
         'os', 'uos', 'badge', 'esp32', 'ussl', 'time', 'utime', 'splash', 'launcher', 'installer', 'ota_update',
         'boot', 'appglue', 'database', 'dialogs', 'deepsleep', 'magic', 'ntp', 'rtcmem', 'machine', 'setup', 'version',
         'wifi', 'woezel', 'network', 'socket', 'uhashlib', 'hashlib', 'ugfx', 'btree', 'request', 'urequest', 'uzlib',
-        'zlib', 'ssl', 'create', 'delete', 'system',
+        'zlib', 'ssl', 'create', 'delete', 'system', 'categories', 'devices', 'types'
     ];
 
     /**
@@ -276,7 +286,7 @@ class Project extends Model
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getRevisionAttribute(): ?string
     {
@@ -312,7 +322,7 @@ class Project extends Model
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getSizeOfZipAttribute(): ?int
     {
@@ -322,7 +332,7 @@ class Project extends Model
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getSizeOfContentAttribute(): ?int
     {
@@ -366,7 +376,7 @@ class Project extends Model
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getCategoryAttribute(): ?string
     {
@@ -384,7 +394,7 @@ class Project extends Model
      *
      * @return bool
      */
-    public static function isForbidden(string $slug)
+    public static function isForbidden(string $slug): bool
     {
         return in_array($slug, self::$forbidden);
     }

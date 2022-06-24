@@ -25,7 +25,7 @@ class VersionFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, ProjectFactory|int>
      */
     public function definition()
     {

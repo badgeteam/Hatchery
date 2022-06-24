@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\BadgeFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,6 +30,7 @@ use Illuminate\Support\Str;
  * @property-read int|null $projects_count
  * @property-read Collection|BadgeProject[] $states
  * @property-read int|null $states_count
+ * @property-read array $types
  * @method static Builder|Badge newModelQuery()
  * @method static Builder|Badge newQuery()
  * @method static Builder|Badge query()
@@ -40,8 +42,8 @@ use Illuminate\Support\Str;
  * @method static Builder|Badge whereUpdatedAt($value)
  * @method static Builder|Badge whereCommands($value)
  * @method static Builder|Badge whereConstraints($value)
+ * @method static BadgeFactory factory(...$parameters)
  * @mixin \Eloquent
- * @method static \Database\Factories\BadgeFactory factory(...$parameters)
  */
 class Badge extends Model
 {
@@ -85,5 +87,26 @@ class Badge extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    /**
+     * @return array<int, array<string, string>>
+     */
+    public function getTypesAttribute(): array
+    {
+        return [
+            [
+                'name' => 'Espressif ESP32 binary',
+                'slug' => 'esp32',
+            ],
+            [
+                'name' => 'MicroPython egg',
+                'slug' => 'python',
+            ],
+            [
+                'name' => 'Lattice iCE40 bitstream',
+                'slug' => 'ice40',
+            ],
+        ];
     }
 }
