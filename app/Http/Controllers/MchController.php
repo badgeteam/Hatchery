@@ -10,6 +10,7 @@ use App\Models\File;
 use App\Models\Project;
 use App\Models\Version;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use OpenApi\Annotations as OA;
 
 class MchController extends Controller
@@ -31,7 +32,7 @@ class MchController extends Controller
             $devices[] = [
                 'slug' => $slug,
                 'name' => $name
-                ];
+            ];
         }
         return response()->json(
             $devices,
@@ -96,7 +97,7 @@ class MchController extends Controller
         /** @var Badge $badge */
         $badge = Badge::whereSlug($device)->firstOrFail();
 
-        $count = $categories =  [];
+        $count = $categories = [];
         /** @var Project $project */
         foreach ($badge->projects()->whereProjectType($type)->get() as $project) {
             $count[$project->category_id] =
@@ -172,7 +173,7 @@ class MchController extends Controller
      * Get the apps from a device / type / category
      *
      * @OA\Get(
-     *   path="/mch2022/{device}/{type}/{category}",
+     *   path="/mch2022/{device}/{type}/{category}/{app}",
      * @OA\Parameter(
      *     name="device",
      *     in="path",
@@ -204,6 +205,7 @@ class MchController extends Controller
      * @param string $device
      * @param string $type
      * @param string $category
+     * @param string $app
      * @return JsonResponse
      */
     public function app(string $device, string $type, string $category, string $app): JsonResponse
@@ -250,48 +252,70 @@ class MchController extends Controller
     }
 
     /**
-     * Get the content from a released file from a project.
+     * Get app file content
      *
      * @OA\Get(
-     *   path="/eggs/file/{project}/get/{file}",
+     *   path="/mch2022/{device}/{type}/{category}/{app}/{file}",
      * @OA\Parameter(
-     *     name="project",
+     *     name="device",
+     *     in="path",
+     *     required=true,
+     * @OA\Schema(type="string", format="slug", example="mch2022")
+     *   ),
+     * @OA\Parameter(
+     *     name="type",
+     *     in="path",
+     *     required=true,
+     * @OA\Schema(type="string", format="slug", example="esp32")
+     *   ),
+     * @OA\Parameter(
+     *     name="category",
+     *     in="path",
+     *     required=true,
+     * @OA\Schema(type="string", format="slug", example="fun")
+     *   ),
+     * @OA\Parameter(
+     *     name="app",
      *     in="path",
      *     required=true,
      * @OA\Schema(type="string", format="slug", example="game_of_life")
      *   ),
-     *  @OA\Parameter(
+     * @OA\Parameter(
      *     name="file",
      *     in="path",
      *     required=true,
-     * @OA\Schema(type="string", format="slug", example="file_name.py")
+     * @OA\Schema(type="string", format="slug", example="file.py")
      *   ),
      *   tags={"MCH2022"},
      * @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
      *
-     * @param string $slug
+     * @param string $device
+     * @param string $type
+     * @param string $category
+     * @param string $app
      * @param string $name
-     *
-     * @return JsonResponse
+     * @return Response|JsonResponse
      */
-    public function fileContent(string $slug, string $name): JsonResponse
-    {
-        /** @var Project|null $project */
-        $project = Project::where('slug', $slug)->first();
-        if ($project === null) {
-            return response()->json(
-                ['message' => 'Project not found'],
-                404,
-                ['Content-Type' => 'application/json'],
-                JSON_UNESCAPED_SLASHES
-            );
-        }
+    public function file(
+        string $device,
+        string $type,
+        string $category,
+        string $app,
+        string $name
+    ): Response|JsonResponse {
+        /** @var Badge $badge */
+        $badge = Badge::whereSlug($device)->firstOrFail();
+        $categoryId = Category::whereSlug($category)->firstOrFail()->id;
+        /** @var Project $project */
+        $project = $badge->projects()
+            ->whereProjectType($type)->whereCategoryId($categoryId)->whereSlug($app)->firstOrFail();
 
+        /** @var Version|null $version */
         $version = $project->versions()->published()->get()->last();
 
         if ($version === null || empty($version->files)) {
-            return response()->json(['message' => 'No files found'], 404);
+            return response()->json(['message' => 'File not found'], 404);
         }
 
         /** @var File|null $file */
@@ -300,11 +324,10 @@ class MchController extends Controller
             return response()->json(['message' => 'File not found'], 404);
         }
 
-        return response()->json(
+        return response(
             $file->content,
             200,
-            ['Content-Type' => $file->mime],
-            JSON_UNESCAPED_SLASHES
+            ['Content-Type' => $file->mime]
         );
     }
 }

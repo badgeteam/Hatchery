@@ -7,7 +7,6 @@ namespace Tests\Feature;
 use App\Models\Badge;
 use App\Models\Category;
 use App\Models\File;
-use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -181,64 +180,36 @@ class Mch20222Test extends TestCase
     /**
      * Check File request . .
      */
-    public function testProjectFileContentModelNotFound(): void
-    {
-        $response = $this->json('GET', '/eggs/file/something/get/file.py');
-        $response->assertStatus(404)
-            ->assertExactJson(['message' => 'Project not found']);
-    }
-
-    /**
-     * Check File request . .
-     */
-    public function testProjectFileContentFilesNotFound(): void
+    public function testMchFile(): void
     {
         /** @var User $user */
         $user = User::factory()->create();
         $this->be($user);
-        /** @var Project $project */
-        $project = Project::factory()->create();
-        $response = $this->json('GET', '/eggs/file/' . $project->slug . '/get/file.py');
-        $response->assertStatus(404)
-            ->assertExactJson(['message' => 'No files found']);
-    }
-
-    /**
-     * Check File request . .
-     */
-    public function testProjectFileContentFileNotFound(): void
-    {
-        /** @var User $user */
-        $user = User::factory()->create();
-        $this->be($user);
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
         /** @var File $file */
         $file = File::factory()->create();
 
         $version = $file->version;
         $version->zip = 'some_path.tar.gz';
         $version->save();
+        $version->project->badges()->attach($badge);
+        /** @var Category $category */
+        $category = $version->project->category()->first();
 
-        $response = $this->json('GET', '/eggs/file/' . $version->project->slug . '/get/file.py');
+        $response = $this->json(
+            'GET',
+            '/mch2022/' . $badge->slug . '/python/' . $category->slug .  '/' .
+            $version->project->slug . '/random.txt'
+        );
         $response->assertStatus(404)
             ->assertExactJson(['message' => 'File not found']);
-    }
 
-    /**
-     * Check File request . .
-     */
-    public function testProjectFileContent(): void
-    {
-        /** @var User $user */
-        $user = User::factory()->create();
-        $this->be($user);
-        /** @var File $file */
-        $file = File::factory()->create();
-
-        $version = $file->version;
-        $version->zip = 'some_path.tar.gz';
-        $version->save();
-
-        $response = $this->json('GET', '/eggs/file/' . $version->project->slug . '/get/' . $file->name);
+        $response = $this->json(
+            'GET',
+            '/mch2022/' . $badge->slug . '/python/' . $category->slug .  '/' .
+            $version->project->slug . '/' . $file->name
+        );
         $response->assertStatus(200)
             ->assertHeader('Content-Type', $file->mime)
             ->assertSee($file->content);
