@@ -19,7 +19,7 @@ class MchController extends Controller
      * List the available devices.
      *
      * @OA\Get(
-     *   path="/devices",
+     *   path="/mch2022/devices",
      *   tags={"MCH2022"},
      * @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )

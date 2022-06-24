@@ -26,7 +26,7 @@ class Mch20222Test extends TestCase
      */
     public function testMchDevices(): void
     {
-        $response = $this->json('GET', '/mch2022/devices');
+        $response = $this->json('GET', '/v2/devices');
         $response->assertStatus(200)
             ->assertExactJson([]);
 
@@ -36,7 +36,7 @@ class Mch20222Test extends TestCase
         /** @var Badge $badge */
         $badge = Badge::factory()->create();
 
-        $response = $this->json('GET', '/mch2022/devices');
+        $response = $this->json('GET', '/v2/devices');
         $response->assertStatus(200)
             ->assertExactJson([
                 [
@@ -51,7 +51,7 @@ class Mch20222Test extends TestCase
      */
     public function testMchDeviceTypes(): void
     {
-        $response = $this->json('GET', '/mch2022/random_device/types');
+        $response = $this->json('GET', '/v2/random_device/types');
         $response->assertStatus(404);
 
         /** @var User $user */
@@ -60,7 +60,7 @@ class Mch20222Test extends TestCase
         /** @var Badge $badge */
         $badge = Badge::factory()->create();
 
-        $response = $this->json('GET', '/mch2022/' . $badge->slug . '/types');
+        $response = $this->json('GET', '/v2/' . $badge->slug . '/types');
         $response->assertStatus(200)
             ->assertExactJson([
                 [
@@ -83,7 +83,7 @@ class Mch20222Test extends TestCase
      */
     public function testMchCategories(): void
     {
-        $response = $this->json('GET', '/mch2022/iets/esp32/categories');
+        $response = $this->json('GET', '/v2/iets/esp32/categories');
         $response->assertStatus(404);
 
         /** @var User $user */
@@ -92,7 +92,7 @@ class Mch20222Test extends TestCase
         /** @var Badge $badge */
         $badge = Badge::factory()->create();
 
-        $response = $this->json('GET', '/mch2022/' . $badge->slug . '/esp32/categories');
+        $response = $this->json('GET', '/v2/' . $badge->slug . '/esp32/categories');
         $response->assertStatus(200)
             ->assertExactJson([]);
 
@@ -105,11 +105,11 @@ class Mch20222Test extends TestCase
         /** @var Category $category */
         $category = $version->project->category()->first();
 
-        $response = $this->json('GET', '/mch2022/' . $badge->slug . '/esp32/categories');
+        $response = $this->json('GET', '/v2/' . $badge->slug . '/esp32/categories');
         $response->assertStatus(200)
             ->assertExactJson([]);
 
-        $response = $this->json('GET', '/mch2022/' . $badge->slug . '/python/categories');
+        $response = $this->json('GET', '/v2/' . $badge->slug . '/python/categories');
         $response->assertStatus(200)
             ->assertExactJson([
                 [
@@ -125,7 +125,7 @@ class Mch20222Test extends TestCase
      */
     public function testMchApps(): void
     {
-        $response = $this->json('GET', '/mch2022/iets/app/some_app');
+        $response = $this->json('GET', '/v2/iets/app/some_app');
         $response->assertStatus(404);
 
         /** @var User $user */
@@ -142,12 +142,12 @@ class Mch20222Test extends TestCase
         /** @var Category $category */
         $category = $version->project->category()->first();
 
-        $response = $this->json('GET', '/mch2022/' . $badge->slug . '/python/' . $category->slug .  '/iets');
+        $response = $this->json('GET', '/v2/' . $badge->slug . '/python/' . $category->slug .  '/iets');
         $response->assertStatus(404);
 
         $response = $this->json(
             'GET',
-            '/mch2022/' . $badge->slug . '/python/' . $category->slug .  '/' . $version->project->slug
+            '/v2/' . $badge->slug . '/python/' . $category->slug .  '/' . $version->project->slug
         );
         $response->assertStatus(200)
             ->assertJson([]);
@@ -155,7 +155,7 @@ class Mch20222Test extends TestCase
         $file = File::factory()->create(['version_id' => $version->id]);
         $response = $this->json(
             'GET',
-            '/mch2022/' . $badge->slug . '/python/' . $category->slug .  '/' . $version->project->slug
+            '/v2/' . $badge->slug . '/python/' . $category->slug .  '/' . $version->project->slug
         );
         $response->assertStatus(200)
             ->assertJson([
@@ -168,7 +168,7 @@ class Mch20222Test extends TestCase
                     [
                         'name' => $file->name,
                         'url' => url(
-                            'mch2022/' . $badge->slug . '/python/' . $category->slug .  '/' .
+                            'v2/' . $badge->slug . '/python/' . $category->slug .  '/' .
                             $version->project->slug . '/' . $file->name
                         ),
                         'size' => $file->size_of_content
@@ -199,7 +199,7 @@ class Mch20222Test extends TestCase
 
         $response = $this->json(
             'GET',
-            '/mch2022/' . $badge->slug . '/python/' . $category->slug .  '/' .
+            '/v2/' . $badge->slug . '/python/' . $category->slug .  '/' .
             $version->project->slug . '/random.txt'
         );
         $response->assertStatus(404)
@@ -207,7 +207,7 @@ class Mch20222Test extends TestCase
 
         $response = $this->json(
             'GET',
-            '/mch2022/' . $badge->slug . '/python/' . $category->slug .  '/' .
+            '/v2/' . $badge->slug . '/python/' . $category->slug .  '/' .
             $version->project->slug . '/' . $file->name
         );
         $response->assertStatus(200)
