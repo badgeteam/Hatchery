@@ -55,11 +55,13 @@ class MchController extends Controller
      * @OA\Response(response="default",ref="#/components/responses/undocumented")
      * )
      *
-     * @param Badge $badge
+     * @param string $device
      * @return JsonResponse
      */
-    public function types(Badge $badge): JsonResponse
+    public function types(string $device): JsonResponse
     {
+        /** @var Badge $badge */
+        $badge = Badge::whereSlug($device)->firstOrFail();
         return response()->json($badge->types, 200, ['Content-Type' => 'application/json']);
     }
 

@@ -91,6 +91,8 @@ use Illuminate\Support\Str;
  * @property int $allow_team_fixes
  * @method static Builder|Project whereAllowTeamFixes($value)
  * @mixin \Eloquent
+ * @property string $project_type
+ * @method static Builder|Project whereProjectType($value)
  */
 class Project extends Model
 {

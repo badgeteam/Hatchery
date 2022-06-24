@@ -104,7 +104,7 @@ class Badge extends Model
             ],
             [
                 'name' => 'Lattice iCE40 bitstream',
-                'slug' => 'fpga',
+                'slug' => 'ice40',
             ],
         ];
     }

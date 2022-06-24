@@ -50,6 +50,38 @@ class Mch20222Test extends TestCase
     /**
      * Simple list
      */
+    public function testMchDeviceTypes(): void
+    {
+        $response = $this->json('GET', '/mch2022/random_device/types');
+        $response->assertStatus(404);
+
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->be($user);
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
+
+        $response = $this->json('GET', '/mch2022/' . $badge->slug . '/types');
+        $response->assertStatus(200)
+            ->assertExactJson([
+                [
+                    'name' => 'Espressif ESP32 binary',
+                    'slug' => 'esp32',
+                ],
+                [
+                    'name' => 'MicroPython egg',
+                    'slug' => 'python',
+                ],
+                [
+                    'name' => 'Lattice iCE40 bitstream',
+                    'slug' => 'ice40',
+                ],
+            ]);
+    }
+
+    /**
+     * List categories for badge / type
+     */
     public function testMchCategories(): void
     {
         $response = $this->json('GET', '/mch2022/iets/esp32/categories');
@@ -75,6 +107,9 @@ class Mch20222Test extends TestCase
         $category = $version->project->category()->first();
 
         $response = $this->json('GET', '/mch2022/' . $badge->slug . '/esp32/categories');
+        $response->assertStatus(404);
+
+        $response = $this->json('GET', '/mch2022/' . $badge->slug . '/python/categories');
         $response->assertStatus(200)
             ->assertExactJson([
                 [
