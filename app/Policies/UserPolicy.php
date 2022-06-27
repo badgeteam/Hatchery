@@ -27,7 +27,7 @@ class UserPolicy
     public function update(User $user, User $target)
     {
         // Normal users can only change their own info
-        return $user->admin || $user->id == $target->id;
+        return $user->admin || $user->id === $target->id;
     }
 
     /**
@@ -41,6 +41,19 @@ class UserPolicy
     public function delete(User $user, User $target)
     {
         // Normal users can only delete their own info
-        return $user->admin || $user->id == $target->id;
+        return $user->admin || $user->id === $target->id;
+    }
+
+    /**
+     * Only public users can be shown by non-admin users
+     *
+     * @param User $user
+     * @param User $target
+     *
+     * @return bool
+     */
+    public function view(User $user, User $target)
+    {
+        return $user->admin || $user->id === $target->id || $target->public;
     }
 }

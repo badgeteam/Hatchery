@@ -27,7 +27,7 @@ class UsersController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->authorizeResource(User::class, null, ['except' => ['show', 'index']]);
+        $this->authorizeResource(User::class, null, ['except' => ['index']]);
     }
 
     /**

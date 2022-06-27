@@ -77,6 +77,17 @@
                                         @endif
                                     </div>
                                 </div>
+                                <div class="form-group{{ $errors->has('verify-code') ? ' has-error' : '' }}">
+                                    <label for="verify-code" class="col-lg-4 form-control-label">Authenticator Code</label>
+                                    <div class="col-lg-6">
+                                        <input id="verify-code" type="number" class="form-control" name="verify-code" required>
+                                        @if ($errors->has('verify-code'))
+                                            <span class="help-block">
+                                            <strong>{{ $errors->first('verify-code') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
                                 <div class="col-lg-6 offset-md-">
                                     <button type="submit" class="btn btn-primary ">Disable 2FA</button>
                                 </div>
