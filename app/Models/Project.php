@@ -38,9 +38,9 @@ use Illuminate\Support\Str;
  * @property Carbon      $created_at
  * @property Carbon      $updated_at
  * @property int         $download_counter
- * @property string|null $license
- * @property int $allow_team_fixes
- * @property string $project_type
+ * @property string      $license
+ * @property bool        $allow_team_fixes
+ * @property string      $project_type
  * @property-read Collection|Badge[] $badges
  * @property-read int|null $badges_count
  * @property-read string $category

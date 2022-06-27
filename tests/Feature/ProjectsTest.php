@@ -406,6 +406,46 @@ class ProjectsTest extends TestCase
     }
 
     /**
+     * Check the projects can be stored by admin users when allow_team_fixes.
+     */
+    public function testProjectsUpdateAdminUser(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $adminUser */
+        $adminUser = User::factory()->create(['admin' => true]);
+        $this->be($user);
+        /** @var Project $projectDep */
+        $projectDep = Project::factory()->create();
+        /** @var Version $depVer */
+        $depVer = $projectDep->versions()->first();
+        $depVer->zip = 'test';
+        $depVer->save();
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        $response = $this
+            ->actingAs($adminUser)
+            ->call('put', '/projects/' . $project->slug, [
+                'description'  => $this->faker->paragraph,
+                'dependencies' => [$projectDep->id],
+                'category_id'  => $project->category_id,
+                'status'       => 'unknown',
+            ]);
+        $response->assertRedirect('/projects')->assertSessionHas('successes');
+        $project->allow_team_fixes = false;
+        $project->save();
+        $response = $this
+            ->actingAs($adminUser)
+            ->call('put', '/projects/' . $project->slug, [
+                'description'  => $this->faker->paragraph,
+                'dependencies' => [$projectDep->id],
+                'category_id'  => $project->category_id,
+                'status'       => 'unknown',
+            ]);
+        $response->assertStatus(403);
+    }
+
+    /**
      * Check the projects can be published.
      *
      * @throws \JsonException
