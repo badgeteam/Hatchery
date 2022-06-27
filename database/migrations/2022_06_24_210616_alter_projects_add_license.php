@@ -16,7 +16,7 @@ class AlterProjectsAddLicense extends Migration
         Schema::table(
             'projects',
             function (Blueprint $table) {
-                $table->string('license')->nullable();
+                $table->string('license')->default('MIT');
             }
         );
     }
