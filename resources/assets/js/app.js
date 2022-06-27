@@ -18,9 +18,9 @@ let frames;
 let currentFrame = 0;
 let editor;
 
-window.drawIcon = function() {
+window.drawIcon = function () {
 	let r = 0, p = 0;
-	frames[currentFrame].forEach(function(pixel) {
+	frames[currentFrame].forEach(function (pixel) {
 		if (p > 7) {
 			r++;
 			p = 0;
@@ -33,16 +33,16 @@ window.drawIcon = function() {
 	});
 };
 
-window.gotoFrame = function(num) {
+window.gotoFrame = function (num) {
 	currentFrame = num;
 	window.drawIcon();
-	for(let child=document.getElementById('frames').firstChild; child!==null; child=child.nextSibling) {
+	for (let child = document.getElementById('frames').firstChild; child !== null; child = child.nextSibling) {
 		child.className = 'frames btn btn-default';
 	}
-	document.getElementById('frame'+num).className = 'frames btn btn-info';
+	document.getElementById('frame' + num).className = 'frames btn btn-info';
 };
 
-window.addFrame = function() {
+window.addFrame = function () {
 	const newFrame = frames.length;
 	frames[newFrame] = [];
 	for (let p = 0; p < 64; p++) {
@@ -52,30 +52,32 @@ window.addFrame = function() {
 	window.framesToContent();
 };
 
-window.addFrameButton = function(index) {
+window.addFrameButton = function (index) {
 	const framesDiv = document.getElementById('frames');
 	if (index > 0) {
 		if (index === 1) {
 			let firstFrame = document.createElement('a');
-			firstFrame.onclick = function () { window.gotoFrame(0); };
+			firstFrame.onclick = function () {
+				window.gotoFrame(0); };
 			firstFrame.innerText = '1';
 			firstFrame.className = 'frames btn btn-info';
 			firstFrame.id = 'frame0';
 			framesDiv.appendChild(firstFrame);
 		}
 		let frameButton = document.createElement('a');
-		frameButton.onclick = function () { window.gotoFrame(index); };
-		frameButton.innerText = (index+1).toString();
+		frameButton.onclick = function () {
+			window.gotoFrame(index); };
+		frameButton.innerText = (index + 1).toString();
 		frameButton.className = 'frames btn btn-default';
 		frameButton.id = 'frame' + index;
 		framesDiv.appendChild(frameButton);
 	}
 };
 
-window.framesToContent = function() {
+window.framesToContent = function () {
 	let content = 'icon = (';
 	let first = true;
-	frames.forEach(function(frame){
+	frames.forEach(function (frame) {
 		if (!first) {
 			content += ', ';
 		} else {
@@ -83,7 +85,7 @@ window.framesToContent = function() {
 		}
 		content += '[';
 		let firstPixel = true;
-		frame.forEach(function(pixel) {
+		frame.forEach(function (pixel) {
 			if (!firstPixel) {
 				content += ', ';
 			} else {
@@ -97,15 +99,16 @@ window.framesToContent = function() {
 	editor.setValue(content);
 };
 
-window.pixelToHexA = function(rgba) {
+window.pixelToHexA = function (rgba) {
 	let remove = 5;
 	if (rgba.indexOf('rgba') === -1) {
 		remove = 4;
 	}
 	let sep = rgba.indexOf(',') > -1 ? ',' : ' ';
 	rgba = rgba.substr(remove).split(')')[0].split(sep);
-	if (rgba.indexOf('/') > -1)
+	if (rgba.indexOf('/') > -1) {
 		rgba.splice(3,1);
+	}
 	for (let R in rgba) {
 		let r = rgba[R];
 		if (r.indexOf('%') > -1) {
@@ -133,18 +136,22 @@ window.pixelToHexA = function(rgba) {
 		g = (+rgba[1]).toString(16),
 		b = (+rgba[2]).toString(16),
 		a = Math.round(+rgba[3] * 255).toString(16);
-	if (r.length === 1)
+	if (r.length === 1) {
 		r = '0' + r;
-	if (g.length === 1)
+	}
+	if (g.length === 1) {
 		g = '0' + g;
-	if (b.length === 1)
+	}
+	if (b.length === 1) {
 		b = '0' + b;
-	if (a.length === 1)
+	}
+	if (a.length === 1) {
 		a = '0' + a;
+	}
 	return ('0x' + r + g + b + a);
 };
 
-window.lintFile = function() {
+window.lintFile = function () {
 	const form = document.getElementById('content_form');
 	const lintApi = form.getAttribute('action').replace('files', 'lint-content');
 	window.$.post(lintApi, {
@@ -153,7 +160,7 @@ window.lintFile = function() {
 	});
 };
 
-window.onload = function() {
+window.onload = function () {
 	const ext = document.getElementById('extension');
 	let langmode = 'python';
 	if (ext) {
@@ -238,7 +245,7 @@ window.onload = function() {
 			data = data.replace('icon = (', '');
 			data = data.replace(')','');
 			let numFrames = parseInt(data.match(/[0-9]+?$/)[0], 10);
-			data = data.replace(', '+numFrames, '');
+			data = data.replace(', ' + numFrames, '');
 			if (numFrames > 0) {
 				frames = data.split('],');
 				frames.forEach(function (frame, index) {
@@ -267,14 +274,14 @@ window.onload = function() {
 				for (let r = 0; r < 8; r++) {
 					framebuffer[r] = [];
 					for (let p = 0; p < 8; p++) {
-						framebuffer[r][p] = document.getElementById('row'+r+'pixel'+p);
+						framebuffer[r][p] = document.getElementById('row' + r + 'pixel' + p);
 						if (!readOnly) {
-							framebuffer[r][p].onclick = function() {
+							framebuffer[r][p].onclick = function () {
 								this.style.backgroundColor = document.getElementById('colour').style.backgroundColor;
 								let pos = this.id.match(/[0-9]+?/g);
 								let r = parseInt(pos[0], 10);
 								let p = parseInt(pos[1], 10);
-								frames[currentFrame][(r*8)+p] = window.pixelToHexA(this.style.backgroundColor);
+								frames[currentFrame][(r * 8) + p] = window.pixelToHexA(this.style.backgroundColor);
 								window.framesToContent();
 							};
 						}
@@ -285,7 +292,7 @@ window.onload = function() {
 			if (!readOnly) {
 				const parentBasic = document.getElementById('colour'),
 					popupBasic = new window.Picker.default(parentBasic);
-				popupBasic.onChange = function(color) {
+				popupBasic.onChange = function (color) {
 					parentBasic.style.backgroundColor = color.rgbaString;
 				};
 			}
@@ -293,9 +300,9 @@ window.onload = function() {
 	}
 
 	const lintButtons = document.getElementsByClassName('lint-button');
-	for(let z = 0; z < lintButtons.length; z++) {
+	for (let z = 0; z < lintButtons.length; z++) {
 		const elem = lintButtons[z];
-		elem.onclick = function() {
+		elem.onclick = function () {
 			window.lintFile();
 			return false;
 		};
@@ -306,9 +313,9 @@ window.onload = function() {
 			.listen('ProjectUpdated', (data) => {
 				const messages = document.getElementById('messages');
 				messages.innerHTML += '<div class="alert alert-' + data.type + ' alert-dismissible">\n' +
-					'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>\n' +
-					'<p>' + data.message + '</p>\n' +
-					'</div>';
+                    '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>\n' +
+                    '<p>' + data.message + '</p>\n' +
+                    '</div>';
 			});
 	}
 };

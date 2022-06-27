@@ -13,6 +13,7 @@
     "prod": "yarn production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
     "lint": "./node_modules/.bin/eslint --ext .js resources/assets/js",
+    "fix": "./node_modules/.bin/eslint --ext .js resources/assets/js --fix",
     "build": "yarn production",
     "test": "vendor/bin/phpstan analyse",
     "changelog": "conventional-changelog",
