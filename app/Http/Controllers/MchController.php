@@ -232,7 +232,7 @@ class MchController extends Controller
                 'app' => $project->slug,
                 'file' => $file->name
             ]);
-            $fileData->size = $file->size_of_content;
+            $fileData->size = (int)$file->size_of_content;
 
             $files[] = $fileData;
         }

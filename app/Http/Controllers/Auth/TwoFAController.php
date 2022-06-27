@@ -60,7 +60,7 @@ class TwoFAController extends Controller
         /** @var User $user */
         $user = Auth::guard()->user();
 
-        if ( $user->google2fa_secret !== null) {
+        if ($user->google2fa_secret !== null) {
             return redirect()->route('2fa')->with('error', 'User already has OTP secret.');
         }
 

@@ -330,7 +330,32 @@ class UsersTest extends TestCase
             ->post('/generate2faSecret');
         $response->assertRedirect('/2fa')
             ->assertSessionHas('success');
+        /** @var User $user */
+        $user = User::find($user->id);
         $this->assertEquals(16, strlen((string) $user->google2fa_secret));
+    }
+
+    /**
+     * Check the 2fa secret generation.
+     */
+    public function testUser2faGenerateSecretTwice(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $response = $this
+            ->actingAs($user)
+            ->post('/generate2faSecret');
+        $response->assertRedirect('/2fa')
+            ->assertSessionHas('success');
+        $oldSecret = $user->google2fa_secret;
+        $response = $this
+            ->actingAs($user)
+            ->post('/generate2faSecret');
+        $response->assertRedirect('/2fa')
+            ->assertSessionHas('error');
+        /** @var User $user */
+        $user = User::find($user->id);
+        $this->assertEquals($oldSecret, $user->google2fa_secret);
     }
 
     /**
@@ -397,18 +422,50 @@ class UsersTest extends TestCase
     /**
      * Check the 2fa disable failure.
      */
-    public function testUser2faDisableFail(): void
+    public function testUser2faDisablePasswordWrong(): void
     {
         $g2fa = new Google2FA();
         /** @var User $user */
-        $user = User::factory()->create([
-            'google2fa_secret'  => $g2fa->generateSecretKey(),
-            'google2fa_enabled' => true,
-        ]);
+        $user = User::factory()->create();
+        $user->google2fa_secret = $g2fa->generateSecretKey();
+        $user->google2fa_enabled = true;
+        $user->save();
         $response = $this
             ->actingAs($user)
             ->post('/disable2fa', [
                 'current-password' => '123456',
+            ]);
+        $response->assertRedirect('/')
+            ->assertSessionHas('error');
+        /** @var User $user */
+        $user = User::find($user->id);
+        $this->assertNotFalse($user->google2fa_enabled);
+    }
+
+    /**
+     * Check the 2fa disable fail.
+     */
+    public function testUser2faDisableNoOrWrong2fa(): void
+    {
+        $g2fa = new Google2FA();
+        /** @var User $user */
+        $user = User::factory()->create();
+        $user->google2fa_secret = $g2fa->generateSecretKey();
+        $user->google2fa_enabled = true;
+        $user->save();
+        $this->assertTrue($user->google2fa_enabled);
+        $response = $this
+            ->actingAs($user)
+            ->post('/disable2fa', [
+                'current-password' => 'password',
+            ]);
+        $response->assertRedirect('/')
+            ->assertSessionHas('error');
+        $response = $this
+            ->actingAs($user)
+            ->post('/disable2fa', [
+                'current-password' => 'password',
+                'verify-code' => '123456',
             ]);
         $response->assertRedirect('/')
             ->assertSessionHas('error');
@@ -424,17 +481,19 @@ class UsersTest extends TestCase
     {
         $g2fa = new Google2FA();
         /** @var User $user */
-        $user = User::factory()->create([
-            'google2fa_secret'  => $g2fa->generateSecretKey(),
-            'google2fa_enabled' => true,
-        ]);
+        $user = User::factory()->create();
+        $user->google2fa_secret = $g2fa->generateSecretKey();
+        $user->google2fa_enabled = true;
+        $user->save();
         $this->assertTrue($user->google2fa_enabled);
         $response = $this
             ->actingAs($user)
             ->post('/disable2fa', [
-                'current-password' => 'secret',
+                'current-password' => 'password',
+                'verify-code' => $g2fa->getCurrentOtp((string) $user->google2fa_secret),
             ]);
-        $response->assertRedirect('/');
+        $response->assertRedirect('/2fa')
+            ->assertSessionHas('success');
         /** @var User $user */
         $user = User::find($user->id);
         $this->assertNotTrue($user->google2fa_enabled);

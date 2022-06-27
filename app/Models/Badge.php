@@ -50,6 +50,15 @@ class Badge extends Model
     use HasFactory;
 
     /**
+     * @var array<string, string> $types
+     */
+    public static array $types = [
+        'esp32' => 'Espressif ESP32 binary',
+        'python' => 'MicroPython egg',
+        'ice40' => 'Lattice iCE40 bitstream',
+    ];
+
+    /**
      * Generate a slug on save.
      */
     public static function boot(): void
@@ -94,19 +103,13 @@ class Badge extends Model
      */
     public function getTypesAttribute(): array
     {
-        return [
-            [
-                'name' => 'Espressif ESP32 binary',
-                'slug' => 'esp32',
-            ],
-            [
-                'name' => 'MicroPython egg',
-                'slug' => 'python',
-            ],
-            [
-                'name' => 'Lattice iCE40 bitstream',
-                'slug' => 'ice40',
-            ],
-        ];
+        $types = [];
+        foreach (self::$types as $slug => $name) {
+            $types[] = [
+                'slug' => $slug,
+                'name' => $name,
+            ];
+        }
+        return $types;
     }
 }

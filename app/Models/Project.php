@@ -38,9 +38,9 @@ use Illuminate\Support\Str;
  * @property Carbon      $created_at
  * @property Carbon      $updated_at
  * @property int         $download_counter
- * @property string|null $license
- * @property int $allow_team_fixes
- * @property string $project_type
+ * @property string      $license
+ * @property bool        $allow_team_fixes
+ * @property string      $project_type
  * @property-read Collection|Badge[] $badges
  * @property-read int|null $badges_count
  * @property-read string $category
@@ -69,6 +69,7 @@ use Illuminate\Support\Str;
  * @property-read int|null $warnings_count
  * @property-read Collection|User[] $collaborators
  * @property-read int|null $collaborators_count
+ * @property-read array $types
  * @method static bool|null forceDelete()
  * @method static Builder|Project newModelQuery()
  * @method static Builder|Project newQuery()
@@ -534,5 +535,14 @@ class Project extends Model
         }
 
         return $version;
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getTypesAttribute(): array
+    {
+        // @TODO project specific types
+        return array_keys(Badge::$types);
     }
 }
