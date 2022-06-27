@@ -71,6 +71,7 @@ class ProjectsTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->create();
+        Badge::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('/projects/create');
@@ -84,6 +85,7 @@ class ProjectsTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->create();
+        Badge::factory()->create();
         $response = $this
             ->actingAs($user)
             ->get('/import');
