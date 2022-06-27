@@ -542,12 +542,7 @@ class Project extends Model
      */
     public function getTypesAttribute(): array
     {
-        $types = [];
-        foreach ($this->badges as $badge) {
-            foreach ($badge->types as $type) {
-                $types[] = $type['slug'];
-            }
-        }
-        return array_unique($types);
+        // @TODO project specific types
+        return array_keys(Badge::$types);
     }
 }

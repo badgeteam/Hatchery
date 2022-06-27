@@ -51,6 +51,14 @@
                                 {{ Form::label('category_id', 'Category', ['class' => 'control-label']) }}
                                 {{ Form::select('category_id', \App\Models\Category::where('hidden', false)->pluck('name', 'id'), $project->category_id, ['class' => 'form-control', 'id' => 'category_id']) }}
                             </div>
+                            <div class="form-group @if($errors->has('project_type')) has-error @endif">
+                                {{ Form::label('project_type', 'Type', ['class' => 'control-label']) }}
+                                {{ Form::select('project_type', \App\Models\Badge::$types, $project->project_type, ['class' => 'form-control', 'id' => 'badge_ids']) }}
+                            </div>
+                            <div class="form-group @if($errors->has('license')) has-error @endif">
+                                {{ Form::label('license', 'License', ['class' => 'control-label']) }}
+                                {{ Form::select('license', \App\Models\License::where('isDeprecatedLicenseId', 0)->where('isOsiApproved', 1)->pluck('name', 'licenseId'), $project->license, ['class' => 'form-control', 'id' => 'license']) }}
+                            </div>
                             <div class="form-group @if($errors->has('min_firmware') || $errors->has('max_firmware')) has-error @endif">
                                 {{ Form::label('min_firmware', 'Minimal firmware version', ['class' => 'control-label']) }}
                                 {{ Form::text('min_firmware', $project->min_firmware, ['class' => 'form-control', 'id' => 'min_firmware']) }}
@@ -60,6 +68,10 @@
                             @include('projects.partials.compatibility')
                             @include('projects.partials.dependencies')
                             @include('projects.partials.collaborators')
+                            <div class="form-group @if($errors->has('allow_team_fixes')) has-error @endif">
+                                {{ Form::label('allow_team_fixes', 'Allow badge.team to apply fixes to code', ['class' => 'control-label']) }}
+                                {{ Form::checkbox('allow_team_fixes', $project->allow_team_fixes, ['class' => 'form-control', 'id' => 'allow_team_fixes']) }}
+                            </div>
 
                         </div>
                         <div class="col-md-12 clearfix">
