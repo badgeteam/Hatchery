@@ -43,4 +43,17 @@ class UserPolicy
         // Normal users can only delete their own info
         return $user->admin || $user->id == $target->id;
     }
+
+    /**
+     * Only public users can be shown by non-admin users
+     *
+     * @param User $user
+     * @param User $target
+     *
+     * @return bool
+     */
+    public function show(User $user, User $target)
+    {
+        return $user->admin || $target->public;
+    }
 }
