@@ -78,7 +78,7 @@ class License extends Model
 
     protected function sushiShouldCache(): bool
     {
-        return false;
+        return true;
     }
 
     protected function sushiCacheReferencePath(): string
