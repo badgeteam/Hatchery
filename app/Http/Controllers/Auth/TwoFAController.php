@@ -50,15 +50,20 @@ class TwoFAController extends Controller
     }
 
     /**
-     * @throws IncompatibleWithGoogleAuthenticatorException
-     * @throws InvalidCharactersException
-     *
      * @return RedirectResponse
+     * @throws InvalidCharactersException
+     * @throws SecretKeyTooShortException
+     * @throws IncompatibleWithGoogleAuthenticatorException
      */
     public function generate2faSecret()
     {
         /** @var User $user */
         $user = Auth::guard()->user();
+
+        if ( $user->google2fa_secret !== null) {
+            return redirect()->route('2fa')->with('error', 'User already has OTP secret.');
+        }
+
         /** @var Google2FA $google2fa */
         $google2fa = app('pragmarx.google2fa');
 
@@ -83,21 +88,24 @@ class TwoFAController extends Controller
         $user = Auth::guard()->user();
         /** @var Google2FA $google2fa */
         $google2fa = app('pragmarx.google2fa');
-        $secret = $request->input('verify-code');
-        if ($user->google2fa_secret !== null && $google2fa->verifyKey($user->google2fa_secret, $secret)) {
+        $code = $request->input('verify-code', '');
+        if ($user->google2fa_secret !== null && $google2fa->verifyKey($user->google2fa_secret, $code)) {
             $user->google2fa_enabled = true;
             $user->save();
 
             return redirect()->route('2fa')->with('success', '2FA has been activated.');
-        } else {
-            return redirect()->route('2fa')->with('error', 'OTP code wrong, please try again.');
         }
+
+        return redirect()->route('2fa')->with('error', 'OTP code wrong, please try again.');
     }
 
     /**
      * @param Disable2FaRequest $request
      *
      * @return RedirectResponse
+     * @throws IncompatibleWithGoogleAuthenticatorException
+     * @throws InvalidCharactersException
+     * @throws SecretKeyTooShortException
      */
     public function disable2fa(Disable2FaRequest $request)
     {
@@ -107,7 +115,15 @@ class TwoFAController extends Controller
             return redirect()->back()
                 ->with('error', 'Your password is invalid, try again.');
         }
+        /** @var Google2FA $google2fa */
+        $google2fa = app('pragmarx.google2fa');
+        $code = $request->input('verify-code', '');
+        if ($user->google2fa_secret !== null && !$google2fa->verifyKey($user->google2fa_secret, $code)) {
+            return redirect()->back()
+                ->with('error', 'Your 2FA code is invalid, try again.');
+        }
         $user->google2fa_enabled = false;
+        $user->google2fa_secret = null;
         $user->save();
 
         return redirect()->route('2fa')->with('success', '2FA has been disabled.');
