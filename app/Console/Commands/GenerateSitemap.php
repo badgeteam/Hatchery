@@ -57,6 +57,10 @@ class GenerateSitemap extends Command
             ->add(
                 Url::create('/badges')
                     ->setLastModificationDate($this->getLastUpdatedBadge())
+            )
+            ->add(
+                Url::create('/api')
+                    ->setLastModificationDate($this->getLastUpdatedBadge())
             );
 
         Project::all()->each(function (Project $project) use ($sitemap) {

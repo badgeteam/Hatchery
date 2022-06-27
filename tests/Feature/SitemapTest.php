@@ -49,7 +49,7 @@ class SitemapTest extends TestCase
         $this->assertEquals('', $response);
         $dom = new \DOMDocument();
         $dom->load(public_path('sitemap.xml'));
-        $this->assertCount(3, $dom->getElementsByTagName('url'));
+        $this->assertCount(4, $dom->getElementsByTagName('url'));
     }
 
     /**
@@ -64,7 +64,7 @@ class SitemapTest extends TestCase
         Artisan::call('sitemap:generate');
         $dom = new \DOMDocument();
         $dom->load(public_path('sitemap.xml'));
-        $this->assertCount(4, $dom->getElementsByTagName('url'));
+        $this->assertCount(5, $dom->getElementsByTagName('url'));
     }
 
     /**
@@ -79,6 +79,6 @@ class SitemapTest extends TestCase
         Artisan::call('sitemap:generate');
         $dom = new \DOMDocument();
         $dom->load(public_path('sitemap.xml'));
-        $this->assertCount(4, $dom->getElementsByTagName('url'));
+        $this->assertCount(5, $dom->getElementsByTagName('url'));
     }
 }
