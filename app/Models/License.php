@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Sushi\Sushi;
 
 /**
- * App\Models\License
+ * Class License.
  *
+ * @author annejan@badge.team
  * @property int $id
  * @property string $reference
  * @property bool $isDeprecatedLicenseId
@@ -54,6 +55,8 @@ class License extends Model
     ];
 
     /**
+     * Load data from json file.
+     *
      * @return array<string|int|bool>
      * @throws \JsonException
      */
@@ -76,11 +79,17 @@ class License extends Model
         return $licenses;
     }
 
+    /**
+     * Cache the license model.
+     */
     protected function sushiShouldCache(): bool
     {
         return true;
     }
 
+    /**
+     * Check file for updates.
+     */
     protected function sushiCacheReferencePath(): string
     {
         return resource_path('assets/licenses.json');

@@ -69,6 +69,7 @@ use Illuminate\Support\Str;
  * @property-read int|null $warnings_count
  * @property-read Collection|User[] $collaborators
  * @property-read int|null $collaborators_count
+ * @property-read array $types
  * @method static bool|null forceDelete()
  * @method static Builder|Project newModelQuery()
  * @method static Builder|Project newQuery()
@@ -534,5 +535,19 @@ class Project extends Model
         }
 
         return $version;
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getTypesAttribute(): array
+    {
+        $types = [];
+        foreach ($this->badges as $badge) {
+            foreach ($badge->types as $type) {
+                $types[] = $type['slug'];
+            }
+        }
+        return array_unique($types);
     }
 }

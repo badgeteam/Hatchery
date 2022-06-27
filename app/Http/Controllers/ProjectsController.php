@@ -15,6 +15,7 @@ use App\Models\Badge;
 use App\Models\BadgeProject;
 use App\Models\Category;
 use App\Models\File;
+use App\Models\License;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
@@ -120,6 +121,7 @@ class ProjectsController extends Controller
 
         try {
             $project = $this->storeProjectInfo($request);
+
         } catch (Exception $e) {
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
         }
@@ -145,7 +147,7 @@ class ProjectsController extends Controller
      * Update the specified resource in storage.
      *
      * @param ProjectUpdateRequest $request
-     * @param Project              $project
+     * @param Project $project
      *
      * @return RedirectResponse
      */
@@ -156,10 +158,13 @@ class ProjectsController extends Controller
         try {
             $project->min_firmware = $request->min_firmware;
             $project->max_firmware = $request->max_firmware;
+            $project->allow_team_fixes = $request->has('allow_team_fixes');
             $project->save();
             $this->manageDependencies($project, $request);
             $this->manageBadges($project, $request);
             $this->manageCollaborators($project, $request);
+            $this->manageLicense($project, $request);
+            $this->manageType($project, $request);
         } catch (Exception $e) {
             return redirect()->route('projects.edit', ['project' => $project->slug])
                 ->withInput()->withErrors([$e->getMessage()]);
@@ -197,7 +202,7 @@ class ProjectsController extends Controller
         $name = $project->name;
 
         try {
-            $project->name = 'Deleted ' . rand() . ' ' . $name;
+            $project->name = 'Deleted ' . mt_rand() . ' ' . $name;
             $project->slug = Str::slug($project->name);
             $project->save();
             $project->delete();
@@ -226,7 +231,7 @@ class ProjectsController extends Controller
     /**
      * Notify badge.team of broken or dangerous app.
      *
-     * @param Project                    $project
+     * @param Project $project
      * @param ProjectNotificationRequest $request
      *
      * @return RedirectResponse
@@ -246,9 +251,9 @@ class ProjectsController extends Controller
      *
      * @param Project $project
      *
+     * @return View
      * @throws AuthorizationException
      *
-     * @return View
      */
     public function renameForm(Project $project): View
     {
@@ -262,11 +267,11 @@ class ProjectsController extends Controller
      * Update the specified resource in storage.
      *
      * @param ProjectRenameRequest $request
-     * @param Project              $project
-     *
-     * @throws AuthorizationException
+     * @param Project $project
      *
      * @return RedirectResponse
+     * @throws AuthorizationException
+     *
      */
     public function rename(ProjectRenameRequest $request, Project $project): RedirectResponse
     {
@@ -310,11 +315,11 @@ class ProjectsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param ProjectStoreRequest $request
-     * @param Git                 $repo
-     *
-     * @throws Exception
+     * @param Git $repo
      *
      * @return RedirectResponse
+     * @throws Exception
+     *
      */
     public function import(ProjectStoreRequest $request, Git $repo): RedirectResponse
     {
@@ -355,7 +360,7 @@ class ProjectsController extends Controller
     private function storeProjectInfo(Request $request): Project
     {
         $project = Project::create([
-            'name'        => $request->name,
+            'name' => $request->name,
             'category_id' => $request->category_id,
         ]);
 
@@ -373,7 +378,46 @@ class ProjectsController extends Controller
             $file->save();
         }
 
+        $project->allow_team_fixes = $request->has('allow_team_fixes');
+
+        $this->manageLicense($project, $request);
+        $this->manageType($project, $request);
+
         return $project;
+    }
+
+    /**
+     * @param Project $project
+     * @param Request $request
+     *
+     * @return void
+     */
+    private function manageLicense(Project $project, Request $request): void
+    {
+        if ($request->license) {
+            if (!License::where('licenseId', $request->license)->exists()) {
+                throw new \RuntimeException('Unknown license');
+            }
+            $project->license = $request->license;
+            $project->save();
+        }
+    }
+
+    /**
+     * @param Project $project
+     * @param Request $request
+     *
+     * @return void
+     */
+    private function manageType(Project $project, Request $request): void
+    {
+        if ($request->project_type) {
+            if (!in_array($request->project_type, $project->types, true)) {
+                throw new \RuntimeException('Unknown type');
+            }
+            $project->project_type = (string)$request->project_type;
+            $project->save();
+        }
     }
 
     /**
