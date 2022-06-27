@@ -54,7 +54,7 @@ class License extends Model
     ];
 
     /**
-     * @return string[]
+     * @return array<string|int|bool>
      * @throws \JsonException
      */
     public function getRows(): array
