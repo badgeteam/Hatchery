@@ -5,12 +5,8 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
-window.Picker = require('../../../node_modules/vanilla-picker');
-
 require('./bootstrap');
 
-window.Dropzone = require('../../../node_modules/dropzone/dist/dropzone');
 window.keymap = 'default';
 
 const framebuffer = [];
@@ -208,9 +204,12 @@ window.onload = function () {
 			window.onbeforeunload = function () {
 				return true;
 			};
-			document.getElementById('content_form').addEventListener('submit', function () {
-				window.onbeforeunload = null;
-			});
+			const form = document.getElementById('content_form');
+			if (form) {
+				form.addEventListener('submit', function () {
+					window.onbeforeunload = null;
+				});
+			}
 		}
 
 		if (document.getElementById(field + '-readonly')) {
