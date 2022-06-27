@@ -49,7 +49,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                        {{ config('app.name', 'Hatchery') }}
                     </a>
                 </div>
 
@@ -121,9 +121,9 @@
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "url": "https://badge.team",
-  "name": "Badge.Team",
-  "logo": "https://badge.team/img/bs.png",
+  "url": "{{ url('') }}",
+  "name": "Badge.Team Hatchery",
+  "logo": "{{ url('/img/bs.png') }}",
   "foundingDate": "2017",
   "contactPoint": {
     "@type": "ContactPoint",
@@ -137,5 +137,13 @@
     <livewire:scripts>
 
     @yield('script')
+    <footer class="bg-light text-center text-lg-start">
+        <!-- Copyright -->
+        <div class="text-center p-3">
+            © {{ date('Y') }} badge.team Hatchery
+            <span id="application_version">{{ App\Http\Kernel::applicationVersion() }}</span>
+        </div>
+        <!-- Copyright -->
+    </footer>
 </body>
 </html>

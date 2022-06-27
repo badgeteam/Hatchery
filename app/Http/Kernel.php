@@ -128,4 +128,25 @@ class Kernel extends HttpKernel
         '2fa'        => \App\Http\Middleware\AuthenticatorMiddleware::class,
         'webauthn'   => \LaravelWebauthn\Http\Middleware\WebauthnMiddleware::class,
     ];
+
+    /**
+     * Returns the version of the application by fetching and displaying the version.json file
+     *
+     * @return string URL
+     */
+    public static function applicationVersion(): string
+    {
+        // Silence is ok here
+        $versionJson = @file_get_contents(public_path("/version.json"));
+        if (!$versionJson) {
+            return 'Undefined';
+        }
+
+        $versionData = json_decode($versionJson, true);
+        if (is_array($versionData) && array_key_exists('version', $versionData)) {
+            return $versionData['version'];
+        }
+
+        return 'Unknown';
+    }
 }
