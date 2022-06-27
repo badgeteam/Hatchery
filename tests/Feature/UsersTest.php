@@ -45,7 +45,7 @@ class UsersTest extends TestCase
     }
 
     /**
-     * Login, go to home.
+     * Login, go home.
      */
     public function testLogin(): void
     {
@@ -481,7 +481,7 @@ class UsersTest extends TestCase
     /**
      * Check a user page.
      */
-    public function testUserShow(): void
+    public function testUserShowSelf(): void
     {
         /** @var User $user */
         $user = User::factory()->create(['public' => true]);
@@ -490,6 +490,53 @@ class UsersTest extends TestCase
             ->get('/users/' . $user->id);
         $response->assertStatus(200)
             ->assertViewHas('projects');
+    }
+
+    /**
+     * Check a user page.
+     */
+    public function testUserShowAsAdmin(): void
+    {
+        /** @var User $admin */
+        $admin = User::factory()->create(['admin' => true]);
+        /** @var User $user */
+        $user = User::factory()->create();
+        $response = $this
+            ->actingAs($admin)
+            ->get('/users/' . $user->id);
+        $response->assertStatus(200)
+            ->assertViewHas('projects');
+    }
+
+    /**
+     * Check a user page.
+     */
+    public function testUserShowPublic(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $user2 */
+        $user2 = User::factory()->create(['public' => true]);
+        $response = $this
+            ->actingAs($user)
+            ->get('/users/' . $user2->id);
+        $response->assertStatus(200)
+            ->assertViewHas('projects');
+    }
+
+    /**
+     * Check a user page.
+     */
+    public function testUserShow(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var User $user2 */
+        $user2 = User::factory()->create();
+        $response = $this
+            ->actingAs($user)
+            ->get('/users/' . $user2->id);
+        $response->assertStatus(403);
     }
 
     /**
