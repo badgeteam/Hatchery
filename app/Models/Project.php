@@ -557,7 +557,7 @@ class Project extends Model
             return 'Commercial';
         }
         /** @var License|null $license */
-        $license = License::where('LicenseId', $this->license);
+        $license = License::where('LicenseId', $this->license)->first();
         if ($license === null) {
             return $this->license ;
         }
@@ -573,7 +573,7 @@ class Project extends Model
             return '';
         }
         /** @var License|null $license */
-        $license = License::where('LicenseId', $this->license);
+        $license = License::where('LicenseId', $this->license)->first();
         if ($license === null) {
             return $this->license ;
         }
