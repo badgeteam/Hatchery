@@ -149,6 +149,8 @@ class Project extends Model
         'allow_team_fixes',
         'project_type',
         'license',
+        'license_name',
+        'license_url',
     ];
 
     /**
@@ -544,5 +546,37 @@ class Project extends Model
     {
         // @TODO project specific types
         return array_keys(Badge::$types);
+    }
+
+    /**
+     * @return string
+     */
+    public function getLicenseNameAttribute(): string
+    {
+        if ($this->license === null) {
+            return 'Commercial';
+        }
+        /** @var License|null $license */
+        $license = License::where('LicenseId', $this->license)->first();
+        if ($license === null) {
+            return $this->license ;
+        }
+        return $license->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLicenseUrlAttribute(): string
+    {
+        if ($this->license === null) {
+            return '';
+        }
+        /** @var License|null $license */
+        $license = License::where('LicenseId', $this->license)->first();
+        if ($license === null) {
+            return $this->license ;
+        }
+        return $license->reference;
     }
 }

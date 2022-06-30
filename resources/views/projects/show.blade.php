@@ -7,6 +7,7 @@
   "@type" : "SoftwareApplication",
   "name" : "{{ $project->name }}",
   "url" : "{{ route('projects.show', ['project' => $project->slug]) }}",
+  "license" : "{{ $project->license_url }}",
   "author" : {
     "@type" : "Person",
     "name" : "{{ $project->user->name }}"
@@ -14,8 +15,8 @@
 @if($project->versions()->published()->exists())
   "downloadUrl" : "{{ url($project->versions()->published()->get()->last()->zip) }}",
 @endif
-  "operatingSystem" : "MicroPython",
-  "requirements" : "badge.team firmware",
+  "operatingSystem" : "{{ $project->project_type }}",
+  "requirements" : "{{  $project->badge?->name }}",
   "softwareVersion" : "{{ $project->revision }}",
   "applicationCategory" : "{{ $project->category }}",
 @if($project->votes->count() > 0)
