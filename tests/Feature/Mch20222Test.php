@@ -158,12 +158,13 @@ class Mch20222Test extends TestCase
             '/v2/' . $badge->slug . '/python/' . $category->slug .  '/' . $version->project->slug
         );
         $response->assertStatus(200)
-            ->assertJson([
+            ->assertExactJson([
                 'slug' => $version->project->slug,
                 'name' => $version->project->name,
                 'author' => $version->project->author,
                 'license' => $version->project->license,
                 'description' => $version->project->description,
+                'version' => $version->project->revision,
                 'files' => [
                     [
                         'name' => $file->name,

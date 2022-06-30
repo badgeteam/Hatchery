@@ -164,6 +164,7 @@ class MchController extends Controller
                 'author' => $project->author,
                 'license' => $project->license,
                 'description' => $project->description,
+                'version' => $project->revision,
             ];
         }
         return response()->json($apps, 200, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
@@ -244,6 +245,7 @@ class MchController extends Controller
                 'author' => $project->author,
                 'license' => $project->license,
                 'description' => $project->description,
+                'version' => $project->revision,
                 'files' => $files,
             ],
             200,
