@@ -16,7 +16,7 @@
   "downloadUrl" : "{{ url($project->versions()->published()->get()->last()->zip) }}",
 @endif
   "operatingSystem" : "{{ $project->project_type }}",
-  "requirements" : "{{ $project->badge->name }}",
+  "requirements" : "{{  $project->badge?->name }}",
   "softwareVersion" : "{{ $project->revision }}",
   "applicationCategory" : "{{ $project->category }}",
 @if($project->votes->count() > 0)
