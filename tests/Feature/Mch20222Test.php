@@ -164,7 +164,7 @@ class Mch20222Test extends TestCase
                 'author' => $version->project->author,
                 'license' => $version->project->license,
                 'description' => $version->project->description,
-                'version' => $version->project->revision,
+                'version' => (int)$version->project->revision,
                 'files' => [
                     [
                         'name' => $file->name,

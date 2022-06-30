@@ -245,7 +245,7 @@ class MchController extends Controller
                 'author' => $project->author,
                 'license' => $project->license,
                 'description' => $project->description,
-                'version' => $project->revision,
+                'version' => (int)$project->revision,
                 'files' => $files,
             ],
             200,
