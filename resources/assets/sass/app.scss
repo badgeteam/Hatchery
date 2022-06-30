@@ -12,6 +12,10 @@
 @import "node_modules/codemirror/theme/ambiance";
 @import "node_modules/codemirror/addon/dialog/dialog";
 
+body {
+  min-height: 100vh;
+}
+
 .CodeMirror {
   height: 100% !important;
 }
