@@ -330,7 +330,7 @@ class MchController extends Controller
         return response(
             $file->content,
             200,
-            ['Content-Type' => $file->mime]
+            ['Content-Type' => $file->mime, 'Content-Length' => $file->size_of_content]
         );
     }
 }
