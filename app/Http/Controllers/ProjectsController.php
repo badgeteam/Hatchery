@@ -121,7 +121,6 @@ class ProjectsController extends Controller
 
         try {
             $project = $this->storeProjectInfo($request);
-
         } catch (Exception $e) {
             return redirect()->route('projects.create')->withInput()->withErrors([$e->getMessage()]);
         }
