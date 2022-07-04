@@ -4,7 +4,29 @@ declare(strict_types=1);
 
 namespace App\Http;
 
+use App\Http\Middleware\AddContentLength;
+use App\Http\Middleware\AuthenticatorMiddleware;
+use App\Http\Middleware\EncryptCookies;
+use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Middleware\ShareMessagesFromSession;
+use App\Http\Middleware\TrimStrings;
+use App\Http\Middleware\VerifyCsrfToken;
+use Bepsvpt\SecureHeaders\SecureHeadersMiddleware;
+use Fruitcake\Cors\HandleCors;
+use Illuminate\Auth\Middleware\Authenticate;
+use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
+use Illuminate\Auth\Middleware\Authorize;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
+use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
+use Illuminate\Foundation\Http\Middleware\ValidatePostSize;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Routing\Middleware\ThrottleRequests;
+use Illuminate\Session\Middleware\AuthenticateSession;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+use LaravelWebauthn\Http\Middleware\WebauthnMiddleware;
 use OpenApi\Annotations as OA;
 
 /**
@@ -80,12 +102,13 @@ class Kernel extends HttpKernel
      * @var array<string>
      */
     protected $middleware = [
-        \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
-        \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
-        \App\Http\Middleware\TrimStrings::class,
-        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \Bepsvpt\SecureHeaders\SecureHeadersMiddleware::class,
-        \Fruitcake\Cors\HandleCors::class,
+        CheckForMaintenanceMode::class,
+        ValidatePostSize::class,
+        TrimStrings::class,
+        ConvertEmptyStringsToNull::class,
+        SecureHeadersMiddleware::class,
+        HandleCors::class,
+        AddContentLength::class
     ];
 
     /**
@@ -95,14 +118,14 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            \App\Http\Middleware\EncryptCookies::class,
-            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\Session\Middleware\StartSession::class,
-            // \Illuminate\Session\Middleware\AuthenticateSession::class,
-            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\ShareMessagesFromSession::class,
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            AuthenticateSession::class,
+            ShareErrorsFromSession::class,
+            VerifyCsrfToken::class,
+            SubstituteBindings::class,
+            ShareMessagesFromSession::class,
         ],
 
         'api' => [
@@ -119,20 +142,21 @@ class Kernel extends HttpKernel
      * @var array<string, string>
      */
     protected $routeMiddleware = [
-        'auth'       => \Illuminate\Auth\Middleware\Authenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'bindings'   => \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        'can'        => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest'      => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'throttle'   => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        '2fa'        => \App\Http\Middleware\AuthenticatorMiddleware::class,
-        'webauthn'   => \LaravelWebauthn\Http\Middleware\WebauthnMiddleware::class,
+        'auth'       => Authenticate::class,
+        'auth.basic' => AuthenticateWithBasicAuth::class,
+        'bindings'   => SubstituteBindings::class,
+        'can'        => Authorize::class,
+        'guest'      => RedirectIfAuthenticated::class,
+        'throttle'   => ThrottleRequests::class,
+        '2fa'        => AuthenticatorMiddleware::class,
+        'webauthn'   => WebauthnMiddleware::class,
     ];
 
     /**
      * Returns the version of the application by fetching and displaying the version.json file
      *
      * @return string URL
+     * @throws \JsonException
      */
     public static function applicationVersion(): string
     {
@@ -142,7 +166,7 @@ class Kernel extends HttpKernel
             return 'Undefined';
         }
 
-        $versionData = json_decode($versionJson, true);
+        $versionData = json_decode($versionJson, true, 512, JSON_THROW_ON_ERROR);
         if (is_array($versionData) && array_key_exists('version', $versionData)) {
             return $versionData['version'];
         }
