@@ -21,6 +21,8 @@
         "ext-gd": "*",
         "ext-gmp": "*",
         "ext-json": "*",
+        "ext-zlib": "*",
+        "ext-mbstring": "*",
         "asbiin/laravel-webauthn": "^2.0",
         "bacon/bacon-qr-code": "^2.0",
         "bepsvpt/secure-headers": "^7.2",
