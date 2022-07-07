@@ -240,6 +240,9 @@ class MchController extends Controller
 
         return response()->json(
             [
+                'device' => $badge->slug,
+                'type' => $project->project_type,
+                'category' => $category,
                 'slug' => $project->slug,
                 'name' => $project->name,
                 'author' => $project->author,
