@@ -159,6 +159,9 @@ class Mch20222Test extends TestCase
         );
         $response->assertStatus(200)
             ->assertExactJson([
+                'device' => $badge->slug,
+                'type' => 'python',
+                'category' => $category->slug,
                 'slug' => $version->project->slug,
                 'name' => $version->project->name,
                 'author' => $version->project->author,
