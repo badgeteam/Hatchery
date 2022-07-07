@@ -64,15 +64,15 @@ class Mch20222Test extends TestCase
         $response->assertStatus(200)
             ->assertExactJson([
                 [
-                    'name' => 'ESP32 native binaries >',
+                    'name' => 'ESP32 native binaries',
                     'slug' => 'esp32',
                 ],
                 [
-                    'name' => 'Micropython eggs >',
+                    'name' => 'Micropython eggs',
                     'slug' => 'python',
                 ],
                 [
-                    'name' => 'ICE40 FPGA bitstreams >',
+                    'name' => 'ICE40 FPGA bitstreams',
                     'slug' => 'ice40',
                 ],
             ]);
