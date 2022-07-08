@@ -64,15 +64,15 @@ class Mch20222Test extends TestCase
         $response->assertStatus(200)
             ->assertExactJson([
                 [
-                    'name' => 'Espressif ESP32 binary',
+                    'name' => 'ESP32 native binaries',
                     'slug' => 'esp32',
                 ],
                 [
-                    'name' => 'MicroPython egg',
+                    'name' => 'Micropython eggs',
                     'slug' => 'python',
                 ],
                 [
-                    'name' => 'Lattice iCE40 bitstream',
+                    'name' => 'ICE40 FPGA bitstreams',
                     'slug' => 'ice40',
                 ],
             ]);
@@ -159,6 +159,9 @@ class Mch20222Test extends TestCase
         );
         $response->assertStatus(200)
             ->assertExactJson([
+                'device' => $badge->slug,
+                'type' => 'python',
+                'category' => $category->slug,
                 'slug' => $version->project->slug,
                 'name' => $version->project->name,
                 'author' => $version->project->author,

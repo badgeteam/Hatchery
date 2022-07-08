@@ -53,9 +53,9 @@ class Badge extends Model
      * @var array<string, string> $types
      */
     public static array $types = [
-        'esp32' => 'Espressif ESP32 binary',
-        'python' => 'MicroPython egg',
-        'ice40' => 'Lattice iCE40 bitstream',
+        'esp32' =>  'ESP32 native binaries',
+        'python' => 'Micropython eggs',
+        'ice40' =>  'ICE40 FPGA bitstreams',
     ];
 
     /**

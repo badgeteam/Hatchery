@@ -240,6 +240,9 @@ class MchController extends Controller
 
         return response()->json(
             [
+                'device' => $badge->slug,
+                'type' => $project->project_type,
+                'category' => $category,
                 'slug' => $project->slug,
                 'name' => $project->name,
                 'author' => $project->author,
@@ -327,10 +330,12 @@ class MchController extends Controller
             return response()->json(['message' => 'File not found'], 404);
         }
 
-        return response(
-            $file->content,
-            200,
-            ['Content-Type' => $file->mime, 'Content-Length' => $file->size_of_content]
-        );
+        return response($file->content)
+            ->header('Cache-Control', 'no-cache private')
+            ->header('Content-Description', 'File Transfer')
+            ->header('Content-Type', $file->mime)
+            ->header('Content-length', (string) strlen($file->content))
+            ->header('Content-Disposition', 'attachment; filename=' . $file->name)
+            ->header('Content-Transfer-Encoding', 'binary');
     }
 }
