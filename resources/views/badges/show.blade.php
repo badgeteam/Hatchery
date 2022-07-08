@@ -13,7 +13,7 @@
                             @endcan
                             @can('delete', $badge)
                                 {!! Form::open(['method' => 'delete', 'route' => ['badges.destroy', 'badge' => $badge], 'class' => 'deleteform']) !!}
-                                <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">delete</button>
+                                <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete" data-bs-toggle="modal" data-bs-target="#confirm-delete">delete</button>
                                 {!! Form::close() !!}
                             @endcan
                         </div>
@@ -58,8 +58,8 @@
                     Are you sure you want to delete {{ $badge->name }}?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-danger" id="delete">Delete</button>
-                    <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-danger" id="delete">Delete</button>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-default">Cancel</button>
                 </div>
             </div>
         </div>
