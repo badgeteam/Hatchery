@@ -28,7 +28,7 @@ class AddContentLength
         ini_set('zlib.output_compression', '0');
 
         $content = $response->content();
-        $contentLength = mb_strlen($content);
+        $contentLength = strlen($content);
 //        $useCompressedOutput = ($contentLength && isset($_SERVER['HTTP_ACCEPT_ENCODING']) &&
 //            str_contains($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip'));
 //
@@ -36,7 +36,7 @@ class AddContentLength
 //            // In order to accurately set Content-Length, we have to compress the data ourselves
 //            // rather than letting PHP do it automatically.
 //            $compressedContent = gzencode($content, 9, FORCE_GZIP);
-//            $compressedContentLength = mb_strlen($compressedContent);
+//            $compressedContentLength = strlen($compressedContent);
 //            if ($compressedContentLength / $contentLength < 0.9) {
 //                if (ini_get('zlib.output_compression')) {
 //                    ini_set('zlib.output_compression', 'false');

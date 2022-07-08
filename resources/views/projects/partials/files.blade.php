@@ -91,7 +91,7 @@
 <script type="text/javascript">
     window.onload = function() {
         const uploader = new window.Dropzone("#uploader",{
-            maxFilesize: 1,
+            maxFilesize: 32,
             acceptedFiles: ".{{ implode(',.', \App\Models\File::$extensions)  }}"
         });
         const d = document.getElementById("uploader");
