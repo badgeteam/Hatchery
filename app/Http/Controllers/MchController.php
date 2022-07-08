@@ -157,7 +157,7 @@ class MchController extends Controller
         $categoryId = Category::whereSlug($category)->firstOrFail()->id;
         $apps = [];
         /** @var Project $project */
-        foreach ($badge->projects()->whereProjectType($type)->whereCategoryId($categoryId)->get() as $project) {
+        foreach ($badge->projects()->whereNotNull('published_at')->whereProjectType($type)->whereCategoryId($categoryId)->get() as $project) {
             $apps[] = [
                 'slug' => $project->slug,
                 'name' => $project->name,
