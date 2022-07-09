@@ -31,10 +31,10 @@
         <tr>
             <td colspan="3">
                 @if ($project->userVoted() === false)
-                <button name="vote" class="btn btn-default">Vote</button>
+                <button name="vote" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#vote-dialog">Vote</button>
                 @endif
                 @auth
-                <button name="notify" class="btn btn-warning">Notify team</button>
+                <button name="notify" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#notify-dialog">Notify team</button>
                 @endauth
             </td>
         </tr>
@@ -84,8 +84,8 @@
                 {!! Form::close() !!}
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-danger" id="vote">Vote</button>
-                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                <button type="button" data-bs-dismiss="modal" class="btn btn-danger" id="vote">Vote</button>
+                <button type="button" data-bs-dismiss="modal" class="btn btn-default">Cancel</button>
             </div>
         </div>
     </div>
@@ -103,8 +103,8 @@
                 {!! Form::close() !!}
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-danger" id="notify">Notify</button>
-                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                <button type="button" data-bs-dismiss="modal" class="btn btn-danger" id="notify">Notify</button>
+                <button type="button" data-bs-dismiss="modal" class="btn btn-default">Cancel</button>
             </div>
         </div>
     </div>

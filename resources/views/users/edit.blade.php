@@ -11,7 +11,7 @@
                             <a class="btn btn-default btn-xs" href="{{ route('users.show', ['user' => $user->id])  }}">show</a>
                             @can('delete', $user)
                             {!! Form::open(['method' => 'delete', 'route' => ['users.destroy', 'user' => $user->id], 'class' => 'deleteform']) !!}
-                            <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">delete</button>
+                            <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" data-bs-toggle="modal" data-bs-target="#confirm-delete" value="delete">delete</button>
                             {!! Form::close() !!}
                             @endcan
                         </div>
@@ -114,7 +114,7 @@
                                     <hr>
                                         @foreach($user->webauthnKeys as $key)
                                         {!! Form::open(['method' => 'delete', 'route' => ['webauthn.destroy', 'id' => $key->id]]) !!}
-                                            <button class="btn btn-danger btn-xs" name="delete-token" type="submit" value="delete">Delete WebaAuthn token added {{ $key->created_at->format('Y-m-d') }}</button>
+                                            <button class="btn btn-danger btn-xs" name="delete-token" type="submit" data-bs-toggle="modal" data-bs-target="#confirm-delete-token" value="delete">Delete WebaAuthn token added {{ $key->created_at->format('Y-m-d') }}</button>
                                         {!! Form::close() !!}
                                         @endforeach
                                     @endif
@@ -133,8 +133,8 @@
                     Are you sure you want to delete yourself?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-danger" id="delete">Delete</button>
-                    <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-danger" id="delete">Delete</button>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-default">Cancel</button>
                 </div>
             </div>
         </div>
@@ -146,8 +146,8 @@
                     Are you sure you want to delete this token?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-danger" id="delete">Delete</button>
-                    <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-danger" id="delete">Delete</button>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-default">Cancel</button>
                 </div>
             </div>
         </div>

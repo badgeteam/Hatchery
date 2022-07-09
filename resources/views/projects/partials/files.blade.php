@@ -45,7 +45,7 @@
             <td>
 		@can('delete', $file)
                 {!! Form::open(['method' => 'delete', 'route' => ['files.destroy', 'file' => $file->id]]) !!}
-                <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete"  style="width: 48px;">delete</button>
+                <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete" data-bs-toggle="modal" data-bs-target="#confirm-delete" style="width: 48px;">delete</button>
 		        {!! Form::close() !!}
 		@endcan
             </td>
@@ -80,8 +80,8 @@
                 Are you sure you want to delete this?
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-danger" id="delete">Delete</button>
-                <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                <button type="button" data-bs-dismiss="modal" class="btn btn-danger" id="delete">Delete</button>
+                <button type="button" data-bs-dismiss="modal" class="btn btn-default">Cancel</button>
             </div>
         </div>
     </div>

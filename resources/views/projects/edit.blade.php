@@ -26,7 +26,7 @@
                         @endcan
                         @can('delete', $project)
                         {!! Form::open(['method' => 'delete', 'route' => ['projects.destroy', 'project' => $project->slug], 'class' => 'deleteform']) !!}
-                        <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" value="delete">delete</button>
+                        <button class="btn btn-danger btn-xs" name="delete-resource" type="submit" data-bs-toggle="modal" data-bs-target="#confirm-delete" value="delete">delete</button>
                         {!! Form::close() !!}
                         @endcan
                     </div>
