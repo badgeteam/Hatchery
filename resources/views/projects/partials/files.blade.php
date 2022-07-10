@@ -92,7 +92,6 @@
     window.onload = function() {
         const uploader = new window.Dropzone("#uploader",{
             maxFilesize: 32,
-            acceptedFiles: ".{{ implode(',.', \App\Models\File::$extensions)  }}"
         });
         const d = document.getElementById("uploader");
         d.className += " dropzone";
