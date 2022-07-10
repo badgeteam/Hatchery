@@ -75,7 +75,7 @@ class File extends Model
         'json', 'txt', 'md',
         'wav', 'mp3', 'ogg',
         'mod', 'xm', 's3m',
-        'elf', 'bin', 'gif',
+        'elf', 'bin', 'gif', 'dat',
     ];
 
     /**
