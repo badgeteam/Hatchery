@@ -4,7 +4,6 @@
         <th>File</th>
         <th>Last edited</th>
         <th>Size</th>
-        <th>Crc</th>
     </tr>
     </thead>
     <tbody>
@@ -19,7 +18,6 @@
             </td>
             <td>{{ $file->updated_at }}</td>
             <td>{{ $file->size_formatted }}</td>
-            <td>{{ $file->crc32 }}</td>
         </tr>
     @empty
         <tr>
