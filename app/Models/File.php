@@ -37,6 +37,7 @@ use Intervention\Image\Facades\Image;
  * @property-read int $size_of_content
  * @property-read string $size_formatted
  * @property-read string|null $viewable
+ * @property-read string $crc32
  * @property-read User $user
  * @property-read Version $version
  * @property-read string $base_name
@@ -286,6 +287,14 @@ class File extends Model
         }
 
         return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCrc32Attribute(): string
+    {
+        return hash('crc32b', $this->content);
     }
 
     /**

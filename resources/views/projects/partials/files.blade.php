@@ -4,6 +4,7 @@
         <th>File</th>
         <th>Last edited</th>
         <th>Size</th>
+        <th>Crc</th>
         <th>Process</th>
         <th>
         @if(Auth::user()->can('update', $project->versions->last()->files()->first()))
@@ -35,6 +36,7 @@
             </td>
             <td>{{ $file->updated_at }}</td>
             <td>{{ $file->size_formatted }}</td>
+            <td>{{ $file->crc32}}</td>
             <td>
         @can('process', $file)
                 {!! Form::open(['method' => 'post', 'route' => ['files.process', 'file' => $file->id]]) !!}

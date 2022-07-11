@@ -57,6 +57,10 @@
                                             <td>{{ $file->mime }}</td>
                                         </tr>
                                         <tr>
+                                            <td>Crc:</td>
+                                            <td>{{ $file->crc32 }}</td>
+                                        </tr>
+                                        <tr>
                                             <td>Download:</td>
                                             <td> <a class="btn btn-success" href="{{ route('files.download', $file)  }}">{{ $file->name }}</a></td>
                                         </tr>
