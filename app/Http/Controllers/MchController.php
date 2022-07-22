@@ -234,6 +234,7 @@ class MchController extends Controller
                 'file' => $file->name
             ]);
             $fileData->size = (int)$file->size_of_content;
+            $fileData->crc32 = $file->crc32;
 
             $files[] = $fileData;
         }

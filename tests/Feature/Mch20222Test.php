@@ -175,7 +175,8 @@ class Mch20222Test extends TestCase
                             'v2/' . $badge->slug . '/python/' . $category->slug .  '/' .
                             $version->project->slug . '/' . $file->name
                         ),
-                        'size' => $file->size_of_content
+			'size' => $file->size_of_content,
+			'crc32' => $file->crc32
                     ]
                 ]
             ]);
