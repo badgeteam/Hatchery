@@ -25,7 +25,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Install Linux packages
-      run: sudo apt update && sudo apt install -y --no-install-recommends python3-pyflakes git iverilog arachne-pnr arachne-pnr-chipdb fpga-icestorm fpga-icestorm-chipdb
+      run: sudo apt update && sudo apt install -y --no-install-recommends pyflakes3 git iverilog arachne-pnr arachne-pnr-chipdb fpga-icestorm fpga-icestorm-chipdb
     - name: Install PHP
       uses: shivammathur/setup-php@master
       with:
