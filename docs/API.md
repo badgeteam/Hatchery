@@ -32,4 +32,4 @@ App specific
 /app
 ```
 
-Live version <https://badge.team/api>
+Live version <https://hatchery.badge.team/api>
