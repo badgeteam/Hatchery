@@ -10,9 +10,9 @@
 [![Laravel](https://github.com/badgeteam/Hatchery/actions/workflows/laravel.yml/badge.svg)](https://github.com/badgeteam/Hatchery/actions/workflows/laravel.yml)
 Simple micropython software repository for Badges.
 
-[Live Site](https://badge.team) \| 
-[API Playground](https://badge.team/api) \|
-[Documentation](https://docs.badge.team/hatchery/) \|
+[Live Site](https://hatchery.badge.team) \| 
+[API Playground](https://hatchery.badge.team/api) \|
+[Documentation](https://badge.team/docs/esp32-platform-firmware/hatchery/) \|
 [GitHub](https://github.com/badgeteam/)
 
 ## Installation
@@ -109,7 +109,7 @@ Enjoy your Hatchery at <http://localhost:8000>
 
 ## [API](docs/API.md)
 
-See: <https://badge.team/api>
+See: <https://hatchery.badge.team/api>
 
 ## Running tests
 
