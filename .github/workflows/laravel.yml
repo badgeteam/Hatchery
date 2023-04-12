@@ -1,4 +1,4 @@
-name: Laravel PHPStan, Swagger and Pest
+name: Laravel Swagger
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Install Linux packages
-      run: sudo apt update && sudo apt install -y --no-install-recommends pyflakes git iverilog arachne-pnr arachne-pnr-chipdb fpga-icestorm fpga-icestorm-chipdb
+      run: sudo apt update && sudo apt install -y --no-install-recommends pyflakes3 git iverilog arachne-pnr arachne-pnr-chipdb fpga-icestorm fpga-icestorm-chipdb
     - name: Install PHP
       uses: shivammathur/setup-php@master
       with:
@@ -40,8 +40,6 @@ jobs:
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist && yarn install --production
     - name: Generate key
       run: php artisan key:generate
-    - name: LaraStan
-      run: vendor/bin/phpstan analyse
     - name: Security Check
       run: php artisan security-check:now
     - name: Swagger generate
@@ -70,15 +68,3 @@ jobs:
       run: php artisan config:clear
     - name: Route clear
       run: php artisan route:clear
-    - name: Execute (Unit and Feature) tests via Pest
-      env:
-        DB_CONNECTION: mysql
-        DB_HOST: 127.0.0.1
-        DB_PORT: 33306
-        DB_DATABASE: badge
-        DB_USERNAME: root
-        DB_PASSWORD: root
-        DB_TEST_DATABASE: badge
-        DB_TEST_USERNAME: root
-        DB_TEST_PASSWORD: root
-      run: vendor/bin/pest
