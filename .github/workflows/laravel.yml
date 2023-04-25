@@ -25,7 +25,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Install Linux packages
-      run: sudo apt update && sudo apt install -y --no-install-recommends pyflakes git iverilog arachne-pnr arachne-pnr-chipdb fpga-icestorm fpga-icestorm-chipdb
+      run: sudo apt update && sudo apt install -y --no-install-recommends python3-pip pyflakes3 git iverilog arachne-pnr arachne-pnr-chipdb fpga-icestorm fpga-icestorm-chipdb
     - name: Install PHP
       uses: shivammathur/setup-php@master
       with:
@@ -36,6 +36,8 @@ jobs:
       run: php -v
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+    - name: Install pyflakes with pip
+      run: pip install pyflakes==2.2.0
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist && yarn install --production
     - name: Generate key
@@ -54,7 +56,7 @@ jobs:
         DB_DATABASE: badge
         DB_USERNAME: root
         DB_PASSWORD: root
-      run: php artisan migrate --force
+      run: php artisan migrate --force --seed
     - name: Generate sitemap
       env:
         DB_CONNECTION: mysql
