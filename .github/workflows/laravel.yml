@@ -54,7 +54,7 @@ jobs:
         DB_DATABASE: badge
         DB_USERNAME: root
         DB_PASSWORD: root
-      run: php artisan migrate --force
+      run: php artisan migrate --force --seed
     - name: Generate sitemap
       env:
         DB_CONNECTION: mysql
