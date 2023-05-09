@@ -54,14 +54,14 @@ class Category extends Model
     /**
      * Hidden attributes.
      *
-     * @var array<string>
+     * @var array<int,string>
      */
     protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'id', 'hidden'];
 
     /**
      * Appended attributes.
      *
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $appends = ['eggs'];
 
@@ -82,7 +82,7 @@ class Category extends Model
     /**
      * Get the Projects that belong to this Category has.
      *
-     * @return HasMany
+     * @return HasMany<Project>
      */
     public function projects(): HasMany
     {

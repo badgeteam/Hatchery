@@ -93,7 +93,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'password', 'remember_token', 'google2fa_secret',
@@ -101,6 +101,7 @@ class User extends Authenticatable
 
     /**
      * Get the Projects for the User.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Project>
      */
     public function projects(): HasMany
     {
@@ -109,6 +110,7 @@ class User extends Authenticatable
 
     /**
      * Get the Votes for the User.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Vote>
      */
     public function votes(): HasMany
     {
@@ -117,6 +119,7 @@ class User extends Authenticatable
 
     /**
      * Get the (Project)Warnings for the User.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Warning>
      */
     public function warnings(): HasMany
     {
@@ -125,6 +128,7 @@ class User extends Authenticatable
 
     /**
      * Get the WebauthnKeys for the User.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<WebauthnKey>
      */
     public function webauthnKeys(): HasMany
     {
@@ -134,7 +138,7 @@ class User extends Authenticatable
     /**
      * Collaborations.
      *
-     * @return BelongsToMany
+     * @return BelongsToMany<Project>
      */
     public function collaborations(): BelongsToMany
     {

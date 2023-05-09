@@ -59,7 +59,7 @@ class BadgeProject extends Model
     /**
      * The Project this Badge support status relationship belongs to.
      *
-     * @return BelongsTo
+     * @return BelongsTo<Project, BadgeProject>
      */
     public function project(): BelongsTo
     {
@@ -69,7 +69,7 @@ class BadgeProject extends Model
     /**
      * The Badge this Project support status relationship belongs to.
      *
-     * @return BelongsTo
+     * @return BelongsTo<Badge, BadgeProject>
      */
     public function badge(): BelongsTo
     {

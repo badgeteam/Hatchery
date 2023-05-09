@@ -52,7 +52,7 @@ class PublicController extends Controller
 
             return $this->badge($badge, $request);
         }
-        /** @var Builder $projects */
+        /** @var Builder<Project> $projects */
         $projects = Project::whereHas(
             'versions',
             static function ($query) {
@@ -83,7 +83,7 @@ class PublicController extends Controller
 
     /**
      * @param Request               $request
-     * @param BelongsToMany|Builder $projects
+     * @param BelongsToMany<Project>|Builder<Project> $projects
      * @param string                $badge    = ''
      *
      * @return View

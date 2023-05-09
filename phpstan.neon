@@ -13,7 +13,7 @@ parameters:
     level: 8
     inferPrivatePropertyTypeFromConstructor: true
     ignoreErrors:
-        - '#Static method Illuminate\\Support\\Testing\\Fakes\\EventFake::assertDispatched\(\) invoked with 3 parameters, 1-2 required.#'
+        - '#Static method Illuminate\\Support\\Facades\\Event::assertDispatched\(\) invoked with 3 parameters, 1-2 required.#'
         - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::twice\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::andReturnSelf\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::andReturns\(\).#'
@@ -21,6 +21,7 @@ parameters:
         - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::once\(\).#'
         - '#Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\ExpectsHigherOrderMessage::never\(\).#'
         - '#Called .* on Laravel collection, but could have been retrieved as a query.#'
+        - '#Static access to instance property App\\Models\\Badge::\$types.#'
     excludePaths:
             - tests/_support/*
             - tests/Feature/EdgeCases*

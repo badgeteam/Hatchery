@@ -11,16 +11,18 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * Class ProjectFactory.
  *
+ * @extends Factory<Project>
+ * 
  * @author annejan@badge.team
  */
 class ProjectFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
-     *
-     * @var string
+     * 
+     * @var class-string<\App\Models\Project>
      */
-    protected $model = Project::class;
+    protected $model = \App\Models\Project::class;
 
     /**
      * Define the model's default state.

@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * Class CategoryFactory.
  *
+ * @extends Factory<Category>
+ * 
  * @author annejan@badge.team
  */
 class CategoryFactory extends Factory
@@ -17,7 +19,7 @@ class CategoryFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<\App\Models\Category>
      */
     protected $model = Category::class;
 

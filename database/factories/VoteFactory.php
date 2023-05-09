@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * Class VoteFactory.
  *
+ * @extends Factory<Vote>
+ * 
  * @author annejan@badge.team
  */
 class VoteFactory extends Factory
@@ -18,7 +20,7 @@ class VoteFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<\App\Models\Vote>
      */
     protected $model = Vote::class;
 

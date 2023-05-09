@@ -106,7 +106,7 @@ class Project extends Model
     /**
      * Create with these.
      *
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
@@ -116,7 +116,7 @@ class Project extends Model
     /**
      * Appended magic data.
      *
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $appends = [
         'revision',
@@ -131,7 +131,7 @@ class Project extends Model
     /**
      * Hidden data.
      *
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'created_at',
@@ -156,7 +156,7 @@ class Project extends Model
     /**
      * DateTime conversion for these fields.
      *
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $dates = [
         'created_at', 'updated_at', 'deleted_at', 'published_at',
@@ -165,7 +165,7 @@ class Project extends Model
     /**
      * Forbidden names for apps.
      *
-     * @var array<string>
+     * @var array<int, string>
      */
     public static $forbidden = [
         'os', 'uos', 'badge', 'esp32', 'ussl', 'time', 'utime', 'splash', 'launcher', 'installer', 'ota_update',
@@ -220,7 +220,7 @@ class Project extends Model
     /**
      * Get the User that owns the Project.
      *
-     * @return BelongsTo
+     * @return BelongsTo<User, Project>
      */
     public function user(): BelongsTo
     {
@@ -230,7 +230,7 @@ class Project extends Model
     /**
      * Get the Category this Project belongs to.
      *
-     * @return BelongsTo
+     * @return BelongsTo<Category, Project>
      */
     public function category(): BelongsTo
     {
@@ -240,7 +240,7 @@ class Project extends Model
     /**
      * Get the Versions this Project has.
      *
-     * @return HasMany
+     * @return HasMany<Version>
      */
     public function versions(): HasMany
     {
@@ -250,7 +250,7 @@ class Project extends Model
     /**
      * Get the Votes this Project has.
      *
-     * @return HasMany
+     * @return HasMany<Vote>
      */
     public function votes(): HasMany
     {
@@ -260,7 +260,7 @@ class Project extends Model
     /**
      * Get the Warnings for the Project.
      *
-     * @return HasMany
+     * @return HasMany<Warning>
      */
     public function warnings(): HasMany
     {
@@ -271,7 +271,7 @@ class Project extends Model
      * Get the BadgeProjects for the Project.
      * This contains support state per badge.
      *
-     * @return HasMany
+     * @return HasMany<BadgeProject>
      */
     public function states(): HasMany
     {
@@ -281,7 +281,7 @@ class Project extends Model
     /**
      * Collaborators.
      *
-     * @return BelongsToMany
+     * @return BelongsToMany<User>
      */
     public function collaborators(): BelongsToMany
     {
@@ -299,7 +299,7 @@ class Project extends Model
     }
 
     /**
-     * @return BelongsToMany
+     * @return BelongsToMany<Project>
      */
     public function dependencies(): BelongsToMany
     {
@@ -308,7 +308,7 @@ class Project extends Model
     }
 
     /**
-     * @return BelongsToMany
+     * @return BelongsToMany<Project>
      */
     public function dependants(): BelongsToMany
     {
@@ -317,7 +317,7 @@ class Project extends Model
     }
 
     /**
-     * @return BelongsToMany
+     * @return BelongsToMany<Badge>
      */
     public function badges(): BelongsToMany
     {

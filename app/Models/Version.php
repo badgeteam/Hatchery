@@ -65,14 +65,14 @@ class Version extends Model
     /**
      * Appended magic data.
      *
-     * @var array<string>
+     * @var array<int,string>
      */
     protected $appends = ['published'];
 
     /**
      * Hidden data.
      *
-     * @var array<string>
+     * @var array<int,string>
      */
     protected $hidden = ['git_commit_id'];
 
@@ -95,6 +95,7 @@ class Version extends Model
 
     /**
      * Get the Project this Version belongs to.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Project, \App\Models\Version>
      */
     public function project(): BelongsTo
     {
@@ -103,6 +104,7 @@ class Version extends Model
 
     /**
      * Get the Versions this Project has.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\File>
      */
     public function files(): HasMany
     {
@@ -112,7 +114,7 @@ class Version extends Model
     /**
      * Get the User that owns the Project.
      *
-     * @return BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, \App\Models\Version>
      */
     public function user(): BelongsTo
     {
@@ -128,9 +130,9 @@ class Version extends Model
     }
 
     /**
-     * @param Builder $query
+     * @param Builder<Model> $query
      *
-     * @return Builder
+     * @return Builder<\Illuminate\Database\Eloquent\Model>
      */
     public function scopePublished(Builder $query): Builder
     {
@@ -138,9 +140,9 @@ class Version extends Model
     }
 
     /**
-     * @param Builder $query
+     * @param Builder<Model> $query
      *
-     * @return Builder
+     * @return Builder<\Illuminate\Database\Eloquent\Model>
      */
     public function scopeUnPublished(Builder $query): Builder
     {

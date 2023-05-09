@@ -73,7 +73,8 @@ class Badge extends Model
     }
 
     /**
-     * @return BelongsToMany
+     * @return BelongsToMany<Project>
+     * 
      */
     public function projects(): BelongsToMany
     {
@@ -81,7 +82,7 @@ class Badge extends Model
     }
 
     /**
-     * @return HasMany
+     * @return HasMany<BadgeProject>
      */
     public function states(): HasMany
     {

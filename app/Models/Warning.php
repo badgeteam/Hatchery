@@ -78,7 +78,7 @@ class Warning extends Model
     /**
      * Get the User that owns this Vote.
      *
-     * @return BelongsTo
+     * @return BelongsTo<User, Warning>
      */
     public function user(): BelongsTo
     {
@@ -88,7 +88,7 @@ class Warning extends Model
     /**
      * Get the Project that this Vote is for.
      *
-     * @return BelongsTo
+     * @return BelongsTo<Project, Warning>
      */
     public function project(): BelongsTo
     {

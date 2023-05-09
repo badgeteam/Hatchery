@@ -16,7 +16,7 @@ class TrimStrings extends BaseTrimmer
     /**
      * The names of the attributes that should not be trimmed.
      *
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $except = [
         'password',
