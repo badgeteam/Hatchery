@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * Class BadgeFactory.
  *
  * @extends Factory<Badge>
- * 
  * @author annejan@badge.team
  */
 class BadgeFactory extends Factory

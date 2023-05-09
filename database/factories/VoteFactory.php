@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * Class VoteFactory.
  *
  * @extends Factory<Vote>
- * 
  * @author annejan@badge.team
  */
 class VoteFactory extends Factory

@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * Class FileFactory.
  *
  * @extends Factory<File>
- * 
  * @author annejan@badge.team
  */
 class FileFactory extends Factory

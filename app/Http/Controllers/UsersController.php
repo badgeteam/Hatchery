@@ -62,21 +62,15 @@ class UsersController extends Controller
      */
     public function redirect(Request $request): RedirectResponse
     {
-        if (!is_null($request->user()))
-        {
+        if (!is_null($request->user())) {
             return redirect()->route('users.show', ['user' => $request->user()->getAuthIdentifier()]);
-        } else {
-            // If request is made anonymously, route to the homepage
-            return redirect()->route('home');
-        }
-        
+        } 
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param User $user
-     *
      * @return View
      */
     public function edit(User $user): View

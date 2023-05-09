@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * Class CategoryFactory.
  *
  * @extends Factory<Category>
- * 
  * @author annejan@badge.team
  */
 class CategoryFactory extends Factory

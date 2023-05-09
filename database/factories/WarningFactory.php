@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
  * Class WarningFactory.
  *
  * @extends Factory<Warning>
- * 
  * @author annejan@badge.team
  */
 class WarningFactory extends Factory

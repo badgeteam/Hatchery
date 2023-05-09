@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * Class ProjectFactory.
  *
  * @extends Factory<Project>
- * 
  * @author annejan@badge.team
  */
 class ProjectFactory extends Factory

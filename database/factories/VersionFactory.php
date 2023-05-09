@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * Class VersionFactory.
  *
  * @extends Factory<Version>
- * 
  * @author annejan@badge.team
  */
 class VersionFactory extends Factory

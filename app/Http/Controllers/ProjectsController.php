@@ -184,8 +184,7 @@ class ProjectsController extends Controller
      */
     public function publish(Project $project): RedirectResponse
     {
-        if (!is_null(Auth::user()))
-        {
+        if (!is_null(Auth::user())) {
             PublishProject::dispatch($project, Auth::user());
         }
         
@@ -308,8 +307,7 @@ class ProjectsController extends Controller
                 ->withInput()->withErrors(['No git repo for project.']);
         }
 
-        if (Auth::check() && !is_null(Auth::user()))
-        {
+        if (Auth::check() && !is_null(Auth::user())) {
             UpdateProject::dispatch($project, Auth::user());
         }
 
@@ -348,11 +346,9 @@ class ProjectsController extends Controller
             $project->git = $request->git;
             $project->save();
 
-            if (Auth::check() && !is_null(Auth::user()))
-            {
+            if (Auth::check() && !is_null(Auth::user())) {
                 UpdateProject::dispatch($project, Auth::user());
             }
-            
         } catch (Exception $e) {
             Helpers::delTree($tempFolder);
 
