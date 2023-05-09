@@ -64,7 +64,7 @@ class UsersController extends Controller
     {
         if (!is_null($request->user())) {
             return redirect()->route('users.show', ['user' => $request->user()->getAuthIdentifier()]);
-        } 
+        }
     }
 
     /**

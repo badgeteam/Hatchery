@@ -307,7 +307,7 @@ class ProjectsController extends Controller
                 ->withInput()->withErrors(['No git repo for project.']);
         }
 
-        if (Auth::check() && !is_null(Auth::user())) {
+        if (!is_null(auth()->user())) {
             UpdateProject::dispatch($project, Auth::user());
         }
 
@@ -326,7 +326,8 @@ class ProjectsController extends Controller
      */
     public function import(ProjectStoreRequest $request, Git $repo): RedirectResponse
     {
-        if (Project::where('slug', Str::slug($request->name, '_'))->exists()) {
+        $nameSlug = Str::slug($request->name, '_');
+        if (Project::where('slug', $nameSlug)->exists()) {
             return redirect()->route('projects.import')->withInput()->withErrors(['slug already exists :(']);
         }
         if (Project::isForbidden(Str::slug($request->name, '_'))) {
@@ -346,7 +347,7 @@ class ProjectsController extends Controller
             $project->git = $request->git;
             $project->save();
 
-            if (Auth::check() && !is_null(Auth::user())) {
+            if (!is_null(auth()->user())) {
                 UpdateProject::dispatch($project, Auth::user());
             }
         } catch (Exception $e) {

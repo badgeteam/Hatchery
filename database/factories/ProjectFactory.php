@@ -18,7 +18,7 @@ class ProjectFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
-     * 
+     *
      * @var class-string<\App\Models\Project>
      */
     protected $model = \App\Models\Project::class;
