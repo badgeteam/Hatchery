@@ -65,6 +65,9 @@ class UsersController extends Controller
         if (!is_null($request->user())) {
             return redirect()->route('users.show', ['user' => $request->user()->getAuthIdentifier()]);
         }
+
+        // Return to home if request is made unauthenticated
+        return redirect()->route('home');
     }
 
     /**
