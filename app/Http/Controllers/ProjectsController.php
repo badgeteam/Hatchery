@@ -307,7 +307,7 @@ class ProjectsController extends Controller
                 ->withInput()->withErrors(['No git repo for project.']);
         }
 
-        if (!is_null(auth()->user())) {
+        if (Auth::check() && !is_null(Auth::user())) {
             UpdateProject::dispatch($project, Auth::user());
         }
 
@@ -347,7 +347,7 @@ class ProjectsController extends Controller
             $project->git = $request->git;
             $project->save();
 
-            if (!is_null(auth()->user())) {
+            if (Auth::check() && !is_null(Auth::user())) {
                 UpdateProject::dispatch($project, Auth::user());
             }
         } catch (Exception $e) {
