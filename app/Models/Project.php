@@ -175,6 +175,18 @@ class Project extends Model
     ];
 
     /**
+    * The attributes that should be cast.
+    *
+    * @var array
+    */
+protected $casts = [
+    'created_at' => 'datetime:Y-m-d',
+    'updated_at' => 'datetime:Y-m-d',
+    'deleted_at' => 'datetime:Y-m-d',
+    'published_at' => 'datetime:Y-m-d',
+];
+
+    /**
      * Magical methods that associate a user and make sure projects have an empty __init__.py added.
      */
     public static function boot(): void
