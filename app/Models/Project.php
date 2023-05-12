@@ -154,15 +154,6 @@ class Project extends Model
     ];
 
     /**
-     * DateTime conversion for these fields.
-     *
-     * @var array<int, string>
-     */
-    protected $dates = [
-        'created_at', 'updated_at', 'deleted_at', 'published_at',
-    ];
-
-    /**
      * Forbidden names for apps.
      *
      * @var array<int, string>
@@ -177,7 +168,7 @@ class Project extends Model
     /**
     * The attributes that should be cast.
     *
-    * @var array
+    * @var array<string, string>
     */
 protected $casts = [
     'created_at' => 'datetime:Y-m-d',
