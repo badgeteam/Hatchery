@@ -68,7 +68,7 @@ class File extends Model
     /**
      * Supported extensions.
      *
-     * @var array<string>
+     * @var array<int,string>
      */
     public static $extensions = [
         'py', 'pyc', 'mpy', 'v',
@@ -123,7 +123,7 @@ class File extends Model
     /**
      * File extensions editable by Hatchery.
      *
-     * @var array<string>
+     * @var array<int,string>
      */
     protected $editables = [
         'py',
@@ -136,7 +136,7 @@ class File extends Model
     /**
      * File extensions lintable by Hatchery.
      *
-     * @var array<string>
+     * @var array<int,string>
      */
     protected $lintables = [
         'py',
@@ -148,7 +148,7 @@ class File extends Model
     /**
      * File extensions processable by Hatchery.
      *
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $processables = [
         'v',
@@ -157,7 +157,7 @@ class File extends Model
     /**
      * Appended magic variables.
      *
-     * @var array<string>
+     * @var array<int,string>
      */
     protected $appends = ['editable', 'extension', 'size_of_content'];
 
@@ -188,7 +188,7 @@ class File extends Model
     /**
      * Get the Project Version this File belongs to.
      *
-     * @return BelongsTo
+     * @return BelongsTo<Version, File>
      */
     public function version(): BelongsTo
     {
@@ -198,7 +198,7 @@ class File extends Model
     /**
      * Get the User that owns the Project.
      *
-     * @return BelongsTo
+     * @return BelongsTo<\App\Models\User, File>
      */
     public function user(): BelongsTo
     {

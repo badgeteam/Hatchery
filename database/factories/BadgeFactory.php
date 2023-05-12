@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * Class BadgeFactory.
  *
+ * @extends Factory<Badge>
  * @author annejan@badge.team
  */
 class BadgeFactory extends Factory
@@ -17,7 +18,7 @@ class BadgeFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<\App\Models\Badge>
      */
     protected $model = Badge::class;
 

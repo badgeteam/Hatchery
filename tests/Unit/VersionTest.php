@@ -72,17 +72,17 @@ class VersionTest extends TestCase
         $this->be($user);
         /** @var Version $version */
         $version = Version::factory()->create();
-        /** @var Collection $versions */
+        /** @var Collection<int, Version> $versions */
         $versions = Version::unPublished()->get();
         $this->assertCount(2, $versions);
         $versions = Version::published()->get();
         $this->assertEmpty($versions);
         $version->zip = 'iets anders';
         $version->save();
-        /** @var Collection $versions */
+        /** @var Collection<int, Version> $versions */
         $versions = Version::unPublished()->get();
         $this->assertCount(1, $versions);
-        /** @var Collection $versions */
+        /** @var Collection<int, Version> $versions */
         $versions = Version::published()->get();
         $this->assertCount(1, $versions);
     }

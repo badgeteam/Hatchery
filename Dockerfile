@@ -1,5 +1,5 @@
 # Dockerfile
-FROM php:8.1
+FROM php:8.2
 
 WORKDIR /app
 

@@ -62,14 +62,18 @@ class UsersController extends Controller
      */
     public function redirect(Request $request): RedirectResponse
     {
-        return redirect()->route('users.show', ['user' => $request->user()->getAuthIdentifier()]);
+        if (!is_null($request->user())) {
+            return redirect()->route('users.show', ['user' => $request->user()->getAuthIdentifier()]);
+        }
+
+        // Return to home if request is made unauthenticated
+        return redirect()->route('home');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param User $user
-     *
      * @return View
      */
     public function edit(User $user): View
@@ -142,7 +146,7 @@ class UsersController extends Controller
     /**
      * @param User $user
      *
-     * @return LengthAwarePaginator
+     * @return LengthAwarePaginator<Project>
      */
     private function getProjects(User $user): LengthAwarePaginator
     {

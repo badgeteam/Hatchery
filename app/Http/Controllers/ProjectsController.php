@@ -76,7 +76,7 @@ class ProjectsController extends Controller
 
         if ($search) {
             $projects = $projects->where(
-                function (Builder $query) use ($search) {
+                function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');
                     // @todo perhaps search in README ?
                 }
@@ -184,8 +184,10 @@ class ProjectsController extends Controller
      */
     public function publish(Project $project): RedirectResponse
     {
-        PublishProject::dispatch($project, Auth::user());
-
+        if (!is_null(Auth::user())) {
+            PublishProject::dispatch($project, Auth::user());
+        }
+        
         return redirect()->route('projects.index')->withSuccesses([$project->name . ' is being published.']);
     }
 
@@ -305,7 +307,9 @@ class ProjectsController extends Controller
                 ->withInput()->withErrors(['No git repo for project.']);
         }
 
-        UpdateProject::dispatch($project, Auth::user());
+        if (Auth::check() && !is_null(Auth::user())) {
+            UpdateProject::dispatch($project, Auth::user());
+        }
 
         return redirect()->route('projects.index')->withSuccesses([$project->name . ' is being updated.']);
     }
@@ -322,7 +326,8 @@ class ProjectsController extends Controller
      */
     public function import(ProjectStoreRequest $request, Git $repo): RedirectResponse
     {
-        if (Project::where('slug', Str::slug($request->name, '_'))->exists()) {
+        $nameSlug = Str::slug($request->name, '_');
+        if (Project::where('slug', $nameSlug)->exists()) {
             return redirect()->route('projects.import')->withInput()->withErrors(['slug already exists :(']);
         }
         if (Project::isForbidden(Str::slug($request->name, '_'))) {
@@ -341,7 +346,10 @@ class ProjectsController extends Controller
             $project = $this->storeProjectInfo($request);
             $project->git = $request->git;
             $project->save();
-            UpdateProject::dispatch($project, Auth::user());
+
+            if (Auth::check() && !is_null(Auth::user())) {
+                UpdateProject::dispatch($project, Auth::user());
+            }
         } catch (Exception $e) {
             Helpers::delTree($tempFolder);
 

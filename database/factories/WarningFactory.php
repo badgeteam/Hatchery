@@ -7,10 +7,12 @@ namespace Database\Factories;
 use App\Models\Project;
 use App\Models\Warning;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class WarningFactory.
  *
+ * @extends Factory<Warning>
  * @author annejan@badge.team
  */
 class WarningFactory extends Factory
@@ -18,7 +20,7 @@ class WarningFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<\App\Models\Warning>
      */
     protected $model = Warning::class;
 

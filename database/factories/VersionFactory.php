@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * Class VersionFactory.
  *
+ * @extends Factory<Version>
  * @author annejan@badge.team
  */
 class VersionFactory extends Factory
@@ -18,7 +19,7 @@ class VersionFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<\App\Models\Version>
      */
     protected $model = Version::class;
 

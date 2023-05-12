@@ -80,7 +80,7 @@ class Vote extends Model
     /**
      * Get the User that owns this Vote.
      *
-     * @return BelongsTo
+     * @return BelongsTo<User, Vote>
      */
     public function user(): BelongsTo
     {
@@ -90,7 +90,7 @@ class Vote extends Model
     /**
      * Get the Project that this Vote is for.
      *
-     * @return BelongsTo
+     * @return BelongsTo<Project, Vote>
      */
     public function project(): BelongsTo
     {
