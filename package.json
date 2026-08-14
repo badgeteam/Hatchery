@@ -5,6 +5,9 @@
   "author": "Anne Jan Brouwer <brouwer@annejan.com>",
   "private": false,
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "vite",
     "watch": "vite build --watch",

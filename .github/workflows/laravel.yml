@@ -98,9 +98,14 @@ jobs:
         DB_TEST_USERNAME: root
         DB_TEST_PASSWORD: root
       run: vendor/bin/pest --coverage-clover coverage/clover.xml
-    - name: Check the coverage report exists
+    - name: JavaScript coverage
       if: matrix.php-versions == '8.4'
-      run: test -s coverage/clover.xml && grep -q '<coverage' coverage/clover.xml
+      run: npm run coverage
+    - name: Check the coverage reports exist
+      if: matrix.php-versions == '8.4'
+      run: |
+        test -s coverage/clover.xml && grep -q '<coverage' coverage/clover.xml
+        test -s coverage/js/lcov.info && grep -q '^SF:' coverage/js/lcov.info
     - name: Report coverage
       # One upload is enough; the matrix would otherwise send the same numbers
       # twice. Pull requests from forks cannot see the token, so skip those
@@ -112,7 +117,10 @@ jobs:
       uses: qltysh/qlty-action/coverage@v2
       with:
         token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-        files: coverage/clover.xml
+        # Comma or newline separated; the action rejects spaces.
+        files: |
+          coverage/clover.xml
+          coverage/js/lcov.info
         # The action defaults to swallowing its own errors. The first run here
         # went green while uploading nothing, logging "Either 'oidc' or 'token'
         # must be provided", because the secret did not exist yet. An upload
