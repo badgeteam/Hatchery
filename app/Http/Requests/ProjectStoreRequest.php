@@ -32,9 +32,13 @@ class ProjectStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'        => 'required|unique:projects',
-            'description' => 'required|sometimes',
-            'git'         => 'required|sometimes',
+            'name' => 'required|unique:projects',
+            // The description textarea is always submitted, so "sometimes"
+            // never made it optional; an empty one just failed "required".
+            // An empty description simply means no README.md is created.
+            'description' => 'nullable|string',
+            // Only the import form posts this, and there it is mandatory.
+            'git'         => 'sometimes|required',
             'category_id' => 'required|exists:categories,id',
         ];
     }
