@@ -90,6 +90,61 @@ class FilesTest extends TestCase
     }
 
     /**
+     * A file at the advertised ceiling has to survive the whole chain: PHP's
+     * upload limits, MariaDB's max_allowed_packet, and the column it is stored
+     * in, which used to be a 16 MiB MEDIUMBLOB (#127).
+     */
+    public function testUploadLargeFile(): void
+    {
+        $megabytes = 20;
+        $path = sys_get_temp_dir() . '/' . Str::random(8) . '.bin';
+        file_put_contents($path, str_repeat(random_bytes(1024), $megabytes * 1024));
+        $this->assertGreaterThan(16 * 1024 * 1024, filesize($path));
+
+        $upload = new UploadedFile($path, 'big.bin', 'application/octet-stream', null, true);
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var Version $lastVer */
+        $lastVer = $project->versions->last();
+
+        $this->actingAs($user)
+            ->post('/upload/' . $lastVer->id, ['file' => $upload])
+            ->assertStatus(200);
+
+        /** @var File $stored */
+        $stored = File::where('name', 'big.bin')->firstOrFail();
+        $this->assertEquals(filesize($path), strlen((string) $stored->content));
+
+        unlink($path);
+    }
+
+    /**
+     * Beyond the ceiling the user gets a validation error rather than a bare
+     * 413 from the web server.
+     */
+    public function testUploadRejectsFilesOverTheLimit(): void
+    {
+        // fake()->create declares the size without writing the bytes.
+        $upload = UploadedFile::fake()->create('too-big.bin', (File::MAX_UPLOAD_MEGABYTES * 1024) + 1024);
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var Version $lastVer */
+        $lastVer = $project->versions->last();
+
+        $this->actingAs($user)
+            ->post('/upload/' . $lastVer->id, ['file' => $upload])
+            ->assertSessionHasErrors('file');
+
+        $this->assertNull(File::where('name', 'too-big.bin')->first());
+    }
+
+    /**
      * Only the badge icon is touched; other images are stored as uploaded.
      */
     public function testUploadLeavesOtherImagesAlone(): void

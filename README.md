@@ -171,6 +171,23 @@ vendor/bin/phpcs -q --warning-severity=0
 vendor/bin/phpcbf
 ```
 
+## Upload limits
+
+Files are stored in the database, so a large upload has to get past four
+separate limits. The Docker image and `docker-compose.yaml` set all of these;
+a hand rolled deployment needs them too.
+
+| limit | where | needs to be |
+| --- | --- | --- |
+| `upload_max_filesize` | php.ini | at least the ceiling |
+| `post_max_size` | php.ini | a little above it |
+| `memory_limit` | php.ini | file is read into a string |
+| `max_allowed_packet` | MariaDB | one file is one big `INSERT` |
+
+The ceiling itself is `App\Models\File::MAX_UPLOAD_MEGABYTES`, which the
+uploader and the validation rule both read, so raising it is a one line change
+plus matching server settings.
+
 ## Licensing
 
 Hatchery follows the [REUSE](https://reuse.software/spec-3.3/) specification, so

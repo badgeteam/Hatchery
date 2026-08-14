@@ -36,7 +36,13 @@ jobs:
       with:
         php-version: ${{ matrix.php-versions }}
         extensions: gd, gmp, zip, intl, exif, pcntl, mbstring, fileinfo, xdebug
-        ini-values: "post_max_size=256M"
+        # memory_limit is deliberately left at the setup-php default of -1:
+        # pinning it to the runtime value caps phpstan, which needs far more.
+        ini-values: "upload_max_filesize=32M, post_max_size=40M"
+    - name: Allow large uploads
+      # A 32 MB file is one big INSERT and the server default is 16 MB. A
+      # service container cannot be given a command, so set it once it is up.
+      run: docker run --rm --network host mariadb:latest mariadb -h 127.0.0.1 -P 33306 -uroot -proot -e "SET GLOBAL max_allowed_packet = 67108864;"
     - name: Check PHP Version
       run: php -v
     - name: Install Node.js
@@ -125,6 +131,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Allow large uploads
+        run: docker run --rm --network host mariadb:latest mariadb -h 127.0.0.1 -P 33306 -uroot -proot -e "SET GLOBAL max_allowed_packet = 67108864;"
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Install Dependencies

@@ -37,6 +37,8 @@ services:
 
   mariadb:
     image: mariadb
+    # A 32 MB file is a single large INSERT; the 16 MB default rejects it.
+    command: --max-allowed-packet=64M
     volumes:
       - ./database/mariadb:/var/lib/mysql
     environment:
