@@ -150,6 +150,47 @@ class ProjectsGitTest extends TestCase
         $this->assertCount(1, $version->files()->where('name', '__init__.py')->get());
     }
 
+    /**
+     * The import clone directory is keyed on the project name, so a leftover
+     * from an earlier import of that name made git refuse to clone and the
+     * user saw a temp directory error (#102).
+     */
+    public function testProjectsImportGitClearsStaleTempFolder(): void
+    {
+        $name = $this->faker->name;
+        $importFolder = sys_get_temp_dir() . '/' . Str::slug($name);
+        $updateFolder = sys_get_temp_dir() . '/' . Str::slug($name, '_');
+        mkdir($updateFolder);
+
+        // Left behind by an earlier import of the same name.
+        mkdir($importFolder);
+        file_put_contents($importFolder . '/leftover.txt', 'stale');
+
+        $hash = $this->faker->sha1;
+        $mockRepo = $this->mock(GitRepository::class);
+        $mockRepo->expects('getLastCommitId')->twice()->andReturns(new CommitId($hash));
+        $this->app->instance(GitRepository::class, $mockRepo);
+        $mockGit = $this->mock(Git::class);
+        $mockGit->expects('cloneRepository')->twice()->andReturns($mockRepo);
+        $this->app->instance(Git::class, $mockGit);
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
+
+        $response = $this->actingAs($user)->call(
+            'post',
+            '/import-git',
+            ['name' => $name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']
+        );
+
+        $response->assertRedirect('/projects/')->assertSessionHas('successes');
+        // Cleared before cloning, and not left behind for the next import.
+        $this->assertDirectoryDoesNotExist($importFolder);
+
+        Helpers::delTree($updateFolder);
+    }
+
     public function testProjectsStoreGitTooLong(): void
     {
         $name = $this->faker->name;
