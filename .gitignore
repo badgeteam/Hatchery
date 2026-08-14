@@ -37,5 +37,6 @@ _ide_helper.php
 /storage/api-docs
 /database/mariadb
 laravel-echo-server.*
+!laravel-echo-server.json.example
 /public/sw.js.LICENSE.txt
 /resources/views/vendor

@@ -1,0 +1,33 @@
+{
+	"authHost": "https://hatchery.example.com",
+	"authEndpoint": "/broadcasting/auth",
+	"clients": [],
+	"database": "redis",
+	"databaseConfig": {
+		"redis": {
+			"host": "127.0.0.1",
+			"port": 6379,
+			"keyPrefix": "hatchery-database-"
+		}
+	},
+	"devMode": false,
+	"host": null,
+	"port": "6001",
+	"protocol": "https",
+	"socketio": {},
+	"secureOptions": 67108864,
+	"sslCertPath": "/etc/letsencrypt/live/hatchery.example.com/cert.pem",
+	"sslKeyPath": "/etc/letsencrypt/live/hatchery.example.com/privkey.pem",
+	"sslCertChainPath": "/etc/letsencrypt/live/hatchery.example.com/chain.pem",
+	"sslPassphrase": "",
+	"subscribers": {
+		"http": true,
+		"redis": true
+	},
+	"apiOriginAllow": {
+		"allowCors": false,
+		"allowOrigin": "",
+		"allowMethods": "",
+		"allowHeaders": ""
+	}
+}
