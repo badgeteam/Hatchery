@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
  * @property int         $id
  * @property int         $user_id
  * @property int         $project_id
- * @property string      $type
+ * @property string|null $type
  * @property string|null $comment
  * @property Carbon|null $deleted_at
  * @property Carbon|null $created_at
@@ -49,12 +49,13 @@ use Illuminate\Support\Facades\Auth;
 class Vote extends Model
 {
     use SoftDeletes;
+    /** @use HasFactory<VoteFactory> */
     use HasFactory;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $fillable = [
         'project_id', 'type',
@@ -80,7 +81,7 @@ class Vote extends Model
     /**
      * Get the User that owns this Vote.
      *
-     * @return BelongsTo
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -90,7 +91,7 @@ class Vote extends Model
     /**
      * Get the Project that this Vote is for.
      *
-     * @return BelongsTo
+     * @return BelongsTo<Project, $this>
      */
     public function project(): BelongsTo
     {

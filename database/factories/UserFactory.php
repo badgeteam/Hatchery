@@ -13,13 +13,14 @@ use Illuminate\Support\Carbon;
  * Class UserFactory.
  *
  * @author annejan@badge.team
+ * @extends Factory<User>
  */
 class UserFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<User>
      */
     protected $model = User::class;
 

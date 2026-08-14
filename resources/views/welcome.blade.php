@@ -113,21 +113,24 @@
 @endsection
 @section('script')
 	<script>
-		$(document).ready(function () {
-			$('#badge').change(function () {
-				if ($(this).val()) {
-					window.location.href = '{{ route('splash') }}/badge/' + $(this).val() {!! $category ? " + '?category=$category'" : "" !!};
-				} else {
-					window.location.href = '{{ route('splash') . ($category ? "?category=$category" : "") }}';
-				}
-			})
-			$('#category').change(function () {
-				if ($(this).val()) {
-					window.location.href = '{{ url()->current() }}?category=' + $(this).val();
-				} else {
-					window.location.href = '{{ url()->current() }}';
-				}
-			})
-		})
+		// jQuery is loaded by the deferred module bundle, so wait for it.
+		document.addEventListener('DOMContentLoaded', function () {
+				$(document).ready(function () {
+					$('#badge').change(function () {
+						if ($(this).val()) {
+							window.location.href = '{{ route('splash') }}/badge/' + $(this).val() {!! $category ? " + '?category=$category'" : "" !!};
+						} else {
+							window.location.href = '{{ route('splash') . ($category ? "?category=$category" : "") }}';
+						}
+					})
+					$('#category').change(function () {
+						if ($(this).val()) {
+							window.location.href = '{{ url()->current() }}?category=' + $(this).val();
+						} else {
+							window.location.href = '{{ url()->current() }}';
+						}
+					})
+				})
+		});
 	</script>
 @endsection

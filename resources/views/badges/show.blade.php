@@ -70,13 +70,16 @@
         @auth
             window.keymap = "{{ Auth::user()->editor }}";
         @endauth
+			// jQuery is loaded by the deferred module bundle, so wait for it.
+			document.addEventListener('DOMContentLoaded', function () {
 				// Delete resource
-			$('button[name="delete-resource"]').on('click', function (e) {
-				e.preventDefault()
-				var $form = $(this).closest('form')
-				$('#confirm-delete').modal({ backdrop: 'static', keyboard: false }).one('click', '#delete', function (e) {
-					$form.trigger('submit')
+				$('button[name="delete-resource"]').on('click', function (e) {
+					e.preventDefault()
+					var $form = $(this).closest('form')
+					$('#confirm-delete').modal({ backdrop: 'static', keyboard: false }).one('click', '#delete', function (e) {
+						$form.trigger('submit')
+					})
 				})
-			})
+			});
     </script>
 @endsection

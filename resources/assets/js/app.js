@@ -1,18 +1,24 @@
-/* global require */
-
 /**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
+ * First we will load all of this project's JavaScript dependencies. It is a
+ * great starting point when building robust, powerful web applications
+ * using Laravel.
  */
-require('./bootstrap');
+import './bootstrap';
+import { blankFrame, framesToContent, parseIconContent, pixelToHexA } from './icon';
 
-window.keymap = 'default';
+// A blade may already have set this from the user's preference.
+window.keymap = window.keymap || 'default';
 
 const framebuffer = [];
 let frames;
 let currentFrame = 0;
 let editor;
+// Filled in once ./editor has been loaded, which only happens on pages that
+// actually render one.
+let editorSetValue = function () {};
+let editorGetValue = function () {
+	return '';
+};
 
 window.drawIcon = function () {
 	let r = 0, p = 0;
@@ -40,10 +46,7 @@ window.gotoFrame = function (num) {
 
 window.addFrame = function () {
 	const newFrame = frames.length;
-	frames[newFrame] = [];
-	for (let p = 0; p < 64; p++) {
-		frames[newFrame][p] = '0x00000000';
-	}
+	frames[newFrame] = blankFrame();
 	window.addFrameButton(newFrame);
 	window.framesToContent();
 };
@@ -71,165 +74,66 @@ window.addFrameButton = function (index) {
 };
 
 window.framesToContent = function () {
-	let content = 'icon = (';
-	let first = true;
-	frames.forEach(function (frame) {
-		if (!first) {
-			content += ', ';
-		} else {
-			first = false;
-		}
-		content += '[';
-		let firstPixel = true;
-		frame.forEach(function (pixel) {
-			if (!firstPixel) {
-				content += ', ';
-			} else {
-				firstPixel = false;
-			}
-			content += pixel;
-		});
-		content += ']';
-	});
-	content += ', ' + frames.length + ')';
-	editor.setValue(content);
+	editorSetValue(editor, framesToContent(frames));
 };
 
 window.pixelToHexA = function (rgba) {
-	let remove = 5;
-	if (rgba.indexOf('rgba') === -1) {
-		remove = 4;
-	}
-	let sep = rgba.indexOf(',') > -1 ? ',' : ' ';
-	rgba = rgba.substr(remove).split(')')[0].split(sep);
-	if (rgba.indexOf('/') > -1) {
-		rgba.splice(3,1);
-	}
-	for (let R in rgba) {
-		let r = rgba[R];
-		if (r.indexOf('%') > -1) {
-			let p = r.substr(0,r.length - 1) / 100;
-			if (R < 3) {
-				rgba[R] = Math.round(p * 255);
-			} else {
-				rgba[R] = p;
-			}
-		}
-	}
-	if (isNaN(rgba[0])) {
-		rgba[0] = 0;
-	}
-	if (isNaN(rgba[1])) {
-		rgba[1] = 0;
-	}
-	if (isNaN(rgba[2])) {
-		rgba[2] = 0;
-	}
-	if (isNaN(rgba[3])) {
-		rgba[3] = 1;
-	}
-	let r = (+rgba[0]).toString(16),
-		g = (+rgba[1]).toString(16),
-		b = (+rgba[2]).toString(16),
-		a = Math.round(+rgba[3] * 255).toString(16);
-	if (r.length === 1) {
-		r = '0' + r;
-	}
-	if (g.length === 1) {
-		g = '0' + g;
-	}
-	if (b.length === 1) {
-		b = '0' + b;
-	}
-	if (a.length === 1) {
-		a = '0' + a;
-	}
-	return ('0x' + r + g + b + a);
+	return pixelToHexA(rgba);
 };
 
 window.lintFile = function () {
 	const form = document.getElementById('content_form');
 	const lintApi = form.getAttribute('action').replace('files', 'lint-content');
 	window.$.post(lintApi, {
-		file_content: editor.getValue(),
+		file_content: editorGetValue(editor),
 		_token: window.Laravel.csrfToken
 	});
 };
 
-window.onload = function () {
+window.addEventListener('load', async function () {
 	const ext = document.getElementById('extension');
-	let langmode = 'python';
-	if (ext) {
-		if (ext.getAttribute('value') === 'json') {
-			langmode = 'javascript';
-		} else if (ext.getAttribute('value') === 'v') {
-			langmode = 'verilog';
-		} else if (ext.getAttribute('value') === 'md' || ext.getAttribute('value') === 'txt') {
-			langmode = 'markdown';
-		} else if (ext.getAttribute('value') === 'sh') {
-			langmode = 'shell';
-		}
-	}
+	const extension = ext ? ext.getAttribute('value') : null;
 
-	[
-		'content',
-		'commands',
-		'constraints'
-	].forEach(function (field) {
-		if (document.getElementById(field)) {
-			window.CodeMirror = require([
-				'../../../node_modules/codemirror/lib/codemirror',
-				'../../../node_modules/codemirror/mode/python/python',
-				'../../../node_modules/codemirror/mode/javascript/javascript',
-				'../../../node_modules/codemirror/mode/markdown/markdown',
-				'../../../node_modules/codemirror/mode/verilog/verilog',
-				'../../../node_modules/codemirror/mode/shell/shell',
-				'../../../node_modules/codemirror/addon/dialog/dialog',
-				'../../../node_modules/codemirror/addon/search/searchcursor',
-				'../../../node_modules/codemirror/keymap/vim',
-				'../../../node_modules/codemirror/keymap/sublime',
-				'../../../node_modules/codemirror/keymap/emacs'
-			], function (CodeMirror) {
-				editor = CodeMirror.fromTextArea(document.getElementById(field), {
-					lineNumbers: true,
-					mode: langmode,
-					showCursorWhenSelecting: true,
-					indentWithTabs: true,
-					keyMap: window.keymap,
-					json: true,
-					theme: (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'ambiance' : ''
+	const fields = ['content', 'commands', 'constraints'];
+	const needsEditor = fields.some(function (field) {
+		return document.getElementById(field) || document.getElementById(field + '-readonly');
+	});
+
+	if (needsEditor) {
+		// CodeMirror is a large dependency, so it is only fetched on the pages
+		// that show an editor rather than on every page of the site.
+		const cm = await import('./editor');
+		editorSetValue = cm.setValue;
+		editorGetValue = cm.getValue;
+
+		fields.forEach(function (field) {
+			const editable = document.getElementById(field);
+			if (editable) {
+				editor = cm.createEditor(editable, {
+					language: cm.languageFor(extension),
+					keyMap: window.keymap
 				});
-			});
-			// Enable navigation prompt
-			window.onbeforeunload = function () {
-				return true;
-			};
-			const form = document.getElementById('content_form');
-			if (form) {
-				form.addEventListener('submit', function () {
-					window.onbeforeunload = null;
+				// Enable navigation prompt
+				window.onbeforeunload = function () {
+					return true;
+				};
+				const form = document.getElementById('content_form');
+				if (form) {
+					form.addEventListener('submit', function () {
+						window.onbeforeunload = null;
+					});
+				}
+			}
+
+			const readonly = document.getElementById(field + '-readonly');
+			if (readonly) {
+				cm.createEditor(readonly, {
+					language: cm.languageFor(extension),
+					readOnly: true
 				});
 			}
-		}
-
-		if (document.getElementById(field + '-readonly')) {
-			window.CodeMirror = require([
-				'../../../node_modules/codemirror/lib/codemirror',
-				'../../../node_modules/codemirror/mode/python/python',
-				'../../../node_modules/codemirror/mode/javascript/javascript',
-				'../../../node_modules/codemirror/mode/markdown/markdown',
-				'../../../node_modules/codemirror/mode/verilog/verilog',
-				'../../../node_modules/codemirror/mode/shell/shell'
-			], function (CodeMirror) {
-				CodeMirror.fromTextArea(document.getElementById(field + '-readonly'), {
-					lineNumbers: true,
-					mode: langmode,
-					readOnly: true,
-					theme: (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'ambiance' : ''
-				});
-			});
-		}
-	});
+		});
+	}
 	if (document.getElementById('pixels')) {
 		let icon;
 		let readOnly = true;
@@ -239,35 +143,14 @@ window.onload = function () {
 		} else {
 			icon = document.getElementById('content-readonly');
 		}
-		let data = icon.innerHTML.trim();
-		if (data.startsWith('icon = ')) {
-			data = data.replace('icon = (', '');
-			data = data.replace(')','');
-			let numFrames = parseInt(data.match(/[0-9]+?$/)[0], 10);
-			data = data.replace(', ' + numFrames, '');
-			if (numFrames > 0) {
-				frames = data.split('],');
-				frames.forEach(function (frame, index) {
-					frame = frame.trim();
-					frame = frame.replace('[', '');
-					frame = frame.replace(']', '');
-					frame = frame.trim();
-					frame = frame.split(',');
-					frame.forEach(function (pixel, index) {
-						frame[index] = pixel.trim();
-					});
-					frames[index] = frame;
-					currentFrame = index;
-					window.addFrameButton(index);
-				});
-			} else if (data.length === 0) {
-				frames = [];
-				for (let p = 0; p < 64; p++) {
-					frames[currentFrame][p] = '0x00000000';
-				}
-			}
+		const parsed = parseIconContent(icon.innerHTML);
+		if (parsed !== null) {
+			frames = parsed.frames;
+			frames.forEach(function (frame, index) {
+				window.addFrameButton(index);
+			});
 			currentFrame = 0;
-			if (frames.length !== numFrames) {
+			if (parsed.corrupt) {
 				console.warn('Data corrupted!');
 			} else {
 				for (let r = 0; r < 8; r++) {
@@ -290,7 +173,7 @@ window.onload = function () {
 			}
 			if (!readOnly) {
 				const parentBasic = document.getElementById('colour'),
-					popupBasic = new window.Picker.default(parentBasic);
+					popupBasic = new window.Picker(parentBasic);
 				popupBasic.onChange = function (color) {
 					parentBasic.style.backgroundColor = color.rgbaString;
 				};
@@ -317,4 +200,4 @@ window.onload = function () {
                     '</div>';
 			});
 	}
-};
+});

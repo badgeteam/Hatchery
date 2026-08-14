@@ -11,21 +11,22 @@ use App\Models\Project;
 use App\Models\Version;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
 class MchController extends Controller
 {
     /**
      * List the available devices.
      *
-     * @OA\Get(
-     *   path="/v2/devices",
-     *   tags={"MCH2022"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/v2/devices',
+        tags: ['MCH2022'],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function devices(): JsonResponse
     {
         $devices = [];
@@ -46,21 +47,24 @@ class MchController extends Controller
     /**
      * Get the types of apps a device supports.
      *
-     * @OA\Get(
-     *   path="/v2/{device}/types",
-     * @OA\Parameter(
-     *     name="device",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="mch2022")
-     *   ),
-     *   tags={"MCH2022"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @param string $device
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/v2/{device}/types',
+        tags: ['MCH2022'],
+        parameters: [
+            new OA\Parameter(
+                name: 'device',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'mch2022'),
+            ),
+        ],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function types(string $device): JsonResponse
     {
         /** @var Badge $badge */
@@ -71,28 +75,31 @@ class MchController extends Controller
     /**
      * Get the types of apps a device supports.
      *
-     * @OA\Get(
-     *   path="/v2/{device}/{type}/categories",
-     * @OA\Parameter(
-     *     name="device",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="mch2022")
-     *   ),
-     * @OA\Parameter(
-     *     name="type",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="esp32")
-     *   ),
-     *   tags={"MCH2022"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @param string $device
      * @param string $type
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/v2/{device}/{type}/categories',
+        tags: ['MCH2022'],
+        parameters: [
+            new OA\Parameter(
+                name: 'device',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'mch2022'),
+            ),
+            new OA\Parameter(
+                name: 'type',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'esp32'),
+            ),
+        ],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function categories(string $device, string $type): JsonResponse
     {
         /** @var Badge $badge */
@@ -120,40 +127,42 @@ class MchController extends Controller
     /**
      * Get the apps from a device / type / category
      *
-     * @OA\Get(
-     *   path="/v2/{device}/{type}/{category}",
-     * @OA\Parameter(
-     *     name="device",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="mch2022")
-     *   ),
-     * @OA\Parameter(
-     *     name="type",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="esp32")
-     *   ),
-     * @OA\Parameter(
-     *     name="category",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="fun")
-     *   ),
-     *   tags={"MCH2022"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @param string $device
      * @param string $type
      * @param string $category
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/v2/{device}/{type}/{category}',
+        tags: ['MCH2022'],
+        parameters: [
+            new OA\Parameter(
+                name: 'device',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'mch2022'),
+            ),
+            new OA\Parameter(
+                name: 'type',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'esp32'),
+            ),
+            new OA\Parameter(
+                name: 'category',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'fun'),
+            ),
+        ],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function apps(string $device, string $type, string $category): JsonResponse
     {
         /** @var Badge $badge */
         $badge = Badge::whereSlug($device)->firstOrFail();
-        /** @var Category $category */
         $categoryId = Category::whereSlug($category)->firstOrFail()->id;
         $apps = [];
         /** @var Project $project */
@@ -174,42 +183,45 @@ class MchController extends Controller
     /**
      * Get the apps from a device / type / category
      *
-     * @OA\Get(
-     *   path="/v2/{device}/{type}/{category}/{app}",
-     * @OA\Parameter(
-     *     name="device",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="mch2022")
-     *   ),
-     * @OA\Parameter(
-     *     name="type",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="esp32")
-     *   ),
-     * @OA\Parameter(
-     *     name="category",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="fun")
-     *   ),
-     * @OA\Parameter(
-     *     name="app",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="game_of_life")
-     *   ),
-     *   tags={"MCH2022"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @param string $device
      * @param string $type
      * @param string $category
      * @param string $app
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/v2/{device}/{type}/{category}/{app}',
+        tags: ['MCH2022'],
+        parameters: [
+            new OA\Parameter(
+                name: 'device',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'mch2022'),
+            ),
+            new OA\Parameter(
+                name: 'type',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'esp32'),
+            ),
+            new OA\Parameter(
+                name: 'category',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'fun'),
+            ),
+            new OA\Parameter(
+                name: 'app',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'game_of_life'),
+            ),
+        ],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function app(string $device, string $type, string $category, string $app): JsonResponse
     {
         /** @var Badge $badge */
@@ -261,42 +273,6 @@ class MchController extends Controller
     /**
      * Get app file content
      *
-     * @OA\Get(
-     *   path="/v2/{device}/{type}/{category}/{app}/{file}",
-     * @OA\Parameter(
-     *     name="device",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="mch2022")
-     *   ),
-     * @OA\Parameter(
-     *     name="type",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="esp32")
-     *   ),
-     * @OA\Parameter(
-     *     name="category",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="fun")
-     *   ),
-     * @OA\Parameter(
-     *     name="app",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="game_of_life")
-     *   ),
-     * @OA\Parameter(
-     *     name="file",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="file.py")
-     *   ),
-     *   tags={"MCH2022"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @param string $device
      * @param string $type
      * @param string $category
@@ -304,6 +280,45 @@ class MchController extends Controller
      * @param string $name
      * @return Response|JsonResponse
      */
+    #[OA\Get(
+        path: '/v2/{device}/{type}/{category}/{app}/{file}',
+        tags: ['MCH2022'],
+        parameters: [
+            new OA\Parameter(
+                name: 'device',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'mch2022'),
+            ),
+            new OA\Parameter(
+                name: 'type',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'esp32'),
+            ),
+            new OA\Parameter(
+                name: 'category',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'fun'),
+            ),
+            new OA\Parameter(
+                name: 'app',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'game_of_life'),
+            ),
+            new OA\Parameter(
+                name: 'file',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'file.py'),
+            ),
+        ],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function file(
         string $device,
         string $type,

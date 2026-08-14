@@ -184,7 +184,9 @@ class ProjectsController extends Controller
      */
     public function publish(Project $project): RedirectResponse
     {
-        PublishProject::dispatch($project, Auth::user());
+        /** @var User $user */
+        $user = Auth::user();
+        PublishProject::dispatch($project, $user);
 
         return redirect()->route('projects.index')->withSuccesses([$project->name . ' is being published.']);
     }
@@ -305,7 +307,9 @@ class ProjectsController extends Controller
                 ->withInput()->withErrors(['No git repo for project.']);
         }
 
-        UpdateProject::dispatch($project, Auth::user());
+        /** @var User $user */
+        $user = Auth::user();
+        UpdateProject::dispatch($project, $user);
 
         return redirect()->route('projects.index')->withSuccesses([$project->name . ' is being updated.']);
     }
@@ -341,7 +345,9 @@ class ProjectsController extends Controller
             $project = $this->storeProjectInfo($request);
             $project->git = $request->git;
             $project->save();
-            UpdateProject::dispatch($project, Auth::user());
+            /** @var User $user */
+            $user = Auth::user();
+            UpdateProject::dispatch($project, $user);
         } catch (Exception $e) {
             Helpers::delTree($tempFolder);
 

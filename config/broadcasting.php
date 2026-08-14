@@ -2,57 +2,25 @@
 
 declare(strict_types=1);
 
+/*
+|--------------------------------------------------------------------------
+| Broadcast Connections
+|--------------------------------------------------------------------------
+|
+| Laravel dropped the "redis" broadcast connection from its shipped defaults,
+| but Hatchery broadcasts over Redis into laravel-echo-server, so it is
+| declared here. The reverb, pusher, ably, log and null connections are
+| merged in from the framework defaults.
+|
+*/
+
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Default Broadcaster
-    |--------------------------------------------------------------------------
-    |
-    | This option controls the default broadcaster that will be used by the
-    | framework when an event needs to be broadcast. You may set this to
-    | any of the connections defined in the "connections" array below.
-    |
-    | Supported: "pusher", "redis", "log", "null"
-    |
-    */
-
-    'default' => env('BROADCAST_DRIVER', 'null'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Broadcast Connections
-    |--------------------------------------------------------------------------
-    |
-    | Here you may define all of the broadcast connections that will be used
-    | to broadcast events to other systems or over websockets. Samples of
-    | each available type of connection are provided inside this array.
-    |
-    */
 
     'connections' => [
 
-        'pusher' => [
-            'driver'  => 'pusher',
-            'key'     => env('PUSHER_APP_KEY'),
-            'secret'  => env('PUSHER_APP_SECRET'),
-            'app_id'  => env('PUSHER_APP_ID'),
-            'options' => [
-                //
-            ],
-        ],
-
         'redis' => [
             'driver'     => 'redis',
-            'connection' => 'default',
-        ],
-
-        'log' => [
-            'driver' => 'log',
-        ],
-
-        'null' => [
-            'driver' => 'null',
+            'connection' => env('BROADCAST_REDIS_CONNECTION', 'default'),
         ],
 
     ],

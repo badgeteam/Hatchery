@@ -37,7 +37,7 @@ use LaravelWebauthn\Models\WebauthnKey;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $email_verified_at
- * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read Collection|Project[] $projects
  * @property-read int|null $projects_count
@@ -79,12 +79,13 @@ class User extends Authenticatable
 {
     use Notifiable;
     use SoftDeletes;
+    /** @use HasFactory<UserFactory> */
     use HasFactory;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $fillable = [
         'name', 'email', 'password', 'editor',
@@ -93,7 +94,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $hidden = [
         'password', 'remember_token', 'google2fa_secret',
@@ -101,6 +102,7 @@ class User extends Authenticatable
 
     /**
      * Get the Projects for the User.
+     * @return HasMany<Project, $this>
      */
     public function projects(): HasMany
     {
@@ -109,6 +111,7 @@ class User extends Authenticatable
 
     /**
      * Get the Votes for the User.
+     * @return HasMany<Vote, $this>
      */
     public function votes(): HasMany
     {
@@ -117,6 +120,7 @@ class User extends Authenticatable
 
     /**
      * Get the (Project)Warnings for the User.
+     * @return HasMany<Warning, $this>
      */
     public function warnings(): HasMany
     {
@@ -125,6 +129,7 @@ class User extends Authenticatable
 
     /**
      * Get the WebauthnKeys for the User.
+     * @return HasMany<WebauthnKey, $this>
      */
     public function webauthnKeys(): HasMany
     {
@@ -134,7 +139,7 @@ class User extends Authenticatable
     /**
      * Collaborations.
      *
-     * @return BelongsToMany
+     * @return BelongsToMany<Project, $this>
      */
     public function collaborations(): BelongsToMany
     {

@@ -1,8 +1,15 @@
-/* global require */
+import Picker from 'vanilla-picker';
+import _ from 'lodash';
+import $ from 'jquery';
+import 'bootstrap';
+import Echo from 'laravel-echo';
+import { io } from 'socket.io-client';
+import axios from 'axios';
+import { Dropzone } from 'dropzone';
 
-window.Picker = require('vanilla-picker');
+window.Picker = Picker;
 
-window._ = require('lodash');
+window._ = _;
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -10,16 +17,9 @@ window._ = require('lodash');
  * code may be modified to fit the specific needs of your application.
  */
 
-try {
-	window.$ = window.jQuery = require('jquery');
-	require('bootstrap');
-} catch (e) {
-	alert(e);
-}
+window.$ = window.jQuery = $;
 
-import Echo from 'laravel-echo';
-
-window.io = require('socket.io-client');
+window.io = io;
 
 window.Echo = new Echo({
 	broadcaster: 'socket.io',
@@ -32,9 +32,9 @@ window.Echo = new Echo({
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios');
+window.axios = axios;
 
 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = window.Laravel.csrfToken;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-window.Dropzone = require('dropzone').Dropzone;
+window.Dropzone = Dropzone;

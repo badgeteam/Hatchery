@@ -12,13 +12,14 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * Class FileFactory.
  *
  * @author annejan@badge.team
+ * @extends Factory<File>
  */
 class FileFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<File>
      */
     protected $model = File::class;
 

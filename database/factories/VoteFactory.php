@@ -12,13 +12,14 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * Class VoteFactory.
  *
  * @author annejan@badge.team
+ * @extends Factory<Vote>
  */
 class VoteFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<Vote>
      */
     protected $model = Vote::class;
 

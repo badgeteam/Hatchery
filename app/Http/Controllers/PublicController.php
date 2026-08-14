@@ -9,13 +9,14 @@ use App\Models\Badge;
 use App\Models\Category;
 use App\Models\Project;
 use App\Models\User;
+use App\Models\Version;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use stdClass;
 
 /**
@@ -52,10 +53,11 @@ class PublicController extends Controller
 
             return $this->badge($badge, $request);
         }
-        /** @var Builder $projects */
+        /** @var Builder<Project> $projects */
         $projects = Project::whereHas(
             'versions',
             static function ($query) {
+                /** @var Builder<Version> $query */
                 $query->published();
             }
         );
@@ -74,6 +76,7 @@ class PublicController extends Controller
         $projects = $badge->projects()->whereHas(
             'versions',
             function ($query) {
+                /** @var Builder<Version> $query */
                 $query->published();
             }
         );
@@ -83,7 +86,7 @@ class PublicController extends Controller
 
     /**
      * @param Request               $request
-     * @param BelongsToMany|Builder $projects
+     * @param BelongsToMany<Project, Badge>|Builder<Project> $projects
      * @param string                $badge    = ''
      *
      * @return View
@@ -141,22 +144,25 @@ class PublicController extends Controller
     /**
      * Get the latest released version of a project.
      *
-     * @OA\Get(
-     *   path="/eggs/get/{project}/json",
-     * @OA\Parameter(
-     *     name="project",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="game_of_life")
-     *   ),
-     *   tags={"Egg"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @param string $slug
      *
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/eggs/get/{project}/json',
+        tags: ['Egg'],
+        parameters: [
+            new OA\Parameter(
+                name: 'project',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'game_of_life'),
+            ),
+        ],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function projectJson(string $slug): JsonResponse
     {
         /** @var Project|null $project */
@@ -203,23 +209,25 @@ class PublicController extends Controller
     /**
      * Get the latest released versions.
      *
-     * @OA\Get(
-     *   path="/eggs/list/json",
-     *   tags={"Egg"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/eggs/list/json',
+        tags: ['Egg'],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function listJson(): JsonResponse
     {
         return response()->json(
             Project::whereHas(
                 'versions',
                 function ($query) {
+                    /** @var Builder<Version> $query */
                     $query->published();
                 }
-            )->orderBy('id', 'DESC')->get(),
+            )->orderBy('id', 'desc')->get(),
             200,
             ['Content-Type' => 'application/json'],
             JSON_UNESCAPED_SLASHES
@@ -229,22 +237,25 @@ class PublicController extends Controller
     /**
      * Find the latest released versions.
      *
-     * @OA\Get(
-     *   path="/eggs/search/{words}/json",
-     * @OA\Parameter(
-     *     name="words",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", example="cool")
-     *   ),
-     *   tags={"Egg"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @param string $search
      *
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/eggs/search/{words}/json',
+        tags: ['Egg'],
+        parameters: [
+            new OA\Parameter(
+                name: 'words',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', example: 'cool'),
+            ),
+        ],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function searchJson(string $search): JsonResponse
     {
         $what = '%' . $search . '%';
@@ -253,10 +264,11 @@ class PublicController extends Controller
             Project::whereHas(
                 'versions',
                 function ($query) {
+                    /** @var Builder<Version> $query */
                     $query->published();
                 }
             )->where('name', 'like', $what)
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', 'desc')
             ->get(),
             200,
             ['Content-Type' => 'application/json'],
@@ -268,31 +280,35 @@ class PublicController extends Controller
     /**
      * Get the latest released versions in a category.
      *
-     * @OA\Get(
-     *   path="/eggs/category/{category}/json",
-     * @OA\Parameter(
-     *     name="category",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="utility")
-     *   ),
-     *   tags={"Egg"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @param Category $category
      *
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/eggs/category/{category}/json',
+        tags: ['Egg'],
+        parameters: [
+            new OA\Parameter(
+                name: 'category',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'utility'),
+            ),
+        ],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function categoryJson(Category $category): JsonResponse
     {
         return response()->json(
             $category->projects()->whereHas(
                 'versions',
                 function ($query) {
+                    /** @var Builder<Version> $query */
                     $query->published();
                 }
-            )->orderBy('id', 'DESC')->get(),
+            )->orderBy('id', 'desc')->get(),
             200,
             ['Content-Type' => 'application/json'],
             JSON_UNESCAPED_SLASHES
@@ -302,14 +318,15 @@ class PublicController extends Controller
     /**
      * Get a list of the categories.
      *
-     * @OA\Get(
-     *   path="/eggs/categories/json",
-     *   tags={"Egg"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/eggs/categories/json',
+        tags: ['Egg'],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function categoriesJson(): JsonResponse
     {
         return response()->json(Category::where('hidden', false)
@@ -319,26 +336,30 @@ class PublicController extends Controller
     /**
      * Get the latest released versions for a badge model.
      *
-     * @OA\Get(
-     *   path="/basket/{badge}/list/json",
-     * @OA\Parameter(ref="#/components/parameters/badge"),
-     *   tags={"Basket"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @param Badge $badge
      *
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/basket/{badge}/list/json',
+        tags: ['Basket'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/badge'),
+        ],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function badgeListJson(Badge $badge): JsonResponse
     {
         return response()->json(
             $badge->projects()->whereHas(
                 'versions',
                 function ($query) {
+                    /** @var Builder<Version> $query */
                     $query->published();
                 }
-            )->orderBy('id', 'DESC')->get(),
+            )->orderBy('id', 'desc')->get(),
             200,
             ['Content-Type' => 'application/json'],
             JSON_UNESCAPED_SLASHES
@@ -348,24 +369,27 @@ class PublicController extends Controller
     /**
      * Find the latest released versions for a badge model.
      *
-     * @OA\Get(
-     *   path="/basket/{badge}/search/{words}/json",
-     * @OA\Parameter(ref="#/components/parameters/badge"),
-     * @OA\Parameter(
-     *     name="words",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", example="cool")
-     *   ),
-     *   tags={"Basket"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @param Badge  $badge
      * @param string $search
      *
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/basket/{badge}/search/{words}/json',
+        tags: ['Basket'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/badge'),
+            new OA\Parameter(
+                name: 'words',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', example: 'cool'),
+            ),
+        ],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function badgeSearchJson(Badge $badge, string $search): JsonResponse
     {
         $what = '%' . $search . '%';
@@ -374,10 +398,11 @@ class PublicController extends Controller
             $badge->projects()->whereHas(
                 'versions',
                 function ($query) {
+                    /** @var Builder<Version> $query */
                     $query->published();
                 }
             )->where('name', 'like', $what)
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', 'desc')
             ->get(),
             200,
             ['Content-Type' => 'application/json'],
@@ -389,17 +414,20 @@ class PublicController extends Controller
     /**
      * Get a list of the categories for a badge.
      *
-     * @OA\Get(
-     *   path="/basket/{badge}/categories/json",
-     * @OA\Parameter(ref="#/components/parameters/badge"),
-     *   tags={"Basket"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @param Badge $badge
      *
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/basket/{badge}/categories/json',
+        tags: ['Basket'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/badge'),
+        ],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function badgeCategoriesJson(Badge $badge): JsonResponse
     {
         $data = [];
@@ -430,24 +458,27 @@ class PublicController extends Controller
     /**
      * Get the latest released versions in a category for a specific badge model.
      *
-     * @OA\Get(
-     *   path="/basket/{badge}/category/{category}/json",
-     * @OA\Parameter(ref="#/components/parameters/badge"),
-     * @OA\Parameter(
-     *     name="category",
-     *     in="path",
-     *     required=true,
-     * @OA\Schema(type="string", format="slug", example="utility")
-     *   ),
-     *   tags={"Basket"},
-     * @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @param Badge    $badge
      * @param Category $category
      *
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/basket/{badge}/category/{category}/json',
+        tags: ['Basket'],
+        parameters: [
+            new OA\Parameter(ref: '#/components/parameters/badge'),
+            new OA\Parameter(
+                name: 'category',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'utility'),
+            ),
+        ],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function badgeCategoryJson(Badge $badge, Category $category): JsonResponse
     {
         return response()->json(
@@ -459,9 +490,10 @@ class PublicController extends Controller
             )->whereHas(
                 'versions',
                 function ($query) {
+                    /** @var Builder<Version> $query */
                     $query->published();
                 }
-            )->orderBy('id', 'DESC')->get(),
+            )->orderBy('id', 'desc')->get(),
             200,
             ['Content-Type' => 'application/json'],
             JSON_UNESCAPED_SLASHES
