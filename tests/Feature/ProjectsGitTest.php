@@ -87,6 +87,69 @@ class ProjectsGitTest extends TestCase
         Helpers::delTree($folder);
     }
 
+    /**
+     * A git backed project must not get the seeded empty __init__.py: the
+     * clone brings its own, and FilePolicy forbids deleting files from a git
+     * project, so the duplicate could never be removed.
+     */
+    public function testProjectsImportGitHasNoSeededInitFile(): void
+    {
+        $name = $this->faker->name;
+        $folder = sys_get_temp_dir() . '/' . Str::slug($name, '_');
+        mkdir($folder);
+
+        $hash = $this->faker->sha1;
+        $mockRepo = $this->mock(GitRepository::class);
+        $mockRepo->expects('getLastCommitId')->twice()->andReturns(new CommitId($hash));
+        $this->app->instance(GitRepository::class, $mockRepo);
+        $mockGit = $this->mock(Git::class);
+        $mockGit->expects('cloneRepository')->twice()->andReturns($mockRepo);
+        $this->app->instance(Git::class, $mockGit);
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
+
+        $this->actingAs($user)->call(
+            'post',
+            '/import-git',
+            ['name' => $name, 'git' => $this->faker->url, 'category_id' => $category->id, 'status' => 'unknown']
+        );
+
+        /** @var Project $project */
+        $project = Project::get()->last();
+        $this->assertNotNull($project->git);
+        /** @var Version $version */
+        $version = $project->versions->last();
+        $this->assertCount(0, $version->files()->where('name', '__init__.py')->get());
+
+        Helpers::delTree($folder);
+    }
+
+    /**
+     * A project without a git repository still gets its empty __init__.py.
+     */
+    public function testProjectsStoreWithoutGitKeepsInitFile(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
+
+        $this->actingAs($user)->call(
+            'post',
+            '/projects',
+            ['name' => $this->faker->name, 'category_id' => $category->id, 'status' => 'unknown']
+        );
+
+        /** @var Project $project */
+        $project = Project::get()->last();
+        $this->assertNull($project->git);
+        /** @var Version $version */
+        $version = $project->versions->last();
+        $this->assertCount(1, $version->files()->where('name', '__init__.py')->get());
+    }
+
     public function testProjectsStoreGitTooLong(): void
     {
         $name = $this->faker->name;

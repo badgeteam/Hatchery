@@ -343,8 +343,6 @@ class ProjectsController extends Controller
 
         try {
             $project = $this->storeProjectInfo($request);
-            $project->git = $request->git;
-            $project->save();
             /** @var User $user */
             $user = Auth::user();
             UpdateProject::dispatch($project, $user);
@@ -364,10 +362,14 @@ class ProjectsController extends Controller
      */
     private function storeProjectInfo(Request $request): Project
     {
-        $project = Project::create([
-            'name' => $request->name,
-            'category_id' => $request->category_id,
-        ]);
+        $project = new Project();
+        $project->name = $request->name;
+        $project->category_id = $request->category_id;
+        // Set before the insert: Project::created only seeds an empty
+        // __init__.py for projects that are not backed by a git repository,
+        // and the clone brings its own.
+        $project->git = $request->git;
+        $project->save();
 
         if ($request->badge_ids) {
             $badges = Badge::find($request->badge_ids);
