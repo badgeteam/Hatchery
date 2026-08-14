@@ -64,6 +64,8 @@
                             {!! $project->descriptionHtml !!}
                         </div>
                         <div class="col-md-4 clearfix">
+                            <strong>Type: {{ \App\Models\Badge::$types[$project->project_type] ?? $project->project_type }}</strong>
+                            <hr>
                             <strong>Category: {{ $project->category }}</strong>
                             <hr>
                             <strong>Status: {{ $project->status }}</strong>

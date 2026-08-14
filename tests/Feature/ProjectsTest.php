@@ -96,6 +96,38 @@ class ProjectsTest extends TestCase
     /**
      * Check the projects can be stored.
      */
+    /**
+     * An empty description is allowed; it just means no README.md is written.
+     */
+    public function testProjectsStoreWithoutDescription(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->call(
+                'post',
+                '/projects',
+                [
+                    'name'        => $this->faker->name,
+                    'description' => '',
+                    'category_id' => $category->id,
+                    'status'      => 'unknown',
+                ]
+            );
+
+        $response->assertSessionHasNoErrors();
+        /** @var Project $project */
+        $project = Project::get()->last();
+        $response->assertRedirect('/projects/' . $project->slug . '/edit');
+        /** @var Version $version */
+        $version = $project->versions->last();
+        $this->assertCount(0, $version->files()->where('name', 'README.md')->get());
+    }
+
     public function testProjectsStore(): void
     {
         /** @var User $user */
@@ -657,6 +689,26 @@ class ProjectsTest extends TestCase
         $response = $this
             ->call('get', '/projects/' . $project->slug);
         $response->assertStatus(200)->assertViewHas(['project']);
+    }
+
+    /**
+     * The badge menu is organised by type first, so the detail page has to say
+     * whether an egg is micropython, ESP32 or FPGA.
+     */
+    public function testProjectsViewShowsType(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->be($user);
+
+        foreach (Badge::$types as $type => $label) {
+            /** @var Project $project */
+            $project = Project::factory()->create(['project_type' => $type]);
+
+            $this->call('get', '/projects/' . $project->slug)
+                ->assertStatus(200)
+                ->assertSee($label);
+        }
     }
 
     /**

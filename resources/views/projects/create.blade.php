@@ -49,7 +49,7 @@
                                 @else
 
                                 <div class="form-group @if($errors->has('description')) has-error @endif">
-                                    {{ Form::label('description', 'Description', ['class' => 'control-label']) }} (markdown)
+                                    {{ Form::label('description', 'Description', ['class' => 'control-label']) }} (optional, markdown)
                                     {{ Form::textarea('description', null, ['class' => 'form-control', 'id' => 'content']) }}
                                     {{ Form::hidden('extension', 'md', ['id' => 'extension']) }}
                                 </div>

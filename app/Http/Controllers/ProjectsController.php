@@ -333,18 +333,25 @@ class ProjectsController extends Controller
             return redirect()->route('projects.import')->withInput()->withErrors(['reserved name']);
         }
 
+        // This clone only proves the repository is reachable; UpdateProject
+        // does the real work in a directory of its own. Anything left here by
+        // an earlier import of the same name would make git refuse to clone
+        // into a non-empty directory, so clear it out first and afterwards.
         $tempFolder = sys_get_temp_dir() . '/' . Str::slug($request->name);
+        if (is_dir($tempFolder)) {
+            Helpers::delTree($tempFolder);
+        }
 
         try {
             $repo->cloneRepository($request->git, $tempFolder, ['-q', '--single-branch', '--depth', 1]);
         } catch (GitException $e) {
+            Helpers::delTree($tempFolder);
+
             return redirect()->route('projects.import')->withInput()->withErrors([$e->getMessage()]);
         }
 
         try {
             $project = $this->storeProjectInfo($request);
-            $project->git = $request->git;
-            $project->save();
             /** @var User $user */
             $user = Auth::user();
             UpdateProject::dispatch($project, $user);
@@ -353,6 +360,8 @@ class ProjectsController extends Controller
 
             return redirect()->route('projects.import')->withInput()->withErrors([$e->getMessage()]);
         }
+
+        Helpers::delTree($tempFolder);
 
         return redirect()->route('projects.index')->withSuccesses([$project->name . ' being imported!']);
     }
@@ -364,10 +373,14 @@ class ProjectsController extends Controller
      */
     private function storeProjectInfo(Request $request): Project
     {
-        $project = Project::create([
-            'name' => $request->name,
-            'category_id' => $request->category_id,
-        ]);
+        $project = new Project();
+        $project->name = $request->name;
+        $project->category_id = $request->category_id;
+        // Set before the insert: Project::created only seeds an empty
+        // __init__.py for projects that are not backed by a git repository,
+        // and the clone brings its own.
+        $project->git = $request->git;
+        $project->save();
 
         if ($request->badge_ids) {
             $badges = Badge::find($request->badge_ids);

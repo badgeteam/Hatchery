@@ -123,3 +123,38 @@ test.describe('asset loading', () => {
 		expect(errors).toEqual([]);
 	});
 });
+
+test.describe('unsaved changes warning', () => {
+	// The listener that clears window.onbeforeunload used to be attached to a
+	// hardcoded #content_form, which the new project form does not have, so
+	// saving a new egg always warned about losing changes.
+	test('clears the warning when the new project form is submitted', async ({ page }) => {
+		await login(page);
+		await page.goto('/projects/create');
+		await page.waitForSelector('.cm-editor');
+
+		expect(await page.evaluate(() => typeof window.onbeforeunload)).toBe('function');
+
+		await page.evaluate(() => {
+			const form = document.querySelector('textarea#content').form;
+			form.addEventListener('submit', (e) => e.preventDefault(), { once: true });
+			form.requestSubmit();
+		});
+
+		expect(await page.evaluate(() => window.onbeforeunload)).toBeNull();
+	});
+
+	test('clears the warning when a file is saved', async ({ page }) => {
+		await login(page);
+		await page.goto(await readmeEditUrl(page));
+		await page.waitForSelector('.cm-editor');
+
+		await page.evaluate(() => {
+			const form = document.querySelector('textarea#content').form;
+			form.addEventListener('submit', (e) => e.preventDefault(), { once: true });
+			form.requestSubmit();
+		});
+
+		expect(await page.evaluate(() => window.onbeforeunload)).toBeNull();
+	});
+});
