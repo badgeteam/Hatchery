@@ -113,13 +113,14 @@ window.addEventListener('load', async function () {
 					language: cm.languageFor(extension),
 					keyMap: window.keymap
 				});
-				// Enable navigation prompt
+				// Warn about losing edits, but not when the edits are being
+				// saved. Use the textarea's own form: not every page that has
+				// an editor calls its form "content_form".
 				window.onbeforeunload = function () {
 					return true;
 				};
-				const form = document.getElementById('content_form');
-				if (form) {
-					form.addEventListener('submit', function () {
+				if (editable.form) {
+					editable.form.addEventListener('submit', function () {
 						window.onbeforeunload = null;
 					});
 				}
