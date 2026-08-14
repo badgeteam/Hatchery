@@ -1,0 +1,137 @@
+version = 1
+SPDX-PackageName = "Hatchery"
+SPDX-PackageSupplier = "Badge.Team <hatchery@badge.team>"
+SPDX-PackageDownloadLocation = "https://github.com/badgeteam/Hatchery"
+
+# Files that cannot carry a comment, are generated, or came from elsewhere.
+# Everything else declares its licence in a header in the file itself.
+
+# --- Dotfiles, placeholders and other files with no comment syntax ----------
+
+[[annotations]]
+path = [
+    ".gitattributes",
+    ".gitignore",
+    ".markdownlint.json",
+    "**/.gitignore",
+    "**/.gitkeep",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2017 - 2026 Badge.Team contributors"
+SPDX-License-Identifier = "MIT"
+
+# --- Manifests and lock files ----------------------------------------------
+#
+# JSON has no comments. The lock files are generated from the manifests.
+
+[[annotations]]
+path = [
+    "composer.json",
+    "composer.lock",
+    "package.json",
+    "package-lock.json",
+    "public/manifest.json",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2017 - 2026 Badge.Team contributors"
+SPDX-License-Identifier = "MIT"
+
+# --- Views published from third party packages -----------------------------
+#
+# Copied into the repository by `artisan vendor:publish` and then edited.
+# They remain derived from their upstream projects, which are also MIT.
+
+[[annotations]]
+path = "resources/views/vendor/mail/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Taylor Otwell and the Laravel contributors"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = "resources/views/vendor/notifications/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Taylor Otwell and the Laravel contributors"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = "resources/views/vendor/pagination/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Taylor Otwell and the Laravel contributors"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = "resources/views/vendor/l5-swagger/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Darius Andrei Vasilescu and the L5 Swagger contributors"
+SPDX-License-Identifier = "MIT"
+
+# --- Third party data ------------------------------------------------------
+#
+# The SPDX licence list itself, fetched by `artisan licenses:update` from
+# spdx/license-list-data, which SPDX publishes under CC0-1.0.
+
+[[annotations]]
+path = "resources/assets/licenses.json"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "SPDX Workgroup, a Linux Foundation Project"
+SPDX-License-Identifier = "CC0-1.0"
+
+# --- Test fixtures ---------------------------------------------------------
+
+[[annotations]]
+path = [
+    "tests/Feature/empty.zip",
+    "tests/Feature/heart.png",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2017 - 2026 Badge.Team contributors"
+SPDX-License-Identifier = "MIT"
+
+# --- Artwork of unknown origin ---------------------------------------------
+#
+# These predate this audit, carry no metadata, and were committed without a
+# stated licence. Declaring them as ours would assert a grant that may not be
+# ours to give, so they are marked explicitly unknown until someone can say
+# where each came from. See LICENSES/LicenseRef-Unidentified.txt.
+
+# 16x16 voting icons. Look like the Slashdot era rulez/isok/sucks set.
+[[annotations]]
+path = [
+    "public/img/alert.gif",
+    "public/img/isok.gif",
+    "public/img/rulez.gif",
+    "public/img/sucks.gif",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "NOASSERTION"
+SPDX-License-Identifier = "LicenseRef-Unidentified"
+
+# Appears to be the official Git logo by Jason Long, which is CC-BY-3.0. If
+# that is confirmed, this becomes:
+#   SPDX-FileCopyrightText = "Jason Long"
+#   SPDX-License-Identifier = "CC-BY-3.0"
+[[annotations]]
+path = "public/img/git.svg"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "NOASSERTION"
+SPDX-License-Identifier = "LicenseRef-Unidentified"
+
+# Error page illustrations, style suggests a free illustration set.
+[[annotations]]
+path = "public/svg/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "NOASSERTION"
+SPDX-License-Identifier = "LicenseRef-Unidentified"
+
+# Badge.Team branding and interface icons. Believed to be ours, but no
+# author is recorded for them.
+[[annotations]]
+path = [
+    "public/favicon.ico",
+    "public/img/bs.png",
+    "public/img/collab.svg",
+    "public/img/corner.png",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "NOASSERTION"
+SPDX-License-Identifier = "LicenseRef-Unidentified"

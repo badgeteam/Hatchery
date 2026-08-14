@@ -1,0 +1,18 @@
+Unidentified licence
+====================
+
+This is a placeholder, not a licence grant.
+
+It marks files whose origin and licensing could not be established from the
+repository or its history. They predate this audit, carry no metadata, and were
+committed without a stated licence. Rather than assert a licence that may not be
+ours to give, they are declared explicitly as unknown so the gap is visible.
+
+Every file annotated with LicenseRef-Unidentified in REUSE.toml carries a comment
+saying what it is suspected to be. Each one needs to be either:
+
+  - identified, and annotated with its real copyright holder and licence, or
+  - replaced with an asset whose licence is known, or
+  - removed, if it is not actually needed.
+
+Until then, treat these files as all rights reserved by their unknown authors.

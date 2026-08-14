@@ -1,5 +1,8 @@
 <?php
 
+// SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors
+// SPDX-License-Identifier: MIT
+
 return [
     'exception_message' => '異常訊息: :message',
     'exception_trace' => '異常追蹤: :trace',

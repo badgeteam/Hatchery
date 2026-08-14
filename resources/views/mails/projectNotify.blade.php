@@ -1,3 +1,5 @@
+{{-- SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors --}}
+{{-- SPDX-License-Identifier: MIT --}}
 Hey,
 
 Deze app suckt: {{ route('projects.show', ['project' => $project]) }}

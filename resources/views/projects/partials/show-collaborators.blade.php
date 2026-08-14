@@ -1,3 +1,5 @@
+{{-- SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors --}}
+{{-- SPDX-License-Identifier: MIT --}}
 @if($project->user->public)
     <strong>Author: <a href="{{ route('users.show', $project->user) }}">{{ $project->user->name }}</a></strong>
     <br><br>

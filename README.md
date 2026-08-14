@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors
+SPDX-License-Identifier: MIT
+-->
+
 # Badge.Team Hatchery
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/05fc2bac5b3669fa1b0c/maintainability)](https://codeclimate.com/github/badgeteam/Hatchery/maintainability)
@@ -7,6 +12,7 @@
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery?ref=badge_shield)
 [![Known Vulnerabilities](https://snyk.io/test/github/badgeteam/Hatchery/badge.svg)](https://snyk.io/test/github/badgeteam/Hatchery)
 [![Laravel](https://github.com/badgeteam/Hatchery/actions/workflows/laravel.yml/badge.svg)](https://github.com/badgeteam/Hatchery/actions/workflows/laravel.yml)
+[![REUSE status](https://api.reuse.software/badge/github.com/badgeteam/Hatchery)](https://api.reuse.software/info/github.com/badgeteam/Hatchery)
 Simple micropython software repository for Badges.
 
 [Live Site](https://hatchery.badge.team) \|
@@ -164,6 +170,32 @@ php artisan route:clear && php artisan config:clear
 vendor/bin/phpcs -q --warning-severity=0
 vendor/bin/phpcbf
 ```
+
+## Licensing
+
+Hatchery follows the [REUSE](https://reuse.software/spec-3.3/) specification, so
+every file states its copyright and licence.
+
+- Source files carry an SPDX header:
+
+  ```php
+  // SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors
+  // SPDX-License-Identifier: MIT
+  ```
+
+- Files that cannot hold a comment (images, JSON, lock files) and files that came
+  from elsewhere are annotated in `REUSE.toml`.
+- Full licence texts live in `LICENSES/`.
+
+New files need a header. Check before pushing:
+
+```bash
+docker run --rm -v "$PWD:/data" fsfe/reuse lint
+```
+
+A few assets predate this and could not be traced; they are marked
+`LicenseRef-Unidentified` in `REUSE.toml` with a note on what each is suspected
+to be. If you recognise one, please correct its entry.
 
 ## License
 
