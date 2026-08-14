@@ -8,6 +8,9 @@ on:
     tags:
       - v*
 
+permissions:
+  contents: write
+
 jobs:
   build:
 
@@ -52,3 +55,8 @@ jobs:
         with:
           name: Hatchery_${{ env.RELEASE_VERSION }}
           path: Hatchery_${{ env.RELEASE_VERSION }}.tar.gz
+      - name: Attach the tar to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Hatchery_${{ env.RELEASE_VERSION }}.tar.gz
+          fail_on_unmatched_files: true
