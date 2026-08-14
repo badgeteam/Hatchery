@@ -8,7 +8,8 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AddContentLength
 {
@@ -23,10 +24,12 @@ class AddContentLength
     {
         $response = $next($request);
 
-        // Only ordinary responses have content() to measure. File downloads
-        // set their own Content-Length, and a streamed response does not know
-        // its length up front; asking either for content() is fatal.
-        if (!$response instanceof Response) {
+        // A streamed response does not know its length up front, and a file
+        // download sets its own Content-Length; asking either for its content
+        // is fatal. Everything else can be measured — including JsonResponse,
+        // which extends Symfony's JsonResponse and so is not an
+        // Illuminate\Http\Response.
+        if ($response instanceof StreamedResponse || $response instanceof BinaryFileResponse) {
             return $response;
         }
 
@@ -38,7 +41,10 @@ class AddContentLength
         // For now, we don't compress anything
         ini_set('zlib.output_compression', '0');
 
-        $content = $response->content();
+        $content = $response->getContent();
+        if ($content === false) {
+            return $response;
+        }
         $contentLength = strlen($content);
 //        $useCompressedOutput = ($contentLength && isset($_SERVER['HTTP_ACCEPT_ENCODING']) &&
 //            str_contains($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip'));
@@ -59,7 +65,7 @@ class AddContentLength
 //        }
 
         // compressed or not, sets the Content-Length
-        $response->header('Content-Length', (string) $contentLength);
+        $response->headers->set('Content-Length', (string) $contentLength);
 
         return $response;
     }
