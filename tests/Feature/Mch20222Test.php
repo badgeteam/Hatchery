@@ -284,4 +284,31 @@ class Mch20222Test extends TestCase
             ->assertHeader('Content-Type', $file->mime)
             ->assertSee($file->content);
     }
+
+    /**
+     * The MCH2022 badge only allocates a download buffer when it sees a
+     * Content-Length header, so a chunked reply is a reply it cannot read.
+     */
+    public function testMchJsonRepliesCarryContentLength(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->be($user);
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
+
+        foreach (['/v2/devices', '/v2/' . $badge->slug . '/types'] as $url) {
+            $response = $this->json('GET', $url);
+            $response->assertStatus(200);
+            $this->assertNotNull(
+                $response->headers->get('Content-Length'),
+                $url . ' must send a Content-Length header'
+            );
+            $this->assertSame(
+                strlen((string) $response->getContent()),
+                (int) $response->headers->get('Content-Length'),
+                $url . ' must send the length of what it actually sent'
+            );
+        }
+    }
 }
