@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Models\File;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,7 +36,7 @@ class FileUploadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'required|file', //|mimes:'.implode(',', File::$extensions),
+            'file' => 'required|file|max:' . (File::MAX_UPLOAD_MEGABYTES * 1024),
         ];
     }
 }

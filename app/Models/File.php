@@ -69,6 +69,15 @@ class File extends Model
     use HasFactory;
 
     /**
+     * Largest upload accepted, in megabytes.
+     *
+     * The whole chain has to agree with this: PHP's upload_max_filesize and
+     * post_max_size, MariaDB's max_allowed_packet, and the LONGBLOB the
+     * content is stored in.
+     */
+    public const MAX_UPLOAD_MEGABYTES = 32;
+
+    /**
      * Supported extensions.
      *
      * @var array<string>

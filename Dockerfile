@@ -19,6 +19,15 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j"$(nproc)" pdo pdo_mysql mysqli pcntl zip intl gd mbstring gmp exif
 
+# PHP ships with upload_max_filesize=2M and post_max_size=8M, well under the
+# 32 MB the uploader offers. memory_limit has to hold a whole file too, since
+# content is read into a string before it is stored.
+RUN { \
+        echo 'upload_max_filesize = 32M'; \
+        echo 'post_max_size = 40M'; \
+        echo 'memory_limit = 256M'; \
+    } > /usr/local/etc/php/conf.d/hatchery.ini
+
 ENV COMPOSER_HOME=/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer

@@ -95,7 +95,7 @@
     // window.onload here would replace its handler (and vice versa).
     window.addEventListener('load', function () {
         const uploader = new window.Dropzone("#uploader",{
-            maxFilesize: 32,
+            maxFilesize: {{ \App\Models\File::MAX_UPLOAD_MEGABYTES }},
         });
         const d = document.getElementById("uploader");
         d.className += " dropzone";
