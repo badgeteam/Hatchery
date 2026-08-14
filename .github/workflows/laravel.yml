@@ -35,7 +35,8 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
-        extensions: gd, gmp, zip, intl, exif, pcntl, mbstring, fileinfo, xdebug
+        extensions: gd, gmp, zip, intl, exif, pcntl, mbstring, fileinfo
+        coverage: pcov
         # memory_limit is deliberately left at the setup-php default of -1:
         # pinning it to the runtime value caps phpstan, which needs far more.
         ini-values: "upload_max_filesize=32M, post_max_size=40M"
@@ -96,7 +97,19 @@ jobs:
         DB_TEST_DATABASE: badge
         DB_TEST_USERNAME: root
         DB_TEST_PASSWORD: root
-      run: vendor/bin/pest
+      run: vendor/bin/pest --coverage-clover coverage/clover.xml
+    - name: Report coverage
+      # One upload is enough; the matrix would otherwise send the same numbers
+      # twice. Pull requests from forks cannot see the token, so skip those
+      # rather than fail them; pushes to main still report.
+      if: >-
+        matrix.php-versions == '8.4' &&
+        (github.event_name != 'pull_request' ||
+         github.event.pull_request.head.repo.full_name == github.repository)
+      uses: qltysh/qlty-action/coverage@v2
+      with:
+        token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+        files: coverage/clover.xml
 
   browser-tests:
     name: Browser tests
