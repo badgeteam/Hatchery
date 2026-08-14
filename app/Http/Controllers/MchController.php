@@ -12,6 +12,7 @@ use App\Models\Version;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use OpenApi\Attributes as OA;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class MchController extends Controller
 {
@@ -268,6 +269,79 @@ class MchController extends Controller
             ['Content-Type' => 'application/json'],
             JSON_UNESCAPED_SLASHES
         );
+    }
+
+    /**
+     * Download the published egg archive.
+     *
+     * @param string $device
+     * @param string $type
+     * @param string $category
+     * @param string $app
+     *
+     * @return BinaryFileResponse|JsonResponse
+     */
+    #[OA\Get(
+        path: '/v2/{device}/{type}/{category}/{app}.tar.gz',
+        tags: ['MCH2022'],
+        parameters: [
+            new OA\Parameter(
+                name: 'device',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'mch2022'),
+            ),
+            new OA\Parameter(
+                name: 'type',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'esp32'),
+            ),
+            new OA\Parameter(
+                name: 'category',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'fun'),
+            ),
+            new OA\Parameter(
+                name: 'app',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string', format: 'slug', example: 'game_of_life'),
+            ),
+        ],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
+    public function archive(
+        string $device,
+        string $type,
+        string $category,
+        string $app
+    ): BinaryFileResponse|JsonResponse {
+        /** @var Badge $badge */
+        $badge = Badge::whereSlug($device)->firstOrFail();
+        $categoryId = Category::whereSlug($category)->firstOrFail()->id;
+        /** @var Project $project */
+        $project = $badge->projects()
+            ->whereProjectType($type)->whereCategoryId($categoryId)->whereSlug($app)->firstOrFail();
+
+        /** @var Version|null $version */
+        $version = $project->versions()->published()->get()->last();
+        if ($version === null || $version->zip === null) {
+            return response()->json(['message' => 'No published release'], 404);
+        }
+
+        $path = public_path($version->zip);
+        if (!is_file($path)) {
+            // Published, but the archive is gone from disk.
+            return response()->json(['message' => 'No published release'], 404);
+        }
+
+        return response()->download($path, $project->slug . '.tar.gz', [
+            'Content-Type' => 'application/gzip',
+        ]);
     }
 
     /**
