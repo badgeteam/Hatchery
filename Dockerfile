@@ -42,9 +42,19 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
 # which failed later with "not in gzip format" instead of saying what went wrong.
 ENV ZLIB_VERSION=1.2.11
 ENV ZLIB_SHA256=c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1
-RUN curl -fsSL --retry 5 --retry-delay 3 --retry-all-errors \
-        -o zlib.tar.gz "https://zlib.net/fossils/zlib-${ZLIB_VERSION}.tar.gz" && \
-    echo "${ZLIB_SHA256}  zlib.tar.gz" | sha256sum -c - && \
+# zlib.net regularly refuses CI traffic, so fall back to the SourceForge
+# mirror, which serves a byte identical tarball. Each candidate is only
+# accepted once its checksum matches.
+RUN set -eu; \
+    ok=0; \
+    for url in \
+        "https://zlib.net/fossils/zlib-${ZLIB_VERSION}.tar.gz" \
+        "https://sourceforge.net/projects/libpng/files/zlib/${ZLIB_VERSION}/zlib-${ZLIB_VERSION}.tar.gz/download" \
+    ; do \
+        if curl -fsSL --retry 5 --retry-delay 3 --retry-all-errors -o zlib.tar.gz "$url" \
+            && echo "${ZLIB_SHA256}  zlib.tar.gz" | sha256sum -c -; then ok=1; break; fi; \
+    done; \
+    [ "$ok" = 1 ]; \
     tar xf zlib.tar.gz && \
     cd "zlib-${ZLIB_VERSION}" && \
     ./configure && \
