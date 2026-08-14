@@ -12,6 +12,7 @@ use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
+use App\Support\Icon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -104,7 +105,7 @@ class PublishProject implements ShouldQueue
         ];
 
         if ($this->project->hasValidIcon()) {
-            $data['icon'] = 'icon.png';
+            $data['icon'] = Icon::NAME;
         }
 
         $zip[$this->project->slug . '/metadata.json'] = (string) json_encode($data);

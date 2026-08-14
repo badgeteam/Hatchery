@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Support\Helpers;
+use App\Support\Icon;
 use Database\Factories\FileFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Image;
 
 /**
  * Class File.
@@ -186,6 +186,21 @@ class File extends Model
                 }
             }
         );
+
+        static::saving(
+            function ($file) {
+                // A badge wants icon.png at exactly 32 by 32. Scale whatever
+                // was uploaded instead of quietly dropping it from the egg.
+                if (!Icon::isIconName((string) $file->name) || !$file->isDirty('content')) {
+                    return;
+                }
+
+                $resized = Icon::normalise((string) $file->content);
+                if ($resized !== null) {
+                    $file->content = $resized;
+                }
+            }
+        );
     }
 
     /**
@@ -309,33 +324,7 @@ class File extends Model
             return false;
         }
 
-        $content = (string) $this->content;
-
-        // Uploads store raw bytes, but content may also be kept base64 encoded.
-        $dimensions = self::imageDimensions($content)
-            ?? self::imageDimensions((string) base64_decode($content, true));
-
-        return $dimensions === [32, 32];
-    }
-
-    /**
-     * Read the dimensions of image data, or null when it cannot be decoded.
-     *
-     * @param string $data
-     *
-     * @return array{0: int, 1: int}|null
-     */
-    private static function imageDimensions(string $data): ?array
-    {
-        if ($data === '') {
-            return null;
-        }
-
-        try {
-            return Image::fromBytes($data)->dimensions();
-        } catch (\Throwable) {
-            return null;
-        }
+        return Icon::dimensions((string) $this->content) === [Icon::SIZE, Icon::SIZE];
     }
 
     /**
