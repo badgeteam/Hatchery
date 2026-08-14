@@ -43,6 +43,9 @@ class ProjectStoreRequest extends FormRequest
             // Only the import form posts this, and there it is mandatory.
             'git'         => 'sometimes|required',
             'category_id' => 'required|exists:categories,id',
+            // Free text: an SPDX identifier gets a name and a link, anything
+            // else is shown as typed.
+            'license' => 'nullable|string|max:255',
         ];
     }
 }

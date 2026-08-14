@@ -57,10 +57,7 @@
                                 </div>
                                 @endif
 
-                                <div class="form-group @if($errors->has('license')) has-error @endif">
-                                    {{ Form::label('license', 'License', ['class' => 'control-label']) }}
-                                    {{ Form::select('license', \App\Models\License::where('isDeprecatedLicenseId', 0)->where('isOsiApproved', 1)->pluck('name', 'licenseId'), 'MIT', ['class' => 'form-control', 'id' => 'license']) }}
-                                </div>
+                                @include('projects.partials.license')
 
                                 <div class="form-group @if($errors->has('allow_team_fixes')) has-error @endif">
                                     {{ Form::label('allow_team_fixes', 'Allow badge.team to apply fixes to code', ['class' => 'control-label']) }}

@@ -37,6 +37,7 @@ class ProjectUpdateRequest extends FormRequest
         return [
             'min_firmware' => 'nullable|integer',
             'max_firmware' => 'nullable|integer',
+            'license'      => 'nullable|string|max:255',
         ];
     }
 }

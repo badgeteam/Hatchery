@@ -124,6 +124,68 @@ class Mch20222Test extends TestCase
     }
 
     /**
+     * The published egg archive under a stable, guessable URL (#137).
+     */
+    public function testMchArchive(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->be($user);
+
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
+        /** @var Version $version */
+        $version = Version::factory()->create();
+        $version->project->badges()->attach($badge);
+        /** @var Category $category */
+        $category = $version->project->category()->first();
+
+        $base = '/v2/' . $badge->slug . '/python/' . $category->slug . '/' . $version->project->slug;
+
+        // Nothing published yet.
+        $this->json('GET', $base . '.tar.gz')->assertStatus(404);
+
+        // Published, but the archive is not on disk.
+        $version->zip = 'eggs/missing_egg.tar.gz';
+        $version->save();
+        $this->json('GET', $base . '.tar.gz')->assertStatus(404);
+
+        // Published and present.
+        $relative = 'eggs/' . $version->project->slug . '_test.tar.gz';
+        $path = public_path($relative);
+        if (!is_dir(dirname($path))) {
+            mkdir(dirname($path), 0755, true);
+        }
+        file_put_contents($path, gzencode('not really a tar, but bytes are bytes'));
+        $version->zip = $relative;
+        $version->save();
+
+        $response = $this->call('GET', $base . '.tar.gz');
+        $response->assertStatus(200);
+        $this->assertEquals('application/gzip', $response->headers->get('Content-Type'));
+        $this->assertStringContainsString(
+            $version->project->slug . '.tar.gz',
+            (string) $response->headers->get('Content-Disposition')
+        );
+
+        unlink($path);
+    }
+
+    /**
+     * An unknown egg has no archive either.
+     */
+    public function testMchArchiveUnknownApp(): void
+    {
+        /** @var Badge $badge */
+        $badge = Badge::factory()->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
+
+        $this->json('GET', '/v2/' . $badge->slug . '/python/' . $category->slug . '/nope.tar.gz')
+            ->assertStatus(404);
+    }
+
+    /**
      * Check JSON files / app info request . .
      */
     public function testMchApps(): void

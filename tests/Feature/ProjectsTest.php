@@ -682,6 +682,100 @@ class ProjectsTest extends TestCase
     /**
      * Check the projects can be viewed (publicly).
      */
+    /**
+     * Licences are free text now: an SPDX identifier still resolves to a name
+     * and a link, anything else is kept and shown as typed (#176).
+     */
+    public function testProjectsStoreWithNonSpdxLicense(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->call(
+                'post',
+                '/projects',
+                [
+                    'name'        => $this->faker->name,
+                    'category_id' => $category->id,
+                    'license'     => 'All rights reserved, ask me nicely',
+                    'status'      => 'unknown',
+                ]
+            );
+
+        $response->assertSessionHasNoErrors();
+        /** @var Project $project */
+        $project = Project::get()->last();
+        $this->assertEquals('All rights reserved, ask me nicely', $project->license);
+        $this->assertEquals('All rights reserved, ask me nicely', $project->license_name);
+        // Not an SPDX identifier, so there is nothing to link to.
+        $this->assertEquals('', $project->license_url);
+    }
+
+    public function testProjectsStoreWithSpdxLicenseKeepsNameAndUrl(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        /** @var Category $category */
+        $category = Category::factory()->create();
+
+        $this->actingAs($user)->call(
+            'post',
+            '/projects',
+            [
+                'name'        => $this->faker->name,
+                'category_id' => $category->id,
+                'license'     => 'MIT',
+                'status'      => 'unknown',
+            ]
+        );
+
+        /** @var Project $project */
+        $project = Project::get()->last();
+        $this->assertEquals('MIT License', $project->license_name);
+        $this->assertNotEmpty($project->license_url);
+    }
+
+    public function testProjectsUpdateAcceptsFreeTextLicense(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = Project::factory()->create(['user_id' => $user->id]);
+
+        $response = $this
+            ->actingAs($user)
+            ->call(
+                'put',
+                '/projects/' . $project->slug,
+                [
+                    'category_id' => $project->category_id,
+                    'license'     => 'WTFPL-ish',
+                ]
+            );
+
+        $response->assertSessionHasNoErrors();
+        $project->refresh();
+        $this->assertEquals('WTFPL-ish', $project->license);
+    }
+
+    public function testProjectsViewShowsLicense(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = Project::factory()->create(['license' => 'Proprietary, contact us']);
+
+        $this->call('get', '/projects/' . $project->slug)
+            ->assertStatus(200)
+            ->assertSee('Proprietary, contact us');
+    }
+
     public function testProjectsView(): void
     {
         /** @var User $user */

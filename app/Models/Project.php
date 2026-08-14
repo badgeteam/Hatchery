@@ -582,8 +582,11 @@ class Project extends Model
         /** @var License|null $license */
         $license = License::where('LicenseId', $this->license)->first();
         if ($license === null) {
-            return $this->license ;
+            // A licence that is not an SPDX identifier has no reference to
+            // link to; returning the raw text here would emit it as a URL.
+            return '';
         }
+
         return $license->reference;
     }
 }
