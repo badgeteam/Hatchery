@@ -11,11 +11,11 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
 /**
- * Class Darksky.
+ * Class OpenMeteo.
  *
  * Since this is just a convenient wrapper for Guzzle, no testing of our own should be needed.
  */
-class Darksky
+class OpenMeteo
 {
     /**
      * @var Client
@@ -23,20 +23,21 @@ class Darksky
     private $client;
 
     /**
-     * Darksky constructor.
+     * OpenMeteo constructor.
      *
      * @codeCoverageIgnore
      */
     public function __construct()
     {
-        $this->client = new Client(['base_uri' => 'https://api.darksky.net/forecast/']);
+        $this->client = new Client(['base_uri' => 'https://api.open-meteo.com/v1/']);
     }
 
     /**
      * @param string $url
      *
-     * @return string
      * @throws GuzzleException
+     *
+     * @return string
      */
     public function get(string $url): string
     {

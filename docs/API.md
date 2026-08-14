@@ -27,9 +27,16 @@ Apps
 App specific
 
 ```uri
-/weather                      - weather of sha location proxied from darksky.net
+/weather                      - weather of the configured location, proxied from open-meteo.com
 /weather/52.3451,5.4581       - weather of specified geolocation proxied
 ```
+
+The forecast came from darksky.net until Apple switched that API off on
+31 March 2023. It now comes from [Open-Meteo](https://open-meteo.com/), which
+needs no API key, but the response is translated back into the shape Dark Sky
+returned: badges in the field cannot be updated, so the field names, the icon
+names and the `units=ca` units (Celsius, km/h, kilometres, hPa, mm) are all
+unchanged. Forecast data by Open-Meteo.com, licensed CC BY 4.0.
 
 ### API Playground
 
