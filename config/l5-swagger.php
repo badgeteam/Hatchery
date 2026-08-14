@@ -119,16 +119,12 @@ return [
              * @link https://zircote.github.io/swagger-php/reference/processors.html
              */
             'default_processors_configuration' => [
-            /** Example */
-            /**
-             * 'operationId.hash' => true,
-             * 'pathFilter' => [
-             * 'tags' => [
-             * '/pets/',
-             * '/store/',
-             * ],
-             * ],.
-             */
+                /*
+                 * Emit readable operation ids instead of md5 hashes, so that
+                 * generators such as swagger-typescript-api produce usable
+                 * method names from the spec.
+                 */
+                'operationId.hash' => false,
             ],
 
             /**
@@ -329,7 +325,7 @@ return [
          * Constants which can be used in annotations
          */
         'constants' => [
-            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'https://mch2022badge.team'),
+            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'https://mch2022.badge.team'),
         ],
     ],
 ];
