@@ -49,19 +49,20 @@ use Illuminate\Support\Str;
 class Category extends Model
 {
     use SoftDeletes;
+    /** @use HasFactory<CategoryFactory> */
     use HasFactory;
 
     /**
      * Hidden attributes.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'id', 'hidden'];
 
     /**
      * Appended attributes.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $appends = ['eggs'];
 
@@ -82,7 +83,7 @@ class Category extends Model
     /**
      * Get the Projects that belong to this Category has.
      *
-     * @return HasMany
+     * @return HasMany<Project, $this>
      */
     public function projects(): HasMany
     {

@@ -60,19 +60,20 @@ use Illuminate\Support\Facades\Auth;
 class Version extends Model
 {
     use SoftDeletes;
+    /** @use HasFactory<VersionFactory> */
     use HasFactory;
 
     /**
      * Appended magic data.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $appends = ['published'];
 
     /**
      * Hidden data.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $hidden = ['git_commit_id'];
 
@@ -95,14 +96,16 @@ class Version extends Model
 
     /**
      * Get the Project this Version belongs to.
+     * @return BelongsTo<Project, $this>
      */
     public function project(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Project')->withTrashed();
+        return $this->belongsTo(Project::class)->withTrashed();
     }
 
     /**
      * Get the Versions this Project has.
+     * @return HasMany<File, $this>
      */
     public function files(): HasMany
     {
@@ -112,11 +115,11 @@ class Version extends Model
     /**
      * Get the User that owns the Project.
      *
-     * @return BelongsTo
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo('App\Models\User')->withTrashed();
+        return $this->belongsTo(User::class)->withTrashed();
     }
 
     /**
@@ -128,9 +131,9 @@ class Version extends Model
     }
 
     /**
-     * @param Builder $query
+     * @param Builder<Version> $query
      *
-     * @return Builder
+     * @return Builder<Version>
      */
     public function scopePublished(Builder $query): Builder
     {
@@ -138,9 +141,9 @@ class Version extends Model
     }
 
     /**
-     * @param Builder $query
+     * @param Builder<Version> $query
      *
-     * @return Builder
+     * @return Builder<Version>
      */
     public function scopeUnPublished(Builder $query): Builder
     {

@@ -22,6 +22,7 @@ class AlterProjectsDropDescription extends Migration
             $version = $project->versions->last();
             if (!empty($project->description)) {
                 if ($version && $version->files()->where('name', 'like', 'README.md')->count() === 0) {
+                    /** @var File $file */
                     $file = $version->files()->firstOrNew(['name' => 'README.md']);
                     $file->content = $project->description;
                     $file->save();

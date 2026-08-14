@@ -3,9 +3,7 @@
 /public/storage
 /public/vendor
 /public/fonts
-/public/mix-manifest.json
-/public/css/app.css
-/public/js/app.js
+/public/build
 /public/sitemap.xml
 /storage/*.key
 /storage/framework/cache/*
@@ -27,13 +25,13 @@ codeclimate.json
 /public/eggs/
 /public/*.js
 .phpunit.result.cache
+/.phpunit.cache
 _ide_helper.php
 .phpstorm.meta.php
 .env
 /.php_cs.cache
 /storage/api-docs
 /database/mariadb
-/public/vendor/livewire
 laravel-echo-server.*
 /public/sw.js.LICENSE.txt
 /resources/views/vendor

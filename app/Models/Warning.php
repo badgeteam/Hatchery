@@ -47,12 +47,13 @@ use Illuminate\Support\Facades\Auth;
 class Warning extends Model
 {
     use SoftDeletes;
+    /** @use HasFactory<WarningFactory> */
     use HasFactory;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $fillable = [
         'project_id', 'description',
@@ -78,7 +79,7 @@ class Warning extends Model
     /**
      * Get the User that owns this Vote.
      *
-     * @return BelongsTo
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -88,7 +89,7 @@ class Warning extends Model
     /**
      * Get the Project that this Vote is for.
      *
-     * @return BelongsTo
+     * @return BelongsTo<Project, $this>
      */
     public function project(): BelongsTo
     {

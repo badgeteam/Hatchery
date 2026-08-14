@@ -38,7 +38,7 @@ class ProjectUpdated extends Event implements ShouldBroadcast
      * @param string|null $message
      * @param string      $type
      */
-    public function __construct(Project $project, string $message = null, string $type = 'success')
+    public function __construct(Project $project, ?string $message = null, string $type = 'success')
     {
         $this->project = $project;
         $this->message = $message;

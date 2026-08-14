@@ -19,8 +19,7 @@
     <link rel="canonical" href="{{ url()->current() }}" />
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css', !App::environment(['local', 'testing', 'docker'])) }}?v=1.0" rel="stylesheet">
-    <livewire:styles>
+    @vite(['resources/assets/sass/app.scss', 'resources/assets/js/app.js'])
 
     <style>
 	html {
@@ -58,29 +57,28 @@
     @yield('content')
     <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "Organization",
+  "@@context": "https://schema.org",
+  "@@type": "Organization",
   "url": "{{ url('') }}",
   "name": "Badge.Team Hatchery",
   "logo": "{{ url('/img/bs.png') }}",
   "foundingDate": "2017",
   "contactPoint": {
-    "@type": "ContactPoint",
+    "@@type": "ContactPoint",
     "contactType": "support",
     "email": "help@badge.team"
   }
 }
     </script>
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js', !App::environment(['local', 'testing', 'docker'])) }}?v=1.0"></script>
-    <livewire:scripts>
+
 
     @yield('script')
     <footer class="bg-light text-center text-lg-start">
         <!-- Copyright -->
         <div class="text-center p-3">
             © {{ date('Y') }} badge.team Hatchery
-            <span id="application_version">{{ App\Http\Kernel::applicationVersion() }}</span>
+            <span id="application_version">{{ App\Support\Version::applicationVersion() }}</span>
         </div>
         <!-- Copyright -->
     </footer>

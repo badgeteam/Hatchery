@@ -12,13 +12,14 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * Class WarningFactory.
  *
  * @author annejan@badge.team
+ * @extends Factory<Warning>
  */
 class WarningFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<Warning>
      */
     protected $model = Warning::class;
 

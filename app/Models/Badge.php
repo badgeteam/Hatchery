@@ -30,7 +30,7 @@ use Illuminate\Support\Str;
  * @property-read int|null $projects_count
  * @property-read Collection|BadgeProject[] $states
  * @property-read int|null $states_count
- * @property-read array $types
+ * @property-read array<string, string> $types
  * @method static Builder|Badge newModelQuery()
  * @method static Builder|Badge newQuery()
  * @method static Builder|Badge query()
@@ -47,6 +47,7 @@ use Illuminate\Support\Str;
  */
 class Badge extends Model
 {
+    /** @use HasFactory<BadgeFactory> */
     use HasFactory;
 
     /**
@@ -73,7 +74,7 @@ class Badge extends Model
     }
 
     /**
-     * @return BelongsToMany
+     * @return BelongsToMany<Project, $this>
      */
     public function projects(): BelongsToMany
     {
@@ -81,7 +82,7 @@ class Badge extends Model
     }
 
     /**
-     * @return HasMany
+     * @return HasMany<BadgeProject, $this>
      */
     public function states(): HasMany
     {

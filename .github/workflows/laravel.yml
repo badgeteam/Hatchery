@@ -12,7 +12,7 @@ jobs:
     strategy:
       max-parallel: 3
       matrix:
-        php-versions: ['8.1']
+        php-versions: ['8.4', '8.5']
     services:
       mysql:
         image: mariadb:latest
@@ -21,33 +21,39 @@ jobs:
           MYSQL_DATABASE: badge
         ports:
           - 33306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        options: --health-cmd="mariadb-admin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
     - name: Install Linux packages
-      run: sudo apt update && sudo apt install -y --no-install-recommends python3-pip pyflakes3 git iverilog arachne-pnr arachne-pnr-chipdb fpga-icestorm fpga-icestorm-chipdb
+      run: sudo apt update && sudo apt install -y --no-install-recommends python3-pip pyflakes3 git iverilog yosys arachne-pnr fpga-icestorm
+    - name: Alias pyflakes
+      run: sudo ln -sf /usr/bin/pyflakes3 /usr/local/bin/pyflakes
     - name: Install PHP
-      uses: shivammathur/setup-php@master
+      uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
-        extensions: xdebug, imagick
+        extensions: gd, gmp, zip, intl, exif, pcntl, mbstring, fileinfo, xdebug
         ini-values: "post_max_size=256M"
     - name: Check PHP Version
       run: php -v
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-    - name: Install pyflakes with pip
-      run: pip install pyflakes==2.2.0
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist && yarn install --production
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist && npm ci
     - name: Generate key
       run: php artisan key:generate
     - name: LaraStan
       run: vendor/bin/phpstan analyse
     - name: Security Check
-      run: php artisan security-check:now
+      run: composer audit
     - name: Swagger generate
       run: php artisan l5-swagger:generate
+    - name: Build assets
+      run: npm run build
     - name: Populate DB
       env:
         DB_CONNECTION: mysql
@@ -66,8 +72,6 @@ jobs:
         DB_USERNAME: root
         DB_PASSWORD: root
       run: php artisan sitemap:generate
-    - name: Publish assets
-      run: php artisan horizon:publish && php artisan livewire:publish
     - name: Config clear
       run: php artisan config:clear
     - name: Route clear

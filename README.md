@@ -1,6 +1,5 @@
 # Badge.Team Hatchery
 
-[![Build Status](https://travis-ci.org/badgeteam/Hatchery.svg)](https://travis-ci.org/badgeteam/Hatchery)
 [![Maintainability](https://api.codeclimate.com/v1/badges/05fc2bac5b3669fa1b0c/maintainability)](https://codeclimate.com/github/badgeteam/Hatchery/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/05fc2bac5b3669fa1b0c/test_coverage)](https://codeclimate.com/github/badgeteam/Hatchery/test_coverage)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/de585b432198428a88cab0a13f9c2774)](https://www.codacy.com/gh/badgeteam/Hatchery/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=badgeteam/Hatchery&amp;utm_campaign=Badge_Grade)
@@ -10,14 +9,14 @@
 [![Laravel](https://github.com/badgeteam/Hatchery/actions/workflows/laravel.yml/badge.svg)](https://github.com/badgeteam/Hatchery/actions/workflows/laravel.yml)
 Simple micropython software repository for Badges.
 
-[Live Site](https://hatchery.badge.team) \| 
+[Live Site](https://hatchery.badge.team) \|
 [API Playground](https://hatchery.badge.team/api) \|
 [Documentation](https://badge.team/docs/esp32-platform-firmware/hatchery/) \|
 [GitHub](https://github.com/badgeteam/)
 
 ## Installation
 
--   Requires PHP 8.1 or later
+-   Requires PHP 8.4 or later
 -   Requires Python 3.6 or later
 -   Requires Node.js 16.14 or later
 -   Requires Redis 3.2 or later
@@ -44,21 +43,20 @@ pip install pyflakes
 composer install
 php artisan key:generate
 php artisan migrate
-yarn
-yarn production
+npm ci
+npm run build
 ```
 
 Install assets.
 
 ```bash
-php artisan horizon:publish
-php artisan livewire:publish
+php artisan storage:link
 ```
 
 Installing and configuring the async websocket server.
 
 ```bash
-yarn global add laravel-echo-server
+npm install -g laravel-echo-server
 laravel-echo-server init
 ```
 
@@ -82,9 +80,10 @@ TODO more info ;)
 
 ### Services
 
-You'll need a be running [Laravel Horizon](https://laravel.com/docs/7.x/horizon#deploying-horizon) service.
+You'll need a be running [Laravel Horizon](https://laravel.com/docs/13.x/horizon#deploying-horizon) service.
 
 For the websocket server.
+
 ```bash
 laravel-echo-server start
 ```
@@ -101,8 +100,8 @@ If you don't want to install things and do the above steps, Docker makes all the
 
 ```bash
 docker-compose up # -d for daemon mode
-docker exec -it hatchery_laravel_1 php artisan migrate --seed
-docker exec -it hatchery_laravel_1 yarn watch
+docker exec -it hatchery-laravel-1 php artisan migrate --seed
+docker exec -it hatchery-laravel-1 npm run watch
 ```
 
 Enjoy your Hatchery at <http://localhost:8000>
@@ -159,12 +158,13 @@ Not: Clear caches before testing!
 php artisan route:clear && php artisan config:clear
 ```
 
-#### Testing with Codeception
+### Code style
 
 ```bash
-vendor/bin/codecept build
-vendor/bin/codecept run
+vendor/bin/phpcs -q --warning-severity=0
+vendor/bin/phpcbf
 ```
+
 ## License
 
 Hatchery is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).

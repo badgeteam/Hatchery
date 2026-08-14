@@ -1,11 +1,23 @@
-/* global require */
-
 /**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
+ * First we will load all of this project's JavaScript dependencies. It is a
+ * great starting point when building robust, powerful web applications
+ * using Laravel.
  */
-require('./bootstrap');
+import './bootstrap';
+
+import CodeMirror from 'codemirror';
+import 'codemirror/mode/python/python';
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/markdown/markdown';
+import 'codemirror/mode/verilog/verilog';
+import 'codemirror/mode/shell/shell';
+import 'codemirror/addon/dialog/dialog';
+import 'codemirror/addon/search/searchcursor';
+import 'codemirror/keymap/vim';
+import 'codemirror/keymap/sublime';
+import 'codemirror/keymap/emacs';
+
+window.CodeMirror = CodeMirror;
 
 window.keymap = 'default';
 
@@ -177,28 +189,14 @@ window.onload = function () {
 		'constraints'
 	].forEach(function (field) {
 		if (document.getElementById(field)) {
-			window.CodeMirror = require([
-				'../../../node_modules/codemirror/lib/codemirror',
-				'../../../node_modules/codemirror/mode/python/python',
-				'../../../node_modules/codemirror/mode/javascript/javascript',
-				'../../../node_modules/codemirror/mode/markdown/markdown',
-				'../../../node_modules/codemirror/mode/verilog/verilog',
-				'../../../node_modules/codemirror/mode/shell/shell',
-				'../../../node_modules/codemirror/addon/dialog/dialog',
-				'../../../node_modules/codemirror/addon/search/searchcursor',
-				'../../../node_modules/codemirror/keymap/vim',
-				'../../../node_modules/codemirror/keymap/sublime',
-				'../../../node_modules/codemirror/keymap/emacs'
-			], function (CodeMirror) {
-				editor = CodeMirror.fromTextArea(document.getElementById(field), {
-					lineNumbers: true,
-					mode: langmode,
-					showCursorWhenSelecting: true,
-					indentWithTabs: true,
-					keyMap: window.keymap,
-					json: true,
-					theme: (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'ambiance' : ''
-				});
+			editor = CodeMirror.fromTextArea(document.getElementById(field), {
+				lineNumbers: true,
+				mode: langmode,
+				showCursorWhenSelecting: true,
+				indentWithTabs: true,
+				keyMap: window.keymap,
+				json: true,
+				theme: (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'ambiance' : ''
 			});
 			// Enable navigation prompt
 			window.onbeforeunload = function () {
@@ -213,20 +211,11 @@ window.onload = function () {
 		}
 
 		if (document.getElementById(field + '-readonly')) {
-			window.CodeMirror = require([
-				'../../../node_modules/codemirror/lib/codemirror',
-				'../../../node_modules/codemirror/mode/python/python',
-				'../../../node_modules/codemirror/mode/javascript/javascript',
-				'../../../node_modules/codemirror/mode/markdown/markdown',
-				'../../../node_modules/codemirror/mode/verilog/verilog',
-				'../../../node_modules/codemirror/mode/shell/shell'
-			], function (CodeMirror) {
-				CodeMirror.fromTextArea(document.getElementById(field + '-readonly'), {
-					lineNumbers: true,
-					mode: langmode,
-					readOnly: true,
-					theme: (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'ambiance' : ''
-				});
+			CodeMirror.fromTextArea(document.getElementById(field + '-readonly'), {
+				lineNumbers: true,
+				mode: langmode,
+				readOnly: true,
+				theme: (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'ambiance' : ''
 			});
 		}
 	});
@@ -290,7 +279,7 @@ window.onload = function () {
 			}
 			if (!readOnly) {
 				const parentBasic = document.getElementById('colour'),
-					popupBasic = new window.Picker.default(parentBasic);
+					popupBasic = new window.Picker(parentBasic);
 				popupBasic.onChange = function (color) {
 					parentBasic.style.backgroundColor = color.rgbaString;
 				};

@@ -38,7 +38,7 @@ class LintContent implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(File $file, string $content = null)
+    public function __construct(File $file, ?string $content = null)
     {
         $this->file = $file;
         $this->content = $content;

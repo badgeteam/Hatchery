@@ -13,7 +13,7 @@ use Tests\TestCase;
  *
  * @return TestCase
  */
-function actingAs(Authenticatable $user, string $driver = null): TestCase
+function actingAs(Authenticatable $user, ?string $driver = null): TestCase
 {
     return test()->actingAs($user, $driver);
 }

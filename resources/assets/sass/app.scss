@@ -6,11 +6,11 @@
 @import "variables";
 
 // Bootstrap
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-@import "node_modules/dropzone/dist/dropzone";
-@import "node_modules/codemirror/lib/codemirror";
-@import "node_modules/codemirror/theme/ambiance";
-@import "node_modules/codemirror/addon/dialog/dialog";
+@import "bootstrap-sass/assets/stylesheets/bootstrap";
+@import "dropzone/dist/dropzone";
+@import "codemirror/lib/codemirror";
+@import "codemirror/theme/ambiance";
+@import "codemirror/addon/dialog/dialog";
 
 body {
   min-height: 100vh;
