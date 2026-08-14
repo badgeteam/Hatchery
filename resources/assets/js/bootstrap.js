@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors
+// SPDX-License-Identifier: MIT
+
 import Picker from 'vanilla-picker';
 import _ from 'lodash';
 import $ from 'jquery';

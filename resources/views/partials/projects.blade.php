@@ -1,3 +1,5 @@
+{{-- SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors --}}
+{{-- SPDX-License-Identifier: MIT --}}
 <div class="form-group">
     <div class="col-md-12">
         <table class="table table-striped">

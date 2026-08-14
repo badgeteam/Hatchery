@@ -1,3 +1,5 @@
+{{-- SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors --}}
+{{-- SPDX-License-Identifier: MIT --}}
 {{ Form::label('compatibility', 'Compatibility', ['class' => 'control-label']) }}
 
 <div class="form-group compact @if($errors->has('compatibility')) has-error @endif">

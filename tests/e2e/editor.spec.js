@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors
+// SPDX-License-Identifier: MIT
+
 import { expect, test } from '@playwright/test';
 
 const EMAIL = 'e2e@badge.team';

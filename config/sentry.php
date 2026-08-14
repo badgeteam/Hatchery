@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+// SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors
+// SPDX-License-Identifier: MIT
+
 return [
 
     'dsn' => env('SENTRY_LARAVEL_DSN', env('SENTRY_DSN')),

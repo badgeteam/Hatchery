@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+// SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors
+// SPDX-License-Identifier: MIT
+
 use App\Models\Project;
 use App\Models\Version;
 use Illuminate\Database\Eloquent\Builder;

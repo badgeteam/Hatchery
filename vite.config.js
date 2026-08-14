@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors
+// SPDX-License-Identifier: MIT
+
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import { fileURLToPath, URL } from 'node:url';

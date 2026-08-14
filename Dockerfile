@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors
+# SPDX-License-Identifier: MIT
+
 # Dockerfile
 FROM php:8.4-cli
 

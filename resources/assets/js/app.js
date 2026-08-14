@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors
+// SPDX-License-Identifier: MIT
+
 /**
  * First we will load all of this project's JavaScript dependencies. It is a
  * great starting point when building robust, powerful web applications

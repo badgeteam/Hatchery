@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+// SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors
+// SPDX-License-Identifier: MIT
+
 use App\Http\Middleware\AddContentLength;
 use App\Http\Middleware\AuthenticatorMiddleware;
 use App\Http\Middleware\RedirectIfAuthenticated;

@@ -1,4 +1,8 @@
 <?xml version="1.0"?>
+<!--
+SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors
+SPDX-License-Identifier: MIT
+-->
 <ruleset>
     <arg name="basepath" value="."/>
 

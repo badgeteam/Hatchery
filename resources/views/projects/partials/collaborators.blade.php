@@ -1,3 +1,5 @@
+{{-- SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors --}}
+{{-- SPDX-License-Identifier: MIT --}}
 {{ Form::label('collaborators', 'Collaborators', ['class' => 'control-label']) }}
 <select multiple="multiple" name="collaborators[]" id="collaborators" class="form-control">
     @foreach(App\Models\User::wherePublic(true)->get() as $collaborator)

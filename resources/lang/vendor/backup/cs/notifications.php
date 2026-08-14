@@ -1,5 +1,8 @@
 <?php
 
+// SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors
+// SPDX-License-Identifier: MIT
+
 return [
     'exception_message' => 'Zpráva výjimky: :message',
     'exception_trace' => 'Stopa výjimky: :trace',

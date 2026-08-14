@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+// SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors
+// SPDX-License-Identifier: MIT
+
 use Illuminate\Contracts\Auth\Authenticatable;
 use Tests\TestCase;
 

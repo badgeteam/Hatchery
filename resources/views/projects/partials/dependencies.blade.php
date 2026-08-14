@@ -1,3 +1,5 @@
+{{-- SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors --}}
+{{-- SPDX-License-Identifier: MIT --}}
 {{ Form::label('dependencies', 'Dependencies', ['class' => 'control-label']) }}
 <select multiple="multiple" name="dependencies[]" id="dependencies" class="form-control">
     @foreach(App\Models\Project::whereHas('versions', function ($query) {
