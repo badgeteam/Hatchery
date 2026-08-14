@@ -29,13 +29,20 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && rm -rf /var/lib/apt/lists/*
 
 # The MAX_WBITS tweak makes minigzip produce streams the badges can inflate.
-RUN curl -O https://zlib.net/fossils/zlib-1.2.11.tar.gz && \
-    tar xvf zlib-1.2.11.tar.gz && \
-    cd zlib-1.2.11 && \
+# Retry and verify: a bad response from the mirror used to be unpacked blindly,
+# which failed later with "not in gzip format" instead of saying what went wrong.
+ENV ZLIB_VERSION=1.2.11
+ENV ZLIB_SHA256=c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1
+RUN curl -fsSL --retry 5 --retry-delay 3 --retry-all-errors \
+        -o zlib.tar.gz "https://zlib.net/fossils/zlib-${ZLIB_VERSION}.tar.gz" && \
+    echo "${ZLIB_SHA256}  zlib.tar.gz" | sha256sum -c - && \
+    tar xf zlib.tar.gz && \
+    cd "zlib-${ZLIB_VERSION}" && \
     ./configure && \
     echo "#define MAX_WBITS  13\n$(cat zconf.h)" > zconf.h && \
     make && \
-    cp minigzip /usr/local/bin/
+    cp minigzip /usr/local/bin/ && \
+    cd .. && rm -rf "zlib-${ZLIB_VERSION}" zlib.tar.gz
 
 RUN composer install
 RUN chmod -R 777 bootstrap/cache storage
