@@ -99,8 +99,40 @@ You'll need a be running [Laravel Horizon](https://laravel.com/docs/13.x/horizon
 For the websocket server.
 
 ```bash
+cp laravel-echo-server.json.example laravel-echo-server.json
 laravel-echo-server start
 ```
+
+`laravel-echo-server.json` is deliberately not in the repository or the release
+tarball: it holds host specific paths. Together with `.env` it is one of the two
+files a deployment has to carry across by hand, and losing it is silent — the
+site keeps working, only live updates stop.
+
+Two settings need attention:
+
+-   `keyPrefix` must match the prefix Laravel puts on its Redis keys, or the
+    server subscribes to a pattern nothing publishes to. That prefix defaults to
+    `Str::slug(APP_NAME) . '-database-'`, so it changes if `APP_NAME` does.
+    Ask the application rather than guessing:
+
+    ```bash
+    php artisan tinker --execute='echo config("database.redis.options.prefix"), PHP_EOL;'
+    ```
+
+-   The `ssl*Path` entries are read once at startup, so the server keeps serving
+    the certificate it started with. Restart it after a renewal, or it will
+    eventually be offering an expired one.
+
+To check a running server, from anywhere:
+
+```bash
+curl 'https://hatchery.example.com:6001/socket.io/?EIO=4&transport=polling'
+```
+
+A session id comes back when it is healthy. `"devMode": true` logs every channel
+it sees, which is the quickest way to confirm events are arriving — note that it
+prints the channel name before the key prefix is stripped, so the prefix showing
+up there is expected and not a misconfiguration.
 
 ### Running the development server locally
 

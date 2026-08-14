@@ -28,6 +28,7 @@ SPDX-License-Identifier = "MIT"
 path = [
     "composer.json",
     "composer.lock",
+    "laravel-echo-server.json.example",
     "package.json",
     "package-lock.json",
     "public/manifest.json",
