@@ -36,7 +36,9 @@ jobs:
       with:
         php-version: ${{ matrix.php-versions }}
         extensions: gd, gmp, zip, intl, exif, pcntl, mbstring, fileinfo, xdebug
-        ini-values: "upload_max_filesize=32M, post_max_size=40M, memory_limit=256M"
+        # memory_limit is deliberately left at the setup-php default of -1:
+        # pinning it to the runtime value caps phpstan, which needs far more.
+        ini-values: "upload_max_filesize=32M, post_max_size=40M"
     - name: Allow large uploads
       # A 32 MB file is one big INSERT and the server default is 16 MB. A
       # service container cannot be given a command, so set it once it is up.
