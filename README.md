@@ -20,7 +20,11 @@ Simple micropython software repository for Badges.
 
 ## Installation
 
--   Requires PHP 8.4 or later
+-   Requires PHP 8.4.1 or later, with the `curl`, `dom`, `fileinfo`, `gd`, `gmp`,
+    `mbstring`, `pdo_mysql`, `pdo_sqlite`, `phar` and `zlib` extensions.
+    Distributions often package these separately; `pdo_sqlite` in particular is
+    easy to miss, and the licence list needs it. A missing one is reported by
+    name on the first request rather than failing somewhere obscure.
 -   Requires Python 3.6 or later
 -   Requires Node.js 22 or later
 -   Requires Redis 3.2 or later
