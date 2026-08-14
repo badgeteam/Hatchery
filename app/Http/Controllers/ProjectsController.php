@@ -15,7 +15,6 @@ use App\Models\Badge;
 use App\Models\BadgeProject;
 use App\Models\Category;
 use App\Models\File;
-use App\Models\License;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
@@ -412,11 +411,11 @@ class ProjectsController extends Controller
      */
     private function manageLicense(Project $project, Request $request): void
     {
-        if ($request->license) {
-            if (!License::where('licenseId', $request->license)->exists()) {
-                throw new \RuntimeException('Unknown license');
-            }
-            $project->license = $request->license;
+        if ($request->has('license')) {
+            // Any licence is allowed, not just the SPDX list: people are free
+            // to pick a proprietary one. Known SPDX identifiers still get a
+            // name and a link, the rest are shown verbatim.
+            $project->license = trim((string) $request->license);
             $project->save();
         }
     }

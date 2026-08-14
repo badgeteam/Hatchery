@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Response;
 
 class AddContentLength
 {
@@ -18,6 +19,13 @@ class AddContentLength
     public function handle($request, Closure $next)
     {
         $response = $next($request);
+
+        // Only ordinary responses have content() to measure. File downloads
+        // set their own Content-Length, and a streamed response does not know
+        // its length up front; asking either for content() is fatal.
+        if (!$response instanceof Response) {
+            return $response;
+        }
 
         // to be sure nothing was already output (by an echo statement or something)
         if (headers_sent() || ob_get_contents() !== '') {
@@ -48,7 +56,7 @@ class AddContentLength
 //        }
 
         // compressed or not, sets the Content-Length
-        $response->header('Content-Length', $contentLength);
+        $response->header('Content-Length', (string) $contentLength);
 
         return $response;
     }
