@@ -98,6 +98,9 @@ jobs:
         DB_TEST_USERNAME: root
         DB_TEST_PASSWORD: root
       run: vendor/bin/pest --coverage-clover coverage/clover.xml
+    - name: Check the coverage report exists
+      if: matrix.php-versions == '8.4'
+      run: test -s coverage/clover.xml && grep -q '<coverage' coverage/clover.xml
     - name: Report coverage
       # One upload is enough; the matrix would otherwise send the same numbers
       # twice. Pull requests from forks cannot see the token, so skip those
@@ -110,6 +113,11 @@ jobs:
       with:
         token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
         files: coverage/clover.xml
+        # The action defaults to swallowing its own errors, which meant a run
+        # with an empty token logged "Either 'oidc' or 'token' must be
+        # provided" and still went green, reporting nothing. An upload that
+        # quietly does nothing is worse than a red build.
+        skip-errors: false
 
   browser-tests:
     name: Browser tests
