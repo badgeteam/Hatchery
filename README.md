@@ -5,10 +5,8 @@ SPDX-License-Identifier: MIT
 
 # Badge.Team Hatchery
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/05fc2bac5b3669fa1b0c/maintainability)](https://codeclimate.com/github/badgeteam/Hatchery/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/05fc2bac5b3669fa1b0c/test_coverage)](https://codeclimate.com/github/badgeteam/Hatchery/test_coverage)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/de585b432198428a88cab0a13f9c2774)](https://www.codacy.com/gh/badgeteam/Hatchery/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=badgeteam/Hatchery&amp;utm_campaign=Badge_Grade)
-[![Codecov](https://codecov.io/gh/badgeteam/Hatchery/branch/master/graph/badge.svg)](https://codecov.io/gh/badgeteam/Hatchery)
+[![Maintainability](https://qlty.sh/gh/badgeteam/projects/Hatchery/maintainability.svg)](https://qlty.sh/gh/badgeteam/projects/Hatchery)
+[![Code Coverage](https://qlty.sh/gh/badgeteam/projects/Hatchery/coverage.svg)](https://qlty.sh/gh/badgeteam/projects/Hatchery)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbadgeteam%2FHatchery?ref=badge_shield)
 [![Known Vulnerabilities](https://snyk.io/test/github/badgeteam/Hatchery/badge.svg)](https://snyk.io/test/github/badgeteam/Hatchery)
 [![Laravel](https://github.com/badgeteam/Hatchery/actions/workflows/laravel.yml/badge.svg)](https://github.com/badgeteam/Hatchery/actions/workflows/laravel.yml)
@@ -24,7 +22,7 @@ Simple micropython software repository for Badges.
 
 -   Requires PHP 8.4 or later
 -   Requires Python 3.6 or later
--   Requires Node.js 16.14 or later
+-   Requires Node.js 22 or later
 -   Requires Redis 3.2 or later
 -   Requires Git 2.8 or later
 
@@ -59,24 +57,30 @@ Install assets.
 php artisan storage:link
 ```
 
-Installing and configuring the async websocket server.
+Installing and configuring the async websocket server. Broadcasting goes over
+Redis into laravel-echo-server, which is no longer maintained upstream; Laravel
+Reverb is the modern replacement, but moving to it is not a drop in change.
 
 ```bash
 npm install -g laravel-echo-server
 laravel-echo-server init
 ```
 
-Compiling and installing the patched minigzip.
+Compiling and installing the patched minigzip. Eggs are gzipped with a 13 bit
+window so the badges can inflate them, which stock gzip cannot do.
 
 ```bash
-wget http://zlib.net/zlib-1.2.12.tar.gz
-tar xvf zlib-1.2.12.tar.gz
-cd zlib-1.2.12
+curl -O https://zlib.net/fossils/zlib-1.2.11.tar.gz
+tar xf zlib-1.2.11.tar.gz
+cd zlib-1.2.11
 ./configure
 echo -e "#define MAX_WBITS  13\n$(cat zconf.h)" > zconf.h
 make
-sudo make install
+sudo cp minigzip /usr/local/bin/
 ```
+
+The `Dockerfile` does the same, pinned to that version and checked against its
+sha256, with a mirror to fall back on when zlib.net turns CI traffic away.
 
 If you would like to have Verilog support.
 
@@ -105,7 +109,7 @@ php artisan serve
 If you don't want to install things and do the above steps, Docker makes all the above as easy as:
 
 ```bash
-docker-compose up # -d for daemon mode
+docker compose up # -d for daemon mode
 docker exec -it hatchery-laravel-1 php artisan migrate --seed
 docker exec -it hatchery-laravel-1 npm run watch
 ```
@@ -118,58 +122,69 @@ See: <https://hatchery.badge.team/api>
 
 ## Running tests
 
-### Static analysis
+Three suites, and they cover different things. The PHP tests need a database,
+the browser tests need the application running.
+
+### PHP
 
 ```bash
-vendor/bin/phpstan analyse
+vendor/bin/pest                          # everything
+vendor/bin/pest --testsuite Unit         # one suite, see phpunit.xml
+vendor/bin/pest tests/Unit/IconTest.php  # one file
+vendor/bin/pest --filter "resized"       # one case
 ```
 
-### Unit and Feature testing
-
-Run all the tests
-
-```bash
-vendor/bin/pest --no-coverage
-```
-
-Run a test suite (for a list of availabe suites, see `/phpunit.xml`)
-
-```bash
-vendor/bin/pest --testsuite <suite_name>
-```
-
-Run a specific test file
-
-```bash
-vendor/bin/pest tests/<optional_folders>/TestFileName
-```
-
-Run a specific test case
-
-```bash
-vendor/bin/pest --filter <test_case_name>
-```
-
-Generate code coverage as HTML
-
-```bash
-vendor/bin/pest --coverage-html docs/coverage
-```
-
-This will create the code coverage docs in `docs/coverage/index.html`
-
-Not: Clear caches before testing!
+Clear the caches first if the app has been run in between:
 
 ```bash
 php artisan route:clear && php artisan config:clear
 ```
 
-### Code style
+### JavaScript
 
 ```bash
-vendor/bin/phpcs -q --warning-severity=0
-vendor/bin/phpcbf
+npm test              # vitest, unit tests for the editor and icon helpers
+npm run test:watch
 ```
+
+### Browser
+
+Playwright drives a real Chromium against a running Hatchery. It needs the
+fixtures, and it starts the server itself unless `APP_BASE_URL` points at one.
+
+```bash
+php artisan db:seed --class=E2eSeeder --force
+npx playwright install --with-deps chromium
+npm run test:e2e
+```
+
+These cover the parts only a browser can answer: that the editor mounts and
+saves, that the public file view is read only, and that the editor bundle stays
+off pages that do not need it.
+
+### Static analysis and style
+
+```bash
+vendor/bin/phpstan analyse                 # level 8
+vendor/bin/phpcs -q --warning-severity=0
+vendor/bin/phpcbf                          # fix what it can
+npm run lint
+```
+
+### Coverage
+
+```bash
+vendor/bin/pest --coverage                        # summary in the terminal
+vendor/bin/pest --coverage-html docs/coverage     # browsable report
+npm run coverage                                  # JavaScript
+```
+
+CI publishes both to [Qlty](https://qlty.sh/gh/badgeteam/projects/Hatchery).
+
+The JavaScript figure is lower than it looks because `app.js` and `bootstrap.js`
+are browser entry points: they are exercised by the Playwright tests, which are
+not instrumented, so they count as uncovered here. Everything a unit test can
+reasonably reach is covered.
 
 ## Upload limits
 

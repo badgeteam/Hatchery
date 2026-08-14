@@ -13,5 +13,13 @@ export default defineConfig({
 		include: ['tests/js/**/*.test.js'],
 		exclude: ['tests/e2e/**', 'node_modules/**'],
 		environment: 'node',
+		coverage: {
+			provider: 'v8',
+			reporter: ['text-summary', 'lcov'],
+			reportsDirectory: 'coverage/js',
+			// Report on all the source, not just what a test happened to
+			// import, so untested files show up as untested.
+			include: ['resources/assets/js/**/*.js'],
+		},
 	},
 });
