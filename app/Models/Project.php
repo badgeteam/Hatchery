@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Support\Helpers;
+use App\Support\Icon;
 use Database\Factories\ProjectFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -484,7 +485,7 @@ class Project extends Model
         /** @var Version $version */
         $version = $this->versions->last();
         /** @var File|null $file */
-        $file = $version->files()->where('name', 'icon.png')->get()->last();
+        $file = $version->files()->where('name', Icon::NAME)->get()->last();
         if ($file === null) {
             return false;
         }

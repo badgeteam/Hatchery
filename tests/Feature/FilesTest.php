@@ -11,6 +11,7 @@ use App\Models\File;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Version;
+use App\Support\Icon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -53,6 +54,67 @@ class FilesTest extends TestCase
         /** @var File $file */
         $file = File::where('name', '!=', '__init__.py')->first();
         $this->assertEquals($name, $file->name);
+    }
+
+    /**
+     * A badge needs icon.png at exactly 32 by 32, so an upload of any other
+     * size is scaled to fit rather than silently left out of the egg (#126).
+     */
+    public function testUploadIconIsResizedToBadgeSize(): void
+    {
+        $stub = __DIR__ . '/heart.png';
+        $path = sys_get_temp_dir() . '/' . Str::random(8) . '.png';
+        copy($stub, $path);
+
+        // The fixture is deliberately not 32 by 32.
+        $this->assertNotEquals([Icon::SIZE, Icon::SIZE], Icon::dimensions((string) file_get_contents($stub)));
+
+        $upload = new UploadedFile($path, Icon::NAME, 'image/png', null, true);
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var Version $lastVer */
+        $lastVer = $project->versions->last();
+
+        $this->actingAs($user)
+            ->post('/upload/' . $lastVer->id, ['file' => $upload])
+            ->assertStatus(200);
+
+        /** @var File $icon */
+        $icon = File::where('name', Icon::NAME)->firstOrFail();
+        $this->assertEquals([Icon::SIZE, Icon::SIZE], Icon::dimensions((string) $icon->content));
+        $this->assertTrue($icon->isValidIcon());
+        $this->assertTrue($project->refresh()->hasValidIcon());
+    }
+
+    /**
+     * Only the badge icon is touched; other images are stored as uploaded.
+     */
+    public function testUploadLeavesOtherImagesAlone(): void
+    {
+        $stub = __DIR__ . '/heart.png';
+        $original = (string) file_get_contents($stub);
+        $path = sys_get_temp_dir() . '/' . Str::random(8) . '.png';
+        copy($stub, $path);
+
+        $upload = new UploadedFile($path, 'splash.png', 'image/png', null, true);
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->be($user);
+        /** @var Project $project */
+        $project = Project::factory()->create();
+        /** @var Version $lastVer */
+        $lastVer = $project->versions->last();
+
+        $this->actingAs($user)
+            ->post('/upload/' . $lastVer->id, ['file' => $upload])
+            ->assertStatus(200);
+
+        /** @var File $stored */
+        $stored = File::where('name', 'splash.png')->firstOrFail();
+        $this->assertEquals($original, $stored->content);
     }
 
 //    public function testUploadIllegalFile(): void
