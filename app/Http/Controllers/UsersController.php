@@ -62,7 +62,10 @@ class UsersController extends Controller
      */
     public function redirect(Request $request): RedirectResponse
     {
-        return redirect()->route('users.show', ['user' => $request->user()->getAuthIdentifier()]);
+        /** @var User $user */
+        $user = $request->user();
+
+        return redirect()->route('users.show', ['user' => $user->getAuthIdentifier()]);
     }
 
     /**
@@ -142,7 +145,7 @@ class UsersController extends Controller
     /**
      * @param User $user
      *
-     * @return LengthAwarePaginator
+     * @return LengthAwarePaginator<int, Project>
      */
     private function getProjects(User $user): LengthAwarePaginator
     {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -35,8 +34,6 @@ use Illuminate\Support\Carbon;
  */
 class BadgeProject extends Model
 {
-    use HasFactory;
-
     /**
      * Database table (relationships like this are not plural it seems).
      *
@@ -59,7 +56,7 @@ class BadgeProject extends Model
     /**
      * The Project this Badge support status relationship belongs to.
      *
-     * @return BelongsTo
+     * @return BelongsTo<Project, $this>
      */
     public function project(): BelongsTo
     {
@@ -69,7 +66,7 @@ class BadgeProject extends Model
     /**
      * The Badge this Project support status relationship belongs to.
      *
-     * @return BelongsTo
+     * @return BelongsTo<Badge, $this>
      */
     public function badge(): BelongsTo
     {

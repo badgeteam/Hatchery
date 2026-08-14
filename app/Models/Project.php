@@ -43,7 +43,7 @@ use Illuminate\Support\Str;
  * @property string      $project_type
  * @property-read Collection|Badge[] $badges
  * @property-read int|null $badges_count
- * @property-read string $category
+ * @property-read string|null $category
  * @property-read Collection|Project[] $dependants
  * @property-read int|null $dependants_count
  * @property-read Collection|Project[] $dependencies
@@ -69,7 +69,7 @@ use Illuminate\Support\Str;
  * @property-read int|null $warnings_count
  * @property-read Collection|User[] $collaborators
  * @property-read int|null $collaborators_count
- * @property-read array $types
+ * @property-read array<string, string> $types
  * @method static bool|null forceDelete()
  * @method static Builder|Project newModelQuery()
  * @method static Builder|Project newQuery()
@@ -101,12 +101,13 @@ use Illuminate\Support\Str;
 class Project extends Model
 {
     use SoftDeletes;
+    /** @use HasFactory<ProjectFactory> */
     use HasFactory;
 
     /**
      * Create with these.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $fillable = [
         'name',
@@ -116,7 +117,7 @@ class Project extends Model
     /**
      * Appended magic data.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $appends = [
         'revision',
@@ -131,7 +132,7 @@ class Project extends Model
     /**
      * Hidden data.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $hidden = [
         'created_at',
@@ -156,10 +157,13 @@ class Project extends Model
     /**
      * DateTime conversion for these fields.
      *
-     * @var array<string>
+     * The created_at, updated_at and deleted_at columns are already cast to
+     * dates by Eloquent itself, so only published_at needs to be declared.
+     *
+     * @var array<string, string>
      */
-    protected $dates = [
-        'created_at', 'updated_at', 'deleted_at', 'published_at',
+    protected $casts = [
+        'published_at' => 'datetime',
     ];
 
     /**
@@ -220,7 +224,7 @@ class Project extends Model
     /**
      * Get the User that owns the Project.
      *
-     * @return BelongsTo
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -230,7 +234,7 @@ class Project extends Model
     /**
      * Get the Category this Project belongs to.
      *
-     * @return BelongsTo
+     * @return BelongsTo<Category, $this>
      */
     public function category(): BelongsTo
     {
@@ -240,7 +244,7 @@ class Project extends Model
     /**
      * Get the Versions this Project has.
      *
-     * @return HasMany
+     * @return HasMany<Version, $this>
      */
     public function versions(): HasMany
     {
@@ -250,7 +254,7 @@ class Project extends Model
     /**
      * Get the Votes this Project has.
      *
-     * @return HasMany
+     * @return HasMany<Vote, $this>
      */
     public function votes(): HasMany
     {
@@ -260,7 +264,7 @@ class Project extends Model
     /**
      * Get the Warnings for the Project.
      *
-     * @return HasMany
+     * @return HasMany<Warning, $this>
      */
     public function warnings(): HasMany
     {
@@ -271,7 +275,7 @@ class Project extends Model
      * Get the BadgeProjects for the Project.
      * This contains support state per badge.
      *
-     * @return HasMany
+     * @return HasMany<BadgeProject, $this>
      */
     public function states(): HasMany
     {
@@ -281,7 +285,7 @@ class Project extends Model
     /**
      * Collaborators.
      *
-     * @return BelongsToMany
+     * @return BelongsToMany<User, $this>
      */
     public function collaborators(): BelongsToMany
     {
@@ -299,7 +303,7 @@ class Project extends Model
     }
 
     /**
-     * @return BelongsToMany
+     * @return BelongsToMany<self, $this>
      */
     public function dependencies(): BelongsToMany
     {
@@ -308,7 +312,7 @@ class Project extends Model
     }
 
     /**
-     * @return BelongsToMany
+     * @return BelongsToMany<self, $this>
      */
     public function dependants(): BelongsToMany
     {
@@ -317,7 +321,7 @@ class Project extends Model
     }
 
     /**
-     * @return BelongsToMany
+     * @return BelongsToMany<Badge, $this>
      */
     public function badges(): BelongsToMany
     {
@@ -490,7 +494,7 @@ class Project extends Model
      */
     public function getScoreAttribute(): float
     {
-        if ($this->votes === null || $this->votes->count() === 0) {
+        if ($this->votes->count() === 0) {
             return 0;
         }
         $score = 0;
@@ -553,7 +557,7 @@ class Project extends Model
      */
     public function getLicenseNameAttribute(): string
     {
-        if ($this->license === null) {
+        if ($this->license === '') {
             return 'Commercial';
         }
         /** @var License|null $license */
@@ -569,7 +573,7 @@ class Project extends Model
      */
     public function getLicenseUrlAttribute(): string
     {
-        if ($this->license === null) {
+        if ($this->license === '') {
             return '';
         }
         /** @var License|null $license */

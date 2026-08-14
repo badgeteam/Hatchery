@@ -68,7 +68,6 @@
                                     <option value="default">notepad.exe</option>
                                     <option value="vim">vim</option>
                                     <option value="emacs">emacs</option>
-                                    <option value="sublime">Sublime</option>
                                 </select>
 
                                 @if ($errors->has('editor'))

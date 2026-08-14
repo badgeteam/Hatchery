@@ -13,8 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Intervention\Image\Exception\NotReadableException;
-use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Image;
 
 /**
  * Class File.
@@ -63,6 +62,7 @@ use Intervention\Image\Facades\Image;
 class File extends Model
 {
     use SoftDeletes;
+    /** @use HasFactory<FileFactory> */
     use HasFactory;
 
     /**
@@ -157,14 +157,14 @@ class File extends Model
     /**
      * Appended magic variables.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $appends = ['editable', 'extension', 'size_of_content'];
 
     /**
      * Mass assignable variables.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $fillable = ['name', 'version_id', 'content'];
 
@@ -188,7 +188,7 @@ class File extends Model
     /**
      * Get the Project Version this File belongs to.
      *
-     * @return BelongsTo
+     * @return BelongsTo<Version, $this>
      */
     public function version(): BelongsTo
     {
@@ -198,11 +198,11 @@ class File extends Model
     /**
      * Get the User that owns the Project.
      *
-     * @return BelongsTo
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo('App\Models\User')->withTrashed();
+        return $this->belongsTo(User::class)->withTrashed();
     }
 
     /**
@@ -306,13 +306,33 @@ class File extends Model
             return false;
         }
 
-        try {
-            $icon = Image::make($this->content);
-        } catch (NotReadableException $e) {
-            return false;
+        $content = (string) $this->content;
+
+        // Uploads store raw bytes, but content may also be kept base64 encoded.
+        $dimensions = self::imageDimensions($content)
+            ?? self::imageDimensions((string) base64_decode($content, true));
+
+        return $dimensions === [32, 32];
+    }
+
+    /**
+     * Read the dimensions of image data, or null when it cannot be decoded.
+     *
+     * @param string $data
+     *
+     * @return array{0: int, 1: int}|null
+     */
+    private static function imageDimensions(string $data): ?array
+    {
+        if ($data === '') {
+            return null;
         }
 
-        return $icon->width() == 32 && $icon->height() == 32;
+        try {
+            return Image::fromBytes($data)->dimensions();
+        } catch (\Throwable) {
+            return null;
+        }
     }
 
     /**

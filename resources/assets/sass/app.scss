@@ -6,18 +6,24 @@
 @import "variables";
 
 // Bootstrap
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-@import "node_modules/dropzone/dist/dropzone";
-@import "node_modules/codemirror/lib/codemirror";
-@import "node_modules/codemirror/theme/ambiance";
-@import "node_modules/codemirror/addon/dialog/dialog";
+@import "bootstrap-sass/assets/stylesheets/bootstrap";
+@import "dropzone/dist/dropzone";
 
 body {
   min-height: 100vh;
 }
 
-.CodeMirror {
-  height: 100% !important;
+// CodeMirror 6 ships its own styles; it only needs to be sized and framed
+// like the form controls it replaces.
+.cm-editor {
+  height: 100%;
+  border: 1px solid $input-border;
+  border-radius: $input-border-radius;
+
+  &.cm-focused {
+    border-color: $input-border-focus;
+    outline: none;
+  }
 }
 
 .alert p {

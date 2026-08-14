@@ -9,7 +9,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use stdClass;
 
 /**
@@ -42,16 +42,17 @@ class WeatherController extends Controller
     /**
      * Show weather forecast for today.
      *
-     * @OA\Get(
-     *   path="/weather",
-     *   tags={"External"},
-     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @throws GuzzleException
      *
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/weather',
+        tags: ['External'],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function show(): JsonResponse
     {
         $this->url = config('services.darksky.key')
@@ -68,28 +69,31 @@ class WeatherController extends Controller
     /**
      * Show weather forecast for a given location for today.
      *
-     * @OA\Get(
-     *   path="/weather/{location}",
-     *   @OA\Parameter(
-     *     name="location",
-     *     in="path",
-     *     required=true,
-     *     @OA\Schema(
-     *       type="string",
-     *       format="geolocation",
-     *       example="52.2822616,5.5218715"
-     *     )
-     *   ),
-     *   tags={"External"},
-     *   @OA\Response(response="default",ref="#/components/responses/undocumented")
-     * )
-     *
      * @param string $location
      *
      * @throws GuzzleException
      *
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/weather/{location}',
+        tags: ['External'],
+        parameters: [
+            new OA\Parameter(
+                name: 'location',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(
+                    type: 'string',
+                    format: 'geolocation',
+                    example: '52.2822616,5.5218715',
+                ),
+            ),
+        ],
+        responses: [
+            new OA\Response(response: 'default', ref: '#/components/responses/undocumented'),
+        ],
+    )]
     public function location(string $location): JsonResponse
     {
         if (

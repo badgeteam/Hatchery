@@ -111,20 +111,23 @@
 </div>
 @section('script')
     <script type="text/javascript">
-      $('button[name="vote"]').on('click', function (e) {
-        e.preventDefault()
-        var $form = $('#vote-form')
-        $('#vote-dialog').modal({ backdrop: 'static', keyboard: false }).one('click', '#vote', function (e) {
-          $form.trigger('submit')
-        })
-      })
-      $('button[name="notify"]').on('click', function (e) {
-        e.preventDefault()
-        var $form = $('#notify-form')
-        $('#notify-dialog').modal({ backdrop: 'static', keyboard: false }).one('click', '#notify', function (e) {
-          $form.trigger('submit')
-        })
-      })
+      // jQuery is loaded by the deferred module bundle, so wait for it.
+      document.addEventListener('DOMContentLoaded', function () {
+            $('button[name="vote"]').on('click', function (e) {
+              e.preventDefault()
+              var $form = $('#vote-form')
+              $('#vote-dialog').modal({ backdrop: 'static', keyboard: false }).one('click', '#vote', function (e) {
+                $form.trigger('submit')
+              })
+            })
+            $('button[name="notify"]').on('click', function (e) {
+              e.preventDefault()
+              var $form = $('#notify-form')
+              $('#notify-dialog').modal({ backdrop: 'static', keyboard: false }).one('click', '#notify', function (e) {
+                $form.trigger('submit')
+              })
+            })
+      });
     </script>
     <style>
         [type=radio] {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Project;
 use App\Models\Version;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -26,6 +27,7 @@ class AddPublishedAtToProjectsTable extends Migration
         $projects = Project::whereHas(
             'versions',
             function ($query) {
+                /** @var Builder<Version> $query */
                 $query->published();
             }
         );

@@ -466,13 +466,13 @@ class ProjectsTest extends TestCase
         /** @var Project $project */
         $project = Project::factory()->create();
         $project->dependencies()->save($projectDep);
-        /** @var Collection $versions */
+        /** @var Collection<int, Version> $versions */
         $versions = $project->versions()->unPublished();
         /** @var Version $version */
         $version = $versions->first();
         $file = File::factory()->create(['version_id' => $version->id]);
-        $file->first()->version_id = $version->id; // yah ugly
-        $file->first()->save(); // wut?
+        $file->firstOrFail()->version_id = $version->id; // yah ugly
+        $file->firstOrFail()->save(); // wut?
         $this->assertNull($project->published_at);
 
         Event::fake();
@@ -481,7 +481,7 @@ class ProjectsTest extends TestCase
             ->actingAs($user)
             ->call('post', '/release/' . $project->slug);
         $response->assertRedirect('/projects')->assertSessionHas('successes');
-        /** @var Collection $versions */
+        /** @var Collection<int, Version> $versions */
         $versions = Version::published()->where('project_id', $project->id)->get();
         /** @var Version $version */
         $version = $versions->last();
@@ -570,7 +570,7 @@ class ProjectsTest extends TestCase
             ->actingAs($user)
             ->call('post', '/release/' . $project->slug);
         $response->assertRedirect();
-        /** @var Collection $versions */
+        /** @var Collection<int, Version> $versions */
         $versions = Version::published()->where('project_id', $project->id)->get();
         /** @var Version $version */
         $version = $versions->last();
@@ -733,7 +733,7 @@ class ProjectsTest extends TestCase
 
             return 'mails.projectNotify' === $mail->build()->textView;
         });
-        /** @var Collection $warnings */
+        /** @var Collection<int, Warning> $warnings */
         $warnings = Warning::all();
         $this->assertCount(1, $warnings);
         /** @var Project $project */
@@ -963,7 +963,7 @@ class ProjectsTest extends TestCase
         $response->assertRedirect('/projects')->assertSessionHas('successes');
         /** @var Project $project */
         $project = Project::find($project->id);
-        /** @var Collection $versions */
+        /** @var Collection<int, Version> $versions */
         $versions = Version::published()->where('project_id', $project->id)->get();
         /** @var Version $version */
         $version = $versions->last();

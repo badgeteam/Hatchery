@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
+use Closure;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\App;
 
 /**
@@ -12,12 +13,12 @@ use Illuminate\Support\Facades\App;
  *
  * @author annejan@badge.team
  */
-class VerifyCsrfToken extends BaseVerifier
+class VerifyCsrfToken extends ValidateCsrfToken
 {
     /**
      * The URIs that should be excluded from CSRF verification.
      *
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $except = [
         //
@@ -33,12 +34,13 @@ class VerifyCsrfToken extends BaseVerifier
      *
      * @return mixed
      */
-    public function handle($request, \Closure $next)
+    public function handle($request, Closure $next)
     {
         // Don't validate CSRF when testing.
         if (App::environment(['local', 'testing'])) {
             return $this->addCookieToResponse($request, $next($request));
         }
+
         // @codeCoverageIgnoreStart
         return parent::handle($request, $next);
         // @codeCoverageIgnoreEnd

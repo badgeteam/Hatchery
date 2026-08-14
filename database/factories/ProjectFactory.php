@@ -12,13 +12,14 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * Class ProjectFactory.
  *
  * @author annejan@badge.team
+ * @extends Factory<Project>
  */
 class ProjectFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<Project>
      */
     protected $model = Project::class;
 

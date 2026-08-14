@@ -99,21 +99,24 @@
 @endsection
 @section('script')
     <script>
-        $(document).ready(function () {
-          $('#badge').change(function () {
-            if ($(this).val()) {
-              window.location.href = '{{ $search ? route('projects.search') : route('projects.index') }}?{!! ($category ? "category=$category&" : "") !!}{!! ($search ? "search=$search&" : "") !!}badge=' + $(this).val();
-            } else {
-              window.location.href = '{{ $search ? route('projects.search') : route('projects.index')  . ($category ? "?category=$category" : "") . ($search ? ($category ? '&' : '?') . "search=$search" : "") }}';
-            }
-          })
-          $('#category').change(function () {
-            if ($(this).val()) {
-              window.location.href = '{{ $search ? route('projects.search') : route('projects.index')  }}?{!! ($badge ? "badge=$badge&" : "") !!}{!! ($search ? "search=$search&" : "") !!}category=' + $(this).val();
-            } else {
-              window.location.href = '{{ $search ? route('projects.search') : route('projects.index') . ($badge ? "?badge=$badge" : "") . ($search ? ($badge ? '&' : '?') . "search=$search" : "")  }}';
-            }
-          })
-        })
+        // jQuery is loaded by the deferred module bundle, so wait for it.
+        document.addEventListener('DOMContentLoaded', function () {
+                $(document).ready(function () {
+                  $('#badge').change(function () {
+                    if ($(this).val()) {
+                      window.location.href = '{{ $search ? route('projects.search') : route('projects.index') }}?{!! ($category ? "category=$category&" : "") !!}{!! ($search ? "search=$search&" : "") !!}badge=' + $(this).val();
+                    } else {
+                      window.location.href = '{{ $search ? route('projects.search') : route('projects.index')  . ($category ? "?category=$category" : "") . ($search ? ($category ? '&' : '?') . "search=$search" : "") }}';
+                    }
+                  })
+                  $('#category').change(function () {
+                    if ($(this).val()) {
+                      window.location.href = '{{ $search ? route('projects.search') : route('projects.index')  }}?{!! ($badge ? "badge=$badge&" : "") !!}{!! ($search ? "search=$search&" : "") !!}category=' + $(this).val();
+                    } else {
+                      window.location.href = '{{ $search ? route('projects.search') : route('projects.index') . ($badge ? "?badge=$badge" : "") . ($search ? ($badge ? '&' : '?') . "search=$search" : "")  }}';
+                    }
+                  })
+                })
+        });
     </script>
 @endsection

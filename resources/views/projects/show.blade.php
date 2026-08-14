@@ -3,13 +3,13 @@
 @section('content')
 <script type="application/ld+json">
 {
-  "@context" : "https://schema.org",
-  "@type" : "SoftwareApplication",
+  "@@context" : "https://schema.org",
+  "@@type" : "SoftwareApplication",
   "name" : "{{ $project->name }}",
   "url" : "{{ route('projects.show', ['project' => $project->slug]) }}",
   "license" : "{{ $project->license_url }}",
   "author" : {
-    "@type" : "Person",
+    "@@type" : "Person",
     "name" : "{{ $project->user->name }}"
   },
 @if($project->versions()->published()->exists())
@@ -21,7 +21,7 @@
   "applicationCategory" : "{{ $project->category }}",
 @if($project->votes->count() > 0)
   "aggregateRating" : {
-    "@type": "AggregateRating",
+    "@@type": "AggregateRating",
     "ratingValue": "{{ $project->score }}",
     "reviewCount": "{{ $project->votes->count() }}",
     "bestRating": 1,
@@ -29,7 +29,7 @@
   },
 @endif
   "offers": {
-    "@type": "Offer",
+    "@@type": "Offer",
     "price": "0.00",
     "priceCurrency": "EUR"
   }
