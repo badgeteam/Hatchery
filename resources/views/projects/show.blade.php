@@ -68,6 +68,14 @@
                             <hr>
                             <strong>Category: {{ $project->category }}</strong>
                             <hr>
+                            <strong>License:
+                                @if($project->license_url)
+                                    <a href="{{ $project->license_url }}" target="_blank" rel="noopener">{{ $project->license_name }}</a>
+                                @else
+                                    {{ $project->license_name }}
+                                @endif
+                            </strong>
+                            <hr>
                             <strong>Status: {{ $project->status }}</strong>
                             <hr>
                             @if($project->min_firmware)
