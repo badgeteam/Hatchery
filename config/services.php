@@ -22,9 +22,10 @@ declare(strict_types=1);
 
 return [
 
-    'darksky' => [
-        'key'      => env('DARKSKY_API_KEY'),
-        'location' => env('DARKSKY_LOCATION', '52.2822616,5.5218715'),
+    'weather' => [
+        // Open-Meteo needs no key. DARKSKY_LOCATION is honoured so existing
+        // deployments keep their location until their .env is updated.
+        'location' => env('WEATHER_LOCATION', env('DARKSKY_LOCATION', '52.2822616,5.5218715')),
     ],
 
 ];
