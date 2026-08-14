@@ -18,6 +18,11 @@ export default defineConfig({
 			refresh: true,
 		}),
 	],
+	test: {
+		include: ['tests/js/**/*.test.js'],
+			exclude: ['tests/e2e/**'],
+		environment: 'node',
+	},
 	css: {
 		preprocessorOptions: {
 			scss: {

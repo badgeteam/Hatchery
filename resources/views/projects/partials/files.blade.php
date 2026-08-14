@@ -89,29 +89,34 @@
 
 @section('script')
 <script type="text/javascript">
-    window.onload = function() {
+    // Listen rather than assign: app.js also handles load, and assigning
+    // window.onload here would replace its handler (and vice versa).
+    window.addEventListener('load', function () {
         const uploader = new window.Dropzone("#uploader",{
             maxFilesize: 32,
         });
         const d = document.getElementById("uploader");
         d.className += " dropzone";
-    }
+    });
 
-    // Delete resource
-    $('button[name="delete-resource"]').on('click', function (e) {
-        e.preventDefault()
-        const $form = $(this).closest('form')
-        $('#confirm-delete').modal({ backdrop: 'static', keyboard: false }).one('click', '#delete', function (e) {
-            $form.trigger('submit')
+    // jQuery is loaded by the deferred module bundle, so wait for it.
+    document.addEventListener('DOMContentLoaded', function () {
+        // Delete resource
+        $('button[name="delete-resource"]').on('click', function (e) {
+            e.preventDefault()
+            const $form = $(this).closest('form')
+            $('#confirm-delete').modal({ backdrop: 'static', keyboard: false }).one('click', '#delete', function (e) {
+                $form.trigger('submit')
+            })
         })
-    })
 
-    // Process resource
-    $('button[name="process-resource"]').on('click', function (e) {
-        e.preventDefault()
-        const form = $(this).closest('form')
-        $.post(form.attr('action'), {
-            _token: window.Laravel.csrfToken
+        // Process resource
+        $('button[name="process-resource"]').on('click', function (e) {
+            e.preventDefault()
+            const form = $(this).closest('form')
+            $.post(form.attr('action'), {
+                _token: window.Laravel.csrfToken
+            });
         });
     });
 </script>

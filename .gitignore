@@ -16,6 +16,10 @@ npm-debug.log
 .env.dev
 .env.testing
 /docs/coverage
+/coverage
+/.playwright
+/playwright-report
+/test-results
 /build/logs/clover.xml
 codeclimate.json
 /deploy_*

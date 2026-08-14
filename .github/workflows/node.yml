@@ -27,5 +27,7 @@ jobs:
       - run: npm run lint
         env:
           CI: true
+      - name: Unit tests
+        run: npm test
       - name: Audit production dependencies
         run: npm audit --omit=dev

@@ -8,16 +8,22 @@
 // Bootstrap
 @import "bootstrap-sass/assets/stylesheets/bootstrap";
 @import "dropzone/dist/dropzone";
-@import "codemirror/lib/codemirror";
-@import "codemirror/theme/ambiance";
-@import "codemirror/addon/dialog/dialog";
 
 body {
   min-height: 100vh;
 }
 
-.CodeMirror {
-  height: 100% !important;
+// CodeMirror 6 ships its own styles; it only needs to be sized and framed
+// like the form controls it replaces.
+.cm-editor {
+  height: 100%;
+  border: 1px solid $input-border;
+  border-radius: $input-border-radius;
+
+  &.cm-focused {
+    border-color: $input-border-focus;
+    outline: none;
+  }
 }
 
 .alert p {
