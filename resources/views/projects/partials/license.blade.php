@@ -1,3 +1,5 @@
+{{-- SPDX-FileCopyrightText: 2017 - 2026 Badge.Team contributors --}}
+{{-- SPDX-License-Identifier: MIT --}}
 @php
     /** @var \App\Models\Project|null $project */
     $currentLicense = isset($project) ? $project->license : 'MIT';
