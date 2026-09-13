@@ -27,7 +27,11 @@ test.describe('navbar on a phone', () => {
 		await expect(menu.getByRole('link', { name: 'Eggs' })).toBeVisible();
 		await expect(button).toHaveAttribute('aria-expanded', 'true');
 
+		// Bootstrap ignores clicks while the slide is still running, and only
+		// swaps .collapsing for .show once it has finished.
+		await expect(menu).toHaveClass(/\bshow\b/);
 		await button.click();
 		await expect(menu).toBeHidden();
+		await expect(button).toHaveAttribute('aria-expanded', 'false');
 	});
 });
