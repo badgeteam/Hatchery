@@ -19,9 +19,9 @@ jobs:
     steps:
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
       - name: Install npm dependencies
@@ -51,7 +51,7 @@ jobs:
       - name: Create tar
         run: tar -czf Hatchery_${{ env.RELEASE_VERSION }}.tar.gz ./app ./bootstrap ./config ./database ./public ./resources ./routes ./storage ./vendor ./composer.json ./artisan ./linters
       - name: Upload release tar
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Hatchery_${{ env.RELEASE_VERSION }}
           path: Hatchery_${{ env.RELEASE_VERSION }}.tar.gz
