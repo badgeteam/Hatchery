@@ -110,8 +110,14 @@ jobs:
       # One upload is enough; the matrix would otherwise send the same numbers
       # twice. Pull requests from forks cannot see the token, so skip those
       # rather than fail them; pushes to main still report.
+      #
+      # Dependabot's branches live in this repository, so the fork check lets
+      # them through, but runs it triggers only see Dependabot secrets, not
+      # repository secrets, and the token is empty there too. Skip those as
+      # well; the numbers for a dependency bump are not worth chasing.
       if: >-
         matrix.php-versions == '8.4' &&
+        github.actor != 'dependabot[bot]' &&
         (github.event_name != 'pull_request' ||
          github.event.pull_request.head.repo.full_name == github.repository)
       uses: qltysh/qlty-action/coverage@v2
